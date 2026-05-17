@@ -132,8 +132,8 @@ _ZFP_I_zfweak *ZFObject::_ZFP_ZFObject_weakHolder(void) {
 }
 
 void ZFObject::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    if(this->classDynamic()) {
-        const ZFMethod *m = this->classData()->methodForName("objectInfoImpl");
+    if(this->classData()->classContainDynamicRegister()) {
+        const ZFMethod *m = this->classData()->methodForName(zftext("objectInfoImpl"));
         if(m && m->ownerClass() != ZFObject::ClassData()) {
             zfobj<v_zfstring> retHolder;
             m->methodInvoke(this, retHolder);
@@ -145,8 +145,8 @@ void ZFObject::objectInfoT(ZF_IN_OUT zfstring &ret) {
 }
 
 zfidentity ZFObject::objectHash(void) {
-    if(this->classDynamic()) {
-        const ZFMethod *m = this->classData()->methodForName("objectHashImpl");
+    if(this->classData()->classContainDynamicRegister()) {
+        const ZFMethod *m = this->classData()->methodForName(zftext("objectHashImpl"));
         if(m && m->ownerClass() != ZFObject::ClassData()) {
             return m->methodInvoke(this).to<v_zfidentity *>()->zfv;
         }
@@ -154,8 +154,8 @@ zfidentity ZFObject::objectHash(void) {
     return this->objectHashImpl();
 }
 ZFCompareResult ZFObject::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(this->classDynamic()) {
-        const ZFMethod *m = this->classData()->methodForName("objectCompareImpl");
+    if(this->classData()->classContainDynamicRegister()) {
+        const ZFMethod *m = this->classData()->methodForName(zftext("objectCompareImpl"));
         if(m && m->ownerClass() != ZFObject::ClassData()) {
             return m->methodInvoke(this, anotherObj).to<v_ZFCompareResult *>()->zfv;
         }
@@ -163,13 +163,13 @@ ZFCompareResult ZFObject::objectCompare(ZF_IN ZFObject *anotherObj) {
     return this->objectCompareImpl(anotherObj);
 }
 ZFCompareResult ZFObject::objectCompareValue(ZF_IN ZFObject *anotherObj) {
-    if(this->classDynamic()) {
-        const ZFMethod *m = this->classData()->methodForName("objectCompareValueImpl");
+    if(this->classData()->classContainDynamicRegister()) {
+        const ZFMethod *m = this->classData()->methodForName(zftext("objectCompareValueImpl"));
         if(m && m->ownerClass() != ZFObject::ClassData()) {
             return m->methodInvoke(this, anotherObj).to<v_ZFCompareResult *>()->zfv;
         }
         else {
-            m = this->classData()->methodForName("objectCompareImpl");
+            m = this->classData()->methodForName(zftext("objectCompareImpl"));
             if(m && m->ownerClass() != ZFObject::ClassData()) {
                 return m->methodInvoke(this, anotherObj).to<v_ZFCompareResult *>()->zfv;
             }

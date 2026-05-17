@@ -20,7 +20,7 @@ void ZFStyleable::copyFrom(ZF_IN ZFObject *anotherStyleable) {
 }
 
 zfanyT<ZFStyleable> ZFStyleable::defaultStyle(void) {
-    const ZFMethod *method = this->classData()->methodForName("DefaultStyle");
+    const ZFMethod *method = this->classData()->methodForName(zftext("DefaultStyle"));
     if(method != zfnull) {
         return method->methodInvoke(zfnull);
     }
@@ -30,7 +30,7 @@ zfanyT<ZFStyleable> ZFStyleable::defaultStyle(void) {
 }
 
 static ZFCoreArray<const ZFProperty *> _ZFP_ZFStyleable_propList(ZF_IN const ZFClass *cls) {
-    v_ZFCoreArray *holder = cls->dataCache("_ZFP_ZFStyleable_propList");
+    v_ZFCoreArray *holder = cls->dataCache(zftext("_ZFP_ZFStyleable_propList"));
     if(holder) {
         return *(const ZFCoreArray<const ZFProperty *> *)holder->zfv;
     }
@@ -51,7 +51,7 @@ static ZFCoreArray<const ZFProperty *> _ZFP_ZFStyleable_propList(ZF_IN const ZFC
         }
     }
     zfobj<v_ZFCoreArray> holderTmp(ret);
-    cls->dataCache("_ZFP_ZFStyleable_propList", holderTmp);
+    cls->dataCache(zftext("_ZFP_ZFStyleable_propList"), holderTmp);
     return ret;
 }
 
@@ -143,14 +143,16 @@ zfbool ZFStyleable::progressUpdate(
         , ZF_IN ZFStyleable *to
         , ZF_IN zffloat progress
         ) {
-    const ZFMethod *m = this->classData()->methodForName("progressOnUpdate");
-    if(m) {
-        return m->methodInvoke(
-                this->toObject()
-                , zfcast(ZFObject *, from)
-                , zfcast(ZFObject *, to)
-                , zfobj<v_zffloat>(progress)
-                ).to<v_zfbool *>()->zfv;
+    if(this->classData()->classContainDynamicRegister()) {
+        const ZFMethod *m = this->classData()->methodForName(zftext("progressOnUpdate"));
+        if(m) {
+            return m->methodInvoke(
+                    this->toObject()
+                    , zfcast(ZFObject *, from)
+                    , zfcast(ZFObject *, to)
+                    , zfobj<v_zffloat>(progress)
+                    ).to<v_zfbool *>()->zfv;
+        }
     }
     return this->progressOnUpdate(from, to, progress);
 }

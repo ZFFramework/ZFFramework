@@ -316,6 +316,7 @@ void _ZFP_ZFClassPrivate::classParentCacheUpdate(ZF_IN const ZFClass *cls) {
     ZFImplementDynamicCache.clear();
     interfaceCastCache.clear();
 
+    ZFBitUnset(cls->_ZFP_ZFClass_removeConst()->_stateFlags, ZFClass::_stateFlags_classContainDynamicRegister);
     if(!cls->classIsInterface()) {
         const ZFClass *t = cls;
         do {
@@ -339,12 +340,18 @@ void _ZFP_ZFClassPrivate::classParentCacheUpdate(ZF_IN const ZFClass *cls) {
 
         parentTypeCache[t] = zftrue;
         parentClassCache[t] = zftrue;
+        if(t->classIsDynamicRegister()) {
+            ZFBitSet(cls->_ZFP_ZFClass_removeConst()->_stateFlags, ZFClass::_stateFlags_classContainDynamicRegister);
+        }
 
         for(zfindex i = 0; i < t->d->ZFImplementDynamicList.count(); ++i) {
             const ZFClass *dyn = t->d->ZFImplementDynamicList[i];
             parentClassCache[dyn] = zftrue;
             parentTypeCache[dyn] = zftrue;
             ZFImplementDynamicCache[dyn] = zftrue;
+            if(dyn->classIsDynamicRegister()) {
+                ZFBitSet(cls->_ZFP_ZFClass_removeConst()->_stateFlags, ZFClass::_stateFlags_classContainDynamicRegister);
+            }
         }
     } while(!toCheck.isEmpty());
 }
@@ -1590,7 +1597,7 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
     _ZFP_ZFClassMap.erase(itClass);
 
     ZFBitUnset(cls->_ZFP_ZFClass_removeConst()->_stateFlags, _stateFlags_methodAndPropertyCacheNeedUpdate);
-    ZFMethodUserUnregister(cls->methodForNameIgnoreParent("ClassData"));
+    ZFMethodUserUnregister(cls->methodForNameIgnoreParent(zftext("ClassData")));
 
     d->classDynamicRegisterUserData = zfnull;
     cls->dataCacheRemoveAll();

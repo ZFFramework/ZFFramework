@@ -31,7 +31,7 @@ void ZFIOCallback::ioFlush(void) const {
     if(owner == zfnull) {
         return;
     }
-    const ZFMethod *method = owner->classData()->methodForName("ioFlush");
+    const ZFMethod *method = owner->classData()->methodForName(zftext("ioFlush"));
     if(method == zfnull) {
         return;
     }
@@ -45,7 +45,7 @@ zfbool ZFIOCallback::ioSeek(
     if(owner == zfnull) {
         return zffalse;
     }
-    const ZFMethod *method = owner->classData()->methodForName("ioSeek");
+    const ZFMethod *method = owner->classData()->methodForName(zftext("ioSeek"));
     if(method == zfnull) {
         return zffalse;
     }
@@ -56,7 +56,7 @@ zfindex ZFIOCallback::ioTell(void) const {
     if(owner == zfnull) {
         return zfindexMax();
     }
-    const ZFMethod *method = owner->classData()->methodForName("ioTell");
+    const ZFMethod *method = owner->classData()->methodForName(zftext("ioTell"));
     if(method == zfnull) {
         return zfindexMax();
     }
@@ -67,7 +67,7 @@ zfindex ZFIOCallback::ioSize(void) const {
     if(owner == zfnull) {
         return zfindexMax();
     }
-    const ZFMethod *method = owner->classData()->methodForName("ioSize");
+    const ZFMethod *method = owner->classData()->methodForName(zftext("ioSize"));
     if(method == zfnull) {
         return zfindexMax();
     }

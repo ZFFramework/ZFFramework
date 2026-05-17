@@ -22,7 +22,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
     return ZFMethodDynamicRegister(
             cls
             , ZFTypeId_void()
-            , "objectOnInit"
+            , zftext("objectOnInit")
             , methodParam
             , methodImplWrapper
             , ZFMethodTypeVirtual
@@ -32,7 +32,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
 }
 
 static void _ZFP_ZFObjectOnInitGI(ZF_IN_OUT const ZFArgs &zfargs) {
-    ZFValue *valueHolder = zfargs.ownerMethod()->dynamicRegisterUserData()->objectTag("_ZFP_ZFObjectOnInitGI");
+    ZFValue *valueHolder = zfargs.ownerMethod()->dynamicRegisterUserData()->objectTag(zftext("_ZFP_ZFObjectOnInitGI"));
     ZFCoreAssert(valueHolder != zfnull);
     zfargs.sender()->_ZFP_ZFObject_objectOnInit();
     ZFMethodGenericInvoker methodGI = valueHolder->value<ZFMethodGenericInvoker>();
@@ -54,7 +54,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
 
     ZFMethodDynamicRegisterParam paramTmp = param;
     paramTmp.ownerClass(cls);
-    paramTmp.methodName("objectOnInit");
+    paramTmp.methodName(zftext("objectOnInit"));
     paramTmp.returnTypeId(ZFTypeId_void());
     paramTmp.methodType(ZFMethodTypeVirtual);
     paramTmp.methodAccessType(ZFMethodAccessTypeProtected);
@@ -72,7 +72,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
         userData = zfobj<ZFObject>();
         paramTmp.dynamicRegisterUserData(userData);
     }
-    userData->objectTag("_ZFP_ZFObjectOnInitGI", zfobj<ZFValue>(methodGISaved));
+    userData->objectTag(zftext("_ZFP_ZFObjectOnInitGI"), zfobj<ZFValue>(methodGISaved));
 
     return ZFMethodDynamicRegister(paramTmp, errorHint);
 }

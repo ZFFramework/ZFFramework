@@ -294,9 +294,11 @@ public:
             zfobjRetain(page);
 
             page->pageOnCreate();
-            const ZFMethod *m = page->classData()->methodForName("pageOnCreateImpl");
-            if(m) {
-                m->methodInvoke(page);
+            if(page->classData()->classContainDynamicRegister()) {
+                const ZFMethod *m = page->classData()->methodForName(zftext("pageOnCreateImpl"));
+                if(m) {
+                    m->methodInvoke(page);
+                }
             }
 
             page->observerNotify(ZFUIPage::E_PageOnCreate());
@@ -311,9 +313,11 @@ public:
         pageOnCreate(page);
         if(!page->pageResumed()) {
             page->pageOnResume(resumeReason);
-            const ZFMethod *m = page->classData()->methodForName("pageOnResumeImpl");
-            if(m) {
-                m->methodInvoke(page, zfobj<v_ZFUIPageResumeReason>(resumeReason));
+            if(page->classData()->classContainDynamicRegister()) {
+                const ZFMethod *m = page->classData()->methodForName(zftext("pageOnResumeImpl"));
+                if(m) {
+                    m->methodInvoke(page, zfobj<v_ZFUIPageResumeReason>(resumeReason));
+                }
             }
 
             zfobj<v_ZFUIPageResumeReason> resumeReasonHolder(resumeReason);
@@ -331,9 +335,11 @@ public:
             page->pageManager()->observerNotifyReverselyWithSender(page, ZFUIPageManager::E_PageOnPause(), pauseReasonHolder, siblingPage);
             page->observerNotifyReversely(ZFUIPage::E_PageOnPause(), pauseReasonHolder, siblingPage);
 
-            const ZFMethod *m = page->classData()->methodForName("pageOnPauseImpl");
-            if(m) {
-                m->methodInvoke(page, zfobj<v_ZFUIPagePauseReason>(pauseReason));
+            if(page->classData()->classContainDynamicRegister()) {
+                const ZFMethod *m = page->classData()->methodForName(zftext("pageOnPauseImpl"));
+                if(m) {
+                    m->methodInvoke(page, zfobj<v_ZFUIPagePauseReason>(pauseReason));
+                }
             }
             page->pageOnPause(pauseReason);
         }
@@ -344,9 +350,11 @@ public:
             page->pageManager()->observerNotifyReverselyWithSender(page, ZFUIPageManager::E_PageOnDestroy());
             page->observerNotifyReversely(ZFUIPage::E_PageOnDestroy());
 
-            const ZFMethod *m = page->classData()->methodForName("pageOnDestroyImpl");
-            if(m) {
-                m->methodInvoke(page);
+            if(page->classData()->classContainDynamicRegister()) {
+                const ZFMethod *m = page->classData()->methodForName(zftext("pageOnDestroyImpl"));
+                if(m) {
+                    m->methodInvoke(page);
+                }
             }
             page->pageOnDestroy();
 
@@ -603,9 +611,11 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerCreate) {
     d->managerCreated = zftrue;
 
     this->managerOnCreate();
-    const ZFMethod *m = this->classData()->methodForName("managerOnCreateImpl");
-    if(m) {
-        m->methodInvoke(this);
+    if(this->classData()->classContainDynamicRegister()) {
+        const ZFMethod *m = this->classData()->methodForName(zftext("managerOnCreateImpl"));
+        if(m) {
+            m->methodInvoke(this);
+        }
     }
 
     this->observerNotify(ZFUIPageManager::E_ManagerOnCreate());
@@ -616,9 +626,11 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerResume) {
     d->managerResumed = zftrue;
 
     this->managerOnResume();
-    const ZFMethod *m = this->classData()->methodForName("managerOnResumeImpl");
-    if(m) {
-        m->methodInvoke(this);
+    if(this->classData()->classContainDynamicRegister()) {
+        const ZFMethod *m = this->classData()->methodForName(zftext("managerOnResumeImpl"));
+        if(m) {
+            m->methodInvoke(this);
+        }
     }
 
     this->observerNotify(ZFUIPageManager::E_ManagerOnResume());
@@ -632,9 +644,11 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerPause) {
         _ZFP_ZFUIPageManagerPrivate::pageOnPause(page, v_ZFUIPagePauseReason::e_ByManagerPause, zfnull);
     }
 
-    const ZFMethod *m = this->classData()->methodForName("managerOnPauseImpl");
-    if(m) {
-        m->methodInvoke(this);
+    if(this->classData()->classContainDynamicRegister()) {
+        const ZFMethod *m = this->classData()->methodForName(zftext("managerOnPauseImpl"));
+        if(m) {
+            m->methodInvoke(this);
+        }
     }
     this->managerOnPause();
 
@@ -663,9 +677,11 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy) {
         }
     }
 
-    const ZFMethod *m = this->classData()->methodForName("managerOnDestroyImpl");
-    if(m) {
-        m->methodInvoke(this);
+    if(this->classData()->classContainDynamicRegister()) {
+        const ZFMethod *m = this->classData()->methodForName(zftext("managerOnDestroyImpl"));
+        if(m) {
+            m->methodInvoke(this);
+        }
     }
     this->managerOnDestroy();
 

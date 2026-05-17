@@ -778,7 +778,7 @@ static zfbool _ZFP_ZFDI_alloc(
         }
     }
     ZFCoreArray<const ZFMethod *> methodList;
-    cls->methodForNameGetAllT(methodList, "objectOnInit");
+    cls->methodForNameGetAllT(methodList, zftext("objectOnInit"));
     if(methodList.isEmpty()) {
         zfargs.success(zffalse);
         if(!zfargs.ignoreError()) {

@@ -284,7 +284,7 @@ static ZFInput _ZFP_ZFInputForBuffer(
         owner->p = owner->pStart;
         ZFInput ret = ZFCallbackForMemberMethod(
             owner, ZFMethodAccess(_ZFP_I_ZFInputForBufferUnsafeOwner, onInput));
-        ret.callbackTag("ZFInputForBufferCopiedBuffer", buf);
+        ret.callbackTag(zftext("ZFInputForBufferCopiedBuffer"), buf);
         ret.callbackTag(ZFCallbackTagKeyword_ioOwner, owner);
         if(serializable) {
             _ZFP_ZFInputForBuffer_serialize(ret, src, count);
@@ -330,7 +330,7 @@ ZFInput ZFInputForString(
     owner->p = owner->pStart;
     ZFInput ret = ZFCallbackForMemberMethod(
         owner, ZFMethodAccess(_ZFP_I_ZFInputForBufferUnsafeOwner, onInput));
-    ret.callbackTag("ZFInputForBufferCopiedBuffer", buf);
+    ret.callbackTag(zftext("ZFInputForBufferCopiedBuffer"), buf);
     ret.callbackTag(ZFCallbackTagKeyword_ioOwner, owner);
     if(serializable) {
         _ZFP_ZFInputForBuffer_serialize(ret, src, src.length());

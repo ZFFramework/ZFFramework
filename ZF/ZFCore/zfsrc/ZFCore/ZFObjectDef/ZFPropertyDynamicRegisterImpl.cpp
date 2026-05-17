@@ -510,7 +510,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
                 .methodAccessType(param.propertySetterType())
                 .methodName(param.propertyName())
                 .returnTypeId(ZFTypeId_void())
-                .methodParam(param.propertyTypeId(), "v")
+                .methodParam(param.propertyTypeId(), ZFSigName("v"))
             , &errorHintTmp);
         if(setterMethod == zfnull) {
             zfstringAppend(errorHint,

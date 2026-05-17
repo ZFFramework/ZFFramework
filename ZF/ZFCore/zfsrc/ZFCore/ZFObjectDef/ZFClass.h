@@ -190,6 +190,13 @@ public:
     }
 
     /**
+     * @brief true if this class or any of parent of this class is #classIsDynamicRegister
+     */
+    zfbool classContainDynamicRegister(void) const {
+        return ZFBitTest(_stateFlags, _stateFlags_classContainDynamicRegister);
+    }
+
+    /**
      * @brief true if class is registered by #ZFClassDynamicRegister
      */
     zfbool classIsDynamicRegister(void) const {
@@ -761,11 +768,12 @@ private:
         _stateFlags_classIsInternal = 1 << 2,
         _stateFlags_classIsInternalPrivate = 1 << 3,
         _stateFlags_classIsDynamicRegister = 1 << 4,
-        _stateFlags_classCanNotAllocPublic = 1 << 5,
-        _stateFlags_interfaceHasRegisterCk = 1 << 6,
-        _stateFlags_interfaceHasRegister = 1 << 7,
-        _stateFlags_methodAndPropertyCacheNeedUpdate = 1 << 8,
-        _stateFlags_hasAutoRegister = 1 << 9,
+        _stateFlags_classContainDynamicRegister = 1 << 5,
+        _stateFlags_classCanNotAllocPublic = 1 << 6,
+        _stateFlags_interfaceHasRegisterCk = 1 << 7,
+        _stateFlags_interfaceHasRegister = 1 << 8,
+        _stateFlags_methodAndPropertyCacheNeedUpdate = 1 << 9,
+        _stateFlags_hasAutoRegister = 1 << 10,
     };
 private:
     _ZFP_ZFClassPrivate *d;
@@ -786,7 +794,7 @@ private:
  * with this as key and the error message (#v_zfstring) as value,
  * to tell #ZFClass::newInstanceGenericCheck that the allocation failed
  */
-#define ZFObjectTagKeyword_newInstanceGenericFailed "_ZFP_NIGFail"
+#define ZFObjectTagKeyword_newInstanceGenericFailed zftext("_ZFP_NIGFail")
 
 // ============================================================
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFClassRegisterHolder {

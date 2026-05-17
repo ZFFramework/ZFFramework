@@ -56,7 +56,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFEnum
     do {
         const ZFClass *cls = ZFClass::classForName(enumClassNameT);
         if(cls == zfnull || !cls->classIsTypeOf(ZFEnum::ClassData())) {break;}
-        const ZFMethod *method = cls->methodForName("EnumDefault");
+        const ZFMethod *method = cls->methodForName(zftext("EnumDefault"));
         if(method == zfnull) {break;}
         ret = method->methodInvoke().to<v_zfuint *>()->zfv;
     } while(zffalse);
@@ -75,7 +75,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFEnum
     do {
         const ZFClass *cls = ZFClass::classForName(enumClassNameT);
         if(cls == zfnull || !cls->classIsTypeOf(ZFEnum::ClassData())) {break;}
-        const ZFMethod *method = cls->methodForName("EnumValueForName");
+        const ZFMethod *method = cls->methodForName(zftext("EnumValueForName"));
         if(method == zfnull) {break;}
         ret = method->methodInvoke(zfnull, zfobj<v_zfstring>(enumValueNameT)).to<v_zfuint *>()->zfv;
     } while(zffalse);
@@ -94,7 +94,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFEnum
     do {
         const ZFClass *cls = ZFClass::classForName(enumClassNameT);
         if(cls == zfnull || !cls->classIsTypeOf(ZFEnum::ClassData())) {break;}
-        const ZFMethod *method = cls->methodForName("EnumNameForValue");
+        const ZFMethod *method = cls->methodForName(zftext("EnumNameForValue"));
         if(method == zfnull) {break;}
         ret = method->methodInvoke(zfnull, zfobj<v_zfuint>(enumValue)).to<v_zfstring *>()->zfv;
     } while(zffalse);

@@ -445,18 +445,18 @@ zfbool ZFIOImpl::ioFindFirstForChained(
     if(refIOImpl == zfnull || !refIOImpl->ioFindFirst(fd, refPathInfo.pathData())) {
         return zffalse;
     }
-    fd.implTag("ZFIOForChained", refIOImpl);
+    fd.implTag(zftext("ZFIOForChained"), refIOImpl);
     return zftrue;
 }
 zfbool ZFIOImpl::ioFindNextForChained(ZF_IN_OUT ZFIOFindData &fd) {
-    zfautoT<ZFIOImpl> refIOImpl = fd.implTag("ZFIOForChained");
+    zfautoT<ZFIOImpl> refIOImpl = fd.implTag(zftext("ZFIOForChained"));
     return refIOImpl && refIOImpl->ioFindNext(fd);
 }
 void ZFIOImpl::ioFindCloseForChained(ZF_IN_OUT ZFIOFindData &fd) {
-    zfautoT<ZFIOImpl> refIOImpl = fd.implTag("ZFIOForChained");
+    zfautoT<ZFIOImpl> refIOImpl = fd.implTag(zftext("ZFIOForChained"));
     if(refIOImpl) {
         refIOImpl->ioFindClose(fd);
-        fd.implTag("ZFIOForChained", zfnull);
+        fd.implTag(zftext("ZFIOForChained"), zfnull);
     }
 }
 

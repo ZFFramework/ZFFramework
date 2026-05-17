@@ -38,7 +38,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     it may or may not be the actual size written to the output,
  *     usually it has no actual meaning
  */
-#define ZFCallbackTagKeyword_ioOwner "ZFCallbackTagKeyword_ioOwner"
+#define ZFCallbackTagKeyword_ioOwner zftext("ZFCallbackTagKeyword_ioOwner")
 /**
  * @brief util method for ZFIOCallback::ioSeek's implementations to calculate seek index
  *

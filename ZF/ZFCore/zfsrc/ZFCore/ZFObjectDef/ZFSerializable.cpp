@@ -154,32 +154,37 @@ zfbool ZFSerializable::serializeFromData(
     }
 
     // dynamic => subclass
-    ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll("serializableOnSerializeFromData");
-    if(!dynamicMethod.isEmpty()) {
-        zfobj<v_ZFSerializableData> serializableDataHolder(serializableData);
-        zfautoT<v_zfstring> outErrorHintHolder;
-        if(outErrorHint) {
-            outErrorHintHolder = zfobj<v_zfstring>(*outErrorHint);
-        }
-        zfautoT<v_ZFSerializableData> outErrorPosHolder;
-        if(outErrorPos) {
-            outErrorPosHolder = zfobj<v_ZFSerializableData>(*outErrorPos);
-        }
-        for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
-            if(!(dynamicMethod[i]->methodInvoke(
-                            this->toObject()
-                            , serializableDataHolder
-                            , outErrorHintHolder
-                            , outErrorPosHolder
-                            ).to<v_zfbool *>()->zfv)) {
-                if(outErrorHint) {
-                    *outErrorHint = outErrorHintHolder->zfv;
-                }
-                if(outErrorPos) {
-                    *outErrorPos = outErrorPosHolder->zfv;
-                }
-                return zffalse;
+    if(this->classData()->classContainDynamicRegister()) {
+        ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll(zftext("serializableOnSerializeFromData"));
+        if(!dynamicMethod.isEmpty()) {
+            zfobj<v_ZFSerializableData> serializableDataHolder(serializableData);
+            zfautoT<v_zfstring> outErrorHintHolder;
+            if(outErrorHint) {
+                outErrorHintHolder = zfobj<v_zfstring>(*outErrorHint);
             }
+            zfautoT<v_ZFSerializableData> outErrorPosHolder;
+            if(outErrorPos) {
+                outErrorPosHolder = zfobj<v_ZFSerializableData>(*outErrorPos);
+            }
+            for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
+                if(!(dynamicMethod[i]->methodInvoke(
+                                this->toObject()
+                                , serializableDataHolder
+                                , outErrorHintHolder
+                                , outErrorPosHolder
+                                ).to<v_zfbool *>()->zfv)) {
+                    if(outErrorHint) {
+                        *outErrorHint = outErrorHintHolder->zfv;
+                    }
+                    if(outErrorPos) {
+                        *outErrorPos = outErrorPosHolder->zfv;
+                    }
+                    return zffalse;
+                }
+            }
+        }
+        else if(!this->serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {
+            return zffalse;
         }
     }
     else if(!this->serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {
@@ -274,27 +279,32 @@ zfbool ZFSerializable::serializeToData(
     }
 
     // dynamic => subclass
-    ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll("serializableOnSerializeToData");
-    if(!dynamicMethod.isEmpty()) {
-        zfobj<v_ZFSerializableData> serializableDataHolder(serializableData);
-        zfautoT<v_zfstring> outErrorHintHolder;
-        if(outErrorHint) {
-            outErrorHintHolder = zfobj<v_zfstring>(*outErrorHint);
-        }
-        for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
-            if(!(dynamicMethod[i]->methodInvoke(
-                            this->toObject()
-                            , serializableDataHolder
-                            , zfcast(ZFObject *, referencedObject)
-                            , outErrorHintHolder
-                            ).to<v_zfbool *>()->zfv)) {
-                if(outErrorHint) {
-                    *outErrorHint = outErrorHintHolder->zfv;
-                }
-                return zffalse;
+    if(this->classData()->classContainDynamicRegister()) {
+        ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll(zftext("serializableOnSerializeToData"));
+        if(!dynamicMethod.isEmpty()) {
+            zfobj<v_ZFSerializableData> serializableDataHolder(serializableData);
+            zfautoT<v_zfstring> outErrorHintHolder;
+            if(outErrorHint) {
+                outErrorHintHolder = zfobj<v_zfstring>(*outErrorHint);
             }
+            for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
+                if(!(dynamicMethod[i]->methodInvoke(
+                                this->toObject()
+                                , serializableDataHolder
+                                , zfcast(ZFObject *, referencedObject)
+                                , outErrorHintHolder
+                                ).to<v_zfbool *>()->zfv)) {
+                    if(outErrorHint) {
+                        *outErrorHint = outErrorHintHolder->zfv;
+                    }
+                    return zffalse;
+                }
+            }
+            serializableData = serializableDataHolder->zfv;
         }
-        serializableData = serializableDataHolder->zfv;
+        else if(!this->serializableOnSerializeToData(serializableData, outErrorHint, referencedObject)) {
+            return zffalse;
+        }
     }
     else if(!this->serializableOnSerializeToData(serializableData, outErrorHint, referencedObject)) {
         return zffalse;
@@ -310,21 +320,26 @@ zfbool ZFSerializable::serializeFromString(
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     // dynamic
-    const ZFMethod *dynamicMethod = this->classData()->methodForName("serializableOnSerializeFromString");
-    if(dynamicMethod) {
-        zfautoT<v_zfstring> errorHintHolder;
-        if(errorHint) {
-            errorHintHolder = zfobj<v_zfstring>(*errorHint);
-        }
-        if(!(dynamicMethod->methodInvoke(
-                        this->toObject()
-                        , zfobj<v_zfstring>(zfstring(src, srcLen))
-                        , zfobj<v_zfindex>(srcLen)
-                        , errorHintHolder
-                        ).to<v_zfbool *>()->zfv)) {
+    if(this->classData()->classContainDynamicRegister()) {
+        const ZFMethod *dynamicMethod = this->classData()->methodForName(zftext("serializableOnSerializeFromString"));
+        if(dynamicMethod) {
+            zfautoT<v_zfstring> errorHintHolder;
             if(errorHint) {
-                *errorHint = errorHintHolder->zfv;
+                errorHintHolder = zfobj<v_zfstring>(*errorHint);
             }
+            if(!(dynamicMethod->methodInvoke(
+                            this->toObject()
+                            , zfobj<v_zfstring>(zfstring(src, srcLen))
+                            , zfobj<v_zfindex>(srcLen)
+                            , errorHintHolder
+                            ).to<v_zfbool *>()->zfv)) {
+                if(errorHint) {
+                    *errorHint = errorHintHolder->zfv;
+                }
+                return zffalse;
+            }
+        }
+        else if(!this->serializableOnSerializeFromString(src, srcLen, errorHint)) {
             return zffalse;
         }
     }
@@ -338,24 +353,29 @@ zfbool ZFSerializable::serializeToString(
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     // dynamic
-    const ZFMethod *dynamicMethod = this->classData()->methodForName("serializableOnSerializeToString");
-    if(dynamicMethod) {
-        zfobj<v_zfstring> retHolder;
-        zfautoT<v_zfstring> errorHintHolder;
-        if(errorHint) {
-            errorHintHolder = zfobj<v_zfstring>(*errorHint);
-        }
-        if(!(dynamicMethod->methodInvoke(
-                        this->toObject()
-                        , retHolder
-                        , errorHintHolder
-                        ).to<v_zfbool *>()->zfv)) {
+    if(this->classData()->classContainDynamicRegister()) {
+        const ZFMethod *dynamicMethod = this->classData()->methodForName(zftext("serializableOnSerializeToString"));
+        if(dynamicMethod) {
+            zfobj<v_zfstring> retHolder;
+            zfautoT<v_zfstring> errorHintHolder;
             if(errorHint) {
-                *errorHint = errorHintHolder->zfv;
+                errorHintHolder = zfobj<v_zfstring>(*errorHint);
             }
+            if(!(dynamicMethod->methodInvoke(
+                            this->toObject()
+                            , retHolder
+                            , errorHintHolder
+                            ).to<v_zfbool *>()->zfv)) {
+                if(errorHint) {
+                    *errorHint = errorHintHolder->zfv;
+                }
+                return zffalse;
+            }
+            ret += retHolder->zfv;
+        }
+        else if(!this->serializableOnSerializeToString(ret, errorHint)) {
             return zffalse;
         }
-        ret += retHolder->zfv;
     }
     else if(!this->serializableOnSerializeToString(ret, errorHint)) {
         return zffalse;
@@ -441,44 +461,46 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
             }
         }
 
-        ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll("serializableOnCheckPropertyType");
-        for(zfindex i = 0; i < allProperty.count(); ++i) {
-            const ZFProperty *property = allProperty[i];
+        if(this->classData()->classContainDynamicRegister()) {
+            ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll(zftext("serializableOnCheckPropertyType"));
+            for(zfindex i = 0; i < allProperty.count(); ++i) {
+                const ZFProperty *property = allProperty[i];
 
-            ZFSerializablePropertyType propertyType = ZFSerializablePropertyTypeUnspecified;
-            if(!dynamicMethod.isEmpty()) {
-                for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
-                    ZFSerializablePropertyType propertyTypeTmp = dynamicMethod[i]->methodInvoke(
-                            this->toObject()
-                            , zfobj<v_ZFProperty>(property)
-                            ).to<v_ZFSerializablePropertyType *>()->zfv;
-                    if(propertyTypeTmp == ZFSerializablePropertyTypeNotSerializable) {
-                        propertyType = propertyTypeTmp;
-                        break;
-                    }
-                    else if(propertyTypeTmp != ZFSerializablePropertyTypeUnspecified) {
-                        propertyType = propertyTypeTmp;
+                ZFSerializablePropertyType propertyType = ZFSerializablePropertyTypeUnspecified;
+                if(!dynamicMethod.isEmpty()) {
+                    for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
+                        ZFSerializablePropertyType propertyTypeTmp = dynamicMethod[i]->methodInvoke(
+                                this->toObject()
+                                , zfobj<v_ZFProperty>(property)
+                                ).to<v_ZFSerializablePropertyType *>()->zfv;
+                        if(propertyTypeTmp == ZFSerializablePropertyTypeNotSerializable) {
+                            propertyType = propertyTypeTmp;
+                            break;
+                        }
+                        else if(propertyTypeTmp != ZFSerializablePropertyTypeUnspecified) {
+                            propertyType = propertyTypeTmp;
+                        }
                     }
                 }
-            }
-            if(propertyType == ZFSerializablePropertyTypeUnspecified) {
-                propertyType = this->serializableOnCheckPropertyType(property);
-            }
+                if(propertyType == ZFSerializablePropertyTypeUnspecified) {
+                    propertyType = this->serializableOnCheckPropertyType(property);
+                }
 
-            switch(propertyType) {
-                case ZFSerializablePropertyTypeUnspecified:
-                    break;
-                case ZFSerializablePropertyTypeNotSerializable:
-                    break;
-                case ZFSerializablePropertyTypeSerializable:
-                    holderTmp->addData(property, ZFSerializablePropertyTypeSerializable);
-                    break;
-                case ZFSerializablePropertyTypeEmbeded:
-                    holderTmp->addData(property, ZFSerializablePropertyTypeEmbeded);
-                    break;
-                default:
-                    ZFCoreCriticalShouldNotGoHere();
-                    return zfnull;
+                switch(propertyType) {
+                    case ZFSerializablePropertyTypeUnspecified:
+                        break;
+                    case ZFSerializablePropertyTypeNotSerializable:
+                        break;
+                    case ZFSerializablePropertyTypeSerializable:
+                        holderTmp->addData(property, ZFSerializablePropertyTypeSerializable);
+                        break;
+                    case ZFSerializablePropertyTypeEmbeded:
+                        holderTmp->addData(property, ZFSerializablePropertyTypeEmbeded);
+                        break;
+                    default:
+                        ZFCoreCriticalShouldNotGoHere();
+                        return zfnull;
+                }
             }
         }
 

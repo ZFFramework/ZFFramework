@@ -352,7 +352,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFIOBufferInput
     ZFInput ret = ZFCallbackForMemberMethod(ioOwner, ZFMethodAccess(_ZFP_I_ZFIOBufferInputOwner, onInput));
     ret.ioOwner(ioOwner);
 
-    ret.callbackTag("_ZFP_ZFIOBufferOutput_refInput", zfobj<v_ZFCallback>(refInput));
+    ret.callbackTag(zftext("_ZFP_ZFIOBufferOutput_refInput"), zfobj<v_ZFCallback>(refInput));
     zfobj<ZFCallbackWeakRef> retHolder(ret);
     ZFLISTENER_1(refOnDealloc
             , zfautoT<ZFCallbackWeakRef>, retHolder
@@ -429,7 +429,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFIOBufferOutput
     ZFOutput ret = ZFCallbackForMemberMethod(ioOwner, ZFMethodAccess(_ZFP_I_ZFIOBufferOutputOwner, onOutput));
     ret.ioOwner(ioOwner);
 
-    ret.callbackTag("_ZFP_ZFIOBufferOutput_refOutput", zfobj<v_ZFCallback>(refOutput));
+    ret.callbackTag(zftext("_ZFP_ZFIOBufferOutput_refOutput"), zfobj<v_ZFCallback>(refOutput));
     zfobj<ZFCallbackWeakRef> retHolder(ret);
     ZFLISTENER_1(refOnDealloc
             , zfautoT<ZFCallbackWeakRef>, retHolder

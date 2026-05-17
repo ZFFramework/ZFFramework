@@ -223,9 +223,9 @@ public:
     static _ZFP_I_ZFEnum_stringConverterDataHolder *setup(ZF_IN const ZFClass *enumClass) {
         _ZFP_I_ZFEnum_stringConverterDataHolder *ret = enumClass->dataCache(_ZFP_I_ZFEnum_stringConverterDataHolder::ClassData()->classNameFull());
         if(ret == zfnull) {
-            const ZFMethod *enumCountMethod = enumClass->methodForName("EnumCount");
-            const ZFMethod *enumValueAtMethod = enumClass->methodForName("EnumValueAt");
-            const ZFMethod *enumNameAtMethod = enumClass->methodForName("EnumNameAt");
+            const ZFMethod *enumCountMethod = enumClass->methodForName(zftext("EnumCount"));
+            const ZFMethod *enumValueAtMethod = enumClass->methodForName(zftext("EnumValueAt"));
+            const ZFMethod *enumNameAtMethod = enumClass->methodForName(zftext("EnumNameAt"));
             ZFCoreAssert(enumCountMethod != zfnull && enumValueAtMethod != zfnull && enumNameAtMethod != zfnull);
 
             ret = zfobjAlloc(_ZFP_I_ZFEnum_stringConverterDataHolder);

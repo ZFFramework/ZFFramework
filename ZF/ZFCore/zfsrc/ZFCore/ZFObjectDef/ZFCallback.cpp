@@ -74,7 +74,7 @@ public:
 public:
     void callbackClear(void) {
         if(d.ext) {
-            _ZFP_ZFCallbackTagMap::iterator it = d.ext->callbackTagMap.find("_ZFP_ZFCallbackClearPrepare");
+            _ZFP_ZFCallbackTagMap::iterator it = d.ext->callbackTagMap.find(zftext("_ZFP_ZFCallbackClearPrepare"));
             if(it != d.ext->callbackTagMap.end()) {
                 zfautoT<v_ZFObserver> holder = it->second;
 
@@ -117,20 +117,20 @@ public:
         if(d.ext == zfnull) {
             d.ext = zfpoolNew(_ZFP_ZFCallbackPrivateExt);
         }
-        _ZFP_ZFCallbackTagMap::iterator it = d.ext->callbackTagMap.find("_ZFP_ZFCallbackClearPrepare");
+        _ZFP_ZFCallbackTagMap::iterator it = d.ext->callbackTagMap.find(zftext("_ZFP_ZFCallbackClearPrepare"));
         if(it != d.ext->callbackTagMap.end()) {
             v_ZFObserver *holder = it->second;
             holder->zfv.observerAdd(ZFGlobalEvent::E_CallbackClearPrepare(), observer, observerLevel);
         }
         else {
             zfobj<v_ZFObserver> holder;
-            d.ext->callbackTagMap["_ZFP_ZFCallbackClearPrepare"] = holder;
+            d.ext->callbackTagMap[zftext("_ZFP_ZFCallbackClearPrepare")] = holder;
             holder->zfv.observerAdd(ZFGlobalEvent::E_CallbackClearPrepare(), observer, observerLevel);
         }
     }
     void callbackClearPrepareRemove(ZF_IN const ZFListener &observer) {
         if(d.ext) {
-            _ZFP_ZFCallbackTagMap::iterator it = d.ext->callbackTagMap.find("_ZFP_ZFCallbackClearPrepare");
+            _ZFP_ZFCallbackTagMap::iterator it = d.ext->callbackTagMap.find(zftext("_ZFP_ZFCallbackClearPrepare"));
             if(it != d.ext->callbackTagMap.end()) {
                 v_ZFObserver *holder = it->second;
                 holder->zfv.observerRemove(ZFGlobalEvent::E_CallbackClearPrepare(), observer);
