@@ -461,46 +461,47 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
             }
         }
 
+        ZFCoreArray<const ZFMethod *> dynamicMethod;
         if(this->classData()->classContainDynamicRegister()) {
-            ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll(zftext("serializableOnCheckPropertyType"));
-            for(zfindex i = 0; i < allProperty.count(); ++i) {
-                const ZFProperty *property = allProperty[i];
+            dynamicMethod = this->classData()->methodForNameGetAll(zftext("serializableOnCheckPropertyType"));
+        }
+        for(zfindex i = 0; i < allProperty.count(); ++i) {
+            const ZFProperty *property = allProperty[i];
 
-                ZFSerializablePropertyType propertyType = ZFSerializablePropertyTypeUnspecified;
-                if(!dynamicMethod.isEmpty()) {
-                    for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
-                        ZFSerializablePropertyType propertyTypeTmp = dynamicMethod[i]->methodInvoke(
-                                this->toObject()
-                                , zfobj<v_ZFProperty>(property)
-                                ).to<v_ZFSerializablePropertyType *>()->zfv;
-                        if(propertyTypeTmp == ZFSerializablePropertyTypeNotSerializable) {
-                            propertyType = propertyTypeTmp;
-                            break;
-                        }
-                        else if(propertyTypeTmp != ZFSerializablePropertyTypeUnspecified) {
-                            propertyType = propertyTypeTmp;
-                        }
+            ZFSerializablePropertyType propertyType = ZFSerializablePropertyTypeUnspecified;
+            if(!dynamicMethod.isEmpty()) {
+                for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
+                    ZFSerializablePropertyType propertyTypeTmp = dynamicMethod[i]->methodInvoke(
+                            this->toObject()
+                            , zfobj<v_ZFProperty>(property)
+                            ).to<v_ZFSerializablePropertyType *>()->zfv;
+                    if(propertyTypeTmp == ZFSerializablePropertyTypeNotSerializable) {
+                        propertyType = propertyTypeTmp;
+                        break;
+                    }
+                    else if(propertyTypeTmp != ZFSerializablePropertyTypeUnspecified) {
+                        propertyType = propertyTypeTmp;
                     }
                 }
-                if(propertyType == ZFSerializablePropertyTypeUnspecified) {
-                    propertyType = this->serializableOnCheckPropertyType(property);
-                }
+            }
+            if(propertyType == ZFSerializablePropertyTypeUnspecified) {
+                propertyType = this->serializableOnCheckPropertyType(property);
+            }
 
-                switch(propertyType) {
-                    case ZFSerializablePropertyTypeUnspecified:
-                        break;
-                    case ZFSerializablePropertyTypeNotSerializable:
-                        break;
-                    case ZFSerializablePropertyTypeSerializable:
-                        holderTmp->addData(property, ZFSerializablePropertyTypeSerializable);
-                        break;
-                    case ZFSerializablePropertyTypeEmbeded:
-                        holderTmp->addData(property, ZFSerializablePropertyTypeEmbeded);
-                        break;
-                    default:
-                        ZFCoreCriticalShouldNotGoHere();
-                        return zfnull;
-                }
+            switch(propertyType) {
+                case ZFSerializablePropertyTypeUnspecified:
+                    break;
+                case ZFSerializablePropertyTypeNotSerializable:
+                    break;
+                case ZFSerializablePropertyTypeSerializable:
+                    holderTmp->addData(property, ZFSerializablePropertyTypeSerializable);
+                    break;
+                case ZFSerializablePropertyTypeEmbeded:
+                    holderTmp->addData(property, ZFSerializablePropertyTypeEmbeded);
+                    break;
+                default:
+                    ZFCoreCriticalShouldNotGoHere();
+                    return zfnull;
             }
         }
 
