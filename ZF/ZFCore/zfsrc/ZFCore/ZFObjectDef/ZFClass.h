@@ -727,6 +727,10 @@ public:
             ZF_IN ZFObject *obj
             , ZF_IN const ZFClass *objectClass
             ) const;
+    ZFObject *_ZFP_ZFClass_objectCastNoExt(
+            ZF_IN ZFObject *obj
+            , ZF_IN const ZFClass *objectClass
+            ) const;
 
     zfbool _ZFP_ZFClass_ZFImplementDynamicRegister(ZF_IN const ZFClass *clsToImplement) const;
     void _ZFP_ZFClass_ZFImplementDynamicUnregister(ZF_IN const ZFClass *clsToImplement) const;

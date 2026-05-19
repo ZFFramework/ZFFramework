@@ -848,7 +848,19 @@ void ZFObject::objectPropertyValueOnReset(
 ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void) {
     return d && d->ZFImplementDynamicData && d->ZFImplementDynamicData->owner ? d->ZFImplementDynamicData->owner : this;
 }
-ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *clsToImplement) {
+ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolderCheck(ZF_IN const ZFClass *clsToImplement) {
+    if(d == zfnull || d->ZFImplementDynamicData == zfnull) {
+        return zfnull;
+    }
+    zfstlhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.find(clsToImplement);
+    if(it != d->ZFImplementDynamicData->holder.end()) {
+        return it->second;
+    }
+    else {
+        return zfnull;
+    }
+}
+ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolderAccess(ZF_IN const ZFClass *clsToImplement) {
     if(d == zfnull) {
         d = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate);
     }

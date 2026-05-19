@@ -493,8 +493,8 @@ public:
                 , ZF_IN zfany const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
                 ) { \
-            zfself *t = zfcast(zfself *, ownerObj); \
-            if(t->Name##_PropV.VA()) { \
+            zfself *t = zfcastNoExt(zfself *, ownerObj); \
+            if(t && t->Name##_PropV.VA()) { \
                 zfself::_ZFP_PropV_##Name _holder; \
                 if(outInitValue != zfnull) { \
                     *outInitValue = _holder.Init(ownerObj, zffalse); \
@@ -564,8 +564,8 @@ public:
                 , ZF_IN zfany const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
                 ) { \
-            zfself *t = zfcast(zfself *, ownerObj); \
-            if(t->Name##_PropV.VA()) { \
+            zfself *t = zfcastNoExt(zfself *, ownerObj); \
+            if(t && t->Name##_PropV.VA()) { \
                 zfself::_ZFP_PropV_##Name _holder; \
                 if(outInitValue != zfnull) { \
                     ZFTypeId<zfself::_ZFP_PropVT_##Name>::ValueStore(*outInitValue, _holder.Init(ownerObj, zffalse)); \
@@ -589,7 +589,8 @@ public:
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &ownerObj \
                 ) { \
-            return zfcast(zfself *, ownerObj)->Name##_PropV.VA(); \
+            zfself *t = zfcastNoExt(zfself *, ownerObj); \
+            return t && t->Name##_PropV.VA(); \
         } \
         static void _ZFP_propCbReset_##Name( \
                 ZF_IN const ZFProperty *property \
@@ -597,8 +598,8 @@ public:
                 ) { \
             if(_ZFP_propCbAccessed_##Name(property, owner)) { \
                 owner->_ZFP_ZFObject_objectPropertyValueOnReset(zfself::_ZFP_Prop_##Name()); \
+                zfcast(zfself *, owner)->Name##_PropV.Dealloc(owner, zftrue); \
             } \
-            zfcast(zfself *, owner)->Name##_PropV.Dealloc(owner, zftrue); \
         } \
         static void _ZFP_propCbEnsureInit_##Name( \
                 ZF_IN const ZFProperty *property \
@@ -610,7 +611,10 @@ public:
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &owner \
                 ) { \
-            zfcast(zfself *, owner)->Name##_PropV.Dealloc(owner, zffalse); \
+            zfself *t = zfcastNoExt(zfself *, owner); \
+            if(t) { \
+                t->Name##_PropV.Dealloc(owner, zffalse); \
+            } \
         } \
     public:
 

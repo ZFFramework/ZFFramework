@@ -461,10 +461,7 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
             }
         }
 
-        ZFCoreArray<const ZFMethod *> dynamicMethod;
-        if(this->classData()->classContainDynamicRegister()) {
-            dynamicMethod = this->classData()->methodForNameGetAll(zftext("serializableOnCheckPropertyType"));
-        }
+        ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll(zftext("serializableOnCheckPropertyType"));
         for(zfindex i = 0; i < allProperty.count(); ++i) {
             const ZFProperty *property = allProperty[i];
 
@@ -472,7 +469,7 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
             if(!dynamicMethod.isEmpty()) {
                 for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
                     ZFSerializablePropertyType propertyTypeTmp = dynamicMethod[i]->methodInvoke(
-                            this->toObject()
+                            dynamicMethod[i]->methodType() == ZFMethodTypeStatic ? zfnull : this->toObject()
                             , zfobj<v_ZFProperty>(property)
                             ).to<v_ZFSerializablePropertyType *>()->zfv;
                     if(propertyTypeTmp == ZFSerializablePropertyTypeNotSerializable) {

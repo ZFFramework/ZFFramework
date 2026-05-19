@@ -834,7 +834,8 @@ protected:
     // ============================================================
 public:
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void);
-    zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *clsToImplement);
+    zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicHolderCheck(ZF_IN const ZFClass *clsToImplement);
+    zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicHolderAccess(ZF_IN const ZFClass *clsToImplement);
 private:
     zffinal void _ZFP_ZFObject_classDynamic(ZF_IN const ZFClass *cls);
 

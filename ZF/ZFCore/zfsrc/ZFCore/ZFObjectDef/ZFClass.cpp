@@ -1690,7 +1690,23 @@ ZFObject *ZFClass::_ZFP_ZFClass_objectCast(
     obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
     _ZFP_ZFClassPrivate *d = obj->classData()->d;
     if(d->ZFImplementDynamicCache.find(objectClass) != d->ZFImplementDynamicCache.end()) {
-        return obj->_ZFP_ZFObject_ZFImplementDynamicHolder(objectClass);
+        return obj->_ZFP_ZFObject_ZFImplementDynamicHolderAccess(objectClass);
+    }
+    else if(d->parentClassCache.find(objectClass) != d->parentClassCache.end()) {
+        return obj;
+    }
+    else {
+        return zfnull;
+    }
+}
+ZFObject *ZFClass::_ZFP_ZFClass_objectCastNoExt(
+        ZF_IN ZFObject *obj
+        , ZF_IN const ZFClass *objectClass
+        ) const {
+    obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
+    _ZFP_ZFClassPrivate *d = obj->classData()->d;
+    if(d->ZFImplementDynamicCache.find(objectClass) != d->ZFImplementDynamicCache.end()) {
+        return obj->_ZFP_ZFObject_ZFImplementDynamicHolderCheck(objectClass);
     }
     else if(d->parentClassCache.find(objectClass) != d->parentClassCache.end()) {
         return obj;

@@ -20,6 +20,7 @@ void ZFPropertyCopyAll(
                 || property->isInternal()
                 || !property->setterMethod()->isPublic()
                 || !property->getterMethod()->isPublic()
+                || (!ZFPropertyIsValueAccessed(property, srcObj) && !ZFPropertyIsValueAccessed(property, dstObj))
                 ) {
             continue;
         }
@@ -46,7 +47,10 @@ zfbool ZFPropertyAllEqual(
         const ZFProperty *prop = allProperty[i];
         if(!prop->isInternal()) {
             if((!cls1->classIsTypeOf(prop->ownerClass()) && !prop->ownerClass()->classIsTypeOf(cls1))
-                    || ZFPropertyCompareValue(prop, obj0, obj1) != ZFCompareEqual
+                    || (
+                        (ZFPropertyIsValueAccessed(prop, obj0) || ZFPropertyIsValueAccessed(prop, obj1))
+                        && ZFPropertyCompareValue(prop, obj0, obj1) != ZFCompareEqual
+                        )
                     ) {
                 return zffalse;
             }

@@ -71,7 +71,7 @@ public:
 
 protected:
     /** @brief when #imageUrl or #imageSrc set, #ZFUIImageView::image would be ignored from serialize */
-    ZFMETHOD_DECLARE_PROTECTED_1(ZFSerializablePropertyType, serializableOnCheckPropertyType
+    ZFMETHOD_DECLARE_DETAIL_1(protected, ZFMethodTypeStatic, ZFSerializablePropertyType, serializableOnCheckPropertyType
             , ZFMP_IN(const ZFProperty *, property)
             )
 };
