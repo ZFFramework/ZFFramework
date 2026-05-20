@@ -562,13 +562,6 @@ public:
             , ZF_OUT_OPT zfstring *errorHint
             ) {
         this->ownerPathInfo = ZFImpl_ZFLua_localPathInfoDetect(L);
-        if(!this->ownerPathInfo) {
-            zfstringAppend(errorHint,
-                    "[%s] unable to obtain path info, invoke fail"
-                    , this->logTag()
-                    );
-            return zffalse;
-        }
         return zftrue;
     }
 
