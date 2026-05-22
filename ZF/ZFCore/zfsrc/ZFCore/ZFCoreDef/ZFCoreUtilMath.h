@@ -135,14 +135,13 @@ zfindex _ZFP_zfmSort(
         , ZF_IN T_Comparer const &comparer
         , ZF_IN zfbool ascending
         ) {
-    ZFCompareResult cmpToken = (ascending ? ZFCompareGreater : ZFCompareSmaller);
+    ZFCompareResult cmpToken = (ascending ? ZFCompareSmaller : ZFCompareGreater);
     T_Element pivot(holder[left]);
     ZFCompareResult cmpTmp = ZFCompareUncomparable;
     while(left < right) {
         while(left < right) {
-            cmpTmp = comparer(pivot, holder[right]);
+            cmpTmp = comparer(holder[right], pivot);
             if(cmpTmp == ZFCompareUncomparable) {
-                holder[left] = pivot;
                 return zfindexMax();
             }
             else if(cmpTmp == cmpToken) {
@@ -150,11 +149,14 @@ zfindex _ZFP_zfmSort(
             }
             --right;
         }
-        holder[left] = holder[right];
+        if(left < right) {
+            holder[left] = holder[right];
+            ++left;
+        }
+
         while(left < right) {
-            cmpTmp = comparer(holder[left], pivot);
+            cmpTmp = comparer(pivot, holder[left]);
             if(cmpTmp == ZFCompareUncomparable) {
-                holder[right] = pivot;
                 return zfindexMax();
             }
             else if(cmpTmp == cmpToken) {
@@ -162,7 +164,10 @@ zfindex _ZFP_zfmSort(
             }
             ++left;
         }
-        holder[right] = holder[left];
+        if(left < right) {
+            holder[right] = holder[left];
+            --right;
+        }
     }
     holder[left] = pivot;
     return left;
