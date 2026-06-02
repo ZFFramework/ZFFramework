@@ -62,7 +62,11 @@ public:
 public:
     zfoverride
     virtual void stop(void) {
-        _stopImpl.execute(ZFArgs().sender(this));
+        if(_stopImpl) {
+            ZFListener tmp = _stopImpl;
+            _stopImpl = zfnull;
+            tmp.execute(ZFArgs().sender(this));
+        }
     }
 protected:
     zfoverride
