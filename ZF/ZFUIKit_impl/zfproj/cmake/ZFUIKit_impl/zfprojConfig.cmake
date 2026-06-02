@@ -18,7 +18,7 @@ function(zfprojConfigBefore_ZFUIKit_impl projName ZF_SRC_FILES)
     else()
         install(
             DIRECTORY "${FONT_REPO_PATH}/"
-            DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres/ZFUIKit_impl/sys_SDL/font"
+            DESTINATION "${CMAKE_INSTALL_PREFIX}/zfres/ZFUIKit_impl/sys_SDL/font"
             )
     endif()
     message("ZFSDL: font setup end")
