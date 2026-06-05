@@ -1273,7 +1273,7 @@ ZFMETHOD_DEFINE_3(ZFUIView, void, bindEvent
         ZFCoreLogTrim("no such method \"%s\" for class: %s, while bindEvent to %s"
                 , methodName
                 , owner->classData()->classNameFull()
-                , ZFIdMapNameForId(eventId)
+                , ZFEventNameForId(eventId)
                 );
         return;
     }
@@ -1288,7 +1288,7 @@ ZFMETHOD_DEFINE_3(ZFUIView, void, bindEvent
                     , owner ? owner->classData()->classNameFull().cString() : ZFTOKEN_zfnull
                     , methodToBind->methodName()
                     , methodToBind->paramInfo()
-                    , ZFIdMapNameForId(eventId)
+                    , ZFEventNameForId(eventId)
                     );
         }
     } ZFLISTENER_END()

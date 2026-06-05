@@ -21,11 +21,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -# resolve #ZFAppEntry::res and #ZFAppEntry::resPack immediately
  * -# notify #ZFAppEntry::E_OnLoadState
  * -# load #ZFState
+ * -# load #preloadList, by this order,
+ *   all of them can return `zftrue` to prevent further load task of this group:
+ *   -# `res!!preload.lua`
  * -# notify #ZFAppEntry::E_OnLoadRes
  * -# load #ZFAppLangLoad
  * -# load #ZFAppSkinLoad
  * -# notify #ZFAppEntry::E_OnLoadEntry
- * -# load main entry, by this order,
+ * -# load #entryList, by this order,
  *   all of them can return `zftrue` to prevent further load task of this group:
  *   -# `res!!debug.lua`
  *   -# `res!!zf.lua`
@@ -42,6 +45,8 @@ public:
     /** @brief see #ZFAppEntry */
     ZFEVENT(OnLoadState)
     /** @brief see #ZFAppEntry */
+    ZFEVENT(OnLoadPreload)
+    /** @brief see #ZFAppEntry */
     ZFEVENT(OnLoadRes)
     /** @brief see #ZFAppEntry */
     ZFEVENT(OnLoadEntry)
@@ -55,6 +60,10 @@ public:
             , ZFMP_IN(const ZFListener &, callback)
             )
     /** @brief load event helper */
+    ZFMETHOD_DECLARE_1(void, onLoadPreload
+            , ZFMP_IN(const ZFListener &, callback)
+            )
+    /** @brief load event helper */
     ZFMETHOD_DECLARE_1(void, onLoadRes
             , ZFMP_IN(const ZFListener &, callback)
             )
@@ -74,6 +83,10 @@ public:
             , ZFMP_IN(ZFTask *, task)
             )
     /** @brief load event helper */
+    ZFMETHOD_DECLARE_1(void, onLoadPreload
+            , ZFMP_IN(ZFTask *, task)
+            )
+    /** @brief load event helper */
     ZFMETHOD_DECLARE_1(void, onLoadRes
             , ZFMP_IN(ZFTask *, task)
             )
@@ -88,6 +101,12 @@ public:
 
     // ============================================================
 public:
+    /**
+     * @brief list of contents to preload
+     */
+    ZFPROPERTY_ASSIGN(ZFCoreArray<ZFPathInfo>, preloadList, ZFCoreArrayCreate(ZFPathInfo
+                , ZFPathInfo(ZFPathType_res(), "preload.lua")
+                ))
     /**
      * @brief list of contents to entry
      */

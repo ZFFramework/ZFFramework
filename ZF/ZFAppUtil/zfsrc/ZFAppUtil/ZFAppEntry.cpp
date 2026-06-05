@@ -7,6 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFAppEntry)
 ZFEVENT_REGISTER(ZFAppEntry, OnLoadState)
+ZFEVENT_REGISTER(ZFAppEntry, OnLoadPreload)
 ZFEVENT_REGISTER(ZFAppEntry, OnLoadRes)
 ZFEVENT_REGISTER(ZFAppEntry, OnLoadEntry)
 ZFEVENT_REGISTER(ZFAppEntry, OnLoadStop)
@@ -16,6 +17,11 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, onLoadState
         , ZFMP_IN(const ZFListener &, callback)
         ) {
     this->observerAddForOnce(zfself::E_OnLoadState(), callback);
+}
+ZFMETHOD_DEFINE_1(ZFAppEntry, void, onLoadPreload
+        , ZFMP_IN(const ZFListener &, callback)
+        ) {
+    this->observerAddForOnce(zfself::E_OnLoadPreload(), callback);
 }
 ZFMETHOD_DEFINE_1(ZFAppEntry, void, onLoadRes
         , ZFMP_IN(const ZFListener &, callback)
@@ -44,6 +50,19 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, onLoadState
     if(!list) {
         list = zfobj<ZFArray>();
         this->objectTag("ZFAppEntryCustomTask_State", list);
+    }
+    list->add(task);
+}
+ZFMETHOD_DEFINE_1(ZFAppEntry, void, onLoadPreload
+        , ZFMP_IN(ZFTask *, task)
+        ) {
+    if(task == zfnull) {
+        return;
+    }
+    zfautoT<ZFArray> list = this->objectTag("ZFAppEntryCustomTask_Preload");
+    if(!list) {
+        list = zfobj<ZFArray>();
+        this->objectTag("ZFAppEntryCustomTask_Preload", list);
     }
     list->add(task);
 }
@@ -180,6 +199,25 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, start
         task->child(loadImpl);
     }
 
+    { // preloadList
+        _ZFP_ZFAppEntry_step(owner, task, zfself::E_OnLoadPreload(), "ZFAppEntryCustomTask_Preload");
+        ZFLISTENER_1(loadImpl
+                , zfautoT<zfself>, owner
+                ) {
+            ZFTask *ownerTask = zfargs.sender();
+            ZFCoreArray<ZFPathInfo> preloadList = owner->preloadList();
+            for(zfindex i = 0; i < preloadList.count(); ++i) {
+                zfauto ret = zfimport(ZFPathInfoToString(preloadList[i]));
+                v_zfbool *ck = ret;
+                if(ck && ck->zfv) {
+                    break;
+                }
+            }
+            ownerTask->notifySuccess();
+        } ZFLISTENER_END()
+        task->child(loadImpl);
+    }
+
     { // lang and skin
         zfobj<ZFTaskQueue> wrap;
         task->child(wrap);
@@ -201,7 +239,7 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, start
         wrap->child(zfobj<ZFWaitTask>());
     }
 
-    { // entry
+    { // entryList
         _ZFP_ZFAppEntry_step(owner, task, zfself::E_OnLoadEntry(), "ZFAppEntryCustomTask_Entry");
         ZFLISTENER_1(loadImpl
                 , zfautoT<zfself>, owner

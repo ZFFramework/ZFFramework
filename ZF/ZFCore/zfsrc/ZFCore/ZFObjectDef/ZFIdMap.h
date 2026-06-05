@@ -45,21 +45,28 @@ extern ZFLIB_ZFCore zfidentity ZFIdMapIdForName(ZF_IN const zfstring &idName);
 extern ZFLIB_ZFCore void ZFIdMapGetAll(
         ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
         , ZF_IN_OUT ZFCoreArray<zfstring> &idNames
+        , ZF_IN_OPT const zfstring &filter = zfnull
         );
 /** @brief see #ZFIdMapGetAll */
-extern ZFLIB_ZFCore void ZFIdMapGetAllValueT(ZF_IN_OUT ZFCoreArray<zfidentity> &idValues);
+extern ZFLIB_ZFCore void ZFIdMapGetAllIdT(
+        ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
+        , ZF_IN_OPT const zfstring &filter = zfnull
+        );
 /** @brief see #ZFIdMapGetAll */
-inline ZFCoreArray<zfidentity> ZFIdMapGetAllValue(void) {
+inline ZFCoreArray<zfidentity> ZFIdMapGetAllId(ZF_IN_OPT const zfstring &filter = zfnull) {
     ZFCoreArray<zfidentity> ret;
-    ZFIdMapGetAllValueT(ret);
+    ZFIdMapGetAllIdT(ret, filter);
     return ret;
 }
 /** @brief see #ZFIdMapGetAll */
-extern ZFLIB_ZFCore void ZFIdMapGetAllNameT(ZF_IN_OUT ZFCoreArray<zfstring> &idNames);
+extern ZFLIB_ZFCore void ZFIdMapGetAllNameT(
+        ZF_IN_OUT ZFCoreArray<zfstring> &idNames
+        , ZF_IN_OPT const zfstring &filter = zfnull
+        );
 /** @brief see #ZFIdMapGetAll */
-inline ZFCoreArray<zfstring> ZFIdMapGetAllName(void) {
+inline ZFCoreArray<zfstring> ZFIdMapGetAllName(ZF_IN_OPT const zfstring &filter = zfnull) {
     ZFCoreArray<zfstring> ret;
-    ZFIdMapGetAllNameT(ret);
+    ZFIdMapGetAllNameT(ret, filter);
     return ret;
 }
 

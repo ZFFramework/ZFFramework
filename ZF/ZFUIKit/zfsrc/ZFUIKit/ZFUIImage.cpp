@@ -44,7 +44,6 @@ ZFENUM_DEFINE(ZFUIImageStateImplAction)
 // _ZFP_ZFUIImagePrivate
 zfclassNotPOD _ZFP_ZFUIImagePrivate {
 public:
-    ZFUIImage *pimplOwner;
     void *nativeImage;
     zffloat imageScaleFixed;
     ZFUISize imageSizeFixed;
@@ -60,12 +59,12 @@ public:
     ZFListener imageSerializeDataGetter;
 
 public:
-    void imageSizeUpdate(void) {
+    void imageSizeUpdate(ZF_IN ZFUIImage *owner) {
         if(ZFUIGlobalStyle::DefaultStyle()) {
-            this->imageScaleFixed = this->pimplOwner->imageScale() * ZFUIGlobalStyle::DefaultStyle()->imageScale();
+            this->imageScaleFixed = owner->imageScale() * ZFUIGlobalStyle::DefaultStyle()->imageScale();
         }
         else {
-            this->imageScaleFixed = this->pimplOwner->imageScale();
+            this->imageScaleFixed = owner->imageScale();
         }
         if(this->nativeImage != zfnull) {
             this->imageSizeFixed = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageSize(this->nativeImage);
@@ -85,8 +84,7 @@ public:
 
 public:
     _ZFP_ZFUIImagePrivate(void)
-    : pimplOwner(zfnull)
-    , nativeImage(zfnull)
+    : nativeImage(zfnull)
     , imageScaleFixed(ZFUIGlobalStyle::DefaultStyle() ? ZFUIGlobalStyle::DefaultStyle()->imageScale() : (zffloat)1)
     , imageSizeFixed(ZFUISizeZero())
     , imageSize(ZFUISizeZero())
@@ -304,7 +302,7 @@ void ZFUIImage::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
     if(ref->d->nativeImage != zfnull) {
         d->nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRetain(ref->d->nativeImage);
     }
-    d->imageSizeUpdate();
+    d->imageSizeUpdate(this);
     d->imageSerializeType = ref->d->imageSerializeType;
     d->imageSerializeData = ref->d->imageSerializeData;
     d->imageSerializeDataGetter = ref->d->imageSerializeDataGetter;
@@ -322,11 +320,11 @@ void ZFUIImage::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
 }
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImage, zffloat, imageScale) {
-    d->imageSizeUpdate();
+    d->imageSizeUpdate(this);
     this->imageScaleOnUpdate();
 }
 void ZFUIImage::_ZFP_ZFUIImage_imageScaleOnUpdate(void) {
-    d->imageSizeUpdate();
+    d->imageSizeUpdate(this);
     this->imageScaleOnUpdate();
 }
 
@@ -454,7 +452,6 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateImplNotifyUpdate
 void ZFUIImage::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUIImagePrivate);
-    d->pimplOwner = this;
 }
 void ZFUIImage::objectOnDealloc(void) {
     if(d->nativeImage != zfnull) {
@@ -548,7 +545,7 @@ ZFMETHOD_DEFINE_2(ZFUIImage, void, nativeImage
     else {
         d->nativeImage = zfnull;
     }
-    d->imageSizeUpdate();
+    d->imageSizeUpdate(this);
 
     if(toRelease != zfnull) {
         ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(toRelease);

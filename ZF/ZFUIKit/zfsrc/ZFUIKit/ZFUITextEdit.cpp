@@ -17,20 +17,18 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUITextEdit)
 // _ZFP_ZFUITextEditPrivate
 zfclassNotPOD _ZFP_ZFUITextEditPrivate {
 public:
-    ZFUITextEdit *pimplOwner;
     zfbool editing;
     zfbool textUpdateByImplFlag;
     zfbool selectedRangeUpdateByImplFlag;
 
 public:
-    void updateSizeRelatedProperty(void) {
-        ZFPROTOCOL_ACCESS(ZFUITextEdit)->textSize(this->pimplOwner, ZFUISizeApplyScale(this->pimplOwner->textSize(), this->pimplOwner->UIScaleFixed()));
+    void updateSizeRelatedProperty(ZF_IN ZFUITextEdit *owner) {
+        ZFPROTOCOL_ACCESS(ZFUITextEdit)->textSize(owner, ZFUISizeApplyScale(owner->textSize(), owner->UIScaleFixed()));
     }
 
 public:
     _ZFP_ZFUITextEditPrivate(void)
-    : pimplOwner(zfnull)
-    , editing(zffalse)
+    : editing(zffalse)
     , textUpdateByImplFlag(zffalse)
     , selectedRangeUpdateByImplFlag(zffalse)
     {
@@ -157,7 +155,6 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zffloat, textSize) {
 void ZFUITextEdit::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUITextEditPrivate);
-    d->pimplOwner = this;
 
     ZFCoreAssert(this->nativeImplView() == zfnull);
     zfclassNotPOD NativeImplViewDestroy {
@@ -192,7 +189,7 @@ void ZFUITextEdit::objectOnDealloc(void) {
 }
 void ZFUITextEdit::objectOnInitFinish(void) {
     zfsuper::objectOnInitFinish();
-    d->updateSizeRelatedProperty();
+    d->updateSizeRelatedProperty(this);
 }
 
 void ZFUITextEdit::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
@@ -377,7 +374,7 @@ ZFMETHOD_DEFINE_0(ZFUITextEdit, void, editConfirm) {
 
 void ZFUITextEdit::UIScaleOnUpdate(void) {
     zfsuper::UIScaleOnUpdate();
-    d->updateSizeRelatedProperty();
+    d->updateSizeRelatedProperty(this);
 }
 void ZFUITextEdit::layoutOnMeasure(
         ZF_OUT ZFUISize &ret

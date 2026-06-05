@@ -422,6 +422,50 @@ extern ZFLIB_ZFCore zfidentity ZFEventIdForEventName(
         , ZF_IN const ZFClass *cls
         );
 
+// ============================================================
+/**
+ * @brief see #ZFEVENT
+ *
+ * get all registered id data, for debug use only
+ * @note can be found only if registered by #ZFIDMAP_REGISTER
+ */
+extern ZFLIB_ZFCore void ZFEventGetAll(
+        ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
+        , ZF_IN_OUT ZFCoreArray<zfstring> &idNames
+        , ZF_IN_OPT const zfstring &ns = zfnull
+        , ZF_IN_OPT zfbool ignoreParent = zftrue
+        );
+/** @brief see #ZFEventGetAll */
+extern ZFLIB_ZFCore void ZFEventGetAllIdT(
+        ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
+        , ZF_IN_OPT const zfstring &ns = zfnull
+        , ZF_IN_OPT zfbool ignoreParent = zftrue
+        );
+/** @brief see #ZFEventGetAll */
+inline ZFCoreArray<zfidentity> ZFEventGetAllId(
+        ZF_IN_OPT const zfstring &ns = zfnull
+        , ZF_IN_OPT zfbool ignoreParent = zftrue
+        ) {
+    ZFCoreArray<zfidentity> ret;
+    ZFEventGetAllIdT(ret, ns, ignoreParent);
+    return ret;
+}
+/** @brief see #ZFEventGetAll */
+extern ZFLIB_ZFCore void ZFEventGetAllNameT(
+        ZF_IN_OUT ZFCoreArray<zfstring> &idNames
+        , ZF_IN_OPT const zfstring &ns = zfnull
+        , ZF_IN_OPT zfbool ignoreParent = zftrue
+        );
+/** @brief see #ZFEventGetAll */
+inline ZFCoreArray<zfstring> ZFEventGetAllName(
+        ZF_IN_OPT const zfstring &ns = zfnull
+        , ZF_IN_OPT zfbool ignoreParent = zftrue
+        ) {
+    ZFCoreArray<zfstring> ret;
+    ZFEventGetAllNameT(ret, ns, ignoreParent);
+    return ret;
+}
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectObserver_h_
 

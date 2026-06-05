@@ -509,6 +509,82 @@ zfidentity ZFEventIdForEventName(
 }
 
 // ============================================================
+static void _ZFP_ZFEventGetAll(
+        ZF_IN_OUT ZFCoreArray<zfidentity> *idValues
+        , ZF_IN_OUT ZFCoreArray<zfstring> *idNames
+        , ZF_IN_OPT const zfstring &ns /* = zfnull */
+        , ZF_IN_OPT zfbool ignoreParent /* = zftrue */
+        ) {
+    const ZFClass *cls = zfnull;
+    if(ignoreParent || (cls = ZFClass::classForName(ns)) == zfnull) {
+        if(idValues) {
+            if(idNames) {
+                ZFIdMapGetAll(*idValues, *idNames, zfstr("%s.E_", ns));
+            }
+            else {
+                ZFIdMapGetAllIdT(*idValues, zfstr("%s.E_", ns));
+            }
+        }
+        else {
+            if(idNames) {
+                ZFIdMapGetAllNameT(*idNames, zfstr("%s.E_", ns));
+            }
+        }
+        return;
+    }
+
+    ZFCoreArray<const ZFMethod *> allMethod = cls->methodGetAll();
+    for(zfindex i = 0; i < allMethod.count(); ++i) {
+        const ZFMethod *m = allMethod[i];
+        if(m->paramCount() == 0
+                && m->returnTypeId() == ZFTypeId_zfidentity()
+                && zfstringBeginWith(m->methodName(), "E_")
+                ) {
+            zfauto tHolder = m->methodInvoke();
+            v_zfidentity *t = tHolder;
+            if(t) {
+                if(idNames) {
+                    zfstring name = ZFEventNameForId(t->zfv);
+                    if(name) {
+                        if(idValues) {
+                            idValues->add(t->zfv);
+                        }
+                        idNames->add(name);
+                    }
+                }
+                else {
+                    if(idValues) {
+                        idValues->add(t->zfv);
+                    }
+                }
+            }
+        }
+    }
+}
+void ZFEventGetAll(
+        ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
+        , ZF_IN_OUT ZFCoreArray<zfstring> &idNames
+        , ZF_IN_OPT const zfstring &ns /* = zfnull */
+        , ZF_IN_OPT zfbool ignoreParent /* = zftrue */
+        ) {
+    _ZFP_ZFEventGetAll(&idValues, &idNames, ns, ignoreParent);
+}
+void ZFEventGetAllIdT(
+        ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
+        , ZF_IN_OPT const zfstring &ns /* = zfnull */
+        , ZF_IN_OPT zfbool ignoreParent /* = zftrue */
+        ) {
+    _ZFP_ZFEventGetAll(&idValues, zfnull, ns, ignoreParent);
+}
+void ZFEventGetAllNameT(
+        ZF_IN_OUT ZFCoreArray<zfstring> &idNames
+        , ZF_IN_OPT const zfstring &ns /* = zfnull */
+        , ZF_IN_OPT zfbool ignoreParent /* = zftrue */
+        ) {
+    _ZFP_ZFEventGetAll(zfnull, &idNames, ns, ignoreParent);
+}
+
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFObserver &, ZFGlobalObserver)
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, ZFEventNameForId
@@ -527,6 +603,32 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFEventDynamicUnregister
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfidentity, ZFEventIdForEventName
         , ZFMP_IN(const zfstring &, eventName)
         , ZFMP_IN(const ZFClass *, cls)
+        )
+
+// ============================================================
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, ZFEventGetAll
+        , ZFMP_IN_OUT(ZFCoreArray<zfidentity> &, idValues)
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, idNames)
+        , ZFMP_IN_OPT(const zfstring &, ns, zfnull)
+        , ZFMP_IN_OPT(zfbool, ignoreParent, zftrue)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFEventGetAllIdT
+        , ZFMP_IN_OUT(ZFCoreArray<zfidentity> &, idValues)
+        , ZFMP_IN_OPT(const zfstring &, ns, zfnull)
+        , ZFMP_IN_OPT(zfbool, ignoreParent, zftrue)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<zfidentity>, ZFEventGetAllId
+        , ZFMP_IN_OPT(const zfstring &, ns, zfnull)
+        , ZFMP_IN_OPT(zfbool, ignoreParent, zftrue)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFEventGetAllNameT
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, idNames)
+        , ZFMP_IN_OPT(const zfstring &, ns, zfnull)
+        , ZFMP_IN_OPT(zfbool, ignoreParent, zftrue)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<zfstring>, ZFEventGetAllName
+        , ZFMP_IN_OPT(const zfstring &, ns, zfnull)
+        , ZFMP_IN_OPT(zfbool, ignoreParent, zftrue)
         )
 
 ZF_NAMESPACE_GLOBAL_END

@@ -169,30 +169,65 @@ zfidentity ZFIdMapIdForName(ZF_IN const zfstring &idName) {
 void ZFIdMapGetAll(
         ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
         , ZF_IN_OUT ZFCoreArray<zfstring> &idNames
+        , ZF_IN_OPT const zfstring &filter /* = zfnull */
         ) {
     ZFCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
     idValues.capacity(idValues.count() + moduleData.dataIdMap.size());
     idNames.capacity(idNames.count() + moduleData.dataIdMap.size());
-    for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
-        idValues.add(it->second->idValue);
-        idNames.add(it->second->idName);
+    if(filter) {
+        for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
+            if(zfstringFind(it->second->idName, filter) != zfindexMax()) {
+                idValues.add(it->second->idValue);
+                idNames.add(it->second->idName);
+            }
+        }
+    }
+    else {
+        for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
+            idValues.add(it->second->idValue);
+            idNames.add(it->second->idName);
+        }
     }
 }
-void ZFIdMapGetAllValueT(ZF_IN_OUT ZFCoreArray<zfidentity> &idValues) {
+void ZFIdMapGetAllIdT(
+        ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
+        , ZF_IN_OPT const zfstring &filter /* = zfnull */
+        ) {
     ZFCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
     idValues.capacity(idValues.count() + moduleData.dataIdMap.size());
-    for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
-        idValues.add(it->second->idValue);
+    if(filter) {
+        for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
+            if(zfstringFind(it->second->idName, filter) != zfindexMax()) {
+                idValues.add(it->second->idValue);
+            }
+        }
+    }
+    else {
+        for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
+            idValues.add(it->second->idValue);
+        }
     }
 }
-void ZFIdMapGetAllNameT(ZF_IN_OUT ZFCoreArray<zfstring> &idNames) {
+void ZFIdMapGetAllNameT(
+        ZF_IN_OUT ZFCoreArray<zfstring> &idNames
+        , ZF_IN_OPT const zfstring &filter /* = zfnull */
+        ) {
     ZFCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
     idNames.capacity(idNames.count() + moduleData.dataIdMap.size());
-    for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
-        idNames.add(it->second->idName);
+    if(filter) {
+        for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
+            if(zfstringFind(it->second->idName, filter) != zfindexMax()) {
+                idNames.add(it->second->idName);
+            }
+        }
+    }
+    else {
+        for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
+            idNames.add(it->second->idName);
+        }
     }
 }
 
@@ -210,18 +245,25 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, ZFIdMapNameForId
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFIdMapIdForName
         , ZFMP_IN(const zfstring &, idName)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFIdMapGetAll
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFIdMapGetAll
         , ZFMP_IN_OUT(ZFCoreArray<zfidentity> &, idValues)
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, idNames)
+        , ZFMP_IN_OPT(const zfstring &, filter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFIdMapGetAllValueT
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFIdMapGetAllIdT
         , ZFMP_IN_OUT(ZFCoreArray<zfidentity> &, idValues)
+        , ZFMP_IN_OPT(const zfstring &, filter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<zfidentity>, ZFIdMapGetAllValue)
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFIdMapGetAllNameT
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<zfidentity>, ZFIdMapGetAllId
+        , ZFMP_IN_OPT(const zfstring &, filter, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFIdMapGetAllNameT
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, idNames)
+        , ZFMP_IN_OPT(const zfstring &, filter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<zfstring>, ZFIdMapGetAllName)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<zfstring>, ZFIdMapGetAllName
+        , ZFMP_IN_OPT(const zfstring &, filter, zfnull)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFIdMapDynamicRegister
         , ZFMP_IN(const zfstring &, idName)
         )
