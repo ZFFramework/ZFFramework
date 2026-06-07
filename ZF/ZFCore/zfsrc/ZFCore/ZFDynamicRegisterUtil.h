@@ -12,6 +12,48 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /* ZFMETHOD_MAX_PARAM */
 
 // ============================================================
+/** @brief info for #ZFDynamic::classImplement */
+zfclassPOD ZFLIB_ZFCore ZFDynamicImplementInfo {
+public:
+    /** @brief child class */
+    const ZFClass *cls;
+    /** @brief parent class to implement */
+    const ZFClass *clsToImplement;
+};
+ZFCORE_POD_DECLARE_NO_COMPARER(ZFDynamicImplementInfo)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFDynamicImplementInfo, ZFDynamicImplementInfo)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFDynamicImplementInfo, ZFDynamicImplementInfo)
+ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, ZFDynamicImplementInfo)
+
+/** @brief info for #ZFDynamic::propertyLifeCycle */
+zfclassPOD ZFLIB_ZFCore ZFDynamicPropLifeCycleInfo {
+public:
+    /** @brief the property */
+    const ZFProperty *property;
+    /** @brief owner class, can be child of property's owner class */
+    const ZFClass *ownerClassOrNull;
+    /** @brief life cycle */
+    ZFPropertyLifeCycle lifeCycle;
+};
+ZFCORE_POD_DECLARE_NO_COMPARER(ZFDynamicPropLifeCycleInfo)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFDynamicPropLifeCycleInfo, ZFDynamicPropLifeCycleInfo)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFDynamicPropLifeCycleInfo, ZFDynamicPropLifeCycleInfo)
+ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, ZFDynamicPropLifeCycleInfo)
+
+/** @brief info for #ZFDynamic::onEvent */
+zfclassPOD ZFLIB_ZFCore ZFDynamicEventImplInfo {
+public:
+    /** @brief owner class */
+    const ZFClass *cls;
+    /** @brief event id */
+    zfidentity eventId;
+};
+ZFCORE_POD_DECLARE_NO_COMPARER(ZFDynamicEventImplInfo)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFDynamicEventImplInfo, ZFDynamicEventImplInfo)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFDynamicEventImplInfo, ZFDynamicEventImplInfo)
+ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, ZFDynamicEventImplInfo)
+
+// ============================================================
 zfclassFwd _ZFP_ZFDynamicPrivate;
 /**
  * @brief util class to dynamic register class/method/property
@@ -49,16 +91,16 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  * and all further call would be ignored\n
  * \n
  * you may store the returned ZFDynamic object,
- * and use #removeAll to remove all registered items at once\n
- * to make it more convenient for script language,
- * you may also use #regTag to make the registration looks like singleton registration
+ * and use #removeAll to remove all registered items at once,
+ * but you must ensure it's safe to do so,
+ * for example, no dynamic object depends on dynamic class or method\n
+ * \n
+ * also, all contents registered by #ZFDynamic would be unregistered during #ZFLevelZFFrameworkNormal
  */
 zfclassLikePOD ZFLIB_ZFCore ZFDynamic {
 public:
     /** @brief main constructor */
     ZFDynamic(void);
-    /** @brief construct with #regTag */
-    ZFDynamic(ZF_IN const zfstring &regTag);
 
     /** @cond ZFPrivateDoc */
     ZFDynamic(ZF_IN const ZFDynamic &ref);
@@ -92,24 +134,12 @@ public:
             );
 
 public:
-    /**
-     * @brief util to make the registration able to be called more than once
-     *
-     * by default, dynamic register would fail if contents already exists,
-     * that's not very convenient for script languages\n
-     * to solve this, you may use this method to mark the registration,
-     * which would automatically unregister old ones if exists,
-     * identified by that regTag
-     */
-    ZFDynamic &regTag(ZF_IN const zfstring &regTag);
-    /** @brief see #regTag */
-    const zfstring &regTag(void) const;
-
-public:
     /** @brief see #ZFDynamic */
     void removeAll(void);
     /** @brief see #ZFDynamic */
     const ZFCoreArray<const ZFClass *> &allClass(void) const;
+    /** @brief see #ZFDynamic */
+    const ZFCoreArray<ZFDynamicImplementInfo> &allImplement(void) const;
     /** @brief see #ZFDynamic */
     const ZFCoreArray<const ZFClass *> &allEnum(void) const;
     /** @brief see #ZFDynamic */
@@ -117,7 +147,11 @@ public:
     /** @brief see #ZFDynamic */
     const ZFCoreArray<const ZFProperty *> &allProperty(void) const;
     /** @brief see #ZFDynamic */
+    const ZFCoreArray<ZFDynamicPropLifeCycleInfo> &allPropertyLifeCycle(void) const;
+    /** @brief see #ZFDynamic */
     const ZFCoreArray<zfidentity> &allEvent(void) const;
+    /** @brief see #ZFDynamic */
+    const ZFCoreArray<ZFDynamicEventImplInfo> &allEventImpl(void) const;
 
 public:
     /** @brief see #ZFDynamic */
@@ -417,14 +451,6 @@ private:
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFDynamic, ZFDynamic)
 ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFDynamic, ZFDynamic)
 ZFOUTPUT_TYPE(ZFDynamic, {v.objectInfoT(s);})
-
-// ============================================================
-/**
- * @brief util method to remove all contents registered by #ZFDynamic
- *
- * ensured called during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkNormal
- */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFDynamicRemoveAll)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFDynamicRegisterUtil_h_

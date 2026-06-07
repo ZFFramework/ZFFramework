@@ -96,6 +96,14 @@ typedef enum {
     ZFPropertyLifeCycleOnDetach, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
     _ZFP_ZFPropertyLifeCycleCount, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
 } ZFPropertyLifeCycle;
+/** @brief string tokens */
+#define ZFTOKEN_ZFPropertyLifeCycleOnInit "OnInit"
+/** @brief string tokens */
+#define ZFTOKEN_ZFPropertyLifeCycleOnUpdate "OnUpdate"
+/** @brief string tokens */
+#define ZFTOKEN_ZFPropertyLifeCycleOnAttach "OnAttach"
+/** @brief string tokens */
+#define ZFTOKEN_ZFPropertyLifeCycleOnDetach "OnDetach"
 
 typedef void (*_ZFP_PropLifeCycleWrapper)(
         ZF_IN ZFObject *propertyOwnerObject

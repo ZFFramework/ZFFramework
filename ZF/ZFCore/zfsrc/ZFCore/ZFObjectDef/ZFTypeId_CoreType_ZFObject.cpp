@@ -544,6 +544,65 @@ ZFEXPORT_RAW_ENUM_DEFINE(ZFObjectInstanceState
         )
 
 // ============================================================
+ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFPropertyLifeCycle, ZFPropertyLifeCycle, {
+        const zfchar *tokens[] = ZFM_EXPAND({
+            ZFTOKEN_ZFPropertyLifeCycleOnInit,
+            ZFTOKEN_ZFPropertyLifeCycleOnUpdate,
+            ZFTOKEN_ZFPropertyLifeCycleOnAttach,
+            ZFTOKEN_ZFPropertyLifeCycleOnDetach,
+            "",
+        });
+        zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
+        v = ZFPropertyLifeCycleOnUpdate;
+        switch(matched) {
+            case 0:
+                v = ZFPropertyLifeCycleOnInit;
+                return zftrue;
+            case 1:
+                v = ZFPropertyLifeCycleOnUpdate;
+                return zftrue;
+            case 2:
+                v = ZFPropertyLifeCycleOnAttach;
+                return zftrue;
+            case 3:
+                v = ZFPropertyLifeCycleOnDetach;
+                return zftrue;
+            case 4:
+                v = ZFPropertyLifeCycleOnUpdate;
+                return zftrue;
+            default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
+                return zffalse;
+        }
+    }, {
+        switch(v) {
+            case ZFPropertyLifeCycleOnInit:
+                s += ZFTOKEN_ZFPropertyLifeCycleOnInit;
+                return zftrue;
+            case ZFPropertyLifeCycleOnUpdate:
+                s += ZFTOKEN_ZFPropertyLifeCycleOnUpdate;
+                return zftrue;
+            case ZFPropertyLifeCycleOnAttach:
+                s += ZFTOKEN_ZFPropertyLifeCycleOnAttach;
+                return zftrue;
+            case ZFPropertyLifeCycleOnDetach:
+                s += ZFTOKEN_ZFPropertyLifeCycleOnDetach;
+                return zftrue;
+            default:
+                ZFCoreCriticalShouldNotGoHere();
+                return zffalse;
+        }
+    })
+ZFEXPORT_RAW_ENUM_DEFINE(ZFPropertyLifeCycle
+        , ZFPropertyLifeCycleOnInit
+        , ZFPropertyLifeCycleOnUpdate
+        , ZFPropertyLifeCycleOnAttach
+        , ZFPropertyLifeCycleOnDetach
+        )
+
+// ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallbackType, ZFCallbackType, {
         const zfchar *tokens[] = ZFM_EXPAND({
             ZFTOKEN_ZFCallbackTypeDummy,

@@ -601,6 +601,18 @@ ZFOUTPUT_TYPE(ZFObjectInstanceState, {ZFObjectInstanceStateToStringT(s, v);})
  *
  * serializable data:
  * @code
+ *   <ZFPropertyLifeCycle value="value" />
+ * @endcode
+ */
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFPropertyLifeCycle, ZFPropertyLifeCycle)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFPropertyLifeCycle, ZFPropertyLifeCycle)
+ZFOUTPUT_TYPE(ZFPropertyLifeCycle, {ZFPropertyLifeCycleToStringT(s, v);})
+
+/**
+ * @brief see #ZFTYPEID_DECLARE
+ *
+ * serializable data:
+ * @code
  *   <ZFCallbackType value="value" />
  * @endcode
  */
