@@ -130,8 +130,7 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
         return zftrue;
     }
 
-    ZFContainer *tmp = this->classData()->newInstance();
-    zfobjReleaseInScope(tmp);
+    zfautoT<ZFContainer> tmp = this->classData()->newInstance();
     tmp->addFrom(ref);
     for(zfiter it = this->iter(); it; ++it) {
         ZFObject *element = this->iterValue(it);

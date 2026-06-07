@@ -35,9 +35,9 @@ public:
         }
         _ZFP_I_ZFLuaStateHolder *holder = curThread->objectTag(_ZFP_I_ZFLuaStateHolder::ClassData()->className());
         if(holder == zfnull) {
-            holder = zfobjAlloc(_ZFP_I_ZFLuaStateHolder);
-            curThread->objectTag(_ZFP_I_ZFLuaStateHolder::ClassData()->className(), holder);
-            zfobjRelease(holder);
+            zfobj<_ZFP_I_ZFLuaStateHolder> holderTmp;
+            curThread->objectTag(_ZFP_I_ZFLuaStateHolder::ClassData()->className(), holderTmp);
+            holder = holderTmp;
             _ZFP_I_ZFLuaStateHolder::attachList().add(holder);
 
             holder->ownerThread = curThread;

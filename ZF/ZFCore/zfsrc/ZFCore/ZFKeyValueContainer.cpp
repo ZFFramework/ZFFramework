@@ -183,8 +183,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
         return zftrue;
     }
 
-    ZFKeyValueContainer *tmp = this->classData()->newInstance();
-    zfobjReleaseInScope(tmp);
+    zfautoT<ZFKeyValueContainer> tmp = this->classData()->newInstance();
     tmp->addFrom(ref);
     for(zfiter it = this->iter(); it; ++it) {
         ZFObject *key = this->iterKey(it);

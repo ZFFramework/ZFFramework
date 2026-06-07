@@ -822,8 +822,9 @@ zfauto ZFClass::newInstanceGenericEnd(
     ZFObject *obj = (ZFObject *)token;
     if(objectOnInitMethodInvokeSuccess) {
         obj->_ZFP_ZFObject_objectOnInitFinish();
-        zfobjReleaseInScope(obj);
-        return obj;
+        zfauto ret = obj;
+        zfobjRelease(obj);
+        return ret;
     }
     else {
         ZFCoreMutexLocker();

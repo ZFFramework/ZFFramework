@@ -39,8 +39,6 @@ ZFMETHOD_DEFINE_1(ZFTestCase, void, notifyProgress
         return;
     }
     this->testCaseOnProgress(progress);
-
-    zfobjRelease(progress);
 }
 
 ZFMETHOD_DEFINE_1(ZFTestCase, void, stop
@@ -51,6 +49,7 @@ ZFMETHOD_DEFINE_1(ZFTestCase, void, stop
     }
     this->_started = zffalse;
     this->testCaseOnStop(testCaseResult);
+    zfobjRelease(this);
 }
 
 ZF_NAMESPACE_GLOBAL_END

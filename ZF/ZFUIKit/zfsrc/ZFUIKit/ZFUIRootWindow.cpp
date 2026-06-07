@@ -310,6 +310,8 @@ ZFMETHOD_DEFINE_0(ZFUIRootWindow, zfautoT<ZFUIRootWindow>, modalWindowShow) {
 
     d->modalWindowShowing = modalWindow;
     d->modalWindowShowing->d->modalWindowOwner = this;
+
+    zfobjRetain(this);
     return modalWindow;
 }
 ZFMETHOD_DEFINE_0(ZFUIRootWindow, void, modalWindowHide) {

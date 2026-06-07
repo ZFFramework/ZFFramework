@@ -36,8 +36,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFTimerList) {
     ZFCoreMutexLock();
     ZFCoreArray<ZFTimer *> &d = _ZFP_ZFTimerList();
     while(!d.isEmpty()) {
-        ZFTimer *timer = d.removeLastAndGet();
-        zfobjReleaseInScope(zfobjRetain(timer));
+        zfautoT<ZFTimer> timer = d.removeLastAndGet();
         ZFCoreMutexUnlock();
         timer->stop();
         ZFCoreMutexLock();
@@ -131,8 +130,7 @@ void ZFTimer::_ZFP_ZFTimer_timerOnActivate(ZF_IN zfidentity timerImplId) {
         return;
     }
 
-    zfobjRetain(this);
-    zfobjReleaseInScope(this);
+    zfobjReleaseInScope(zfobjRetain(this));
 
     ZFCoreMutexLock();
     if(d->activatedCount == 0) {

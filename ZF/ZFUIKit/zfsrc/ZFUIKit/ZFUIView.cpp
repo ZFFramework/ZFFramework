@@ -414,7 +414,7 @@ public:
                 "[ZFUIView] add child during parent's dealloc is not allowed");
         ZFCoreAssertWithMessageTrim(child != zfnull, "[ZFUIView] add null child");
         ZFCoreAssertWithMessageTrim(child->parent() == zfnull, "[ZFUIView] add child which already has parent, you should remove it first");
-        zfobjReleaseInScope(zfobjRetain(child));
+        zfauto childHolder = child;
 
         child->serializableRefLayoutParam(zfnull);
 
@@ -2322,8 +2322,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewEventSend
     if(event == zfnull) {
         return;
     }
-
-    zfobjReleaseInScope(zfobjRetain(this));
+    zfauto holder = this;
 
     this->viewEventOnEvent(event);
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent)
