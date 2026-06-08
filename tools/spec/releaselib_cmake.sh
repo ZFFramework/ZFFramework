@@ -48,7 +48,7 @@ sh "$ZF_ROOT_PATH/tools/common/zfsh/rm.sh" "$_INSTALL_PATH/lib/*SDL*_test.*"
 sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_INSTALL_PATH/include" "$ZF_ROOT_PATH/_release/cmake/module/$PROJ_NAME/include"
 sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_INSTALL_PATH/lib" "$ZF_ROOT_PATH/_release/cmake/module/$PROJ_NAME/lib"
 sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_INSTALL_PATH/bin" "$ZF_ROOT_PATH/_release/cmake/module/$PROJ_NAME/lib"
-sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_INSTALL_PATH/zfres" "$ZF_ROOT_PATH/_release/cmake/module/$PROJ_NAME/zfres"
+sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_INSTALL_PATH/bin/zfres" "$ZF_ROOT_PATH/_release/cmake/module/$PROJ_NAME/zfres"
 
 sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$ZF_ROOT_PATH/_release/cmake/module/$PROJ_NAME" "$ZF_ROOT_PATH/_release/cmake/all"
 

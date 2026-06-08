@@ -61,7 +61,6 @@ call "%ZF_ROOT_PATH%\tools\common\zfsh\rm.bat" "%_INSTALL_PATH%\lib\*SDL*_test.*
 
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\bin" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app"
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\lib" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app"
-call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\zfres" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app\zfres"
 
 exit /b %_RESULT%
 

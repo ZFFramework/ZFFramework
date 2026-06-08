@@ -41,7 +41,7 @@ function(ZFAddLib ZF_LIB_NAME_)
         DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
         PATTERN "*.lib" EXCLUDE
         )
-    zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/" "${CMAKE_INSTALL_PREFIX}/zfres")
+    zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/" "${CMAKE_INSTALL_PREFIX}/bin/zfres")
 endfunction()
 {ZFTT_C_lib_require_0}
 ZFAddLib({ZFTT_R_lib_name_0}){ZFTT_CE}{ZFTT_C_lib_require_1}
@@ -184,10 +184,10 @@ install(
     TARGETS {ZFTT_R_proj_name}
     DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
     )
-zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${CMAKE_INSTALL_PREFIX}/zfres")
+zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${CMAKE_INSTALL_PREFIX}/bin/zfres")
 
 file(GLOB AppIconPath "${PROJECT_SOURCE_DIR}/AppIcon.png")
 if(NOT "${AppIconPath}" STREQUAL "")
-    install(FILES ${AppIconPath} DESTINATION "${CMAKE_INSTALL_PREFIX}/zfres/ZFUIKit_impl/sys_SDL")
+    install(FILES ${AppIconPath} DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/zfres/ZFUIKit_impl/sys_SDL")
 endif()
 

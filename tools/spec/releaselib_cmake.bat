@@ -55,7 +55,7 @@ call "%ZF_ROOT_PATH%\tools\common\zfsh\rm.bat" "%_INSTALL_PATH%\lib\*SDL*_test.*
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\include" "%ZF_ROOT_PATH%\_release\cmake\module\%PROJ_NAME%\include"
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\lib" "%ZF_ROOT_PATH%\_release\cmake\module\%PROJ_NAME%\lib"
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\bin" "%ZF_ROOT_PATH%\_release\cmake\module\%PROJ_NAME%\lib"
-call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\zfres" "%ZF_ROOT_PATH%\_release\cmake\module\%PROJ_NAME%\zfres"
+call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\bin\zfres" "%ZF_ROOT_PATH%\_release\cmake\module\%PROJ_NAME%\zfres"
 
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%ZF_ROOT_PATH%\_release\cmake\module\%PROJ_NAME%" "%ZF_ROOT_PATH%\_release\cmake\all"
 
