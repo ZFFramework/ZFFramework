@@ -1,6 +1,4 @@
-plugins {
-    alias(libs.plugins.android.library)
-}
+apply plugin: 'com.android.library'
 
 def ZF_ROOT_PATH = file(this.projectDir.absolutePath + '/../../../../../../../ZFFramework').absolutePath
 android {

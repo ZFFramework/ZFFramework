@@ -1,6 +1,4 @@
-plugins {
-    alias(libs.plugins.android.library)
-}
+apply plugin: 'com.android.library'
 
 android {
     namespace 'com.ZFFramework.zfprojConfig.ZFLua'

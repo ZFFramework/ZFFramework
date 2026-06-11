@@ -7,6 +7,7 @@
 #define _JNIUtil_h_
 
 // ============================================================
+#include "../../ZFImpl_ZF_impl.h"
 /** @brief used to export symbols */
 #ifndef _JNI_EXPORT
     #define _JNI_EXPORT ZFLIB_ZF_impl
