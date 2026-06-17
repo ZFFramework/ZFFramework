@@ -4,6 +4,7 @@
 #include "../ZFImpl_ZFUIWebKit_impl.h"
 
 #include "ZFImpl/sys_SDL/ZFImpl_sys_SDL_ZF_impl.h"
+#include "ZFImpl/sys_SDL/ZFImpl_sys_SDL_ZFUIKit_impl.h"
 
 #if ZF_ENV_sys_SDL
 ZF_NAMESPACE_GLOBAL_BEGIN

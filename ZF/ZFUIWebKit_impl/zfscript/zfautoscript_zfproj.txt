@@ -12,4 +12,5 @@ ZF_LIB += ZFUIKit
 ZF_LIB += ZFUIWebKit
 
 ZF_IMPL += ZF_impl
+ZF_IMPL += ZFUIKit_impl
 

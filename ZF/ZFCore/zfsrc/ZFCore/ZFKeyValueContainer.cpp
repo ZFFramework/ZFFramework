@@ -8,10 +8,58 @@ ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnUpdate)
 ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnAdd)
 ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnRemove)
 
+void ZFKeyValueContainer::objectInfoOfContentT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN_OPT zfindex maxCount /* = zfindexMax() */
+        , ZF_IN_OPT const ZFTokenForContainer &token /* = ZFTokenForContainerDefault() */
+        ) {
+    const ZFTokenForKeyValueContainer &tokenKV = ZFTokenForKeyValueContainerDefault();
+
+    zfindex count = 0;
+    ret += token.tokenLeft;
+    for(zfiter it = this->iter(); it && count < maxCount; ++count, ++it) {
+        ZFObject *key = this->iterKey(it);
+        ZFObject *value = this->iterValue(it);
+
+        if(count > 0) {
+            ret += token.tokenSeparator;
+        }
+
+        ret += tokenKV.tokenPairLeft;
+        {
+            ret += tokenKV.tokenKeyLeft;
+            key->objectInfoT(ret);
+            ret += tokenKV.tokenKeyRight;
+        }
+        ret += tokenKV.tokenPairSeparator;
+        {
+            ret += token.tokenValueLeft;
+            value->objectInfoT(ret);
+            ret += token.tokenValueRight;
+        }
+        ret += tokenKV.tokenPairRight;
+    }
+    if(count < this->count()) {
+        if(count > 0) {
+            ret += token.tokenSeparator;
+        }
+        ret += token.tokenEtc;
+    }
+    ret += token.tokenRight;
+}
+zfstring ZFKeyValueContainer::objectInfoOfContent(
+        ZF_IN_OPT zfindex maxCount /* = zfindexMax() */
+        , ZF_IN_OPT const ZFTokenForContainer &token /* = ZFTokenForContainerDefault() */
+        ) {
+    zfstring ret;
+    this->objectInfoOfContentT(ret, maxCount, token);
+    return ret;
+}
+
 ZFMETHOD_DEFINE_3(ZFKeyValueContainer, void, objectInfoOfContentT
         , ZFMP_IN_OUT(zfstring &, ret)
-        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
-        , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
+        , ZFMP_IN(zfindex, maxCount)
+        , ZFMP_IN(const ZFTokenForKeyValueContainer &, token)
         ) {
     zfindex count = 0;
     ret += token.tokenLeft;
@@ -46,8 +94,8 @@ ZFMETHOD_DEFINE_3(ZFKeyValueContainer, void, objectInfoOfContentT
     ret += token.tokenRight;
 }
 ZFMETHOD_DEFINE_2(ZFKeyValueContainer, zfstring, objectInfoOfContent
-        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
-        , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
+        , ZFMP_IN(zfindex, maxCount)
+        , ZFMP_IN(const ZFTokenForKeyValueContainer &, token)
         ) {
     zfstring ret;
     this->objectInfoOfContentT(ret, maxCount, token);
@@ -303,8 +351,6 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToString(
     if(zfcast(v_ZFClass *, valueClsHolder) == zfnull) {
         return zffalse;
     }
-    const ZFClass *keyCls = keyClsHolder.to<v_ZFClass *>()->zfv;
-    const ZFClass *valueCls = valueClsHolder.to<v_ZFClass *>()->zfv;
     zfstring charMap = ZFCoreDataEncodeCharMapCreate(ZFCoreDataEncodeCharMapAllPrintable()
             , -'%'
             , -'{'

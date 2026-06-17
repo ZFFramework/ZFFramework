@@ -43,4 +43,5 @@ ZFAddLib(ZFUtility)
 ZFAddLib(ZFUIKit)
 ZFAddLib(ZFUIWebKit)
 ZFAddLib(ZF_impl)
+ZFAddLib(ZFUIKit_impl)
 

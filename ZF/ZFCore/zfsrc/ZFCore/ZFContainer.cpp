@@ -204,7 +204,6 @@ zfbool ZFContainer::serializableOnSerializeToString(
     if(zfcast(v_ZFClass *, clsHolder) == zfnull) {
         return zffalse;
     }
-    const ZFClass *cls = clsHolder.to<v_ZFClass *>()->zfv;
     zfstring charMap = ZFCoreDataEncodeCharMapCreate(ZFCoreDataEncodeCharMapAllPrintable()
             , -'%'
             , -'['

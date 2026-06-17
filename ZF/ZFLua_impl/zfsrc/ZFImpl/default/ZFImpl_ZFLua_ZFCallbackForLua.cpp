@@ -377,7 +377,7 @@ private:
                         break;
                     }
                 }
-                if(offset == zfindexMax()) {
+                if(offset == -1) {
                     return zffalse;
                 }
                 lua_pushvalue(L, luaLocalFuncIndex + offset);

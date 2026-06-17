@@ -74,17 +74,17 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateIndexData, ZFTextTemplat
         serializableData.itemClass(ZFTypeId_ZFTextTemplateIndexData());
 
         ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFTextTemplateIndexData_indexStart, zfindex, v.indexStart, 0, {
+                ZFSerializableKeyword_ZFTextTemplateIndexData_indexStart, zfindex, v.indexStart, (zfindex)0, {
                     return zffalse;
                 });
 
         ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFTextTemplateIndexData_indexOffset, zfint, v.indexOffset, 1, {
+                ZFSerializableKeyword_ZFTextTemplateIndexData_indexOffset, zfint, v.indexOffset, (zfint)1, {
                     return zffalse;
                 });
 
         ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFTextTemplateIndexData_indexRadix, zfindex, v.indexRadix, 10, {
+                ZFSerializableKeyword_ZFTextTemplateIndexData_indexRadix, zfindex, v.indexRadix, (zfindex)10, {
                     return zffalse;
                 });
 
@@ -94,7 +94,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateIndexData, ZFTextTemplat
                 });
 
         ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFTextTemplateIndexData_indexWidth, zfindex, v.indexWidth, 0, {
+                ZFSerializableKeyword_ZFTextTemplateIndexData_indexWidth, zfindex, v.indexWidth, (zfindex)0, {
                     return zffalse;
                 });
 

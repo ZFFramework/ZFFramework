@@ -18,7 +18,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveEaseIn : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseIn().y_by_x(time);
     }
     zfoverride
@@ -41,7 +41,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveEaseOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseOut().y_by_x(time);
     }
     zfoverride
@@ -64,7 +64,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveEaseInOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseInOut().y_by_x(time);
     }
     zfoverride
@@ -89,7 +89,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveBackIn : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBackIn().y_by_x(time);
     }
     zfoverride
@@ -112,7 +112,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveBackOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBackOut().y_by_x(time);
     }
     zfoverride
@@ -135,7 +135,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveBackInOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBackInOut().y_by_x(time);
     }
     zfoverride
@@ -180,7 +180,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveBounceIn : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return _ZFP_ZFCurveBounceIn(time);
     }
     zfoverride
@@ -203,7 +203,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveBounceOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return _ZFP_ZFCurveBounceOut(time);
     }
     zfoverride
@@ -226,7 +226,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveBounceInOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         if(time < 0.5f) {
             return (zffloat)(_ZFP_ZFCurveBounceIn(time * 2) / 2);
         }
@@ -259,10 +259,10 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoop : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         time = (time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
         if(this->curve()) {
-            return this->curve()->progressUpdate(time);
+            return this->curve()->curveUpdate(time);
         }
         else {
             return time;
@@ -289,7 +289,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopLinear : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return (time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
@@ -314,7 +314,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopEaseIn : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseIn().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
@@ -337,7 +337,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopEaseOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
@@ -360,7 +360,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopEaseInOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseInOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
@@ -385,7 +385,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBackIn : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBackIn().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
@@ -408,7 +408,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBackOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBackOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
@@ -431,7 +431,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBackInOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBackInOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
@@ -456,7 +456,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBounceIn : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return _ZFP_ZFCurveBounceIn(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
@@ -479,7 +479,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBounceOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return _ZFP_ZFCurveBounceOut(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
@@ -502,7 +502,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBounceInOut : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         if(time < 0.5f) {
             time = 2 * time;
         }

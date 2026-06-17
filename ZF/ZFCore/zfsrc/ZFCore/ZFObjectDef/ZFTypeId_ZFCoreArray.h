@@ -247,14 +247,6 @@ public:
                 );
         this->zfv->genericSwap(*(ref->zfv));
     }
-    void copyFrom(ZF_IN v_ZFCoreArray *ref) {
-        if(this->elementType != zfnull
-                && ref != zfnull
-                && ref->elementType != zfnull
-                ) {
-            this->zfv->genericCopyFrom(*(ref->zfv));
-        }
-    }
     void objectInfoOfContentT(
             ZF_IN_OUT zfstring &ret
             , ZF_IN_OPT zfindex maxCount = zfindexMax()
@@ -555,6 +547,16 @@ protected:
         }
         else {
             return zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner);
+        }
+    }
+    zfoverride
+    virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
+        zfself *ref = zfcast(zfself *, anotherStyleable);
+        if(this->elementType != zfnull
+                && ref != zfnull
+                && ref->elementType != zfnull
+                ) {
+            this->zfv->genericCopyFrom(*(ref->zfv));
         }
     }
 };

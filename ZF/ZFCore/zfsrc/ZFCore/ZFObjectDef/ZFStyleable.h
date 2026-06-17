@@ -105,15 +105,15 @@ public:
      * progress usually ranged in [0.0, 1.0],
      * but may exceed range such as bouncing
      */
-    zffinal zfbool progressUpdate(
+    zffinal zfbool progressableUpdate(
             ZF_IN ZFStyleable *from
             , ZF_IN ZFStyleable *to
             , ZF_IN zffloat progress
             );
 
 protected:
-    /** @brief see #progressUpdate */
-    virtual inline zfbool progressOnUpdate(
+    /** @brief see #progressableUpdate */
+    virtual inline zfbool progressableOnUpdate(
             ZF_IN ZFStyleable *from
             , ZF_IN ZFStyleable *to
             , ZF_IN zffloat progress

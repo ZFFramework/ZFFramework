@@ -7,4 +7,5 @@
 -I../../../ZFFramework/ZF/ZFUIKit/zfsrc
 -I../../../ZFFramework/ZF/ZFUIWebKit/zfsrc
 -I../../../ZFFramework/ZF/ZF_impl/zfsrc
+-I../../../ZFFramework/ZF/ZFUIKit_impl/zfsrc
 

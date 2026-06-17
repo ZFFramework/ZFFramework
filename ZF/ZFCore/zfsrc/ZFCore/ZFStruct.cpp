@@ -109,7 +109,7 @@ zfbool ZFStruct::serializableOnSerializeToString(
     return zftrue;
 }
 
-zfbool ZFStruct::progressOnUpdate(
+zfbool ZFStruct::progressableOnUpdate(
         ZF_IN ZFStyleable *from
         , ZF_IN ZFStyleable *to
         , ZF_IN zffloat progress
@@ -135,7 +135,7 @@ zfbool ZFStruct::progressOnUpdate(
         zfauto v = m->methodInvoke(this);
         ZFStyleable *t = v;
         if(t == zfnull
-                || !t->progressUpdate(m->methodInvoke(from->toObject()), m->methodInvoke(to->toObject()), progress)
+                || !t->progressableUpdate(m->methodInvoke(from->toObject()), m->methodInvoke(to->toObject()), progress)
                 ) {
             return zffalse;
         }

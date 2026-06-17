@@ -26,6 +26,13 @@ protected:
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
     }
+    zfoverride
+    virtual void objectOnInit(
+            ZF_IN const ZFListener &implOnStart
+            , ZF_IN_OPT const ZFListener &implOnStop = zfnull
+            ) {
+        zfsuper::objectOnInit(implOnStart, implOnStop);
+    }
     /** @brief construct with impl */
     ZFOBJECT_ON_INIT_DECLARE_1(
             ZFMP_IN(zftimet, duration)
@@ -58,10 +65,19 @@ protected:
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
     }
-    /** @brief construct with impl */
-    ZFOBJECT_ON_INIT_DECLARE_1(
-            ZFMP_IN(const ZFListener &, impl)
-            )
+    zfoverride
+    virtual void objectOnInit(
+            ZF_IN const ZFListener &implOnStart
+            , ZF_IN_OPT const ZFListener &implOnStop = zfnull
+            ) {
+        if(implOnStop) {
+            zfsuper::objectOnInit(implOnStart, implOnStop);
+        }
+        else {
+            this->objectOnInit();
+            this->impl(implOnStart);
+        }
+    }
 
 protected:
     zfoverride
@@ -90,10 +106,19 @@ protected:
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
     }
-    /** @brief construct with impl */
-    ZFOBJECT_ON_INIT_DECLARE_1(
-            ZFMP_IN(const ZFListener &, impl)
-            )
+    zfoverride
+    virtual void objectOnInit(
+            ZF_IN const ZFListener &implOnStart
+            , ZF_IN_OPT const ZFListener &implOnStop = zfnull
+            ) {
+        if(implOnStop) {
+            zfsuper::objectOnInit(implOnStart, implOnStop);
+        }
+        else {
+            this->objectOnInit();
+            this->impl(implOnStart);
+        }
+    }
 
 protected:
     zfoverride
@@ -122,10 +147,19 @@ protected:
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
     }
-    /** @brief construct with impl */
-    ZFOBJECT_ON_INIT_DECLARE_1(
-            ZFMP_IN(const ZFListener &, impl)
-            )
+    zfoverride
+    virtual void objectOnInit(
+            ZF_IN const ZFListener &implOnStart
+            , ZF_IN_OPT const ZFListener &implOnStop = zfnull
+            ) {
+        if(implOnStop) {
+            zfsuper::objectOnInit(implOnStart, implOnStop);
+        }
+        else {
+            this->objectOnInit();
+            this->impl(implOnStart);
+        }
+    }
 
 protected:
     zfoverride
@@ -159,6 +193,13 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
+    }
+    zfoverride
+    virtual void objectOnInit(
+            ZF_IN const ZFListener &implOnStart
+            , ZF_IN_OPT const ZFListener &implOnStop = zfnull
+            ) {
+        zfsuper::objectOnInit(implOnStart, implOnStop);
     }
     /** @brief construct with impl */
     ZFOBJECT_ON_INIT_DECLARE_4(

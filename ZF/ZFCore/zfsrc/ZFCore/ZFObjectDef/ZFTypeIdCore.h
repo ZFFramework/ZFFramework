@@ -219,7 +219,7 @@ protected:
  *           , ZF_IN zffloat progress
  *           );
  * @endcode
- * then use them by #ZFStyleable::progressUpdate\n
+ * then use them by #ZFStyleable::progressableUpdate\n
  * \n
  * to register:
  * @code
@@ -229,9 +229,9 @@ protected:
  * @endcode
  * or use #ZFTYPEID_PROGRESS_DEFINE_BY_VALUE for short
  */
-#define ZFTYPEID_PROGRESS_DEFINE(TypeName, Type, progressUpdateAction) \
+#define ZFTYPEID_PROGRESS_DEFINE(TypeName, Type, progressableUpdateAction) \
     ZF_STATIC_REGISTER_INIT(_ZFP_ZFTypeIdProgressReg_##TypeName) { \
-        v_##TypeName::_ZFP_ZFTypeId_progressUpdate() = zfself::I; \
+        v_##TypeName::_ZFP_ZFTypeId_progressableUpdate() = zfself::I; \
     } \
     static zfbool I( \
             ZF_IN_OUT ZFStyleable *_ret \
@@ -248,7 +248,7 @@ protected:
         Type &ret = _retH->zfv; \
         Type const &from = _fromH->zfv; \
         Type const &to = _toH->zfv; \
-        progressUpdateAction \
+        progressableUpdateAction \
         return zftrue; \
     } \
     ZF_STATIC_REGISTER_END(_ZFP_ZFTypeIdProgressReg_##TypeName)

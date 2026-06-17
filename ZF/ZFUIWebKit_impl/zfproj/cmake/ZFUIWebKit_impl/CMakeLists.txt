@@ -38,6 +38,7 @@ ZFAddLib(ZFUtility)
 ZFAddLib(ZFUIKit)
 ZFAddLib(ZFUIWebKit)
 ZFAddLib(ZF_impl)
+ZFAddLib(ZFUIKit_impl)
 
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfsrc/"

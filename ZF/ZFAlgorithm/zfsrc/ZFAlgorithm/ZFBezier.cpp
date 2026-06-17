@@ -182,20 +182,20 @@ ZFTYPEID_DEFINE(ZFBezier, ZFBezier, {
         serializableData.itemClass(ZFTypeId_ZFBezier());
 
         ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFBezier_p0x, zffloat, v.p0x, 0, {
+                ZFSerializableKeyword_ZFBezier_p0x, zffloat, v.p0x, (zffloat)0, {
                     return zffalse;
                 });
         ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFBezier_p0y, zffloat, v.p0y, 0, {
+                ZFSerializableKeyword_ZFBezier_p0y, zffloat, v.p0y, (zffloat)0, {
                     return zffalse;
                 });
 
         ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFBezier_p1x, zffloat, v.p1x, 1, {
+                ZFSerializableKeyword_ZFBezier_p1x, zffloat, v.p1x, (zffloat)1, {
                     return zffalse;
                 });
         ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFBezier_p1y, zffloat, v.p1y, 1, {
+                ZFSerializableKeyword_ZFBezier_p1y, zffloat, v.p1y, (zffloat)1, {
                     return zffalse;
                 });
 

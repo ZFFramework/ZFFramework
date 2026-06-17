@@ -178,7 +178,6 @@ zfindex ZFInputCheckMatch(
             zfpoolFree(buf);
         }, zfchar *, buf);
 
-        zfbool matched = zffalse;
         zfindex firstCharLen = ZFInputSkipChars(buf, input);
         zfindex savedFix = input.ioTell() - firstCharLen;
         if(firstCharLen < maxLen) {
@@ -187,7 +186,6 @@ zfindex ZFInputCheckMatch(
                 zfindex tokenLen = zfslen(tokens[i]);
                 if(zfstringIsEqual(tokens[i], tokenLen, buf, read + firstCharLen)) {
                     saved = savedFix + tokenLen;
-                    matched = zftrue;
                     ret = i;
                     break;
                 }

@@ -412,7 +412,7 @@ ZFCOMPARER_DEFAULT_DECLARE(ZFCallback, ZFCallback, {
  */
 #define ZFCallbackForFunc(callbackRawFunction) \
     ZFCallback::_ZFP_ZFCallbackCreateRawFunction( \
-        (ZFFuncAddrType)(void (*)(const ZFArgs &))(callbackRawFunction) \
+        (ZFFuncAddrType)(callbackRawFunction) \
         )
 
 // ============================================================

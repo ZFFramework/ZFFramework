@@ -680,8 +680,7 @@ static void _ZFP_ZFUIFlowLayout_layoutGridHorizontal(
     }
     zffloat childStartSaved = childStart;
 
-    zfindex childIndex = 0;
-    for(zfindex lineIndex = 0; childIndex < parent->childCount(); ++lineIndex) {
+    for(zfindex childIndex = 0; childIndex < parent->childCount(); ) {
         childStart = childStartSaved;
         for(zfindex i = 0; i < childCountPerLine && childIndex + i < parent->childCount(); ++i) {
             ZFUIView *child = parent->childAt(childIndex + i);
@@ -764,8 +763,7 @@ static void _ZFP_ZFUIFlowLayout_layoutGridVertical(
     }
     zffloat childStartSaved = childStart;
 
-    zfindex childIndex = 0;
-    for(zfindex lineIndex = 0; childIndex < parent->childCount(); ++lineIndex) {
+    for(zfindex childIndex = 0; childIndex < parent->childCount(); ) {
         childStart = childStartSaved;
         for(zfindex i = 0; i < childCountPerLine && childIndex + i < parent->childCount(); ++i) {
             ZFUIView *child = parent->childAt(childIndex + i);

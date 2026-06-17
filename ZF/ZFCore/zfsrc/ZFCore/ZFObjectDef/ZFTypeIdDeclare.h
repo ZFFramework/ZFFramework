@@ -304,25 +304,25 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_OUT_OPT zfstring *errorHint = zfnull \
                 ); \
     public: \
-        static _ZFP_ZFTypeIdProgressUpdate &_ZFP_ZFTypeId_progressUpdate(void); \
+        static _ZFP_ZFTypeIdProgressUpdate &_ZFP_ZFTypeId_progressableUpdate(void); \
         zfoverride \
-        virtual zfbool progressOnUpdate( \
+        virtual zfbool progressableOnUpdate( \
                 ZF_IN ZFStyleable *from \
                 , ZF_IN ZFStyleable *to \
                 , ZF_IN zffloat progress \
                 ) { \
-            if(zfself::_ZFP_ZFTypeId_progressUpdate()) { \
-                return zfself::_ZFP_ZFTypeId_progressUpdate()(this, from, to, progress); \
+            if(zfself::_ZFP_ZFTypeId_progressableUpdate()) { \
+                return zfself::_ZFP_ZFTypeId_progressableUpdate()(this, from, to, progress); \
             } \
             else { \
-                return zfsuper::progressOnUpdate(from, to, progress); \
+                return zfsuper::progressableOnUpdate(from, to, progress); \
             } \
         } \
     };
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMMON(TypeName, Type) \
     ZFOBJECT_REGISTER(v_##TypeName) \
-    _ZFP_ZFTypeIdProgressUpdate &v_##TypeName::_ZFP_ZFTypeId_progressUpdate(void) { \
+    _ZFP_ZFTypeIdProgressUpdate &v_##TypeName::_ZFP_ZFTypeId_progressableUpdate(void) { \
         static _ZFP_ZFTypeIdProgressUpdate d = zfnull; \
         return d; \
     } \

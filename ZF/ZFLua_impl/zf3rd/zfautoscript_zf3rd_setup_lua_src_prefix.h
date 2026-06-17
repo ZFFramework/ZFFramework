@@ -6,6 +6,8 @@
 #define system(...) (-1)
 #endif
 
+#define LUA_USE_POSIX
+
 #include "luaconf.h"
 
 #undef l_likely

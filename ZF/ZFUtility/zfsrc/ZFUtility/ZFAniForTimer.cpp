@@ -98,7 +98,7 @@ private:
         if(progress < 0) {progress = 0;}
         else if(progress > 1) {progress = 1;}
         if(owner->curve() != zfnull) {
-            progress = owner->curve()->progressUpdate(progress);
+            progress = owner->curve()->curveUpdate(progress);
         }
         owner->aniTimerOnUpdate(progress);
     }

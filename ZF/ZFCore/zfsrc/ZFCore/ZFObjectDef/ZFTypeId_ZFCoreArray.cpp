@@ -359,9 +359,6 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1(v_ZFCoreArray
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, swap
         , ZFMP_IN(v_ZFCoreArray *, ref)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, copyFrom
-        , ZFMP_IN(v_ZFCoreArray *, ref)
-        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(v_ZFCoreArray, void, objectInfoOfContentT
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())

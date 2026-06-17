@@ -56,6 +56,7 @@ dependencies {
     compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIKit/src/main/libs')
     compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIWebKit/src/main/libs')
     compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZF_impl/src/main/libs')
+    compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIKit_impl/src/main/libs')
 }
 
 if (file(this.projectDir.absolutePath + '/zfprojConfig/zfprojConfig.gradle').exists()) {

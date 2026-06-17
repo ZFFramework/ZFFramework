@@ -139,20 +139,39 @@ private:
     /** @endcond */
 
 public:
+    zfoverride
+    virtual void objectInfoOfContentT(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN_OPT zfindex maxCount = zfindexMax()
+            , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
+            );
+    zfoverride
+    virtual zfstring objectInfoOfContent(
+            ZF_IN_OPT zfindex maxCount = zfindexMax()
+            , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
+            );
+public:
     /**
      * @brief return a short string describe the content
      */
     ZFMETHOD_DECLARE_3(void, objectInfoOfContentT
             , ZFMP_IN_OUT(zfstring &, ret)
-            , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
-            , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
+            , ZFMP_IN(zfindex, maxCount)
+            , ZFMP_IN(const ZFTokenForKeyValueContainer &, token)
             )
     /** @brief see #objectInfoOfContentT */
     ZFMETHOD_DECLARE_2(zfstring, objectInfoOfContent
-            , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
-            , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
+            , ZFMP_IN(zfindex, maxCount)
+            , ZFMP_IN(const ZFTokenForKeyValueContainer &, token)
             )
 
+protected:
+    zfoverride
+    virtual inline void contentOnAdd(ZF_IN ZFObject *element) {
+    }
+    zfoverride
+    virtual inline void contentOnRemove(ZF_IN ZFObject *element) {
+    }
 protected:
     /** @brief see #E_ContentOnUpdate */
     virtual inline void contentOnUpdate(void) {

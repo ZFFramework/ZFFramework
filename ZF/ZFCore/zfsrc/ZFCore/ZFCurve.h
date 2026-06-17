@@ -27,15 +27,15 @@ public:
      * e.g. a linear curve would have same result as the time,
      * while a bounce curve may exceeds range [0, 1] as result
      */
-    ZFMETHOD_DECLARE_1(zffloat, progressUpdate
+    ZFMETHOD_DECLARE_1(zffloat, curveUpdate
             , ZFMP_IN(zffloat, time)
             )
 
 protected:
     /**
-     * @brief called by #progressUpdate to update progress
+     * @brief called by #curveUpdate to update progress
      */
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) zfpurevirtual;
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) zfpurevirtual;
 };
 
 // ============================================================
@@ -47,7 +47,7 @@ zfclass ZFLIB_ZFCore ZFCurveLinear : zfextend ZFCurve {
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+    virtual zffloat curveOnUpdate(ZF_IN zffloat time) {
         return time;
     }
     zfoverride

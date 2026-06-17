@@ -138,13 +138,13 @@ void ZFStyleable::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
 }
 
 // ============================================================
-zfbool ZFStyleable::progressUpdate(
+zfbool ZFStyleable::progressableUpdate(
         ZF_IN ZFStyleable *from
         , ZF_IN ZFStyleable *to
         , ZF_IN zffloat progress
         ) {
     if(this->classData()->classContainDynamicRegister()) {
-        const ZFMethod *m = this->classData()->methodForName(zftext("progressOnUpdate"));
+        const ZFMethod *m = this->classData()->methodForName(zftext("progressableOnUpdate"));
         if(m) {
             return m->methodInvoke(
                     this->toObject()
@@ -154,7 +154,7 @@ zfbool ZFStyleable::progressUpdate(
                     ).to<v_zfbool *>()->zfv;
         }
     }
-    return this->progressOnUpdate(from, to, progress);
+    return this->progressableOnUpdate(from, to, progress);
 }
 
 // ============================================================
@@ -412,7 +412,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, const zfstring &, propSt
         , ZFMP_IN(const zfstring &, propertyName)
         )
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFStyleable, zfbool, progressUpdate
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFStyleable, zfbool, progressableUpdate
         , ZFMP_IN(ZFStyleable *, from)
         , ZFMP_IN(ZFStyleable *, to)
         , ZFMP_IN(zffloat, progress)

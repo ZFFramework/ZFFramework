@@ -102,7 +102,7 @@ public:
         }
 
         if(_typeInfo != zfnull) {
-            if(_valueHolder != zfnull && _valueHolder->progressUpdate(_from, _to, progress)) {
+            if(_valueHolder != zfnull && _valueHolder->progressableUpdate(_from, _to, progress)) {
                 _setterMethod->methodInvoke(_target, _valueHolder);
             }
         }
@@ -110,7 +110,7 @@ public:
             zfauto valueHolder = _getterMethod->methodInvoke(_target);
             ZFStyleable *value = valueHolder;
             if(value != zfnull) {
-                value->progressUpdate(_from, _to, progress);
+                value->progressableUpdate(_from, _to, progress);
             }
         }
     }

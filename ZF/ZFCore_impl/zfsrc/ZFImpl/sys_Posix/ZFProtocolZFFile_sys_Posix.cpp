@@ -59,7 +59,7 @@ public:
             if(len < 0) {
                 break;
             }
-            if(len < bufLen) {
+            if(len < (ssize_t)bufLen) {
                 ret.zfunsafe_buffer()[ret.length() + len] = '\0';
                 ret.zfunsafe_length(ret.length() + len);
                 return zftrue;

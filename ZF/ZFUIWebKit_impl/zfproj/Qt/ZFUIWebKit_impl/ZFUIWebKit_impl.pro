@@ -87,6 +87,7 @@ $$ZFAddLib(0, ZFUtility)
 $$ZFAddLib(0, ZFUIKit)
 $$ZFAddLib(0, ZFUIWebKit)
 $$ZFAddLib(1, ZF_impl)
+$$ZFAddLib(1, ZFUIKit_impl)
 
 
 # ======================================================================

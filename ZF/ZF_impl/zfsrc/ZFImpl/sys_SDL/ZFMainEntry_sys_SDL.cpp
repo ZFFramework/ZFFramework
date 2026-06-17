@@ -79,8 +79,6 @@ private:
         ZFImpl_sys_SDL_embedInit(builtinWindow());
     }
     static void _after(ZF_IN const ZFArgs &zfargs) {
-        ZF_GLOBAL_INITIALIZER_CLASS(ZFMainEntry_sys_SDL_setup) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMainEntry_sys_SDL_setup);
-
         zfbool quitFlag = zffalse;
         SDL_Event event;
         while(!quitFlag && SDL_WaitEvent(&event)) {

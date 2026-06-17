@@ -145,6 +145,13 @@ protected:
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
     }
+    zfoverride
+    virtual void objectOnInit(
+            ZF_IN const ZFListener &implOnStart
+            , ZF_IN_OPT const ZFListener &implOnStop = zfnull
+            ) {
+        zfsuper::objectOnInit(implOnStart, implOnStop);
+    }
     /** @brief construct with task */
     ZFOBJECT_ON_INIT_DECLARE_2(
             ZFMP_IN(const ZFPathInfo &, child)

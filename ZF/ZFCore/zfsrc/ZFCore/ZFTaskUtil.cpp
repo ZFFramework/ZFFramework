@@ -35,11 +35,6 @@ void ZFWaitTask::taskOnStop(void) {
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFAsyncTask)
-ZFOBJECT_ON_INIT_DEFINE_1(ZFAsyncTask
-        , ZFMP_IN(const ZFListener &, impl)
-        ) {
-    this->impl(impl);
-}
 
 void ZFAsyncTask::taskOnStart(void) {
     zfsuper::taskOnStart();
@@ -67,11 +62,6 @@ void ZFAsyncTask::taskOnStop(void) {
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFPostTask)
-ZFOBJECT_ON_INIT_DEFINE_1(ZFPostTask
-        , ZFMP_IN(const ZFListener &, impl)
-        ) {
-    this->impl(impl);
-}
 
 void ZFPostTask::taskOnStart(void) {
     zfsuper::taskOnStart();
@@ -100,11 +90,6 @@ void ZFPostTask::taskOnStop(void) {
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFAsyncIOCustomTask)
-ZFOBJECT_ON_INIT_DEFINE_1(ZFAsyncIOCustomTask
-        , ZFMP_IN(const ZFListener &, impl)
-        ) {
-    this->impl(impl);
-}
 
 void ZFAsyncIOCustomTask::taskOnStart(void) {
     zfsuper::taskOnStart();

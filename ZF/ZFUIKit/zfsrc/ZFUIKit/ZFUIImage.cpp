@@ -88,13 +88,13 @@ public:
     , imageScaleFixed(ZFUIGlobalStyle::DefaultStyle() ? ZFUIGlobalStyle::DefaultStyle()->imageScale() : (zffloat)1)
     , imageSizeFixed(ZFUISizeZero())
     , imageSize(ZFUISizeZero())
+    , globalImageScaleOnUpdateListener()
     , imageStateImpl()
     , imageState()
     , imageStateObservers()
     , imageSerializeType(zfnull)
     , imageSerializeData(zfnull)
     , imageSerializeDataGetter(zfnull)
-    , globalImageScaleOnUpdateListener()
     {
     }
 };

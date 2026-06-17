@@ -82,6 +82,9 @@ public:
         iterator(void) : implIt() {}
         iterator(ZF_IN typename ListType::iterator const &implIt) : implIt(implIt) {}
         iterator(ZF_IN const iterator &it) : implIt(it.implIt) {}
+    public:
+        iterator &operator = (ZF_IN typename ListType::iterator const &implIt) {this->implIt = implIt; return *this;}
+        iterator &operator = (ZF_IN const iterator &it) {implIt = it.implIt; return *this;}
     private:
         typename ListType::iterator implIt;
         friend zfclassFwd zfstlordermap<T_Key, T_Value, T_Hash, T_Equal>;
@@ -123,7 +126,10 @@ public:
         const_iterator(ZF_IN typename ListType::const_iterator const &implIt) : implIt(implIt) {}
         const_iterator(ZF_IN const const_iterator &it) : implIt(it.implIt) {}
         const_iterator(ZF_IN const iterator &it) : implIt(it.implIt) {}
-    private:
+    public:
+        const_iterator &operator = (ZF_IN typename ListType::iterator const &implIt) {this->implIt = implIt; return *this;}
+        const_iterator &operator = (ZF_IN const const_iterator &it) {implIt = it.implIt; return *this;}
+        const_iterator &operator = (ZF_IN const iterator &it) {implIt = it.implIt; return *this;}
     private:
         typename ListType::const_iterator implIt;
         friend zfclassFwd zfstlordermap<T_Key, T_Value, T_Hash, T_Equal>;

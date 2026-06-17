@@ -37,6 +37,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass ZFLIB_ZFCore ZFStruct : zfextend ZFStyle {
     ZFOBJECT_DECLARE(ZFStruct, ZFStyle)
 
+protected:
+    zfoverride
+    virtual void objectOnInit(void) {
+        zfsuper::objectOnInit();
+    }
     /** @brief construct from string, see #ZFStruct */
     ZFOBJECT_ON_INIT_DECLARE_2(
             ZFMP_IN(const zfchar *, src)
@@ -66,7 +71,7 @@ protected:
             );
 
     zfoverride
-    virtual zfbool progressOnUpdate(
+    virtual zfbool progressableOnUpdate(
             ZF_IN ZFStyleable *from
             , ZF_IN ZFStyleable *to
             , ZF_IN zffloat progress

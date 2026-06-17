@@ -514,7 +514,7 @@ zfbool ZFImpl_ZFLua_stacktraceT(
 
                 ZFCoreArray<ZFIndexRange> pos;
                 zfstringSplitIndexT(pos, source, "\n", zftrue);
-                if(ar.currentline <= pos.count()) {
+                if(ar.currentline <= (int)pos.count()) {
                     ret += "\n| ";
                     zfstringAppend(ret, "[%s (%s)]  ", chunkInfo ? chunkInfo.cString() : "?", ar.currentline);
 

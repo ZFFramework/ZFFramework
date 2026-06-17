@@ -17,7 +17,7 @@ namespace _ZFP_ZFComparer {
 #pragma GCC diagnostic ignored "-Wnonnull"
 #endif
 
-    class No { bool b[2]; };
+    class No {public: bool b[2]; };
     template<typename T, typename Arg> No operator == (T, Arg);
     template<typename T, typename Arg> No operator < (T, Arg);
 

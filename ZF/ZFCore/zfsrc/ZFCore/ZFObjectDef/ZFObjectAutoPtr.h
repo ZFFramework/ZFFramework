@@ -125,10 +125,6 @@ public:
         zfauto::operator = ((zfauto const &)obj);
         return *this;
     }
-    inline zfobj<T_ZFObjectBase> &operator = (ZF_IN zfobj<T_ZFObjectBase> const &obj) {
-        zfauto::operator = ((zfauto const &)obj);
-        return *this;
-    }
     template<typename T_ZFObject>
     inline zfautoT<T_ZFObjectBase> &operator = (ZF_IN T_ZFObject const &obj) {
         zfauto::operator = (obj);

@@ -135,7 +135,6 @@ public:
         }
         ZFImpl_sys_SDL_RootWindow *nativeWindow = (ZFImpl_sys_SDL_RootWindow *)rootWindow->nativeWindow();
         ZFUILayoutParam *lp = rootWindow->layoutParam();
-        zffloat UIScale = (zffloat)SDL_GetWindowDisplayScale(nativeWindow->sdlWindow);
         SDL_Rect sdlRect;
         if(!SDL_GetDisplayUsableBounds(SDL_GetDisplayForWindow(nativeWindow->sdlWindow), &sdlRect)) {
             sdlRect.x = 0;
