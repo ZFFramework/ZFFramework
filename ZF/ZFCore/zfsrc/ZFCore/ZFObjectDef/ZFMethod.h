@@ -396,6 +396,9 @@ public:
         ZFCoreAssert(index < this->paramCount());
         return this->_ZFP_ZFMethod_paramNameList()[index];
     }
+    /**
+     * @brief get the method's param name at index, return a fixed name if not specified
+     */
     inline zfstring paramNameFixedAt(ZF_IN zfindex index) const {
         zfstring ret = this->paramNameAt(index);
         if(!ret) {
