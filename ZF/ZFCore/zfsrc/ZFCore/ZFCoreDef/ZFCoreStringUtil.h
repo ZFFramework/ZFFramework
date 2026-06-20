@@ -453,36 +453,6 @@ inline zfstring zfstringRepeat(
     return ret;
 }
 
-/**
- * @brief util to switch-case on string
- *
- * @code
- *   switch(zfstringSwitch(v
- *           , "111"
- *           , "222"
- *           )) {
- *       case 0:
- *           ZFLog("case 111");
- *           break;
- *       case 1:
- *           ZFLog("case 222");
- *           break;
- *       default:
- *           ZFLog("default");
- *           break;
- *   }
- * @endcode
- */
-#define zfstringSwitch(v, c0, ...) _ZFP_zfstringSwitch(v, c0 \
-        ZFM_FIX_PARAM(_ZFP_zfstringSwitchExpand, ZFM_EMPTY, ##__VA_ARGS__) \
-        , zfnull)
-#define _ZFP_zfstringSwitchExpand(arg) , ((const zfchar *)(arg))
-extern ZFLIB_ZFCore zfindex _ZFP_zfstringSwitch(
-        ZF_IN const zfchar *v
-        , ZF_IN const zfchar *c0
-        , ...
-        );
-
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_ZFCoreStringUtil_h_

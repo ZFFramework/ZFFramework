@@ -1,6 +1,6 @@
 #include "ZFCoreMap.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlordermap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 #include "ZFCore/ZFSTLWrapper/zfstlvector.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -18,7 +18,7 @@ public:
     }
 };
 
-typedef zfimplordermap<const _ZFP_ZFCoreMap::BaseKey *, _ZFP_ZFCoreMap::BaseValue *, _ZFP_ZFCoreMapHash, _ZFP_ZFCoreMapEqual> _ZFP_ZFCoreMapType;
+typedef zfimplhashmap<const _ZFP_ZFCoreMap::BaseKey *, _ZFP_ZFCoreMap::BaseValue *, _ZFP_ZFCoreMapHash, _ZFP_ZFCoreMapEqual> _ZFP_ZFCoreMapType;
 
 zfclassNotPOD _ZFP_ZFCoreMapImpl : zfextend _ZFP_ZFCoreMap {
 public:

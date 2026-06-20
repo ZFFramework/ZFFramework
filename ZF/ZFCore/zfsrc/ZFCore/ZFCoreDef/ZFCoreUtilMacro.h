@@ -320,7 +320,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFM_FIX_PARAM_CALL_31(C, v) C v
 #define _ZFP_ZFM_FIX_PARAM_CALL_32(C, v) C v
 
-#define _ZFP_ZFM_FIX_PARAM_E_00()
+#define _ZFP_ZFM_FIX_PARAM_E_00(...)
 #define _ZFP_ZFM_FIX_PARAM_E_01(ParamFix, commaFix, a, ...) ParamFix(a)
 #define _ZFP_ZFM_FIX_PARAM_E_02(ParamFix, commaFix, a, ...) ParamFix(a) commaFix() _ZFP_ZFM_FIX_PARAM_CALL_02(_ZFP_ZFM_FIX_PARAM_E_01, (ParamFix, commaFix, ##__VA_ARGS__))
 #define _ZFP_ZFM_FIX_PARAM_E_03(ParamFix, commaFix, a, ...) ParamFix(a) commaFix() _ZFP_ZFM_FIX_PARAM_CALL_03(_ZFP_ZFM_FIX_PARAM_E_02, (ParamFix, commaFix, ##__VA_ARGS__))

@@ -1,6 +1,6 @@
 #include "ZFCoreStringUtil.h"
 
-#include "../ZFSTLWrapper/zfstlmap.h"
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -474,37 +474,6 @@ void zfstringToUpperT(
         else {
             ret.append(src[i]);
         }
-    }
-}
-
-zfindex _ZFP_zfstringSwitch(
-        ZF_IN const zfchar *v
-        , ZF_IN const zfchar *c0
-        , ...
-        ) {
-    if(zfstringIsEmpty(v) || zfstringIsEmpty(c0)) {
-        return zfindexMax();
-    }
-
-    typedef zfstlmap<const zfchar *, zfindex, zfcharConst_zfstlLess> MapType;
-    MapType m;
-    zfindex p = 0;
-    m[c0] = p++;
-    va_list vaList;
-    va_start(vaList, c0);
-    const zfchar *c = va_arg(vaList, const zfchar *);
-    while(!zfstringIsEmpty(c)) {
-        m[c] = p++;
-        c = va_arg(vaList, const zfchar *);
-    }
-    va_end(vaList);
-
-    MapType::iterator it = m.find(v);
-    if(it == m.end()) {
-        return zfindexMax();
-    }
-    else {
-        return it->second;
     }
 }
 

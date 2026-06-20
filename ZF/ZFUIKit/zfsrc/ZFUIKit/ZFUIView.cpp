@@ -910,75 +910,91 @@ zfbool ZFUIView::serializableOnSerializeFromData(
         zfstring category = ZFSerializableUtil::checkCategory(categoryData);
         if(category == zfnull) {continue;}
 
-        if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_child)) {
-            zfauto element;
-            if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
-                return zffalse;
-            }
-            if(element == zfnull) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
-                    "null view");
-                return zffalse;
-            }
-            if(!element->classData()->classIsTypeOf(ZFUIView::ClassData())) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
-                    "%s not type of %s",
-                    element->objectInfoOfInstance(), ZFUIView::ClassData()->classNameFull());
-                return zffalse;
-            }
-            ZFUIView *child = element;
-            this->child(child);
+        static zfcharConstSwitchData sd = zfcharConstSwitchData()
+            .v(ZFSerializableKeyword_ZFUIView_child)
+            .v(ZFSerializableKeyword_ZFUIView_layoutParam)
+            .v(ZFSerializableKeyword_ZFUIView_internalImplView)
+            .v(ZFSerializableKeyword_ZFUIView_internalBgView)
+            .v(ZFSerializableKeyword_ZFUIView_internalFgView)
+            ;
+        switch(zfvalueSwitch(category, sd)) {
+            case 0: { // ZFSerializableKeyword_ZFUIView_child
+                zfauto element;
+                if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
+                    return zffalse;
+                }
+                if(element == zfnull) {
+                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+                            "null view");
+                    return zffalse;
+                }
+                if(!element->classData()->classIsTypeOf(ZFUIView::ClassData())) {
+                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+                            "%s not type of %s",
+                            element->objectInfoOfInstance(), ZFUIView::ClassData()->classNameFull());
+                    return zffalse;
+                }
+                ZFUIView *child = element;
+                this->child(child);
 
-            categoryData.resolveMark();
-        }
-        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_layoutParam)) {
-            zfauto layoutParam;
-            if(!ZFObjectFromDataT(layoutParam, categoryData, outErrorHint, outErrorPos)) {
-                return zffalse;
+                categoryData.resolveMark();
+                break;
             }
-            if(layoutParam == zfnull) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
-                    "null layoutParam");
-                return zffalse;
-            }
-            if(!layoutParam->classData()->classIsTypeOf(ZFUILayoutParam::ClassData())) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
-                    "%s not type of %s",
-                    layoutParam->objectInfoOfInstance(), ZFUILayoutParam::ClassData()->classNameFull());
-                return zffalse;
-            }
+            case 1: { // ZFSerializableKeyword_ZFUIView_layoutParam
+                zfauto layoutParam;
+                if(!ZFObjectFromDataT(layoutParam, categoryData, outErrorHint, outErrorPos)) {
+                    return zffalse;
+                }
+                if(layoutParam == zfnull) {
+                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+                            "null layoutParam");
+                    return zffalse;
+                }
+                if(!layoutParam->classData()->classIsTypeOf(ZFUILayoutParam::ClassData())) {
+                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+                            "%s not type of %s",
+                            layoutParam->objectInfoOfInstance(), ZFUILayoutParam::ClassData()->classNameFull());
+                    return zffalse;
+                }
 
-            d->layoutParamUpdate(this, layoutParam);
-        }
-        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_internalImplView)) {
-            if(!d->serializeInternalViewFromCategoryData(this,
-                        v_ZFUIViewChildLayer::e_InternalImpl,
-                        categoryData,
-                        outErrorHint,
-                        outErrorPos)
-                        ) {
-                return zffalse;
+                d->layoutParamUpdate(this, layoutParam);
+                break;
             }
-        }
-        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_internalBgView)) {
-            if(!d->serializeInternalViewFromCategoryData(this,
-                        v_ZFUIViewChildLayer::e_InternalBg,
-                        categoryData,
-                        outErrorHint,
-                        outErrorPos)
-                        ) {
-                return zffalse;
+            case 2: { // ZFSerializableKeyword_ZFUIView_internalImplView
+                if(!d->serializeInternalViewFromCategoryData(this,
+                            v_ZFUIViewChildLayer::e_InternalImpl,
+                            categoryData,
+                            outErrorHint,
+                            outErrorPos)
+                            ) {
+                    return zffalse;
+                }
+                break;
             }
-        }
-        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_internalFgView)) {
-            if(!d->serializeInternalViewFromCategoryData(this,
-                        v_ZFUIViewChildLayer::e_InternalFg,
-                        categoryData,
-                        outErrorHint,
-                        outErrorPos)
-                        ) {
-                return zffalse;
+            case 3: { // ZFSerializableKeyword_ZFUIView_internalBgView
+                if(!d->serializeInternalViewFromCategoryData(this,
+                            v_ZFUIViewChildLayer::e_InternalBg,
+                            categoryData,
+                            outErrorHint,
+                            outErrorPos)
+                            ) {
+                    return zffalse;
+                }
+                break;
             }
+            case 4: { // ZFSerializableKeyword_ZFUIView_internalFgView
+                if(!d->serializeInternalViewFromCategoryData(this,
+                            v_ZFUIViewChildLayer::e_InternalFg,
+                            categoryData,
+                            outErrorHint,
+                            outErrorPos)
+                            ) {
+                    return zffalse;
+                }
+                break;
+            }
+            default:
+                break;
         }
     }
     return zftrue;
@@ -2332,29 +2348,40 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewEventSend
     }
 }
 void ZFUIView::viewEventOnEvent(ZF_IN ZFUIEvent *event) {
-    const ZFClass *eventClass = event->classData();
-    if(eventClass->classIsTypeOf(ZFUIMouseEvent::ClassData())) {
-        ZFUIMouseEvent *mouseEvent = zfcast(ZFUIMouseEvent *, event);
-        this->viewEventOnMouseEvent(mouseEvent);
-        mouseEvent->eventResolved(zftrue);
-    }
-    else if(eventClass->classIsTypeOf(ZFUIKeyEvent::ClassData())) {
-        ZFUIKeyEvent *eventTmp = zfcast(ZFUIKeyEvent *, event);
-        this->viewEventOnKeyEvent(eventTmp);
-        ZFUIView *view = this->parent();
-        while(view != zfnull && !event->eventResolved()) {
-            view->viewEventOnKeyEvent(eventTmp);
-            view = view->parent();
+    static zfvalueSwitchData<const ZFClass *> data = zfvalueSwitchData<const ZFClass *>()
+        .v(ZFUIMouseEvent::ClassData())
+        .v(ZFUIKeyEvent::ClassData())
+        .v(ZFUIWheelEvent::ClassData())
+        ;
+    switch(zfvalueSwitch(event->classData(), data)) {
+        case 0: {
+            ZFUIMouseEvent *mouseEvent = zfcast(ZFUIMouseEvent *, event);
+            this->viewEventOnMouseEvent(mouseEvent);
+            mouseEvent->eventResolved(zftrue);
+            break;
         }
-    }
-    else if(eventClass->classIsTypeOf(ZFUIWheelEvent::ClassData())) {
-        ZFUIWheelEvent *eventTmp = zfcast(ZFUIWheelEvent *, event);
-        this->viewEventOnWheelEvent(eventTmp);
-        ZFUIView *view = this->parent();
-        while(view != zfnull && !event->eventResolved()) {
-            view->viewEventOnWheelEvent(eventTmp);
-            view = view->parent();
+        case 1: {
+            ZFUIKeyEvent *eventTmp = zfcast(ZFUIKeyEvent *, event);
+            this->viewEventOnKeyEvent(eventTmp);
+            ZFUIView *view = this->parent();
+            while(view != zfnull && !event->eventResolved()) {
+                view->viewEventOnKeyEvent(eventTmp);
+                view = view->parent();
+            }
+            break;
         }
+        case 2: {
+            ZFUIWheelEvent *eventTmp = zfcast(ZFUIWheelEvent *, event);
+            this->viewEventOnWheelEvent(eventTmp);
+            ZFUIView *view = this->parent();
+            while(view != zfnull && !event->eventResolved()) {
+                view->viewEventOnWheelEvent(eventTmp);
+                view = view->parent();
+            }
+            break;
+        }
+        default:
+            break;
     }
 }
 
@@ -2397,45 +2424,67 @@ void ZFUIView::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
     }
 }
 
+static zfvalueSwitchData<zfidentity> const &_ZFP_ZFUIViewObserverSwitchData(void) {
+    static zfvalueSwitchData<zfidentity> d = zfvalueSwitchData<zfidentity>()
+        .v(ZFUIView::E_ViewOnEvent())
+        .v(ZFUIView::E_ViewLayoutOnMeasurePrepare())
+        .v(ZFUIView::E_ViewLayoutOnMeasure())
+        .v(ZFUIView::E_ViewLayoutOnLayoutRequest())
+        .v(ZFUIView::E_ViewLayoutOnLayoutPrepare())
+        .v(ZFUIView::E_ViewLayoutOnLayout())
+        .v(ZFUIView::E_ViewLayoutOnLayoutFinish())
+        .v(ZFUIView::E_ViewTreeInWindowOnUpdate())
+        .v(ZFUIView::E_ViewTreeVisibleOnUpdate())
+        .v(ZFUIView::E_ViewChildOnUpdate())
+        .v(ZFUIView::E_ViewChildOnAdd())
+        .v(ZFUIView::E_ViewChildOnRemove())
+        .v(ZFUIView::E_ViewOnAddToParent())
+        .v(ZFUIView::E_ViewOnRemoveFromParent())
+        .v(ZFUIView::E_UIScaleOnUpdate())
+        ;
+    return d;
+}
 void ZFUIView::observerOnAdd(ZF_IN zfidentity eventId) {
     zfsuper::observerOnAdd(eventId);
-    if(zffalse) {
+    switch(zfvalueSwitch(eventId, _ZFP_ZFUIViewObserverSwitchData())) {
+        case 0: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent); break;
+        case 1: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasurePrepare); break;
+        case 2: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasure); break;
+        case 3: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutRequest); break;
+        case 4: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutPrepare); break;
+        case 5: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout); break;
+        case 6: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutFinish); break;
+        case 7: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeInWindowOnUpdate); break;
+        case 8: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeVisibleOnUpdate); break;
+        case 9: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnUpdate); break;
+        case 10: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnAdd); break;
+        case 11: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnRemove); break;
+        case 12: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnAddToParent); break;
+        case 13: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnRemoveFromParent); break;
+        case 14: ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_UIScaleOnUpdate); break;
+        default: break;
     }
-    else if(eventId == ZFUIView::E_ViewOnEvent()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnMeasurePrepare()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasurePrepare);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnMeasure()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasure);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutRequest()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutRequest);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutPrepare()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutPrepare);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayout()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutFinish()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutFinish);}
-    else if(eventId == ZFUIView::E_ViewTreeInWindowOnUpdate()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeInWindowOnUpdate);}
-    else if(eventId == ZFUIView::E_ViewTreeVisibleOnUpdate()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeVisibleOnUpdate);}
-    else if(eventId == ZFUIView::E_ViewChildOnUpdate()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnUpdate);}
-    else if(eventId == ZFUIView::E_ViewChildOnAdd()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnAdd);}
-    else if(eventId == ZFUIView::E_ViewChildOnRemove()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnRemove);}
-    else if(eventId == ZFUIView::E_ViewOnAddToParent()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnAddToParent);}
-    else if(eventId == ZFUIView::E_ViewOnRemoveFromParent()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnRemoveFromParent);}
-    else if(eventId == ZFUIView::E_UIScaleOnUpdate()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_UIScaleOnUpdate);}
 }
 void ZFUIView::observerOnRemove(ZF_IN zfidentity eventId) {
     zfsuper::observerOnRemove(eventId);
-    if(zffalse) {
+    switch(zfvalueSwitch(eventId, _ZFP_ZFUIViewObserverSwitchData())) {
+        case 0: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent); break;
+        case 1: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasurePrepare); break;
+        case 2: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasure); break;
+        case 3: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutRequest); break;
+        case 4: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutPrepare); break;
+        case 5: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout); break;
+        case 6: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutFinish); break;
+        case 7: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeInWindowOnUpdate); break;
+        case 8: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeVisibleOnUpdate); break;
+        case 9: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnUpdate); break;
+        case 10: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnAdd); break;
+        case 11: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnRemove); break;
+        case 12: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnAddToParent); break;
+        case 13: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnRemoveFromParent); break;
+        case 14: ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_UIScaleOnUpdate); break;
+        default: break;
     }
-    else if(eventId == ZFUIView::E_ViewOnEvent()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnMeasurePrepare()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasurePrepare);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnMeasure()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasure);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutRequest()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutRequest);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutPrepare()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutPrepare);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayout()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout);}
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutFinish()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutFinish);}
-    else if(eventId == ZFUIView::E_ViewTreeInWindowOnUpdate()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeInWindowOnUpdate);}
-    else if(eventId == ZFUIView::E_ViewTreeVisibleOnUpdate()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeVisibleOnUpdate);}
-    else if(eventId == ZFUIView::E_ViewChildOnUpdate()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnUpdate);}
-    else if(eventId == ZFUIView::E_ViewChildOnAdd()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnAdd);}
-    else if(eventId == ZFUIView::E_ViewChildOnRemove()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnRemove);}
-    else if(eventId == ZFUIView::E_ViewOnAddToParent()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnAddToParent);}
-    else if(eventId == ZFUIView::E_ViewOnRemoveFromParent()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnRemoveFromParent);}
-    else if(eventId == ZFUIView::E_UIScaleOnUpdate()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_UIScaleOnUpdate);}
 }
 
 ZF_NAMESPACE_GLOBAL_END

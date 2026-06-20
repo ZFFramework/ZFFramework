@@ -43,6 +43,7 @@
 #include "ZFCoreDef/zfstr.h"
 #include "ZFCoreDef/zfstr_CoreType.h"
 #include "ZFCoreDef/zfstring.h"
+#include "ZFCoreDef/zfvalueSwitch.h"
 
 #endif // #ifndef _ZFI_ZFCoreDef_h_
 
