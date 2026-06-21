@@ -502,35 +502,21 @@ void ZFObject::on(
     this->observerAdd(eventId, observer, observerLevel);
 }
 
-static zfvalueSwitchData<zfidentity> const &_ZFP_ZFObjectObserverSwitchData(void) {
-    static zfvalueSwitchData<zfidentity> d = zfvalueSwitchData<zfidentity>()
-        .v(ZFObject::E_ObjectBeforeAlloc())
-        .v(ZFObject::E_ObjectAfterAlloc())
-        .v(ZFObject::E_ObjectBeforeDealloc())
-        .v(ZFObject::E_ObjectPropertyValueOnUpdate())
-        .v(ZFObject::E_ObjectPropertyValueOnReset())
-        ;
-    return d;
-}
 void ZFObject::observerOnAdd(ZF_IN zfidentity eventId) {
-    switch(zfvalueSwitch(eventId, _ZFP_ZFObjectObserverSwitchData())) {
-        case 0: ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectBeforeAlloc); break;
-        case 1: ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectAfterAlloc); break;
-        case 2: ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectBeforeDealloc); break;
-        case 3: ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectPropertyValueOnUpdate); break;
-        case 4: ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectPropertyValueOnReset); break;
-        default: break;
-    }
+    if(zffalse) {}
+    else if(eventId == ZFObject::E_ObjectBeforeAlloc()) {ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectBeforeAlloc);}
+    else if(eventId == ZFObject::E_ObjectAfterAlloc()) {ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectAfterAlloc);}
+    else if(eventId == ZFObject::E_ObjectBeforeDealloc()) {ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectBeforeDealloc);}
+    else if(eventId == ZFObject::E_ObjectPropertyValueOnUpdate()) {ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectPropertyValueOnUpdate);}
+    else if(eventId == ZFObject::E_ObjectPropertyValueOnReset()) {ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectPropertyValueOnReset);}
 }
 void ZFObject::observerOnRemove(ZF_IN zfidentity eventId) {
-    switch(zfvalueSwitch(eventId, _ZFP_ZFObjectObserverSwitchData())) {
-        case 0: ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectBeforeAlloc); break;
-        case 1: ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectAfterAlloc); break;
-        case 2: ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectBeforeDealloc); break;
-        case 3: ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectPropertyValueOnUpdate); break;
-        case 4: ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectPropertyValueOnReset); break;
-        default: break;
-    }
+    if(zffalse) {}
+    else if(eventId == ZFObject::E_ObjectBeforeAlloc()) {ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectBeforeAlloc);}
+    else if(eventId == ZFObject::E_ObjectAfterAlloc()) {ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectAfterAlloc);}
+    else if(eventId == ZFObject::E_ObjectBeforeDealloc()) {ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectBeforeDealloc);}
+    else if(eventId == ZFObject::E_ObjectPropertyValueOnUpdate()) {ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectPropertyValueOnUpdate);}
+    else if(eventId == ZFObject::E_ObjectPropertyValueOnReset()) {ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_ObjectPropertyValueOnReset);}
 }
 
 void ZFObject::_ZFP_ZFObjectLock(void) {

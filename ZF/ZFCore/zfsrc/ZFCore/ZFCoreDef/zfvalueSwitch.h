@@ -11,7 +11,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief see #zfvalueSwitch */
-template<typename T_Key, typename T_Hash = ZFCoreMapKeyHash<T_Key>, typename T_Equal = ZFCoreMapKeyEqual<T_Key>>
+template<typename T_Key, typename T_Hash = ZFCoreMapKeyHash<T_Key>, typename T_Equal = ZFCoreMapKeyEqual<T_Key> >
 zfclassLikePOD zfvalueSwitchData {
 public:
     /** @brief see #zfvalueSwitch */
@@ -67,13 +67,8 @@ public:
  */
 template<typename T_KeyV, typename T_Key, typename T_Hash, typename T_Equal>
 zfindex zfvalueSwitch(ZF_IN T_KeyV const &v, ZF_IN zfvalueSwitchData<T_Key, T_Hash, T_Equal> const &data) {
-    zfiter it = data.m.iterFind(v);
-    if(it) {
-        return data.m.iterValue(it);
-    }
-    else {
-        return zfindexMax();
-    }
+    const zfindex *t = data.m.get(v);
+    return t ? *t : zfindexMax();
 }
 
 // ============================================================
