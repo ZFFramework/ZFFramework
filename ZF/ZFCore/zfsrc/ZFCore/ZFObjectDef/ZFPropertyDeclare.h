@@ -459,17 +459,23 @@ public:
                     , ZF_IN zfbool notifyOwnerAttach \
                     ) { \
                 if(!this->VA()) { \
-                    this->Set(InitValueOrEmpty); \
-                    _ZFP_ZFPropertyLifeCycleCall_init_retain( \
-                            zfself::_ZFP_Prop_##Name() \
-                            , owner \
-                            , zfcast(ZFObject *, this->Get()) \
-                            , notifyOwnerAttach \
-                            , _ZFP_PropRVH<_ZFP_PropVT_##Name>::VS \
-                            , this \
-                            ); \
+                    ZFObjectLocker(owner); \
+                    if(!this->VA()) { \
+                        this->Set(InitValueOrEmpty); \
+                        _ZFP_ZFPropertyLifeCycleCall_init_retain( \
+                                zfself::_ZFP_Prop_##Name() \
+                                , owner \
+                                , zfcast(ZFObject *, this->Get()) \
+                                , notifyOwnerAttach \
+                                , _ZFP_PropRVH<_ZFP_PropVT_##Name>::VS \
+                                , this \
+                                ); \
+                    } \
+                    return this->Get(); \
                 } \
-                return this->Get(); \
+                else { \
+                    return this->Get(); \
+                } \
             } \
             void Dealloc( \
                     ZF_IN ZFObject *owner \
@@ -530,16 +536,22 @@ public:
                     , ZF_IN zfbool notifyOwnerAttach \
                     ) { \
                 if(!this->VA()) { \
-                    this->Set(InitValueOrEmpty); \
-                    _ZFP_ZFPropertyLifeCycleCall_init_assign( \
-                            zfself::_ZFP_Prop_##Name() \
-                            , owner \
-                            , &(this->Get()) \
-                            , notifyOwnerAttach \
-                            , _ZFP_PropWeak<zfself::_ZFP_PropVT_##Name>::v(this->Get()) \
-                            ); \
+                    ZFObjectLocker(owner); \
+                    if(!this->VA()) { \
+                        this->Set(InitValueOrEmpty); \
+                        _ZFP_ZFPropertyLifeCycleCall_init_assign( \
+                                zfself::_ZFP_Prop_##Name() \
+                                , owner \
+                                , &(this->Get()) \
+                                , notifyOwnerAttach \
+                                , _ZFP_PropWeak<zfself::_ZFP_PropVT_##Name>::v(this->Get()) \
+                                ); \
+                    } \
+                    return this->Get(); \
                 } \
-                return this->Get(); \
+                else { \
+                    return this->Get(); \
+                } \
             } \
             void Dealloc( \
                     ZF_IN ZFObject *owner \
@@ -706,7 +718,6 @@ public:
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 ) { \
-            ZFObjectLocker(this); \
             return Name##_PropV.Init(this->toObject(), zftrue); \
         } \
     public:
@@ -726,7 +737,6 @@ public:
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 ) { \
-            ZFObjectLocker(this); \
             return Name##_PropV.Init(this->toObject(), zftrue); \
         } \
     public:
