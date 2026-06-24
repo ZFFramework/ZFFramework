@@ -255,8 +255,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                ))zfnull); \
         } \
     }; \
-    _ZFP_mReg_##MethodName##_##RegSig _ZFP_mRegI_##MethodName##_##RegSig; \
-    friend zfclassFwd _ZFP_mReg_##MethodName##_##RegSig;
+    _ZFP_mReg_##MethodName##_##RegSig _ZFP_mRegI_##MethodName##_##RegSig;
 #define _ZFP_ZFMETHOD_INLINE(...) \
     _ZFP_mD_EXPAND(_ZFP_ZFMETHOD_INLINE_(__VA_ARGS__))
 #define _ZFP_ZFMETHOD_INLINE_( \

@@ -10,7 +10,7 @@ zfclass _ZFP_ZFTimerImpl_default_Timer : zfextend ZFObject {
 
 public:
     ZFPROTOCOL_INTERFACE_CLASS(ZFTimer) *impl;
-    zfautoT<ZFTimer> timer;
+    ZFTimer *timer;
 private:
     ZFThread *timerThread;
 protected:
@@ -25,7 +25,7 @@ public:
     zffinal void start(ZF_IN zfidentity timerImplId) {
         zfobjRetain(this);
         this->timerThread = zfobjAlloc(ZFThread, ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, threadCallback)));
-        this->timerThread->threadName("ZFTimerImpl_default");
+        this->timerThread->threadName(zftext("ZFTimerImpl_default"));
         this->timerThread->threadStart(zfobj<v_zfidentity>(this->timer->timerImplId()));
     }
     zffinal void stop(void) {
