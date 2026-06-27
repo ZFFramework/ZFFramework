@@ -48,30 +48,6 @@ zfabstract ZFLIB_ZFCore ZFContainer : zfextend ZFStyle {
     ZFOBJECT_DECLARE_ABSTRACT(ZFContainer, ZFStyle)
 
 public:
-    // ============================================================
-    // events
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
-     * called when element added or removed or order changed
-     */
-    ZFEVENT(ContentOnUpdate)
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
-     * called when element added\n
-     * param0 is the element added to this container
-     */
-    ZFEVENT(ContentOnAdd)
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
-     * called when element removed\n
-     * param0 is the element removed from this container
-     */
-    ZFEVENT(ContentOnRemove)
-
-public:
     /**
      * @brief return total count of this iterable
      */
@@ -143,20 +119,6 @@ public:
             , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
             , ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault())
             )
-
-protected:
-    /** @brief see #E_ContentOnUpdate */
-    virtual inline void contentOnUpdate(void) {
-        this->observerNotify(ZFContainer::E_ContentOnUpdate());
-    }
-    /** @brief see #E_ContentOnAdd */
-    virtual inline void contentOnAdd(ZF_IN ZFObject *element) {
-        this->observerNotify(ZFContainer::E_ContentOnAdd(), element);
-    }
-    /** @brief see #E_ContentOnRemove */
-    virtual inline void contentOnRemove(ZF_IN ZFObject *element) {
-        this->observerNotify(ZFContainer::E_ContentOnRemove(), element);
-    }
 
 protected:
     zfoverride

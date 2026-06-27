@@ -4,10 +4,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFContainer)
 
-ZFEVENT_REGISTER(ZFContainer, ContentOnUpdate)
-ZFEVENT_REGISTER(ZFContainer, ContentOnAdd)
-ZFEVENT_REGISTER(ZFContainer, ContentOnRemove)
-
 ZFMETHOD_DEFINE_3(ZFContainer, void, objectInfoOfContentT
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())

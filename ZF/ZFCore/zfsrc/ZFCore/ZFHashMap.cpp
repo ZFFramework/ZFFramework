@@ -124,23 +124,16 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, addFrom
 
         _ZFP_ZFHashMapPrivate::MapType::iterator itExisting = d->data.find(key);
         if(itExisting != d->data.end()) {
-            this->contentOnRemove(itExisting->first, itExisting->second);
             ZFObject *tmp = itExisting->second;
             zfobjRetain(value);
             itExisting->second = value;
-            this->contentOnAdd(key, value);
             zfobjRelease(tmp);
         }
         else {
             zfobjRetain(key);
             zfobjRetain(value);
             (d->data)[key] = value;
-            this->contentOnAdd(key, value);
         }
-    }
-
-    if(key != zfnull) {
-        this->contentOnUpdate();
     }
 }
 
@@ -158,21 +151,16 @@ ZFMETHOD_DEFINE_2(ZFHashMap, void, set
 
     _ZFP_ZFHashMapPrivate::MapType::iterator it = d->data.find(key);
     if(it != d->data.end()) {
-        this->contentOnRemove(it->first, it->second);
         ZFObject *tmp = it->second;
         zfobjRetain(value);
         it->second = value;
-        this->contentOnAdd(it->first, it->second);
         zfobjRelease(tmp);
     }
     else {
         zfobjRetain(key);
         zfobjRetain(value);
         (d->data)[key] = value;
-        this->contentOnAdd(key, value);
     }
-
-    this->contentOnUpdate();
 }
 
 ZFMETHOD_DEFINE_1(ZFHashMap, void, remove
@@ -184,11 +172,8 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, remove
             ZFObject *tmpKey = it->first;
             ZFObject *tmpValue = it->second;
             d->data.erase(it);
-            this->contentOnRemove(tmpKey, tmpValue);
             zfobjRelease(tmpKey);
             zfobjRelease(tmpValue);
-
-            this->contentOnUpdate();
         }
     }
 }
@@ -201,10 +186,6 @@ ZFMETHOD_DEFINE_1(ZFHashMap, zfauto, removeAndGet
             ZFObject *tmpKey = it->first;
             ZFObject *tmpValue = it->second;
             d->data.erase(it);
-
-            this->contentOnRemove(tmpKey, tmpValue);
-            this->contentOnUpdate();
-
             zfobjRelease(tmpKey);
             zfobjReleaseInScope(tmpValue);
             return tmpValue;
@@ -217,11 +198,9 @@ ZFMETHOD_DEFINE_0(ZFHashMap, void, removeAll) {
         _ZFP_ZFHashMapPrivate::MapType tmp;
         tmp.swap(d->data);
         for(_ZFP_ZFHashMapPrivate::MapType::iterator it = d->data.begin(); it != d->data.end(); ++it) {
-            this->contentOnRemove(it->first, it->second);
             zfobjRelease(it->first);
             zfobjRelease(it->second);
         }
-        this->contentOnUpdate();
     }
 }
 
@@ -251,13 +230,9 @@ ZFMETHOD_DEFINE_2(ZFHashMap, void, iterValue
         , ZFMP_IN_OUT(zfiter &, it)
         , ZFMP_IN(ZFObject *, value)
         ) {
-    ZFObject *key = d->data.iterKey(it);
     ZFObject *old = d->data.iterValue(it);
     zfobjRetain(value);
-    this->contentOnRemove(key, old);
     d->data.iterValue(it, value);
-    this->contentOnAdd(key, value);
-    this->contentOnUpdate();
     zfobjRelease(old);
 }
 ZFMETHOD_DEFINE_1(ZFHashMap, void, iterRemove
@@ -266,8 +241,6 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, iterRemove
     ZFObject *key = d->data.iterKey(it);
     ZFObject *value = d->data.iterValue(it);
     d->data.iterRemove(it);
-    this->contentOnRemove(key, value);
-    this->contentOnUpdate();
     zfobjRelease(key);
     zfobjRelease(value);
 }
@@ -285,19 +258,13 @@ ZFMETHOD_DEFINE_2(ZFHashMap, zfiter, iterAdd
         zfobjRetain(valueOld);
         zfobjRetain(value);
         d->data.iterValue(it, value);
-        this->contentOnRemove(key, valueOld);
-        this->contentOnAdd(key, value);
-        this->contentOnUpdate();
         zfobjRelease(valueOld);
         return it;
     }
     else {
         zfobjRetain(key);
         zfobjRetain(value);
-        zfiter it = d->data.iterAdd(key, value);
-        this->contentOnAdd(key, value);
-        this->contentOnUpdate();
-        return it;
+        return d->data.iterAdd(key, value);
     }
 }
 

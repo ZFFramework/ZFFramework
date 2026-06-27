@@ -61,32 +61,6 @@ zfabstract ZFLIB_ZFCore ZFKeyValueContainer: zfextend ZFContainer {
     ZFOBJECT_DECLARE_ABSTRACT(ZFKeyValueContainer, ZFContainer)
 
 public:
-    // ============================================================
-    // events
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
-     * called when element added or removed or order changed
-     */
-    ZFEVENT(ContentOnUpdate)
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
-     * called when element added\n
-     * param0 is the element key,
-     * param1 is the element value
-     */
-    ZFEVENT(ContentOnAdd)
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
-     * called when element removed\n
-     * param0 is the element key,
-     * param1 is the element value
-     */
-    ZFEVENT(ContentOnRemove)
-
-public:
     /**
      * @brief get key value pair with iter, see #zfiter
      */
@@ -164,33 +138,6 @@ public:
             , ZFMP_IN(zfindex, maxCount)
             , ZFMP_IN(const ZFTokenForKeyValueContainer &, token)
             )
-
-protected:
-    zfoverride
-    virtual inline void contentOnAdd(ZF_IN ZFObject *element) {
-    }
-    zfoverride
-    virtual inline void contentOnRemove(ZF_IN ZFObject *element) {
-    }
-protected:
-    /** @brief see #E_ContentOnUpdate */
-    virtual inline void contentOnUpdate(void) {
-        this->observerNotify(ZFKeyValueContainer::E_ContentOnUpdate());
-    }
-    /** @brief see #E_ContentOnAdd */
-    virtual inline void contentOnAdd(
-            ZF_IN ZFObject *key
-            , ZF_IN ZFObject *value
-            ) {
-        this->observerNotify(ZFKeyValueContainer::E_ContentOnAdd(), key, value);
-    }
-    /** @brief see #E_ContentOnRemove */
-    virtual inline void contentOnRemove(
-            ZF_IN ZFObject *key
-            , ZF_IN ZFObject *value
-            ) {
-        this->observerNotify(ZFKeyValueContainer::E_ContentOnRemove(), key, value);
-    }
 
 protected:
     zfoverride

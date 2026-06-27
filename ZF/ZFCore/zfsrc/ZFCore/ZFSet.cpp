@@ -40,8 +40,6 @@ ZFMETHOD_DEFINE_1(ZFSet, void, add
     ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
     if(!d->isContain(obj)) {
         d->set(obj, ZFNull());
-        this->contentOnAdd(obj);
-        this->contentOnUpdate();
     }
 }
 ZFMETHOD_DEFINE_1(ZFSet, void, addFrom
@@ -51,18 +49,11 @@ ZFMETHOD_DEFINE_1(ZFSet, void, addFrom
         return;
     }
 
-    zfbool changed = zffalse;
     for(zfiter it = another->iter(); it; ++it) {
         ZFObject *obj = another->iterValue(it);
         if(!d->isContain(obj)) {
-            changed = zftrue;
             d->set(obj, ZFNull());
-            this->contentOnAdd(obj);
         }
-    }
-
-    if(changed) {
-        this->contentOnUpdate();
     }
 }
 
@@ -73,8 +64,6 @@ ZFMETHOD_DEFINE_1(ZFSet, void, remove
     if(it) {
         zfauto key = d->iterKey(it);
         d->iterRemove(it);
-        this->contentOnRemove(key);
-        this->contentOnUpdate();
     }
 }
 ZFMETHOD_DEFINE_1(ZFSet, zfauto, removeAndGet
@@ -84,8 +73,6 @@ ZFMETHOD_DEFINE_1(ZFSet, zfauto, removeAndGet
     if(it) {
         zfauto key = d->iterKey(it);
         d->iterRemove(it);
-        this->contentOnRemove(key);
-        this->contentOnUpdate();
         return key;
     }
     else {
@@ -100,11 +87,6 @@ ZFMETHOD_DEFINE_0(ZFSet, void, removeAll) {
             tmp.add(d->iterKey(it));
         }
         d->removeAll();
-
-        for(zfindex i = 0; i < tmp.count(); ++i) {
-            this->contentOnRemove(tmp[i]);
-        }
-        this->contentOnUpdate();
     }
 }
 
@@ -140,8 +122,6 @@ ZFMETHOD_DEFINE_1(ZFSet, void, iterRemove
     zfauto key = d->iterKey(it);
     if(key != zfnull) {
         d->iterRemove(it);
-        this->contentOnRemove(key);
-        this->contentOnUpdate();
     }
 }
 ZFMETHOD_DEFINE_1(ZFSet, zfiter, iterAdd
@@ -153,8 +133,6 @@ ZFMETHOD_DEFINE_1(ZFSet, zfiter, iterAdd
     }
     else {
         it = d->iterAdd(value, ZFNull());
-        this->contentOnAdd(value);
-        this->contentOnUpdate();
         return it;
     }
 }

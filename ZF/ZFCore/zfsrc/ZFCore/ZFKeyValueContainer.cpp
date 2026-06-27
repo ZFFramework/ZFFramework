@@ -4,10 +4,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFKeyValueContainer)
 
-ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnUpdate)
-ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnAdd)
-ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnRemove)
-
 void ZFKeyValueContainer::objectInfoOfContentT(
         ZF_IN_OUT zfstring &ret
         , ZF_IN_OPT zfindex maxCount /* = zfindexMax() */

@@ -179,9 +179,6 @@ ZFMETHOD_DEFINE_2(ZFArray, void, add
     ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
     zfobjRetain(obj);
     d->data.insert(d->data.begin() + indexAddTo, obj);
-
-    this->contentOnAdd(obj);
-    this->contentOnUpdate();
 }
 ZFMETHOD_DEFINE_1(ZFArray, void, add
         , ZFMP_IN(ZFObject *, obj)
@@ -189,9 +186,6 @@ ZFMETHOD_DEFINE_1(ZFArray, void, add
     ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
     zfobjRetain(obj);
     d->data.push_back(obj);
-
-    this->contentOnAdd(obj);
-    this->contentOnUpdate();
 }
 ZFMETHOD_DEFINE_1(ZFArray, void, addFrom
         , ZFMP_IN(ZFContainer *, another)
@@ -204,10 +198,6 @@ ZFMETHOD_DEFINE_1(ZFArray, void, addFrom
         obj = another->iterValue(it);
         zfobjRetain(obj);
         d->data.push_back(obj);
-        this->contentOnAdd(obj);
-    }
-    if(obj != zfnull) {
-        this->contentOnUpdate();
     }
 }
 
@@ -221,10 +211,6 @@ ZFMETHOD_DEFINE_2(ZFArray, void, set
 
     ZFObject *old = d->data[index];
     d->data[index] = obj;
-
-    this->contentOnRemove(old);
-    this->contentOnAdd(obj);
-    this->contentOnUpdate();
 
     zfobjRelease(old);
 }
@@ -242,9 +228,6 @@ zfbool ZFArray::removeElement(
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
                 zfobjRelease(toRelease);
-
-                this->contentOnRemove(toRelease);
-                this->contentOnUpdate();
                 return zftrue;
             }
             else {
@@ -271,9 +254,6 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElement
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
                 zfobjRelease(toRelease);
-
-                this->contentOnRemove(toRelease);
-                this->contentOnUpdate();
                 return zftrue;
             }
             else {
@@ -296,9 +276,6 @@ zfbool ZFArray::removeElementReversely(
                 ZFObject *toRelease = d->data[i];
                 d->data.erase(d->data.begin() + i);
                 zfobjRelease(toRelease);
-
-                this->contentOnRemove(toRelease);
-                this->contentOnUpdate();
                 return zftrue;
             }
         }
@@ -322,9 +299,6 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElementReversely
                 ZFObject *toRelease = d->data[i];
                 d->data.erase(d->data.begin() + i);
                 zfobjRelease(toRelease);
-
-                this->contentOnRemove(toRelease);
-                this->contentOnUpdate();
                 return zftrue;
             }
         }
@@ -346,16 +320,11 @@ zfindex ZFArray::removeElementAll(
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
                 zfobjRelease(toRelease);
-
-                this->contentOnRemove(toRelease);
             }
             else {
                 ++it;
             }
         }
-    }
-    if(removedCount > 0) {
-        this->contentOnUpdate();
     }
     return removedCount;
 }
@@ -378,16 +347,11 @@ ZFMETHOD_DEFINE_2(ZFArray, zfindex, removeElementAll
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
                 zfobjRelease(toRelease);
-
-                this->contentOnRemove(toRelease);
             }
             else {
                 ++it;
             }
         }
-    }
-    if(removedCount > 0) {
-        this->contentOnUpdate();
     }
     return removedCount;
 }
@@ -401,9 +365,6 @@ ZFMETHOD_DEFINE_2(ZFArray, void, remove
         ZFObject *tmp = d->data[index];
         zfobjReleaseInScope(tmp);
         d->data.erase(d->data.begin() + index);
-
-        this->contentOnRemove(tmp);
-        this->contentOnUpdate();
     }
     else if(count > 1) {
         if(count > this->count() - index) {
@@ -414,12 +375,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, remove
             d->data.begin() + (index + count));
         d->data.erase(d->data.begin() + index, d->data.begin() + (index + count));
         for(zfstlvector<ZFObject *>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
-            this->contentOnRemove(*it);
             zfobjRelease(*it);
-        }
-
-        if(!tmp.empty()) {
-            this->contentOnUpdate();
         }
     }
 }
@@ -450,11 +406,7 @@ ZFMETHOD_DEFINE_0(ZFArray, void, removeAll) {
     if(!d->data.empty()) {
         zfstlvector<ZFObject *> tmp;
         tmp.swap(d->data);
-
-        this->contentOnUpdate();
-
         for(zfstlvector<ZFObject *>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
-            this->contentOnRemove(*it);
             zfobjRelease(*it);
         }
     }
@@ -486,8 +438,6 @@ ZFMETHOD_DEFINE_2(ZFArray, void, move
         }
     }
     d->data[toIndexOrIndexMax] = t;
-
-    this->contentOnUpdate();
 }
 
 void ZFArray::sort(
@@ -502,7 +452,6 @@ void ZFArray::sort(
                 , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
                 , comparer
                 );
-        this->contentOnUpdate();
     }
 }
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFArray, void, sort
@@ -524,7 +473,6 @@ ZFMETHOD_DEFINE_3(ZFArray, void, sort
                 , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
                 , _ZFP_ZFArrayItemComparer(this, comparer)
                 );
-        this->contentOnUpdate();
     }
 }
 void ZFArray::sortReversely(
@@ -539,7 +487,6 @@ void ZFArray::sortReversely(
                 , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
                 , comparer
                 );
-        this->contentOnUpdate();
     }
 }
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFArray, void, sortReversely
@@ -561,7 +508,6 @@ ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
                 , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
                 , _ZFP_ZFArrayItemComparer(this, comparer)
                 );
-        this->contentOnUpdate();
     }
 }
 
