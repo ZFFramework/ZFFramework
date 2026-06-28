@@ -173,17 +173,18 @@ public:
         return const_iterator(list.end());
     }
     zfstlpair<iterator, zfbool> insert(ZF_IN const zfstlpair<T_Key, T_Value> &entry) {
-        typename MapType::iterator mapIt = map.find(&(entry.first));
-        if(mapIt == map.end()) {
-            Item *item = zfpoolNew(Item, entry);
-            item->mapIt = map.insert(zfstlpair<const T_Key *, Item *>(&(item->entry.first), item)).first;
-            list.push_back(item);
-            --(item->listIt = list.end());
-            return zfstlpair<iterator, zfbool>(iterator(item->listIt), zftrue);
+        Item *itemTmp = zfpoolNew(Item, entry);
+        zfstlpair<typename MapType::iterator, bool> insertResult = map.insert(zfstlpair<const T_Key *, Item *>(&(itemTmp->entry.first), itemTmp));
+        if(insertResult.second) {
+            insertResult.first->second = itemTmp;
+            itemTmp->mapIt = insertResult.first;
+            list.push_back(itemTmp);
+            --(itemTmp->listIt = list.end());
+            return zfstlpair<iterator, zfbool>(iterator(itemTmp->listIt), zftrue);
         }
         else {
-            Item *item = mapIt->second;
-            item->entry.second = entry.second;
+            zfpoolDelete(itemTmp);
+            Item *item = insertResult.first->second;
             list.erase(item->listIt);
             list.push_back(item);
             --(item->listIt = list.end());
@@ -191,12 +192,22 @@ public:
         }
     }
     T_Value &operator [] (ZF_IN T_Key const &key) {
-        iterator it = this->find(key);
-        if(it != this->end()) {
-            return it->second;
+        Item *itemTmp = zfpoolNew(Item, key, T_Value());
+        zfstlpair<typename MapType::iterator, bool> insertResult = map.insert(zfstlpair<const T_Key *, Item *>(&(itemTmp->entry.first), itemTmp));
+        if(insertResult.second) {
+            insertResult.first->second = itemTmp;
+            itemTmp->mapIt = insertResult.first;
+            list.push_back(itemTmp);
+            --(itemTmp->listIt = list.end());
+            return itemTmp->entry.second;
         }
         else {
-            return this->insert(zfstlpair<T_Key, T_Value>(key, T_Value())).first->second;
+            zfpoolDelete(itemTmp);
+            Item *item = insertResult.first->second;
+            list.erase(item->listIt);
+            list.push_back(item);
+            --(item->listIt = list.end());
+            return item->entry.second;
         }
     }
     iterator erase(ZF_IN iterator it) {
@@ -365,7 +376,11 @@ public:
             , ZF_IN T_Value const &value
             ) {
         _Iter *impl = zfpoolNew(_Iter);
-        impl->it = this->insert(zfstlpair<T_Key, T_Value>(key, value)).first;
+        zfstlpair<typename zfimplordermap<T_Key, T_Value, T_Hash, T_Equal>::iterator, bool> insertResult = this->insert(zfstlpair<T_Key, T_Value>(key, value));
+        if(!insertResult.second) {
+            insertResult.first->second = value;
+        }
+        impl->it = insertResult.first;
         impl->end = this->end();
         return zfiter(impl);
     }

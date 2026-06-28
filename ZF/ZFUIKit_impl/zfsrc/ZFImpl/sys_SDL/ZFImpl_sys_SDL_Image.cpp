@@ -35,7 +35,14 @@ public:
         cache.sdlTexture = SDL_CreateTextureFromSurface(owner, sdlSurface);
         SDL_SetTextureBlendMode(cache.sdlTexture, SDL_BLENDMODE_BLEND);
         cache.surfaceIt = surfaceIt;
-        cache.surfaceSubIt = surfaceIt->second.insert(zfstlpair<SDL_Renderer *, zfautoT<ZFValue> >(owner, cacheHolder)).first;
+        {
+            zfstlpair<SurfaceSubMap::iterator, bool> insertResult = surfaceIt->second.insert(zfstlpair<SDL_Renderer *, zfautoT<ZFValue> >(owner, cacheHolder));
+            if(!insertResult.second) {
+                insertResult.first->second = cacheHolder;
+            }
+            cache.surfaceSubIt = insertResult.first;
+        }
+        cache.surfaceSubIt->second = cacheHolder;
         cache.rendererIt = r.find(owner);
         if(cache.rendererIt == r.end()) {
             cache.rendererIt = r.insert(zfstlpair<SDL_Renderer *, CacheList>(owner, CacheList())).first;

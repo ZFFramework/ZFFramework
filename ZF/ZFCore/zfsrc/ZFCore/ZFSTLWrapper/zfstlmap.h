@@ -93,7 +93,11 @@ public:
             , ZF_IN T_Value const &value
             ) {
         _Iter *impl = zfpoolNew(_Iter);
-        impl->it = this->insert(zfstlpair<T_Key, T_Value>(key, value)).first;
+        zfstlpair<typename zfimplmap<T_Key, T_Value, T_Compare>::iterator, bool> insertResult = this->insert(zfstlpair<T_Key, T_Value>(key, value));
+        if(!insertResult.second) {
+            insertResult.first->second = value;
+        }
+        impl->it = insertResult.first;
         impl->end = this->end();
         return zfiter(impl);
     }

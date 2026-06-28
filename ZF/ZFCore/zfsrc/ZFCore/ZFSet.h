@@ -10,7 +10,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassFwd ZFMap;
+zfclassFwd _ZFP_ZFSetPrivate;
 /**
  * @brief container of ZFObject, see #ZFContainer
  */
@@ -112,7 +112,7 @@ protected:
     virtual void objectOnDealloc(void);
 
 private:
-    ZFMap *d;
+    _ZFP_ZFSetPrivate *d;
 };
 
 ZF_NAMESPACE_GLOBAL_END

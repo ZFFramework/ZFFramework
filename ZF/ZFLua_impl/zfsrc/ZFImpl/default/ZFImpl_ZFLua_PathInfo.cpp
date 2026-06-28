@@ -138,8 +138,12 @@ void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(
         itState->second = zftrue;
     }
     if(highPriority) {
-        _ZFP_ZFImpl_ZFLua_PathInfoMapType::iterator it = d->pathInfoMap.insert(zfstlpair<zfstring, zfstring>(luaFuncName, luaFuncBody)).first;
-        d->pathInfoMap.move(it, d->pathInfoMap.begin());
+        zfstring luaFuncBodyTmp = luaFuncBody;
+        zfstlpair<_ZFP_ZFImpl_ZFLua_PathInfoMapType::iterator, bool> insertResult = d->pathInfoMap.insert(zfstlpair<zfstring, zfstring>(luaFuncName, luaFuncBodyTmp));
+        if(!insertResult.second) {
+            insertResult.first->second = luaFuncBodyTmp;
+        }
+        d->pathInfoMap.move(insertResult.first, d->pathInfoMap.begin());
     }
     else {
         d->pathInfoMap[luaFuncName] = luaFuncBody;

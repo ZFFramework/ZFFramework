@@ -10,7 +10,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassFwd ZFHashMap;
+zfclassFwd _ZFP_ZFHashSetPrivate;
 /**
  * @brief container of ZFObject, see #ZFContainer
  */
@@ -112,7 +112,7 @@ protected:
     virtual void objectOnDealloc(void);
 
 private:
-    ZFHashMap *d;
+    _ZFP_ZFHashSetPrivate *d;
 };
 
 ZF_NAMESPACE_GLOBAL_END

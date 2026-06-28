@@ -1,7 +1,36 @@
 #include "ZFSet.h"
-#include "ZFMap.h"
+#include "ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
+
+// ============================================================
+// _ZFP_ZFSetPrivate
+zfclassNotPOD _ZFP_ZFSetKeyComparer {
+public:
+    inline zfbool operator () (
+            ZF_IN ZFObject *obj1
+            , ZF_IN ZFObject *obj2
+            ) const {
+        ZFCompareResult cmp = ZFObjectCompare(obj1, obj2);
+        ZFCoreAssertWithMessageTrim(cmp != ZFCompareUncomparable, "[ZFSet] key must comparable: %s, %s",
+            obj1,
+            obj2);
+        return (cmp == ZFCompareSmaller);
+    }
+};
+zfclassNotPOD _ZFP_ZFSetPrivate {
+public:
+    typedef zfimplmap<ZFObject *, zfbool, _ZFP_ZFSetKeyComparer> MapType;
+
+public:
+    MapType data;
+
+public:
+    _ZFP_ZFSetPrivate(void)
+    : data()
+    {
+    }
+};
 
 // ============================================================
 // ZFSet
@@ -14,32 +43,33 @@ ZFOBJECT_ON_INIT_DEFINE_1(ZFSet
 }
 void ZFSet::objectOnInit(void) {
     zfsuper::objectOnInit();
-    d = zfobjAlloc(ZFMap);
+    d = zfpoolNew(_ZFP_ZFSetPrivate);
 }
 void ZFSet::objectOnDealloc(void) {
-    zfobjRelease(d);
+    zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }
 
 ZFMETHOD_DEFINE_0(ZFSet, zfindex, count) {
-    return d->count();
+    return (zfindex)d->data.size();
 }
 ZFMETHOD_DEFINE_0(ZFSet, zfbool, isEmpty) {
-    return d->isEmpty();
+    return d->data.empty();
 }
 ZFMETHOD_DEFINE_1(ZFSet, zfbool, isContain
         , ZFMP_IN(ZFObject *, obj)
         ) {
-    return d->isContain(obj);
+    return (obj != zfnull && d->data.find(obj) != d->data.end());
 }
 
 ZFMETHOD_DEFINE_1(ZFSet, void, add
         , ZFMP_IN(ZFObject *, obj)
         ) {
     ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
-    if(!d->isContain(obj)) {
-        d->set(obj, ZFNull());
+    zfstlpair<_ZFP_ZFSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, zfbool>(obj, zftrue));
+    if(insertResult.second) {
+        zfobjRetain(obj);
     }
 }
 ZFMETHOD_DEFINE_1(ZFSet, void, addFrom
@@ -48,11 +78,11 @@ ZFMETHOD_DEFINE_1(ZFSet, void, addFrom
     if(another == this || another == zfnull) {
         return;
     }
-
     for(zfiter it = another->iter(); it; ++it) {
         ZFObject *obj = another->iterValue(it);
-        if(!d->isContain(obj)) {
-            d->set(obj, ZFNull());
+        zfstlpair<_ZFP_ZFSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, zfbool>(obj, zftrue));
+        if(insertResult.second) {
+            zfobjRetain(obj);
         }
     }
 }
@@ -60,51 +90,52 @@ ZFMETHOD_DEFINE_1(ZFSet, void, addFrom
 ZFMETHOD_DEFINE_1(ZFSet, void, remove
         , ZFMP_IN(ZFObject *, obj)
         ) {
-    zfiter it = d->iterFind(obj);
-    if(it) {
-        zfauto key = d->iterKey(it);
-        d->iterRemove(it);
+    _ZFP_ZFSetPrivate::MapType::iterator it = d->data.find(obj);
+    if(it != d->data.end()) {
+        ZFObject *toRelease = it->first;
+        d->data.erase(it);
+        zfobjRelease(toRelease);
     }
 }
 ZFMETHOD_DEFINE_1(ZFSet, zfauto, removeAndGet
         , ZFMP_IN(ZFObject *, obj)
         ) {
-    zfiter it = d->iterFind(obj);
-    if(it) {
-        zfauto key = d->iterKey(it);
-        d->iterRemove(it);
-        return key;
+    _ZFP_ZFSetPrivate::MapType::iterator it = d->data.find(obj);
+    if(it != d->data.end()) {
+        zfauto ret = it->first;
+        d->data.erase(it);
+        zfobjRelease(ret);
+        return ret;
     }
     else {
         return zfnull;
     }
 }
 ZFMETHOD_DEFINE_0(ZFSet, void, removeAll) {
-    if(!d->isEmpty()) {
-        ZFCoreArray<zfauto> tmp;
-        tmp.capacity(d->count());
-        for(zfiter it = d->iter(); it; ++it) {
-            tmp.add(d->iterKey(it));
+    if(!d->data.empty()) {
+        _ZFP_ZFSetPrivate::MapType tmp;
+        tmp.swap(d->data);
+        for(_ZFP_ZFSetPrivate::MapType::iterator it = tmp.begin(); it != tmp.end(); ++it) {
+            zfobjRelease(it->first);
         }
-        d->removeAll();
     }
 }
 
 // ============================================================
 ZFMETHOD_DEFINE_0(ZFSet, zfiter, iter) {
-    return d->iter();
+    return d->data.iter();
 }
 
 ZFMETHOD_DEFINE_1(ZFSet, zfiter, iterFind
         , ZFMP_IN(ZFObject *, key)
         ) {
-    return d->iterFind(key);
+    return d->data.iterFind(key);
 }
 
 ZFMETHOD_DEFINE_1(ZFSet, zfany, iterValue
         , ZFMP_IN(const zfiter &, it)
         ) {
-    return d->iterKey(it);
+    return d->data.iterKey(it);
 }
 
 ZFMETHOD_DEFINE_2(ZFSet, void, iterValue
@@ -112,27 +143,27 @@ ZFMETHOD_DEFINE_2(ZFSet, void, iterValue
         , ZFMP_IN(ZFObject *, value)
         ) {
     zfobjRetain(value);
-    this->iterRemove(it);
+    d->data.iterRemove(it);
     this->add(value);
     zfobjRelease(value);
 }
 ZFMETHOD_DEFINE_1(ZFSet, void, iterRemove
         , ZFMP_IN_OUT(zfiter &, it)
         ) {
-    zfauto key = d->iterKey(it);
-    if(key != zfnull) {
-        d->iterRemove(it);
-    }
+    ZFObject *key = d->data.iterKey(it);
+    d->data.iterRemove(it);
+    zfobjRelease(key);
 }
 ZFMETHOD_DEFINE_1(ZFSet, zfiter, iterAdd
         , ZFMP_IN(ZFObject *, value)
         ) {
-    zfiter it = d->iterFind(value);
+    zfiter it = d->data.iterFind(value);
     if(it) {
         return it;
     }
     else {
-        it = d->iterAdd(value, ZFNull());
+        zfobjRetain(value);
+        it = d->data.iterAdd(value, zftrue);
         return it;
     }
 }

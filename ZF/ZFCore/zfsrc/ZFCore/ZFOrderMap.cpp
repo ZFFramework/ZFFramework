@@ -127,18 +127,16 @@ ZFMETHOD_DEFINE_1(ZFOrderMap, void, addFrom
     for(zfiter it = another->iter(); it; ++it) {
         key = another->iterKey(it);
         value = another->iterValue(it);
-
-        _ZFP_ZFOrderMapPrivate::MapType::iterator itExisting = d->data.find(key);
-        if(itExisting != d->data.end()) {
-            ZFObject *tmp = itExisting->second;
-            zfobjRetain(value);
-            itExisting->second = value;
-            zfobjRelease(tmp);
-        }
-        else {
+        zfstlpair<_ZFP_ZFOrderMapPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, value));
+        if(insertResult.second) {
             zfobjRetain(key);
             zfobjRetain(value);
-            d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, value));
+        }
+        else {
+            ZFObject *old = insertResult.first->second;
+            insertResult.first->second = value;
+            zfobjRetain(value);
+            zfobjRelease(old);
         }
     }
 }
@@ -154,18 +152,16 @@ ZFMETHOD_DEFINE_2(ZFOrderMap, void, set
         this->remove(key);
         return;
     }
-
-    _ZFP_ZFOrderMapPrivate::MapType::iterator it = d->data.find(key);
-    if(it != d->data.end()) {
-        ZFObject *tmp = it->second;
-        zfobjRetain(value);
-        it->second = value;
-        zfobjRelease(tmp);
-    }
-    else {
+    zfstlpair<_ZFP_ZFOrderMapPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, value));
+    if(insertResult.second) {
         zfobjRetain(key);
         zfobjRetain(value);
-        d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, value));
+    }
+    else {
+        ZFObject *old = insertResult.first->second;
+        insertResult.first->second = value;
+        zfobjRetain(value);
+        zfobjRelease(old);
     }
 }
 
