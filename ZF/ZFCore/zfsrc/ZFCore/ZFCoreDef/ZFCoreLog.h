@@ -11,19 +11,6 @@
 #include "ZFCallerInfo.h"
 #include "zfstr.h"
 
-/**
- * @brief same as assert defined for future use
- *
- * active only if ZF_ENV_DEBUG is zftrue
- * @see ZFCoreAssert
- */
-#if ZF_ENV_DEBUG
-    #include <cassert>
-    #define zfassert(b) assert(b)
-#else
-    #define zfassert(b) ((void)0)
-#endif
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -31,6 +18,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief assert at compile time
  */
 #define ZFASSERT_STATIC(cond, name) typedef char assert_failed_##name[(cond) ? 1 : -1];
+
+/**
+ * @brief util macro to active only if ZF_ENV_DEBUG is zftrue
+ */
+#if ZF_ENV_DEBUG
+    #define ZFDEBUG(...) __VA_ARGS__
+#else
+    #define ZFDEBUG(...)
+#endif
 
 // ============================================================
 /**

@@ -133,10 +133,10 @@ ZFMETHOD_DEFINE_1(ZFOrderMap, void, addFrom
             zfobjRetain(value);
         }
         else {
-            ZFObject *old = insertResult.first->second;
+            ZFObject *valueOld = insertResult.first->second;
             insertResult.first->second = value;
             zfobjRetain(value);
-            zfobjRelease(old);
+            zfobjRelease(valueOld);
         }
     }
 }
@@ -158,10 +158,10 @@ ZFMETHOD_DEFINE_2(ZFOrderMap, void, set
         zfobjRetain(value);
     }
     else {
-        ZFObject *old = insertResult.first->second;
+        ZFObject *valueOld = insertResult.first->second;
         insertResult.first->second = value;
         zfobjRetain(value);
-        zfobjRelease(old);
+        zfobjRelease(valueOld);
     }
 }
 
@@ -232,10 +232,10 @@ ZFMETHOD_DEFINE_2(ZFOrderMap, void, iterValue
         , ZFMP_IN_OUT(zfiter &, it)
         , ZFMP_IN(ZFObject *, value)
         ) {
-    ZFObject *old = d->data.iterValue(it);
-    zfobjRetain(value);
+    ZFObject *valueOld = d->data.iterValue(it);
     d->data.iterValue(it, value);
-    zfobjRelease(old);
+    zfobjRetain(value);
+    zfobjRelease(valueOld);
 }
 ZFMETHOD_DEFINE_1(ZFOrderMap, void, iterRemove
         , ZFMP_IN_OUT(zfiter &, it)
@@ -252,6 +252,20 @@ ZFMETHOD_DEFINE_2(ZFOrderMap, zfiter, iterAdd
         , ZFMP_IN(ZFObject *, value)
         ) {
     return d->data.iterAdd(key, value);
+}
+ZFMETHOD_DEFINE_2(ZFOrderMap, zfiter, iterAccess
+        , ZFMP_IN(ZFObject *, key)
+        , ZFMP_IN_OPT(ZFObject *, defValue, ZFNull())
+        ) {
+    if(key == zfnull) {
+        return zfnull;
+    }
+    zfstlpair<_ZFP_ZFOrderMapPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, defValue));
+    if(insertResult.second) {
+        zfobjRetain(key);
+        zfobjRetain(defValue);
+    }
+    return d->data.iter(insertResult.first);
 }
 
 // ============================================================

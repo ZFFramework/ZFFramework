@@ -69,38 +69,44 @@ private:
         }
     };
 public:
-    zffinal inline zfiter iter(void) {
+    zfiter iter(ZF_IN zfimplhashmap<T_Key, T_Value, T_Hash, T_Equal>::iterator it) {
+        _Iter *impl = zfpoolNew(_Iter);
+        impl->it = it;
+        impl->end = this->end();
+        return zfiter(impl);
+    }
+    zfiter iter(void) {
         _Iter *impl = zfpoolNew(_Iter);
         impl->it = this->begin();
         impl->end = this->end();
         return zfiter(impl);
     }
 
-    zffinal inline zfiter iterFind(ZF_IN T_Key const &key) {
+    zfiter iterFind(ZF_IN T_Key const &key) {
         _Iter *impl = zfpoolNew(_Iter);
         impl->it = this->find(key);
         impl->end = this->end();
         return zfiter(impl);
     }
 
-    zffinal inline T_Key const &iterKey(ZF_IN const zfiter &it) {
+    T_Key const &iterKey(ZF_IN const zfiter &it) {
         return it.impl<_Iter *>()->it->first;
     }
-    zffinal inline T_Value &iterValue(ZF_IN const zfiter &it) {
+    T_Value &iterValue(ZF_IN const zfiter &it) {
         return it.impl<_Iter *>()->it->second;
     }
 
-    zffinal inline void iterValue(
+    void iterValue(
             ZF_IN_OUT zfiter &it
             , ZF_IN T_Value const &newValue
             ) {
         it.impl<_Iter *>()->it->second = newValue;
     }
-    zffinal inline void iterRemove(ZF_IN_OUT zfiter &it) {
+    void iterRemove(ZF_IN_OUT zfiter &it) {
         this->erase((it.impl<_Iter *>()->it)++);
     }
 
-    zffinal inline zfiter iterAdd(
+    zfiter iterAdd(
             ZF_IN T_Key const &key
             , ZF_IN T_Value const &value
             ) {
@@ -110,6 +116,12 @@ public:
             insertResult.first->second = value;
         }
         impl->it = insertResult.first;
+        impl->end = this->end();
+        return zfiter(impl);
+    }
+    zfiter iterAccess(ZF_IN T_Key const &key) {
+        _Iter *impl = zfpoolNew(_Iter);
+        impl->it = this->insert(zfstlpair<T_Key, T_Value>(key, T_Value())).first;
         impl->end = this->end();
         return zfiter(impl);
     }

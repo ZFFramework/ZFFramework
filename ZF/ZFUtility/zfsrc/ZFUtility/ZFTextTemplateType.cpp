@@ -174,25 +174,17 @@ void ZFTextTemplateParam::replaceData(
     if(key == zfnull) {
         return;
     }
-    zfiter it = d->replaceDataMap.iterFind(key);
-    if(it) {
-        if(value) {
-            d->replaceDataMap.iterValue(it, value);
-        }
-        else {
-            d->replaceDataMap.iterRemove(it);
-        }
+    if(value) {
+        d->replaceDataMap.set(key, value);
     }
     else {
-        if(value) {
-            d->replaceDataMap.set(key, value);
-        }
+        d->replaceDataMap.remove(key);
     }
 }
 const zfstring &ZFTextTemplateParam::replaceData(ZF_IN const zfstring &key) const {
-    zfiter it = d->replaceDataMap.iterFind(key);
-    if(it) {
-        return d->replaceDataMap.iterValue(it);
+    zfstring *value = d->replaceDataMap.get(key);
+    if(value) {
+        return *value;
     }
     else {
         return zfstring::Empty();
@@ -238,27 +230,15 @@ void ZFTextTemplateParam::enableData(
     if(key == zfnull) {
         return;
     }
-    zfiter it = d->enableDataMap.iterFind(key);
-    if(it) {
-        d->enableDataMap.iterValue(it, value);
-    }
-    else {
-        d->enableDataMap.set(key, value);
-    }
+    d->enableDataMap.set(key, value);
 }
 const zfbool *ZFTextTemplateParam::enableData(ZF_IN const zfstring &key) const {
-    zfiter it = d->enableDataMap.iterFind(key);
-    if(it) {
-        return &(d->enableDataMap.iterValue(it));
-    }
-    else {
-        return zfnull;
-    }
+    return d->enableDataMap.get(key);
 }
 zfbool ZFTextTemplateParam::enableDataValue(ZF_IN const zfstring &key) const {
-    zfiter it = d->enableDataMap.iterFind(key);
-    if(it) {
-        return d->enableDataMap.iterValue(it);
+    zfbool *value = d->enableDataMap.get(key);
+    if(value) {
+        return *value;
     }
     else {
         return zffalse;
@@ -304,31 +284,13 @@ void ZFTextTemplateParam::indexData(
     if(key == zfnull) {
         return;
     }
-    zfiter it = d->indexDataMap.iterFind(key);
-    if(it) {
-        d->indexDataMap.iterValue(it, value);
-    }
-    else {
-        d->indexDataMap.set(key, value);
-    }
+    d->indexDataMap.set(key, value);
 }
 const ZFTextTemplateIndexData *ZFTextTemplateParam::indexData(ZF_IN const zfstring &key) const {
-    zfiter it = d->indexDataMap.iterFind(key);
-    if(it) {
-        return &(d->indexDataMap.iterValue(it));
-    }
-    else {
-        return zfnull;
-    }
+    return d->indexDataMap.get(key);
 }
 ZFTextTemplateIndexData *ZFTextTemplateParam::indexData(ZF_IN const zfstring &key) {
-    zfiter it = d->indexDataMap.iterFind(key);
-    if(it) {
-        return &(d->indexDataMap.iterValue(it));
-    }
-    else {
-        return zfnull;
-    }
+    return d->indexDataMap.get(key);
 }
 zfindex ZFTextTemplateParam::indexDataCount(void) const {
     return d->indexDataMap.count();

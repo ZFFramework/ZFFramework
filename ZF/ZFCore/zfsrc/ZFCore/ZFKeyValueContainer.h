@@ -77,6 +77,13 @@ public:
             ZF_IN ZFObject *key
             , ZF_IN ZFObject *value
             ) zfpurevirtual;
+    /**
+     * @brief access value, or insert defValue if not exist
+     */
+    virtual zfiter iterAccess(
+            ZF_IN ZFObject *key
+            , ZF_IN_OPT ZFObject *defValue = ZFNull()
+            ) zfpurevirtual;
 
 public:
     /**

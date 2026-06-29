@@ -93,16 +93,11 @@ private:
     void _headersCacheUpdate(ZF_OUT ZFCoreMap<zfstring, zfstring> &dst, ZF_IN const T_Multimap &src) {
         if(dst.isEmpty() && !src.empty()) {
             for(auto srcIt = src.begin(); srcIt != src.end(); ++srcIt) {
-                zfstring key = srcIt->first.c_str();
-                zfiter dstIt = dst.iterFind(key);
-                if(dstIt) {
-                    zfstring &value = dst.iterValue(dstIt);
+                zfstring &value = dst.access(srcIt->first.c_str());
+                if(value) {
                     value += ", ";
-                    value += srcIt->second.c_str();
                 }
-                else {
-                    dst.set(key, srcIt->second.c_str());
-                }
+                value += srcIt->second.c_str();
             }
         }
     }

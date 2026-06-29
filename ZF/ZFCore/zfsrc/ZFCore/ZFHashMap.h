@@ -137,6 +137,11 @@ public:
             , ZFMP_IN(ZFObject *, key)
             , ZFMP_IN(ZFObject *, value)
             )
+    /** @brief see #zfiter */
+    ZFMETHOD_DECLARE_2(zfiter, iterAccess
+            , ZFMP_IN(ZFObject *, key)
+            , ZFMP_IN_OPT(ZFObject *, defValue, ZFNull())
+            )
 
 protected:
     /**

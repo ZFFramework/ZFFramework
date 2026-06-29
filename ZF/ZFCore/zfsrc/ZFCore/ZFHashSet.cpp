@@ -157,15 +157,14 @@ ZFMETHOD_DEFINE_1(ZFHashSet, void, iterRemove
 ZFMETHOD_DEFINE_1(ZFHashSet, zfiter, iterAdd
         , ZFMP_IN(ZFObject *, value)
         ) {
-    zfiter it = d->data.iterFind(value);
-    if(it) {
-        return it;
+    if(value == zfnull) {
+        return zfnull;
     }
-    else {
+    zfstlpair<_ZFP_ZFHashSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, zfbool>(value, zftrue));
+    if(insertResult.second) {
         zfobjRetain(value);
-        it = d->data.iterAdd(value, zftrue);
-        return it;
     }
+    return d->data.iter(insertResult.first);
 }
 ZFMETHOD_DEFINE_2(ZFHashSet, zfiter, iterAdd
         , ZFMP_IN(ZFObject *, value)
