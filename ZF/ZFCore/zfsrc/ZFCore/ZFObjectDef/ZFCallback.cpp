@@ -395,23 +395,11 @@ void ZFCallback::callbackTag(
     }
 
     _ZFP_ZFCallbackTagMap &m = d->d.ext->callbackTagMap;
-    _ZFP_ZFCallbackTagMap::iterator it = m.find(key);
-    if(it == m.end()) {
-        if(tag) {
-            m[key] = tag;
-        }
+    if(tag) {
+        m[key].zfunsafe_assign(tag);
     }
     else {
-        if(tag == zfnull) {
-            zfauto holder = it->second;
-            ZFUNUSED(holder);
-            m.erase(it);
-        }
-        else {
-            zfauto holder = it->second;
-            ZFUNUSED(holder);
-            it->second = tag;
-        }
+        m.erase(key);
     }
 }
 zfany ZFCallback::callbackTag(ZF_IN const zfstring &key) const {

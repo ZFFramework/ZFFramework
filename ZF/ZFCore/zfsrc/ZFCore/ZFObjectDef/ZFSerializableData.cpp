@@ -245,23 +245,11 @@ void ZFSerializableData::serializableDataTag(
     }
 
     _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
-    _ZFP_ZFSerializableDataTagMapType::iterator it = m.find(key);
-    if(it == m.end()) {
-        if(tag != zfnull) {
-            m[key] = tag;
-        }
+    if(tag) {
+        m[key] = tag;
     }
     else {
-        if(tag == zfnull) {
-            zfauto holder = it->second;
-            ZFUNUSED(holder);
-            m.erase(it);
-        }
-        else {
-            zfauto holder = it->second;
-            ZFUNUSED(holder);
-            it->second = tag;
-        }
+        m.erase(key);
     }
 }
 zfany ZFSerializableData::serializableDataTag(ZF_IN const zfstring &key) const {
@@ -322,18 +310,14 @@ void ZFSerializableData::attr(
         ZF_IN const zfstring &name
         , ZF_IN const zfstring &value
         ) {
-    if(name != zfnull) {
+    if(name) {
         if(d == zfnull) {
             d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
         }
-        if(value != zfnull) {
-            _ZFP_ZFSerializableDataAttrMapType::iterator it = d->attrs.find(name);
-            if(it != d->attrs.end()) {
-                it->second = _ZFP_ZFSerializableDataAttrData(value);
-            }
-            else {
-                d->attrs[name] = _ZFP_ZFSerializableDataAttrData(value);
-            }
+        if(value) {
+            _ZFP_ZFSerializableDataAttrData &attrData = d->attrs[name];
+            attrData.attrValue = value;
+            attrData.resolved = zffalse;
         }
         else {
             d->attrs.erase(name);

@@ -305,21 +305,11 @@ void ZFObject::objectTag(
         d->objectTagMap = zfunsafe_zfpoolNew(_ZFP_ZFObjectTagMapType);
     }
     _ZFP_ZFObjectTagMapType &m = *(d->objectTagMap);
-    _ZFP_ZFObjectTagMapType::iterator it = m.find(key);
-    if(it == m.end()) {
-        if(tag != zfnull) {
-            m[key].zfunsafe_assign(tag);
-        }
+    if(tag) {
+        m[key].zfunsafe_assign(tag);
     }
     else {
-        ZFObject *obj = zfunsafe_zfobjRetain(it->second);
-        if(tag == zfnull) {
-            m.erase(it);
-        }
-        else {
-            it->second.zfunsafe_assign(tag);
-        }
-        zfunsafe_zfobjRelease(obj);
+        m.erase(key);
     }
 }
 zfany ZFObject::objectTag(ZF_IN const zfstring &key) {

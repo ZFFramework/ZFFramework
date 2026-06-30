@@ -167,25 +167,17 @@ void ZFImpl_sys_SDL_eventHandlerAdd(
         ) {
     ZFCoreMutexLocker();
     ZFCoreAssert(eventHandler != zfnull);
-    zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> *list = zfnull;
-    _ZFP_ZFImpl_sys_SDL_EventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_EventHandlerMap.find(type);
-    if(it == _ZFP_ZFImpl_sys_SDL_EventHandlerMap.end()) {
-        list = &(_ZFP_ZFImpl_sys_SDL_EventHandlerMap[type]);
-    }
-    else {
-        list = &(it->second);
-    }
-
+    zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> &list = _ZFP_ZFImpl_sys_SDL_EventHandlerMap[type];
     zfstlsize pos = 0;
-    while(pos < list->size()
-        && level > (*list)[pos].level
+    while(pos < list.size()
+        && level > list[pos].level
     ) {
         ++pos;
     }
     _ZFP_ZFImpl_sys_SDL_EventHandlerData data;
     data.handler = eventHandler;
     data.level = level;
-    list->insert(list->begin() + pos, data);
+    list.insert(list.begin() + pos, data);
 }
 void ZFImpl_sys_SDL_eventHandlerRemove(
         ZF_IN Uint32 type
@@ -212,25 +204,17 @@ void ZFImpl_sys_SDL_userEventHandlerAdd(
         ) {
     ZFCoreMutexLocker();
     ZFCoreAssert(eventHandler != zfnull);
-    zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> *list = zfnull;
-    _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.find(userEventCode);
-    if(it == _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.end()) {
-        list = &(_ZFP_ZFImpl_sys_SDL_UserEventHandlerMap[userEventCode]);
-    }
-    else {
-        list = &(it->second);
-    }
-
+    zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> &list = _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap[userEventCode];
     zfstlsize pos = 0;
-    while(pos < list->size()
-        && level > (*list)[pos].level
+    while(pos < list.size()
+        && level > list[pos].level
     ) {
         ++pos;
     }
     _ZFP_ZFImpl_sys_SDL_EventHandlerData data;
     data.handler = eventHandler;
     data.level = level;
-    list->insert(list->begin() + pos, data);
+    list.insert(list.begin() + pos, data);
 }
 void ZFImpl_sys_SDL_userEventHandlerRemove(
         ZF_IN Sint32 userEventCode

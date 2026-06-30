@@ -501,22 +501,17 @@ static void _ZFP_GI_dataRegister(
     _ZFP_GI_DataContainer &holder = _ZFP_GI_dataContainerInstance;
     _ZFP_GI_DataMap &dataMap = holder.dataMapForLevel(level);
 
-    _ZFP_GI_Data *data = zfnull;
-    {
-        _ZFP_GI_DataMap::iterator it = dataMap.find(name);
-        if(it != dataMap.end()) {
-            data = it->second;
-            ZFCoreAssert(level == data->level);
-            ++(data->refCount);
-        }
-        else {
-            data = zfpoolNew(_ZFP_GI_Data);
-            dataMap[name] = data;
-            data->name = name;
-            data->level = level;
-            data->constructor = constructor;
-            data->destructor = destructor;
-        }
+    _ZFP_GI_Data *&data = dataMap[name];
+    if(data == zfnull) {
+        data = zfpoolNew(_ZFP_GI_Data);
+        data->name = name;
+        data->level = level;
+        data->constructor = constructor;
+        data->destructor = destructor;
+    }
+    else {
+        ZFCoreAssert(level == data->level);
+        ++(data->refCount);
     }
 
     switch(ZFFrameworkStateCheck(level)) {

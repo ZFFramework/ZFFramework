@@ -1273,21 +1273,11 @@ void ZFClass::classTag(
     }
     ZFCoreMutexLocker();
     _ZFP_ZFClassTagMapType &m = d->classTagMap;
-    _ZFP_ZFClassTagMapType::iterator it = m.find(key);
-    if(it == m.end()) {
-        if(tag != zfnull) {
-            m[key] = tag;
-        }
+    if(tag) {
+        m[key].zfunsafe_assign(tag);
     }
     else {
-        ZFObject *obj = zfunsafe_zfobjRetain(it->second);
-        if(tag == zfnull) {
-            m.erase(it);
-        }
-        else {
-            it->second.zfunsafe_assign(tag);
-        }
-        zfunsafe_zfobjRelease(obj);
+        m.erase(key);
     }
 }
 zfany ZFClass::classTag(ZF_IN const zfstring &key) const {
@@ -1347,21 +1337,11 @@ void ZFClass::dataCache(
     }
     ZFCoreMutexLocker();
     _ZFP_ZFClassTagMapType &m = d->dataCacheMap;
-    _ZFP_ZFClassTagMapType::iterator it = m.find(key);
-    if(it == m.end()) {
-        if(tag != zfnull) {
-            m[key] = tag;
-        }
+    if(tag) {
+        m[key].zfunsafe_assign(tag);
     }
     else {
-        ZFObject *obj = zfunsafe_zfobjRetain(it->second);
-        if(tag == zfnull) {
-            m.erase(it);
-        }
-        else {
-            it->second.zfunsafe_assign(tag);
-        }
-        zfunsafe_zfobjRelease(obj);
+        m.erase(key);
     }
 }
 zfany ZFClass::dataCache(ZF_IN const zfstring &key) const {
