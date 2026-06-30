@@ -340,7 +340,7 @@ private:
         }
     };
 public:
-    zfiter iter(ZF_IN zfimplordermap<T_Key, T_Value, T_Hash, T_Equal>::iterator it) {
+    zfiter iter(ZF_IN typename zfimplordermap<T_Key, T_Value, T_Hash, T_Equal>::iterator it) {
         _Iter *impl = zfpoolNew(_Iter);
         impl->it = it;
         impl->end = this->end();

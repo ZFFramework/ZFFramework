@@ -57,7 +57,7 @@ private:
     };
 
 public:
-    zfiter iter(ZF_IN zfimplmap<T_Key, T_Value, T_Compare>::iterator it) {
+    zfiter iter(ZF_IN typename zfimplmap<T_Key, T_Value, T_Compare>::iterator it) {
         _Iter *impl = zfpoolNew(_Iter);
         impl->it = it;
         impl->end = this->end();
