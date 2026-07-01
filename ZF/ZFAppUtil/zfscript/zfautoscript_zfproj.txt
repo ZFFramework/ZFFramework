@@ -12,6 +12,5 @@ ZF_LIB += ZFUIKit
 ZF_LIB += ZFUIWidget
 ZF_LIB += ZFUIExt
 ZF_LIB += ZFLua
-ZF_LIB += ZFUIWebKit
 ZF_LIB += ZFNet
 

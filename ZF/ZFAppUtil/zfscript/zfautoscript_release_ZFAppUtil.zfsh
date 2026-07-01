@@ -7,7 +7,6 @@
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh_if_exist.<ZF_SH_EXT>" "<ZF_ROOT_PATH>\ZF\ZFUIWidget\zfscript\zfautoscript_release_ZFUIWidget.zfsh" <ZF_PL>ZF_PLATFORM<ZF_PR>
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh_if_exist.<ZF_SH_EXT>" "<ZF_ROOT_PATH>\ZF\ZFUIExt\zfscript\zfautoscript_release_ZFUIExt.zfsh" <ZF_PL>ZF_PLATFORM<ZF_PR>
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh_if_exist.<ZF_SH_EXT>" "<ZF_ROOT_PATH>\ZF\ZFLua\zfscript\zfautoscript_release_ZFLua.zfsh" <ZF_PL>ZF_PLATFORM<ZF_PR>
-<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh_if_exist.<ZF_SH_EXT>" "<ZF_ROOT_PATH>\ZF\ZFUIWebKit\zfscript\zfautoscript_release_ZFUIWebKit.zfsh" <ZF_PL>ZF_PLATFORM<ZF_PR>
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh_if_exist.<ZF_SH_EXT>" "<ZF_ROOT_PATH>\ZF\ZFNet\zfscript\zfautoscript_release_ZFNet.zfsh" <ZF_PL>ZF_PLATFORM<ZF_PR>
 
 <ZF_SH> "<ZF_ROOT_PATH>\tools\spec\releaselib_<ZF_PL>ZF_PLATFORM<ZF_PR>.<ZF_SH_EXT>" ZFAppUtil <ZF_WORK_DIR>\..\zfproj

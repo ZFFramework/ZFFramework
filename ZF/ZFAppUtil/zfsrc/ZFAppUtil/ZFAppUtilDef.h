@@ -13,7 +13,6 @@
 #include "ZFUIWidget.h"
 #include "ZFUIExt.h"
 #include "ZFLua.h"
-#include "ZFUIWebKit.h"
 #include "ZFNet.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 

@@ -57,7 +57,6 @@ dependencies {
     compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIWidget/src/main/libs')
     compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIExt/src/main/libs')
     compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFLua/src/main/libs')
-    compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIWebKit/src/main/libs')
     compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFNet/src/main/libs')
 }
 

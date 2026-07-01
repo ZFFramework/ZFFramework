@@ -44,6 +44,5 @@ ZFAddLib(ZFUIKit)
 ZFAddLib(ZFUIWidget)
 ZFAddLib(ZFUIExt)
 ZFAddLib(ZFLua)
-ZFAddLib(ZFUIWebKit)
 ZFAddLib(ZFNet)
 

@@ -71,23 +71,6 @@ zfindex zfvalueSwitch(ZF_IN T_KeyV const &v, ZF_IN zfvalueSwitchData<T_Key, T_Ha
     return t ? *t : zfindexMax();
 }
 
-// ============================================================
-zfclassNotPOD _ZFP_zfstringSwitch_Hash {
-public:
-    /** @brief default key hash function */
-    inline zfidentity operator() (ZF_IN const zfchar * const &key) const {
-        return zfidentityCalcString(key);
-    }
-};
-zfclassNotPOD _ZFP_zfstringSwitch_Equal {
-public:
-    inline zfbool operator() (ZF_IN const zfchar * const &key0, ZF_IN const zfchar * const &key1) const {
-        return zfscmp(key0, key1) == 0;
-    }
-};
-/** @brief util #zfvalueSwitchData for `const zfchar *` */
-typedef zfvalueSwitchData<const zfchar *, _ZFP_zfstringSwitch_Hash, _ZFP_zfstringSwitch_Equal> zfcharConstSwitchData;
-
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_zfvalueSwitch_h_

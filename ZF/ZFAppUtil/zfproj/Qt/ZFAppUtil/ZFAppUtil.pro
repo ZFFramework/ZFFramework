@@ -88,7 +88,6 @@ $$ZFAddLib(0, ZFUIKit)
 $$ZFAddLib(0, ZFUIWidget)
 $$ZFAddLib(0, ZFUIExt)
 $$ZFAddLib(0, ZFLua)
-$$ZFAddLib(0, ZFUIWebKit)
 $$ZFAddLib(0, ZFNet)
 
 

@@ -177,6 +177,11 @@ public:
     virtual zfindex capacity(void) const zfpurevirtual;
 
     /**
+     * @brief modify to hold specified count of element
+     */
+    virtual void resize(ZF_IN zfindex count) zfpurevirtual;
+
+    /**
      * @brief remove element at index with count, assert fail if out of range
      */
     virtual void remove(ZF_IN zfindex index) zfpurevirtual;
@@ -502,6 +507,17 @@ public:
     zfoverride
     virtual zfindex capacity(void) const {
         return (zfindex)(d ? d->capacity : 0);
+    }
+
+    zfoverride
+    virtual void resize(ZF_IN zfindex count) {
+        _capacityRequire(count);
+        if(this->count() > count) {
+            this->remove(this->count(), zfindexMax());
+        }
+        else if(this->count() < count) {
+            _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf + d->count, d->buf + count);
+        }
     }
 
 public:

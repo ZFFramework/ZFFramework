@@ -309,6 +309,15 @@ zfbool v_ZFCoreArray::elementTypeInit(ZF_IN const zfstring &elementTypeId) {
         return zffalse;
     }
 }
+zfbool v_ZFCoreArray::elementTypeChange(ZF_IN const zfstring &elementTypeId) {
+    if(this->elementType) {
+        if(this->elementType->typeId() == elementTypeId) {
+            return zftrue;
+        }
+        this->zfvReset();
+    }
+    return this->elementTypeInit(elementTypeId);
+}
 zfauto v_ZFCoreArray::_ZFP_elementTypeCheck(ZF_IN ZFObject *element) {
     if(element == zfnull) {
         return zfnull;
@@ -356,6 +365,14 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1(v_ZFCoreArray
     invokerObject->to<v_ZFCoreArray *>()->elementTypeInit(elementTypeId);
 }
 
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, const zfstring &, elementTypeId)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, const ZFClass *, elementClass)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfbool, elementTypeInit
+        , ZFMP_IN(const zfstring &, elementTypeId)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfbool, elementTypeChange
+        , ZFMP_IN(const zfstring &, elementTypeId)
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, swap
         , ZFMP_IN(v_ZFCoreArray *, ref)
         )
@@ -373,6 +390,13 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, capacity
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, void, capacityTrim)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfindex, capacity)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, resize
+        , ZFMP_IN(zfindex, count)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, resize
+        , ZFMP_IN(const zfstring &, elementTypeId)
+        , ZFMP_IN(zfindex, count)
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, add
         , ZFMP_IN(ZFObject *, e)
         )

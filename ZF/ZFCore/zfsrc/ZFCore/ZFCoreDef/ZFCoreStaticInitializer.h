@@ -63,11 +63,10 @@ public:
         typedef _ZFP_SI_##Name zfself; \
     public: \
         static void *_ZFP_SI_ctor_##Name(void) { \
-            static zfbyte d[sizeof(_ZFP_SI_##Name)]; \
-            return (void *)zfnewPlacement(d, _ZFP_SI_##Name); \
+            return zfnew(_ZFP_SI_##Name); \
         } \
         static void _ZFP_SI_dtor_##Name(ZF_IN void *p) { \
-            zfdeletePlacement((_ZFP_SI_##Name *)p); \
+            zfdelete((_ZFP_SI_##Name *)p); \
         } \
         static _ZFP_SI_##Name *_ZFP_SI_I(void) { \
             static _ZFP_SI_Holder d(zftext(#Name), \

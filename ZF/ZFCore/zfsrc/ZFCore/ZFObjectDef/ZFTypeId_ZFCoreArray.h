@@ -71,8 +71,34 @@ private:
     zfautoT<ZFValue> _ZFP_elementTypeHolder; // ZFTypeInfo
 
 public:
-    /** @brief init element type */
-    virtual zfbool elementTypeInit(ZF_IN const zfstring &elementTypeId);
+    /** @brief element type id, or empty if not initialized */
+    const zfstring &elementTypeId(void) {
+        if(this->elementType) {
+            return this->elementType->typeId();
+        }
+        else {
+            return zfstring::Empty();
+        }
+    }
+    /** @brief element type id class, or null if not initialized */
+    const ZFClass *elementClass(void) {
+        if(this->elementType) {
+            return this->elementType->typeIdClass();
+        }
+        else {
+            return zfnull;
+        }
+    }
+    /** @brief init element type, return false if already initialized */
+    zfbool elementTypeInit(ZF_IN const zfstring &elementTypeId);
+    /**
+     * @brief change element type
+     *
+     * when changing to different element type,
+     * all previous contents would removed before changing,
+     * and then return true if successfully initialized with new element type
+     */
+    zfbool elementTypeChange(ZF_IN const zfstring &elementTypeId);
 private:
     zfauto _ZFP_elementTypeCheck(ZF_IN ZFObject *element);
 
@@ -291,6 +317,22 @@ public:
         else {
             return 0;
         }
+    }
+    zfbool resize(ZF_IN zfindex count) {
+        if(this->zfv) {
+            this->zfv->resize(count);
+            return zftrue;
+        }
+        else {
+            return zffalse;
+        }
+    }
+    zfbool resize(ZF_IN const zfstring &elementTypeId, ZF_IN zfindex count) {
+        if(!this->elementTypeChange(elementTypeId)) {
+            return zffalse;
+        }
+        this->zfv->resize(count);
+        return zftrue;
     }
     void add(ZF_IN ZFObject *e) {
         zfauto t = _ZFP_elementTypeCheck(e);
