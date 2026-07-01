@@ -438,6 +438,9 @@ _ZFP_ZFEnumData *_ZFP_ZFEnumDataAccess(ZF_IN const ZFClass *ownerClass) {
 void _ZFP_ZFEnumDataCleanup(ZF_IN const ZFClass *ownerClass) {
     _ZFP_ZFEnumDataMap.remove(ownerClass->classNameFull());
 }
+void _ZFP_ZFEnumDataCleanup(ZF_IN const _ZFP_ZFEnumData *d) {
+    _ZFP_ZFEnumDataMap.remove(d->ownerClass->classNameFull());
+}
 
 // ============================================================
 const _ZFP_ZFEnumData *_ZFP_ZFEnumDataFind(ZF_IN const ZFClass *enumClass) {
