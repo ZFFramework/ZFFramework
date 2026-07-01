@@ -163,7 +163,7 @@ private:
 
 #define _ZFP_ZFSTYLE_DEFAULT_DECLARE(YourStyle) \
     public: \
-        zfclass _ZFP_StyleDef_##YourStyle; \
+        zfclassFwd _ZFP_StyleDef_##YourStyle; \
     public: \
         /** \n default style for @ref YourStyle */ \
         static zfanyT<YourStyle> DefaultStyle(void); \
@@ -445,7 +445,7 @@ extern ZFLIB_ZFCore void ZFStyleUpdateEnd();
  * @brief util macro to call #ZFStyleUpdateBegin/#ZFStyleUpdateEnd
  */
 #define ZFStyleUpdateBlock() _ZFP_ZFStyleUpdateBlock ZFUniqueName(_ZFP_ZFStyleUpdateBlock)
-zfclassLikePOD _ZFP_ZFStyleUpdateBlock {
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFStyleUpdateBlock {
 public:
     _ZFP_ZFStyleUpdateBlock(void) {
         ZFStyleUpdateBegin();

@@ -9,7 +9,7 @@
 #include "ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFAutoReleasePoolPrivate;
+zfclassFwd _ZFP_ZFAutoReleasePoolPrivate;
 /**
  * @brief auto release pool similar to Object-C's NSAutoreleasePool
  *

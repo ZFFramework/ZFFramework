@@ -311,7 +311,7 @@ private:
 extern ZFLIB_ZFCore _ZFP_ZFEnumData *_ZFP_ZFEnumDataAccess(ZF_IN const ZFClass *ownerClass);
 extern ZFLIB_ZFCore void _ZFP_ZFEnumDataCleanup(ZF_IN const ZFClass *ownerClass);
 extern ZFLIB_ZFCore void _ZFP_ZFEnumDataCleanup(ZF_IN const _ZFP_ZFEnumData *d);
-zfclassNotPOD _ZFP_ZFEnumDataHolder {
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFEnumDataHolder {
 public:
     _ZFP_ZFEnumDataHolder(ZF_IN const _ZFP_ZFEnumData *d)
     : d(d)

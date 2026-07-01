@@ -7,7 +7,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_test_Window : zfextend ZFUIWindow {
+zfclass ZFLIB_APP ZFUIKit_test_Window : zfextend ZFUIWindow {
     ZFOBJECT_DECLARE(ZFUIKit_test_Window, ZFUIWindow)
 
     ZFPROPERTY_ON_INIT_INLINE(ZFUIColor, bgColor) {
@@ -15,7 +15,7 @@ zfclass ZFUIKit_test_Window : zfextend ZFUIWindow {
     }
 };
 
-zfclass ZFUIKit_test_Button : zfextend ZFUIButtonBasic {
+zfclass ZFLIB_APP ZFUIKit_test_Button : zfextend ZFUIButtonBasic {
     ZFOBJECT_DECLARE(ZFUIKit_test_Button, ZFUIButtonBasic)
 
     ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFUIImageView>, bgNormal) {
@@ -26,7 +26,7 @@ zfclass ZFUIKit_test_Button : zfextend ZFUIButtonBasic {
     }
 };
 
-zfclass ZFUIKit_test_ListView : zfextend ZFUIScrollView {
+zfclass ZFLIB_APP ZFUIKit_test_ListView : zfextend ZFUIScrollView {
     ZFOBJECT_DECLARE(ZFUIKit_test_ListView, ZFUIScrollView)
 
 protected:
@@ -69,13 +69,13 @@ protected:
     }
 };
 
-extern void ZFUIKit_test_prepareTestWindow(
+extern ZFLIB_APP void ZFUIKit_test_prepareTestWindow(
         ZF_OUT zfautoT<ZFUIWindow> &window
         , ZF_OUT zfautoT<ZFUIView> &container
         , ZF_IN ZFTestCase *testCaseToStop
         );
 
-zfclass ZFUIKit_test_SettingData : zfextend ZFObject {
+zfclass ZFLIB_APP ZFUIKit_test_SettingData : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFUIKit_test_SettingData, ZFObject)
 
 public:
@@ -106,12 +106,12 @@ protected:
         zfsuper::objectOnInit();
     }
 };
-extern zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings);
-extern void ZFUIKit_test_prepareSettingButtonWithTestWindow(
+extern ZFLIB_APP zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings);
+extern ZFLIB_APP void ZFUIKit_test_prepareSettingButtonWithTestWindow(
         ZF_IN ZFUIWindow *window
         , ZF_IN ZFArray *settings
         );
-extern void ZFUIKit_test_prepareSettingForProperty(
+extern ZFLIB_APP void ZFUIKit_test_prepareSettingForProperty(
         ZF_IN_OUT ZFArray *settings
         , ZF_IN ZFObject *obj
         , ZF_IN const ZFProperty *property
@@ -119,13 +119,13 @@ extern void ZFUIKit_test_prepareSettingForProperty(
         );
 
 // ============================================================
-extern void ZFUIKit_test_prepareSettingForBoolProperty(
+extern ZFLIB_APP void ZFUIKit_test_prepareSettingForBoolProperty(
         ZF_IN_OUT ZFArray *settings
         , ZF_IN ZFObject *obj
         , ZF_IN const ZFProperty *property
         );
 
-zfclass _ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder : zfextend ZFObject {
+zfclass ZFLIB_APP _ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder, ZFObject)
 public:
     ZFObject *obj;
@@ -169,12 +169,12 @@ protected:
         ZFUIKit_test_prepareSettingForProperty(settings, taskData->obj, taskData->property, nextCallback); \
     } while(zffalse)
 
-extern void ZFUIKit_test_prepareSettingForLayoutRequest(
+extern ZFLIB_APP void ZFUIKit_test_prepareSettingForLayoutRequest(
         ZF_IN_OUT ZFArray *settings
         , ZF_IN ZFUIView *view
         );
 
-extern void ZFUIKit_test_prepareSettingForResetProperty(
+extern ZFLIB_APP void ZFUIKit_test_prepareSettingForResetProperty(
         ZF_IN_OUT ZFArray *settings
         , ZF_IN ZFObject *obj
         , ZF_IN const ZFCoreArray<const ZFProperty *> &propertyList

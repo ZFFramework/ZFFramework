@@ -9,8 +9,8 @@
 #include "ZFImpl/sys_Qt/ZFImpl_sys_Qt_Layout.h"
 #include <QGraphicsSceneMouseEvent>
 
-extern zfbool (*ZFUIViewImpl_sys_Qt_isMouseCancel)(ZF_IN QGraphicsSceneMouseEvent *event);
-extern QGraphicsSceneMouseEvent *ZFUIViewImpl_sys_Qt_mouseEventClone(
+extern ZFLIB_ZFUIKit_impl zfbool (*ZFUIViewImpl_sys_Qt_isMouseCancel)(ZF_IN QGraphicsSceneMouseEvent *event);
+extern ZFLIB_ZFUIKit_impl QGraphicsSceneMouseEvent *ZFUIViewImpl_sys_Qt_mouseEventClone(
         ZF_IN QGraphicsSceneMouseEvent *event
         , ZF_IN QEvent::Type type
         , ZF_IN QPointF const &localPos

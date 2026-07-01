@@ -9,7 +9,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief extra transform for view or animation transform */
-zfclassNotPOD ZFImpl_sys_SDL_Transform {
+zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_Transform {
 public:
     zffloat translateX; /**< @brief see #ZFImpl_sys_SDL_Transform */
     zffloat translateY; /**< @brief see #ZFImpl_sys_SDL_Transform */

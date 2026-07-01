@@ -39,7 +39,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoT<ZFTaskId>, zfasyncIOCustom
 /**
  * @brief resumable state for #zfasyncIO
  */
-zfclass ZFAsyncIOResumable : zfextend ZFObject, zfimplement ZFSerializable {
+zfclass ZFLIB_ZFCore ZFAsyncIOResumable : zfextend ZFObject, zfimplement ZFSerializable {
     ZFOBJECT_DECLARE(ZFAsyncIOResumable, ZFObject)
     ZFIMPLEMENT_DECLARE(ZFSerializable)
 

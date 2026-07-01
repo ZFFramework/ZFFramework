@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief mouse state for impl
  */
-zfclassNotPOD ZFImpl_sys_SDL_MouseState {
+zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_MouseState {
 public:
     /** @brief current mouse id */
     zfidentity mouseId;
