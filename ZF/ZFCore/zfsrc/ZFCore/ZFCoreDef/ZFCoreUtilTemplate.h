@@ -44,8 +44,8 @@ public:
  *   #define MY_MACRO(P0, P1) xxx
  *
  *   MY_MACRO(int, int) // OK
- *   MY_MACRO(zfstlmap<int, int>, int) // not work
- *   MY_MACRO(zftType(zfstlmap<int, int>), int) // OK
+ *   MY_MACRO(zfimplmap<int, int>, int) // not work
+ *   MY_MACRO(zftType(zfimplmap<int, int>), int) // OK
  * @endcode
  */
 #define zftType(...) \

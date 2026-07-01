@@ -97,7 +97,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFObserverGroupDataHolder) {
     }
 }
 private:
-    typedef zfstlhashmap<ZFObject *, _ZFP_ZFObserverGroupTaskData *> _TaskMap;
+    typedef zfimplhashmap<ZFObject *, _ZFP_ZFObserverGroupTaskData *> _TaskMap;
     _TaskMap ownerMap; // <owner, taskDataList>
     _TaskMap targetMap; // <target, taskDataList>
 

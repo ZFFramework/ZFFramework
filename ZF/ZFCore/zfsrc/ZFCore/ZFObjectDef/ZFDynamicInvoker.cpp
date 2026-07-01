@@ -19,7 +19,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-typedef zfstlhashmap<zfindex, zfauto> _ZFP_ZFDI_ParamBackupMapType;
+typedef zfimplhashmap<zfindex, zfauto> _ZFP_ZFDI_ParamBackupMapType;
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFDI_Wrapper)
@@ -84,7 +84,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_toNumber_DataHolder, ZFLevelZFFramewo
 }
 public:
     _ZFP_ZFDI_toNumberConv check(ZF_IN const ZFClass *cls) {
-        zfstlhashmap<const ZFClass *, _ZFP_ZFDI_toNumberConv>::iterator it = m.find(cls);
+        zfimplhashmap<const ZFClass *, _ZFP_ZFDI_toNumberConv>::iterator it = m.find(cls);
         if(it != m.end()) {
             return it->second;
         }
@@ -93,7 +93,7 @@ public:
         }
     }
 private:
-    zfstlhashmap<const ZFClass *, _ZFP_ZFDI_toNumberConv> m;
+    zfimplhashmap<const ZFClass *, _ZFP_ZFDI_toNumberConv> m;
 private:
     static zfbool _conv_zfbool(ZF_OUT zfdouble &ret, ZF_IN ZFObject *obj) {
         ret = zfcast(v_zfbool *, obj)->zfv ? (zft_zfdouble)1 : (zft_zfdouble)0;
@@ -300,7 +300,7 @@ public:
     const ZFClass *cls;
     const ZFMethod *m;
 };
-typedef zfstlhashmap<zfstring, _ZFP_ZFDI_CacheData> _ZFP_ZFDI_CacheMapType;
+typedef zfimplhashmap<zfstring, _ZFP_ZFDI_CacheData> _ZFP_ZFDI_CacheMapType;
 static _ZFP_ZFDI_CacheMapType _ZFP_ZFDI_cacheMap;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_cache, ZFLevelZFFrameworkEssential) {

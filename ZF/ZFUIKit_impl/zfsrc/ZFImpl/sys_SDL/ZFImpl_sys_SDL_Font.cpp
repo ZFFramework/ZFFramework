@@ -24,7 +24,7 @@ public:
         return (zfstlsize)zfidentityCalc(v);
     }
 };
-typedef zfstlhashmap<ZFImpl_sys_SDL_FontType, ZFImpl_sys_SDL_FontData *, _ZFP_ZFImpl_sys_SDL_FontTypeHash> _ZFP_ZFImpl_sys_SDL_FontMapType;
+typedef zfimplhashmap<ZFImpl_sys_SDL_FontType, ZFImpl_sys_SDL_FontData *, _ZFP_ZFImpl_sys_SDL_FontTypeHash> _ZFP_ZFImpl_sys_SDL_FontMapType;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_fontDataHolder, ZFLevelZFFrameworkNormal) {
     ZFImpl_sys_SDL_fontLoader = zfnull;

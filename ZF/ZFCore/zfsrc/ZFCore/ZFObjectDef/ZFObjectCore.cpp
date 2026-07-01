@@ -31,14 +31,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // _ZFP_ZFObjectPrivate
-typedef zfstlhashmap<zfstring, zfauto> _ZFP_ZFObjectTagMapType;
+typedef zfimplhashmap<zfstring, zfauto> _ZFP_ZFObjectTagMapType;
 
 zfclassNotPOD _ZFP_ZFObjectPrivate {
 public:
     zfclassNotPOD ZFImplementDynamicDataHolder {
     public:
         ZFObject *owner;
-        zfstlhashmap<const ZFClass *, ZFObject *> holder; // manual retain
+        zfimplhashmap<const ZFClass *, ZFObject *> holder; // manual retain
     };
 public:
     const ZFClass *classDynamic;
@@ -673,7 +673,7 @@ void ZFObject::objectOnDealloc(void) {
         if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
             if(d->objectTagMap) {
                 if(d->ZFImplementDynamicData) {
-                    for(zfstlhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.begin();
+                    for(zfimplhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.begin();
                             it != d->ZFImplementDynamicData->holder.end();
                             ++it
                             ) {
@@ -820,7 +820,7 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolderCheck(ZF_IN const ZFCl
     if(d == zfnull || d->ZFImplementDynamicData == zfnull) {
         return zfnull;
     }
-    zfstlhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.find(clsToImplement);
+    zfimplhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.find(clsToImplement);
     if(it != d->ZFImplementDynamicData->holder.end()) {
         return it->second;
     }
@@ -835,7 +835,7 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolderAccess(ZF_IN const ZFC
     if(d->ZFImplementDynamicData == zfnull) {
         d->ZFImplementDynamicData = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate::ZFImplementDynamicDataHolder);
     }
-    zfstlhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.find(clsToImplement);
+    zfimplhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.find(clsToImplement);
     if(it != d->ZFImplementDynamicData->holder.end()) {
         return it->second;
     }

@@ -15,7 +15,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIView)
 
 // ============================================================
 // _ZFP_ZFUIViewPrivate
-typedef zfstlhashmap<zfstring, zfbool> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
+typedef zfimplhashmap<zfstring, zfbool> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
 zfclassNotPOD _ZFP_ZFUIViewPrivate {
 public:
     void *nativeView;

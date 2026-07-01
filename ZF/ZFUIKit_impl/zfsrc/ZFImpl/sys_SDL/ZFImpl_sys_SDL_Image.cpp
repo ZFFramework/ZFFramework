@@ -101,9 +101,9 @@ private:
     };
     zfclassFwd Cache;
     typedef zfstllist<Cache *> CacheList;
-    typedef zfstlhashmap<SDL_Renderer *, zfautoT<ZFValue> > SurfaceSubMap;
-    typedef zfstlhashmap<SDL_Surface *, SurfaceSubMap> SurfaceMap;
-    typedef zfstlhashmap<SDL_Renderer *, CacheList> RendererMap;
+    typedef zfimplhashmap<SDL_Renderer *, zfautoT<ZFValue> > SurfaceSubMap;
+    typedef zfimplhashmap<SDL_Surface *, SurfaceSubMap> SurfaceMap;
+    typedef zfimplhashmap<SDL_Renderer *, CacheList> RendererMap;
 
     zfclassNotPOD Cache {
     public:

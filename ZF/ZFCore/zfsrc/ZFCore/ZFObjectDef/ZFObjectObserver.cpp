@@ -34,14 +34,14 @@ private:
     _ZFP_ZFObserverData(ZF_IN const _ZFP_ZFObserverData &ref);
     _ZFP_ZFObserverData &operator = (ZF_IN const _ZFP_ZFObserverData &ref);
 };
-typedef zfstlhashmap<zfidentity, zfstlvector<_ZFP_ZFObserverData *> > _ZFP_ZFObserverMapType;
+typedef zfimplhashmap<zfidentity, zfstlvector<_ZFP_ZFObserverData *> > _ZFP_ZFObserverMapType;
 
 zfclassPOD _ZFP_ZFObserverAttachState {
 public:
     zfuint *flag;
     zft_zfuint flagBit;
 };
-typedef zfstlhashmap<zfidentity, zfstlvector<_ZFP_ZFObserverAttachState> > _ZFP_ZFObserverAttachStateMapType;
+typedef zfimplhashmap<zfidentity, zfstlvector<_ZFP_ZFObserverAttachState> > _ZFP_ZFObserverAttachStateMapType;
 
 zfclassNotPOD _ZFP_ZFObserverPrivate {
 public:

@@ -34,7 +34,7 @@ ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate> setupClassDataUpdate;
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_luaStateGlobalHolder)
 
 // ============================================================
-typedef zfstlhashmap<zfstring, zfbool> _ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType;
+typedef zfimplhashmap<zfstring, zfbool> _ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType;
 ZFImpl_ZFLua_ImplSetupHelper::ZFImpl_ZFLua_ImplSetupHelper(ZF_IN lua_State *L)
     : _L(L)
     , _code()

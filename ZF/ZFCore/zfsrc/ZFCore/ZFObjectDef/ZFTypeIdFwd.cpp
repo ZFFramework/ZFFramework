@@ -7,7 +7,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlhashmap<zfstring, ZFTypeInfo *> _ZFP_ZFTypeInfoMapType;
+typedef zfimplhashmap<zfstring, ZFTypeInfo *> _ZFP_ZFTypeInfoMapType;
 ZF_STATIC_INITIALIZER_INIT(ZFTypeInfoHolder) {
 }
 ZF_STATIC_INITIALIZER_DESTROY(ZFTypeInfoHolder) {

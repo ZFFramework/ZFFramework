@@ -10,7 +10,7 @@ ZFOBJECT_REGISTER(ZFThreadPool)
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFThreadPool, instance, ZFLevelZFFrameworkEssential)
 
 zfclassFwd _ZFP_I_ZFThreadPoolTaskData;
-typedef zfstlhashmap<_ZFP_I_ZFThreadPoolTaskData *, zfbool> _ZFP_ZFThreadPoolTaskMapType;
+typedef zfimplhashmap<_ZFP_I_ZFThreadPoolTaskData *, zfbool> _ZFP_ZFThreadPoolTaskMapType;
 typedef zfstllist<_ZFP_I_ZFThreadPoolTaskData *> _ZFP_ZFThreadPoolTaskListType;
 
 zfclass _ZFP_I_ZFThreadPoolTaskData : zfextend ZFObject, zfimplement ZFTaskId {

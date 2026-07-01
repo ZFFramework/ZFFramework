@@ -16,7 +16,7 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
 // _ZFP_ZFCallbackPrivate
-typedef zfstlhashmap<zfstring, zfauto> _ZFP_ZFCallbackTagMap;
+typedef zfimplhashmap<zfstring, zfauto> _ZFP_ZFCallbackTagMap;
 
 zfclassNotPOD _ZFP_ZFCallbackPrivateExt {
 public:

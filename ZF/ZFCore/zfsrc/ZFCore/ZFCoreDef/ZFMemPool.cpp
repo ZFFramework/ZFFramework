@@ -9,9 +9,9 @@ public:
         return m[size];
     }
     ~_ZFP_MP_DH(void) {
-        zfstlhashmap<zfuint, _ZFP_MP_D> mTmp;
+        zfimplhashmap<zfuint, _ZFP_MP_D> mTmp;
         mTmp.swap(m);
-        for(zfstlhashmap<zfuint, _ZFP_MP_D>::iterator it = mTmp.begin(); it != mTmp.end(); ++it) {
+        for(zfimplhashmap<zfuint, _ZFP_MP_D>::iterator it = mTmp.begin(); it != mTmp.end(); ++it) {
             _ZFP_MP_D *d = &(it->second);
             while(d->available != zfnull) {
                 void *t = d->available;
@@ -21,7 +21,7 @@ public:
         }
     }
 private:
-    zfstlhashmap<zfuint, _ZFP_MP_D> m;
+    zfimplhashmap<zfuint, _ZFP_MP_D> m;
 };
 
 _ZFP_MP_D &_ZFP_MP_A(ZF_IN zfuint size) {

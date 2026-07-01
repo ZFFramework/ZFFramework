@@ -25,7 +25,7 @@ public:
     zfint lastWidth;
     zfint lastHeight;
 
-    zfstlhashmap<zfidentity, ZFImpl_sys_SDL_MouseState> mouseState;
+    zfimplhashmap<zfidentity, ZFImpl_sys_SDL_MouseState> mouseState;
 
 public:
     _ZFP_ZFImpl_sys_SDL_RootWindowPrivate(ZF_IN ZFImpl_sys_SDL_RootWindow *ownerWindow)

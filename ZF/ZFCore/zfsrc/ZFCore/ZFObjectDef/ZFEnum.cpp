@@ -336,9 +336,9 @@ ZF_STATIC_INITIALIZER_END(ZFEnumDataHolder)
 // ============================================================
 zfclassNotPOD _ZFP_ZFEnumDataPrivate {
 public:
-    typedef zfstlhashmap<zfuint, ZFCoreArray<zfstring> > ValueMapType;
+    typedef zfimplhashmap<zfuint, ZFCoreArray<zfstring> > ValueMapType;
     ValueMapType valueMap;
-    typedef zfstlhashmap<zfstring, zfuint> NameMapType;
+    typedef zfimplhashmap<zfstring, zfuint> NameMapType;
     NameMapType nameMap;
     ZFCoreArray<zfuint> vl; // ensured no duplicated value
     ZFCoreArray<zfstring> nl; // for duplicated value, only first stored

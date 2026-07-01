@@ -11,11 +11,11 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFCacheDataHolder, ZFLevelZFFrameworkStati
 }
 public:
     ZFListener cacheTrimListener;
-    zfstlhashmap<ZFCache *, zfbool> attachedObject;
+    zfimplhashmap<ZFCache *, zfbool> attachedObject;
 public:
     static void cacheTrim(ZF_IN const ZFArgs &zfargs) {
-        const zfstlhashmap<ZFCache *, zfbool> &attachedObject = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCacheDataHolder)->attachedObject;
-        for(zfstlhashmap<ZFCache *, zfbool>::const_iterator it = attachedObject.begin(); it != attachedObject.end(); ++it) {
+        const zfimplhashmap<ZFCache *, zfbool> &attachedObject = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCacheDataHolder)->attachedObject;
+        for(zfimplhashmap<ZFCache *, zfbool>::const_iterator it = attachedObject.begin(); it != attachedObject.end(); ++it) {
             ZFCache *holder = it->first;
             holder->cacheTrim((zft_zfindex)(holder->cacheMaxSize() * holder->cacheTrimThreshold()));
         }
@@ -49,7 +49,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFCacheDataHolder)
 // ============================================================
 zfclassFwd _ZFP_ZFCacheData;
 typedef zfstllist<_ZFP_ZFCacheData *> _ZFP_ZFCacheList;
-typedef zfstlhashmap<zfstring, _ZFP_ZFCacheList> _ZFP_ZFCacheMap;
+typedef zfimplhashmap<zfstring, _ZFP_ZFCacheList> _ZFP_ZFCacheMap;
 zfclassNotPOD _ZFP_ZFCacheData {
 public:
     ZFObject *cacheValue; // retained only when added to cacheList

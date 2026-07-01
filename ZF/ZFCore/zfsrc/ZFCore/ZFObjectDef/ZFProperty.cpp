@@ -216,7 +216,7 @@ void ZFProperty::_ZFP_ZFPropertyLifeCycleInvoke(
 }
 
 // ============================================================
-typedef zfstlhashmap<zfstring, ZFProperty *> _ZFP_ZFPropertyMapType;
+typedef zfimplhashmap<zfstring, ZFProperty *> _ZFP_ZFPropertyMapType;
 static _ZFP_ZFPropertyMapType &_ZFP_ZFPropertyMap(void) {
     static _ZFP_ZFPropertyMapType m;
     return m;

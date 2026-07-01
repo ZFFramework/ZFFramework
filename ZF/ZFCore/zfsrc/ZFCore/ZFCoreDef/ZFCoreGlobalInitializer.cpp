@@ -60,7 +60,7 @@ public:
         }
     }
 };
-typedef zfstlordermap<zfstring, _ZFP_GI_Data *> _ZFP_GI_DataMap;
+typedef zfimplordermap<zfstring, _ZFP_GI_Data *> _ZFP_GI_DataMap;
 
 static void _ZFP_GI_instanceInit(_ZFP_GI_DataMap &m) {
     if(!m.empty()) {

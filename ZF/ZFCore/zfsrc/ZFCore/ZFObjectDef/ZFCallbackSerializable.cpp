@@ -126,15 +126,15 @@ ZFCALLBACK_DEFINE(ZFInput, ZFIOCallback)
 
 // ============================================================
 // custom serialize logic
-static zfstlhashmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &_ZFP_ZFCallbackSerializeCustomCallbackMap(void) {
-    static zfstlhashmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> d;
+static zfimplhashmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &_ZFP_ZFCallbackSerializeCustomCallbackMap(void) {
+    static zfimplhashmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> d;
     return d;
 }
 void _ZFP_ZFCallbackSerializeCustomTypeRegister(
         ZF_IN const zfstring &customType
         , ZF_IN _ZFP_ZFCallbackSerializeCustomCallback serializeCallback
         ) {
-    zfstlhashmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &m = _ZFP_ZFCallbackSerializeCustomCallbackMap();
+    zfimplhashmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &m = _ZFP_ZFCallbackSerializeCustomCallbackMap();
     ZFCoreAssert(customType && serializeCallback != zfnull);
     ZFCoreAssertWithMessage(m.find(customType) == m.end(), "custom callback serialize type \"%s\" already registered", customType);
 
@@ -144,8 +144,8 @@ void _ZFP_ZFCallbackSerializeCustomTypeUnregister(ZF_IN const zfstring &customTy
     _ZFP_ZFCallbackSerializeCustomCallbackMap().erase(customType);
 }
 _ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerializeCustomTypeForName(ZF_IN const zfstring &customType) {
-    zfstlhashmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &m = _ZFP_ZFCallbackSerializeCustomCallbackMap();
-    zfstlhashmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback>::iterator it = m.find(customType);
+    zfimplhashmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &m = _ZFP_ZFCallbackSerializeCustomCallbackMap();
+    zfimplhashmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback>::iterator it = m.find(customType);
     if(it != m.end()) {
         return it->second;
     }

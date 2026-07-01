@@ -245,7 +245,7 @@ void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style) {
 // ============================================================
 // style holder
 static zfbool _ZFP_ZFStyleUpdateFlag = zffalse;
-typedef zfstlhashmap<zfstring, zfauto> _ZFP_ZFStyleHolderMapType;
+typedef zfimplhashmap<zfstring, zfauto> _ZFP_ZFStyleHolderMapType;
 static _ZFP_ZFStyleHolderMapType &_ZFP_ZFStyleHolder(void) {
     static _ZFP_ZFStyleHolderMapType d;
     return d;
@@ -257,7 +257,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFStyleCleanup) {
 }
 ZF_GLOBAL_INITIALIZER_END(ZFStyleCleanup)
 
-typedef zfstlhashmap<zfstring, _ZFP_ZFStyleDecoder> _ZFP_ZFStyleDecoderMapType;
+typedef zfimplhashmap<zfstring, _ZFP_ZFStyleDecoder> _ZFP_ZFStyleDecoderMapType;
 static _ZFP_ZFStyleDecoderMapType &_ZFP_ZFStyleDecoderMap(void) {
     static _ZFP_ZFStyleDecoderMapType d;
     return d;

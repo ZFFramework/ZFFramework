@@ -7,8 +7,8 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlhashmap<zfstring, zfstlvector<const ZFMethod *> > _ZFP_ZFMethodFuncNameMapType;
-typedef zfstlhashmap<zfstring, _ZFP_ZFMethodFuncNameMapType> _ZFP_ZFMethodFuncMapType;
+typedef zfimplhashmap<zfstring, zfstlvector<const ZFMethod *> > _ZFP_ZFMethodFuncNameMapType;
+typedef zfimplhashmap<zfstring, _ZFP_ZFMethodFuncNameMapType> _ZFP_ZFMethodFuncMapType;
 static _ZFP_ZFMethodFuncMapType &_ZFP_ZFMethodFuncMap(void) {
      static _ZFP_ZFMethodFuncMapType m;
      return m;

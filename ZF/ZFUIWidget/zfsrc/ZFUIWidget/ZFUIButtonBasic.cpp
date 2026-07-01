@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFUIButtonBasicPrivate {
 public:
     // <label|icon|bg, <prop, setterCalled> >
-    typedef zfstlhashmap<ZFObject *, zfstlhashmap<const ZFProperty *, zfbool> > PropSetterCalledMap;
+    typedef zfimplhashmap<ZFObject *, zfimplhashmap<const ZFProperty *, zfbool> > PropSetterCalledMap;
 public:
     ZFUIButtonBasic *pimplOwner;
     ZFUITextView *labelView;
@@ -81,7 +81,7 @@ private:
         if(it == this->modMap.end()) {
             return zffalse;
         }
-        zfstlhashmap<const ZFProperty *, zfbool>::iterator propIt = it->second.find(prop);
+        zfimplhashmap<const ZFProperty *, zfbool>::iterator propIt = it->second.find(prop);
         if(propIt == it->second.end()) {
             return zffalse;
         }

@@ -79,7 +79,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // global data
 typedef QThread * _ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType;
-typedef zfstlhashmap<_ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_Qt_ThreadMapType;
+typedef zfimplhashmap<_ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_Qt_ThreadMapType;
 
 static _ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType _ZFP_ZFThreadImpl_sys_Qt_getNativeThreadId(void) {
     return QThread::currentThread();

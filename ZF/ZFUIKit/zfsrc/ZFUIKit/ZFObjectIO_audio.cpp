@@ -5,7 +5,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlhashmap<zfstring, zfbool> _ZFP_ZFObjectIO_audio_audioExtMapType;
+typedef zfimplhashmap<zfstring, zfbool> _ZFP_ZFObjectIO_audio_audioExtMapType;
 static _ZFP_ZFObjectIO_audio_audioExtMapType &_ZFP_ZFObjectIO_audio_audioExtMap(void) {
     static _ZFP_ZFObjectIO_audio_audioExtMapType m;
     return m;

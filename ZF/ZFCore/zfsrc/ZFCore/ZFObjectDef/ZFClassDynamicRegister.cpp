@@ -7,18 +7,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFClassDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic) {
 }
-zfstlhashmap<const ZFClass *, zfbool> m;
+zfimplhashmap<const ZFClass *, zfbool> m;
 ZF_GLOBAL_INITIALIZER_END(ZFClassDynamicRegisterDataHolder)
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFClassDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFClassDynamicRegisterAutoRemove) {
-    zfstlhashmap<const ZFClass *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m;
+    zfimplhashmap<const ZFClass *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m;
     if(!m.empty()) {
-        zfstlhashmap<const ZFClass *, zfbool> t;
+        zfimplhashmap<const ZFClass *, zfbool> t;
         t.swap(m);
-        for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
+        for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
             ZFClass::_ZFP_ZFClassUnregister(it->first);
         }
     }

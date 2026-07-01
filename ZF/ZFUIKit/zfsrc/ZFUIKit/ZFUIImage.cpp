@@ -7,7 +7,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlhashmap<zfstring, _ZFP_ZFUIImageSerializeFromCallback> _ZFP_ZFUIImageSerializeDataMapType;
+typedef zfimplhashmap<zfstring, _ZFP_ZFUIImageSerializeFromCallback> _ZFP_ZFUIImageSerializeDataMapType;
 static _ZFP_ZFUIImageSerializeDataMapType &_ZFP_ZFUIImageSerializeDataMap(void) {
     static _ZFP_ZFUIImageSerializeDataMapType d;
     return d;

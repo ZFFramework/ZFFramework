@@ -6,8 +6,8 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlhashmap<lua_State *, zfbool> _ZFP_ZFImpl_ZFLua_PathInfoStateMapType;
-typedef zfstlordermap<zfstring, zfstring> _ZFP_ZFImpl_ZFLua_PathInfoMapType;
+typedef zfimplhashmap<lua_State *, zfbool> _ZFP_ZFImpl_ZFLua_PathInfoStateMapType;
+typedef zfimplordermap<zfstring, zfstring> _ZFP_ZFImpl_ZFLua_PathInfoMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_implPathInfoData, ZFLevelZFFrameworkEssential) {
     ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnAttach(), ZFCallbackForFunc(zfself::luaStateOnAttach));
     ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(zfself::luaStateOnDetach));

@@ -6,7 +6,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-typedef zfstlhashmap<const ZFMethod *, zfbool> _ZFP_ZFMethodDynRegMapType;
+typedef zfimplhashmap<const ZFMethod *, zfbool> _ZFP_ZFMethodDynRegMapType;
 
 static _ZFP_ZFMethodDynRegMapType &_ZFP_ZFMethodDynRegData(void) {
     static _ZFP_ZFMethodDynRegMapType d;

@@ -5,7 +5,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlhashmap<zfstring, zfbool> _ZFP_ZFObjectIO_image_imageExtMapType;
+typedef zfimplhashmap<zfstring, zfbool> _ZFP_ZFObjectIO_image_imageExtMapType;
 static _ZFP_ZFObjectIO_image_imageExtMapType &_ZFP_ZFObjectIO_image_imageExtMap(void) {
     static _ZFP_ZFObjectIO_image_imageExtMapType m;
     return m;

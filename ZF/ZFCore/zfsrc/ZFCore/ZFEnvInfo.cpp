@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFEnvSummaryDataHolder, ZFLevelZFFrameworkStatic) {
 }
 public:
-    zfstlmap<zfstring, ZFEnvSummaryCallback> envSummaryCallbackMap;
+    zfimplmap<zfstring, ZFEnvSummaryCallback> envSummaryCallbackMap;
 ZF_GLOBAL_INITIALIZER_END(ZFEnvSummaryDataHolder)
 
 // ============================================================
@@ -28,8 +28,8 @@ void envSummaryCallbackUnregister(ZF_IN const zfstring &name) {
 ZFMETHOD_FUNC_DEFINE_0(zfstring, envSummary) {
     zfstring ret;
     zfbool first = zftrue;
-    zfstlmap<zfstring, ZFEnvSummaryCallback> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap;
-    for(zfstlmap<zfstring, ZFEnvSummaryCallback>::iterator it = m.begin(); it != m.end(); ++it) {
+    zfimplmap<zfstring, ZFEnvSummaryCallback> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap;
+    for(zfimplmap<zfstring, ZFEnvSummaryCallback>::iterator it = m.begin(); it != m.end(); ++it) {
         if(first) {
             first = zffalse;
         }

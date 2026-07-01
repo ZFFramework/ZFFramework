@@ -14,7 +14,7 @@ ZFENUM_DEFINE_FLAGS(ZFIOOpenOption, ZFIOOpenOptionFlags)
 // ZFIOFindData
 zfclassNotPOD _ZFP_ZFIOFindDataPrivate {
 public:
-    typedef zfstlhashmap<zfstring, zfauto> ImplTagMapType;
+    typedef zfimplhashmap<zfstring, zfauto> ImplTagMapType;
 
 public:
     zfuint refCount;
@@ -658,7 +658,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, void, ioFindCloseFor
 
 // ============================================================
 // ZFIOImplForPathType
-typedef zfstlhashmap<zfstring, zfautoT<ZFIOImpl> > _ZFP_ZFIOImplMapType;
+typedef zfimplhashmap<zfstring, zfautoT<ZFIOImpl> > _ZFP_ZFIOImplMapType;
 static _ZFP_ZFIOImplMapType &_ZFP_ZFIOImplMap(void) {
     static _ZFP_ZFIOImplMapType m;
     return m;

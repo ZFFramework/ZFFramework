@@ -34,7 +34,7 @@ private:
     zfindex _contentLength; // total size of the file, zfindexMax if not available
     zfbool _supportSeek;
     zfindex _pos;
-    zfstlhashmap<zfindex, zfstring> _chunkCache; // <chunkAlign, buffer>
+    zfimplhashmap<zfindex, zfstring> _chunkCache; // <chunkAlign, buffer>
     ZFCoreArray<zfindex> _chunkCacheIndex; // last accessed at tail
 
 protected:
@@ -72,7 +72,7 @@ private:
         }
         {
             ZFCoreMutexLocker();
-            zfstlhashmap<zfindex, zfstring>::iterator it = _chunkCache.find(chunkPos);
+            zfimplhashmap<zfindex, zfstring>::iterator it = _chunkCache.find(chunkPos);
             if(it != _chunkCache.end()) {
                 _chunkCacheIndex.removeElement(chunkPos);
                 _chunkCacheIndex.add(chunkPos);

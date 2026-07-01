@@ -17,7 +17,7 @@ public:
         ZFSerializablePropertyType propertyType;
     };
 public:
-    typedef zfstlordermap<zfstring, Data> MapType;
+    typedef zfimplordermap<zfstring, Data> MapType;
     MapType m; // <propertyName, Data>
 
 public:

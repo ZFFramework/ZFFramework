@@ -14,12 +14,12 @@ function(zfprojCxxFlags target)
     )
     set_target_properties(${target} PROPERTIES
         CXX_VISIBILITY_PRESET hidden
-        INTERPROCEDURAL_OPTIMIZATION ON
         VISIBILITY_INLINES_HIDDEN ON
     )
 endfunction()
 
 # zfprojExec("${ZF_ROOT_PATH}/tools/common/copy_check" "xxx" "xxx")
+# auto fix path separator, or prefix with `%` to disable for certain param
 function(zfprojExec cmd)
     if(CMAKE_HOST_WIN32)
         file(TO_NATIVE_PATH "${cmd}" cmd)

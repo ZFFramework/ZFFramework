@@ -35,7 +35,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // global data
 typedef void * _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType;
-typedef zfstlhashmap<_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_iOS_ThreadMapType;
+typedef zfimplhashmap<_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_iOS_ThreadMapType;
 
 static _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType _ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId(void) {
     return (__bridge void *)[NSThread currentThread];

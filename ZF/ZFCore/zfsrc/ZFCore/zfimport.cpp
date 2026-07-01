@@ -12,7 +12,7 @@ ZFEVENT_GLOBAL_REGISTER(ZFImportBegin)
 ZFEVENT_GLOBAL_REGISTER(ZFImportEnd)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-typedef zfstlhashmap<zfstring, zfauto> _ZFP_zfimportCacheMapType;
+typedef zfimplhashmap<zfstring, zfauto> _ZFP_zfimportCacheMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfimportDataHolder, ZFLevelZFFrameworkLow) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(zfimportDataHolder) {

@@ -204,8 +204,8 @@ public:
                 );
     }
 };
-typedef zfstlhashmap<ZFPathInfo, zfbool, _ZFP_ZFResExtKeyHash> _ZFP_ZFResExtMap;
-typedef zfstlhashmap<zfstring, _ZFP_ZFResExtMap> _ZFP_ZFResExtCkMap;
+typedef zfimplhashmap<ZFPathInfo, zfbool, _ZFP_ZFResExtKeyHash> _ZFP_ZFResExtMap;
+typedef zfimplhashmap<zfstring, _ZFP_ZFResExtMap> _ZFP_ZFResExtCkMap;
 static zfbool _ZFP_ZFResExtPathCheck(
         ZF_OUT ZFPathInfo &resExtPath
         , ZF_IN const zfstring &resPath
@@ -294,7 +294,7 @@ zfclassNotPOD _ZFP_ZFResFindData {
 public:
     zfstring resPathSaved;
     _ZFP_ZFResExtCkMap resExtResolved;
-    zfstlhashmap<zfstring, zfbool> resExtItemResolved;
+    zfimplhashmap<zfstring, zfbool> resExtItemResolved;
     ZFIOFindData resExtFd; // valid if resExtImpl not empty
     /*
      * if not empty, the file is find from resExtPath

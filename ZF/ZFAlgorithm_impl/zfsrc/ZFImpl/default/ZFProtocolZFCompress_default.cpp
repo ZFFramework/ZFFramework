@@ -22,7 +22,7 @@ private:
         ItemType itemType;
         ZFPathInfo fileToAdd; // store cache path info for ItemType_FileToAdd
     };
-    typedef zfstlhashmap<zfstring, ItemInfo> ItemMapType;
+    typedef zfimplhashmap<zfstring, ItemInfo> ItemMapType;
 private:
     zfautoT<ZFIOToken> _refIOToken;
     ZFPathInfo _refPathInfo;
@@ -548,7 +548,7 @@ private:
     public:
         zfstring itemPath;
         ItemMapType::iterator itItem;
-        zfstlhashmap<zfstring, zfbool> processed;
+        zfimplhashmap<zfstring, zfbool> processed;
     };
     zfbool _itemFindNext(
             ZF_IN_OUT ZFIOFindData &fd

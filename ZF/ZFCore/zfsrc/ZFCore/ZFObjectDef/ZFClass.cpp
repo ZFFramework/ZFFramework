@@ -68,8 +68,8 @@ static _ZFP_ZFClassDataHolder &_ZFP_ZFClassData(void) {
 
 // ============================================================
 // _ZFP_ZFClassPrivate
-typedef zfstlhashmap<zfstring, zfauto> _ZFP_ZFClassTagMapType;
-typedef zfstlhashmap<const ZFProperty *, zfstlhashmap<const ZFClass *, zfbool> > _ZFP_ZFClassPropertyInitStepMapType;
+typedef zfimplhashmap<zfstring, zfauto> _ZFP_ZFClassTagMapType;
+typedef zfimplhashmap<const ZFProperty *, zfimplhashmap<const ZFClass *, zfbool> > _ZFP_ZFClassPropertyInitStepMapType;
 
 typedef zfimplhashmap<zfstring, zfstlvector<const ZFMethod *> > _ZFP_ZFClassMethodMapType;
 typedef zfimplordermap<zfstring, const ZFProperty *> _ZFP_ZFClassPropertyMapType;
@@ -77,7 +77,7 @@ typedef zfimplordermap<zfstring, const ZFProperty *> _ZFP_ZFClassPropertyMapType
 zfclassNotPOD _ZFP_ZFClassPrivate {
 public:
     zfauto classDynamicRegisterUserData;
-    zfstlhashmap<ZFObject *, zfbool> classDynamicRegisterObjectInstanceMap;
+    zfimplhashmap<ZFObject *, zfbool> classDynamicRegisterObjectInstanceMap;
     _ZFP_ZFObjectConstructor constructor;
     _ZFP_ZFObjectDestructor destructor;
 
@@ -97,7 +97,7 @@ public:
      * all of these property would have their getter being called
      * to suit most logic case
      */
-    zfstlhashmap<const ZFProperty *, zfbool> propertyAutoInitMap;
+    zfimplhashmap<const ZFProperty *, zfbool> propertyAutoInitMap;
     /*
      * see propertyAutoInitMap,
      * used to check whether two class has same property init step
@@ -109,14 +109,14 @@ public:
     _ZFP_ZFClassTagMapType dataCacheMap;
 
 public:
-    zfstlhashmap<const ZFClass *, zfbool> allParent; // all parent and interface excluding self
-    zfstlhashmap<const ZFClass *, zfbool> allChildren; // all children excluding self
+    zfimplhashmap<const ZFClass *, zfbool> allParent; // all parent and interface excluding self
+    zfimplhashmap<const ZFClass *, zfbool> allChildren; // all children excluding self
 
 public:
-    zfstlhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback> interfaceCastMap; // self implemented interface
+    zfimplhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback> interfaceCastMap; // self implemented interface
 
 public:
-    zfstlhashmap<const ZFClass *, zfconvImpl> zfconvMap;
+    zfimplhashmap<const ZFClass *, zfconvImpl> zfconvMap;
     ZFCoreArray<zfstring> classAliasTo;
 
     // ============================================================
@@ -151,7 +151,7 @@ public:
             return;
         }
 
-        for(zfstlhashmap<const ZFClass *, zfbool>::iterator childIt = this->allChildren.begin(); childIt != this->allChildren.end(); ++childIt) {
+        for(zfimplhashmap<const ZFClass *, zfbool>::iterator childIt = this->allChildren.begin(); childIt != this->allChildren.end(); ++childIt) {
             if(!childIt->first->classIsInternalPrivate()) {
                 this->_instanceObserverDoAdd(childIt->first->d->instanceObserverCached, data);
             }
@@ -162,7 +162,7 @@ public:
             , ZF_IN _ZFP_ZFClassPrivate::InstanceObserverData *data
             ) {
         const ZFClass *cls = owner;
-        zfstlhashmap<const ZFClass *, zfbool>::iterator childIt = this->allChildren.begin();
+        zfimplhashmap<const ZFClass *, zfbool>::iterator childIt = this->allChildren.begin();
         do {
             for(zfindex i = 0; i < cls->d->instanceObserverCached.count(); ++i) {
                 if(cls->d->instanceObserverCached[i] == data) {
@@ -232,10 +232,10 @@ public:
     // ============================================================
     // caches
 public:
-    zfstlhashmap<const ZFClass *, zfbool> parentClassCache; // for classIsTypeOf(class), all parent and ZFImplementDynamicList including self
-    zfstlhashmap<const ZFClass *, zfbool> parentTypeCache; // for classIsTypeOf(interface), all parent and interface and ZFImplementDynamicList, including self
-    zfstlhashmap<const ZFClass *, zfbool> ZFImplementDynamicCache; /// for ZFImplementDynamicRegister, all ZFImplementDynamicList of parent
-    zfstlhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback> interfaceCastCache; // including all parent
+    zfimplhashmap<const ZFClass *, zfbool> parentClassCache; // for classIsTypeOf(class), all parent and ZFImplementDynamicList including self
+    zfimplhashmap<const ZFClass *, zfbool> parentTypeCache; // for classIsTypeOf(interface), all parent and interface and ZFImplementDynamicList, including self
+    zfimplhashmap<const ZFClass *, zfbool> ZFImplementDynamicCache; /// for ZFImplementDynamicRegister, all ZFImplementDynamicList of parent
+    zfimplhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback> interfaceCastCache; // including all parent
 
     _ZFP_ZFClassMethodMapType methodMapCache; // method of this cls and all parent, order ensured from self > parent > parent interface
     _ZFP_ZFClassPropertyMapType propertyMapCache; // property of this cls and all parent
@@ -251,8 +251,8 @@ public:
 void _ZFP_ZFClassPrivate::classInitFinish(ZF_IN ZFClass *cls) {
     { // copy parent's interface cast datas
         if(cls->classParent() != zfnull) {
-            zfstlhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback> &m = cls->classParent()->d->interfaceCastMap;
-            for(zfstlhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback>::iterator it = m.begin(); it != m.end(); ++it) {
+            zfimplhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback> &m = cls->classParent()->d->interfaceCastMap;
+            for(zfimplhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback>::iterator it = m.begin(); it != m.end(); ++it) {
                 cls->d->interfaceCastMap[it->first] = it->second;
             }
         }
@@ -278,7 +278,7 @@ void _ZFP_ZFClassPrivate::classInitFinish(ZF_IN ZFClass *cls) {
     }
 
     { // property init step
-        for(zfstlhashmap<const ZFClass *, zfbool>::iterator itParent = cls->d->allParent.begin();
+        for(zfimplhashmap<const ZFClass *, zfbool>::iterator itParent = cls->d->allParent.begin();
                 itParent != cls->d->allParent.end();
                 ++itParent
                 ) {
@@ -294,7 +294,7 @@ void _ZFP_ZFClassPrivate::classInitFinish(ZF_IN ZFClass *cls) {
     }
 
     { // copy all parent's instance observer to self
-        for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = cls->d->allParent.begin(); it != cls->d->allParent.end(); ++it) {
+        for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = cls->d->allParent.begin(); it != cls->d->allParent.end(); ++it) {
             ZFCoreArray<_ZFP_ZFClassPrivate::InstanceObserverData *> &parentInstanceObserver = it->first->d->instanceObserver;
             for(zfindex i = 0; i < parentInstanceObserver.count(); ++i) {
                 cls->d->instanceObserverCached.add(parentInstanceObserver[i]);
@@ -307,10 +307,10 @@ void _ZFP_ZFClassPrivate::classInitFinish(ZF_IN ZFClass *cls) {
 }
 
 void _ZFP_ZFClassPrivate::classParentCacheUpdate(ZF_IN const ZFClass *cls) {
-    zfstlhashmap<const ZFClass *, zfbool> &parentClassCache = cls->d->parentClassCache;
-    zfstlhashmap<const ZFClass *, zfbool> &parentTypeCache = cls->d->parentTypeCache;
-    zfstlhashmap<const ZFClass *, zfbool> &ZFImplementDynamicCache = cls->d->ZFImplementDynamicCache;
-    zfstlhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback> &interfaceCastCache = cls->d->interfaceCastCache;
+    zfimplhashmap<const ZFClass *, zfbool> &parentClassCache = cls->d->parentClassCache;
+    zfimplhashmap<const ZFClass *, zfbool> &parentTypeCache = cls->d->parentTypeCache;
+    zfimplhashmap<const ZFClass *, zfbool> &ZFImplementDynamicCache = cls->d->ZFImplementDynamicCache;
+    zfimplhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback> &interfaceCastCache = cls->d->interfaceCastCache;
     parentClassCache.clear();
     parentTypeCache.clear();
     ZFImplementDynamicCache.clear();
@@ -334,7 +334,7 @@ void _ZFP_ZFClassPrivate::classParentCacheUpdate(ZF_IN const ZFClass *cls) {
         }
         toCheck.addFrom(t->d->implementedInterface);
 
-        for(zfstlhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback>::iterator itCast = t->d->interfaceCastMap.begin(); itCast != t->d->interfaceCastMap.end(); ++itCast) {
+        for(zfimplhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback>::iterator itCast = t->d->interfaceCastMap.begin(); itCast != t->d->interfaceCastMap.end(); ++itCast) {
             interfaceCastCache[itCast->first] = itCast->second;
         }
 
@@ -405,7 +405,7 @@ void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls)
 
 void _ZFP_ZFClassPrivate::methodCacheRemove(ZF_IN const ZFClass *cls, ZF_IN const ZFMethod *method) {
     methodCacheRemoveAction(cls, method);
-    for(zfstlhashmap<const ZFClass *, zfbool>::iterator childIt = cls->d->allChildren.begin(); childIt != cls->d->allChildren.end(); ++childIt) {
+    for(zfimplhashmap<const ZFClass *, zfbool>::iterator childIt = cls->d->allChildren.begin(); childIt != cls->d->allChildren.end(); ++childIt) {
         methodCacheRemoveAction(childIt->first, method);
     }
 }
@@ -426,7 +426,7 @@ void _ZFP_ZFClassPrivate::methodCacheRemoveAction(ZF_IN const ZFClass *cls, ZF_I
 }
 void _ZFP_ZFClassPrivate::propertyCacheRemove(ZF_IN const ZFClass *cls, ZF_IN const ZFProperty *zfproperty) {
     propertyCacheRemoveAction(cls, zfproperty);
-    for(zfstlhashmap<const ZFClass *, zfbool>::iterator childIt = cls->d->allChildren.begin(); childIt != cls->d->allChildren.end(); ++childIt) {
+    for(zfimplhashmap<const ZFClass *, zfbool>::iterator childIt = cls->d->allChildren.begin(); childIt != cls->d->allChildren.end(); ++childIt) {
         propertyCacheRemoveAction(childIt->first, zfproperty);
     }
 }
@@ -652,7 +652,7 @@ zfbool ZFClass::classIsTypeOf(ZF_IN const ZFClass *cls) const {
         return zftrue;
     }
     else {
-        zfstlhashmap<const ZFClass *, zfbool> &p = (cls->classIsInterface() ? d->parentTypeCache : d->parentClassCache);
+        zfimplhashmap<const ZFClass *, zfbool> &p = (cls->classIsInterface() ? d->parentTypeCache : d->parentClassCache);
         return p.find(cls) != p.end();
     }
 }
@@ -851,14 +851,14 @@ zfbool ZFClass::dynamicImplementOf(ZF_IN const ZFClass *parent) const {
 
 ZFCoreArray<const ZFClass *> ZFClass::childGetAll(void) const {
     ZFCoreArray<const ZFClass *> ret;
-    for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
+    for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
         ret.add(it->first);
     }
     return ret;
 }
 ZFCoreArray<const ZFClass *> ZFClass::parentGetAll(void) const {
     ZFCoreArray<const ZFClass *> ret;
-    for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = d->parentTypeCache.begin(); it != d->parentTypeCache.end(); ++it) {
+    for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = d->parentTypeCache.begin(); it != d->parentTypeCache.end(); ++it) {
         if(it->first != this) {
             ret.add(it->first);
         }
@@ -1221,7 +1221,7 @@ zfbool ZFClass::propertyInitStepIsEqual(
         return zftrue;
     }
 
-    for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = data->second.begin(), itRef = dataRef->second.begin();
+    for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = data->second.begin(), itRef = dataRef->second.begin();
             it != data->second.end();
             ++it, ++itRef
             ) {
@@ -1241,7 +1241,7 @@ void ZFClass::zfconvUnregister(ZF_IN const ZFClass *dstCls) const {
 }
 zfconvImpl ZFClass::zfconvCheck(ZF_IN const zfstring &dstCls) const {
     if(!d->zfconvMap.empty()) {
-        zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = d->zfconvMap.find(ZFClass::classForName(dstCls));
+        zfimplhashmap<const ZFClass *, zfconvImpl>::iterator it = d->zfconvMap.find(ZFClass::classForName(dstCls));
         if(it != d->zfconvMap.end()) {
             return it->second;
         }
@@ -1250,7 +1250,7 @@ zfconvImpl ZFClass::zfconvCheck(ZF_IN const zfstring &dstCls) const {
 }
 zfconvImpl ZFClass::zfconvCheck(ZF_IN const ZFClass *dstCls) const {
     if(!d->zfconvMap.empty()) {
-        zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = d->zfconvMap.find(dstCls);
+        zfimplhashmap<const ZFClass *, zfconvImpl>::iterator it = d->zfconvMap.find(dstCls);
         if(it != d->zfconvMap.end()) {
             return it->second;
         }
@@ -1540,7 +1540,7 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
     if(cls->classIsDynamicRegister()) {
         // remove all dynamic registered class info,
         // the existing object instance would fallback to parent class
-        for(zfstlhashmap<ZFObject *, zfbool>::iterator it = cls->d->classDynamicRegisterObjectInstanceMap.begin(); it != cls->d->classDynamicRegisterObjectInstanceMap.end(); ++it) {
+        for(zfimplhashmap<ZFObject *, zfbool>::iterator it = cls->d->classDynamicRegisterObjectInstanceMap.begin(); it != cls->d->classDynamicRegisterObjectInstanceMap.end(); ++it) {
             it->first->_ZFP_ZFObject_classDynamic(zfnull);
         }
         cls->d->classDynamicRegisterObjectInstanceMap.clear();
@@ -1585,13 +1585,13 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
     cls->classTagRemoveAll();
     cls->instanceObserverRemoveAll();
 
-    for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
+    for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
         it->first->d->allParent.erase(cls);
         if(it->first->classParent() == cls) {
             it->first->_ZFP_ZFClass_removeConst()->_classParent = cls->classParent();
         }
     }
-    for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = d->allParent.begin(); it != d->allParent.end(); ++it) {
+    for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = d->allParent.begin(); it != d->allParent.end(); ++it) {
         it->first->d->allChildren.erase(cls);
     }
 
@@ -1655,7 +1655,7 @@ ZFInterface *ZFClass::_ZFP_ZFClass_interfaceCast(
         ZF_IN ZFObject *obj
         , ZF_IN const ZFClass *interfaceClass
         ) const {
-    zfstlhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback>::iterator it = d->interfaceCastCache.find(interfaceClass);
+    zfimplhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback>::iterator it = d->interfaceCastCache.find(interfaceClass);
     if(it != d->interfaceCastCache.end()) {
         return it->second(obj);
     }
@@ -1714,7 +1714,7 @@ zfbool ZFClass::_ZFP_ZFClass_ZFImplementDynamicRegister(ZF_IN const ZFClass *cls
 
     _ZFP_ZFClassPrivate::classParentCacheUpdate(this);
     ZFBitSet(this->_ZFP_ZFClass_removeConst()->_stateFlags, _stateFlags_methodAndPropertyCacheNeedUpdate);
-    for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
+    for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
         _ZFP_ZFClassPrivate::classParentCacheUpdate(it->first);
         ZFBitSet(it->first->_ZFP_ZFClass_removeConst()->_stateFlags, _stateFlags_methodAndPropertyCacheNeedUpdate);
     }
@@ -1730,7 +1730,7 @@ void ZFClass::_ZFP_ZFClass_ZFImplementDynamicUnregister(ZF_IN const ZFClass *cls
 
     _ZFP_ZFClassPrivate::classParentCacheUpdate(this);
     ZFBitSet(this->_ZFP_ZFClass_removeConst()->_stateFlags, _stateFlags_methodAndPropertyCacheNeedUpdate);
-    for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
+    for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
         _ZFP_ZFClassPrivate::classParentCacheUpdate(it->first);
         ZFBitSet(it->first->_ZFP_ZFClass_removeConst()->_stateFlags, _stateFlags_methodAndPropertyCacheNeedUpdate);
     }
@@ -1779,7 +1779,7 @@ void ZFClass::_ZFP_ZFClass_propertyAutoInitRegister(ZF_IN const ZFProperty *prop
 
     d->propertyAutoInitMap[property] = zftrue;
 
-    for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
+    for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
         it->first->d->propertyAutoInitMap[property] = zftrue;
     }
 }
@@ -1787,7 +1787,7 @@ void ZFClass::_ZFP_ZFClass_propertyAutoInitAction(ZF_IN ZFObject *owner) const {
     ZFBitSet(this->_ZFP_ZFClass_removeConst()->_stateFlags, _stateFlags_hasAutoRegister);
 
     // access getter to ensure property value created
-    for(zfstlhashmap<const ZFProperty *, zfbool>::iterator it = d->propertyAutoInitMap.begin(); it != d->propertyAutoInitMap.end(); ++it) {
+    for(zfimplhashmap<const ZFProperty *, zfbool>::iterator it = d->propertyAutoInitMap.begin(); it != d->propertyAutoInitMap.end(); ++it) {
         const ZFProperty *property = it->first;
         if(property->_ZFP_ZFProperty_callbackEnsureInit()) {
             property->_ZFP_ZFProperty_callbackEnsureInit()(property, owner);
@@ -1801,7 +1801,7 @@ void ZFClass::_ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *prop
 
     d->propertyInitStepMap[property][this] = zftrue;
 
-    for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
+    for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
         it->first->d->propertyInitStepMap[property][this] = zftrue;
     }
 }

@@ -116,7 +116,7 @@ private:
         }
     };
     zfclassFwd Value;
-    typedef zfstlhashmap<Key, zfstllist<Value *>, KeyHash, KeyEqual> MapType;
+    typedef zfimplhashmap<Key, zfstllist<Value *>, KeyHash, KeyEqual> MapType;
     typedef zfstllist<Value *> ListType;
     zfclassNotPOD Value {
     public:

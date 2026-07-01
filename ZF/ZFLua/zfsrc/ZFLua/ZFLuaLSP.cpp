@@ -167,7 +167,7 @@ static void _ZFP_ZFLuaLSPGen_paramCandidate(
 // ============================================================
 template<typename T_str>
 static zfstring _ZFP_ZFLuaLSPGen_luaKeywordsEscape(
-        ZF_IN const zfstlhashmap<zfstring, zfbool> &luaKeywords
+        ZF_IN const zfimplhashmap<zfstring, zfbool> &luaKeywords
         , ZF_IN T_str const &s
         ) {
     if(luaKeywords.find(s) != luaKeywords.end()) {
@@ -253,7 +253,7 @@ static zfstring _ZFP_ZFLuaLSPGen_retSig(ZF_IN const ZFMethod *m) {
 // ============================================================
 static void _ZFP_ZFLuaLSPGen_method_overloadAnnotation(
         ZF_IN const ZFOutput &output
-        , ZF_IN const zfstlhashmap<zfstring, zfbool> &luaKeywords
+        , ZF_IN const zfimplhashmap<zfstring, zfbool> &luaKeywords
         , ZF_IN const ZFMethod *m
         , ZF_IN const zfstring &returnTypeId
         ) {
@@ -292,7 +292,7 @@ static void _ZFP_ZFLuaLSPGen_method_overloadAnnotation(
 }
 static void _ZFP_ZFLuaLSPGen_method(
         ZF_IN const ZFOutput &output
-        , ZF_IN const zfstlhashmap<zfstring, zfbool> &luaKeywords
+        , ZF_IN const zfimplhashmap<zfstring, zfbool> &luaKeywords
         , ZF_IN const ZFMethod *m
         , ZF_IN_OPT const ZFClass *ctorCls = zfnull
         ) {
@@ -390,8 +390,8 @@ static void _ZFP_ZFLuaLSPGen_method(
 // ============================================================
 static void _ZFP_ZFLuaLSPGen_NS(
         ZF_IN const ZFOutput &output
-        , ZF_IN const zfstlhashmap<zfstring, zfbool> &luaKeywords
-        , ZF_IN_OUT zfstlhashmap<zfstring, zfbool> &NSMap
+        , ZF_IN const zfimplhashmap<zfstring, zfbool> &luaKeywords
+        , ZF_IN_OUT zfimplhashmap<zfstring, zfbool> &NSMap
         , ZF_IN const zfchar *NS
         ) {
     if(NSMap.find(NS) != NSMap.end()
@@ -416,10 +416,10 @@ static void _ZFP_ZFLuaLSPGen_NS(
 }
 static void _ZFP_ZFLuaLSPGen_allNS(
         ZF_IN const ZFOutput &output
-        , ZF_IN const zfstlhashmap<zfstring, zfbool> &luaKeywords
+        , ZF_IN const zfimplhashmap<zfstring, zfbool> &luaKeywords
         ) {
     ZFCoreArray<zfstring> allNS = ZFNamespaceGetAll();
-    zfstlhashmap<zfstring, zfbool> NSMap;
+    zfimplhashmap<zfstring, zfbool> NSMap;
     for(zfindex i = 0; i < allNS.count(); ++i) {
         _ZFP_ZFLuaLSPGen_NS(output, luaKeywords, NSMap, allNS[i]);
     }
@@ -427,8 +427,8 @@ static void _ZFP_ZFLuaLSPGen_allNS(
 
 static void _ZFP_ZFLuaLSPGen_class(
         ZF_IN const ZFOutput &output
-        , ZF_IN const zfstlhashmap<zfstring, zfbool> &luaKeywords
-        , ZF_IN_OUT zfstlhashmap<const ZFClass *, zfbool> &clsMap
+        , ZF_IN const zfimplhashmap<zfstring, zfbool> &luaKeywords
+        , ZF_IN_OUT zfimplhashmap<const ZFClass *, zfbool> &clsMap
         , ZF_IN const ZFClass *cls
         ) {
     if(clsMap.find(cls) == clsMap.end()
@@ -497,7 +497,7 @@ static void _ZFP_ZFLuaLSPGen_class(
             ;
     }
 
-    typedef zfstlhashmap<const zfchar *, ZFCoreArray<const ZFMethod *>, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _MethodMapType;
+    typedef zfimplhashmap<const zfchar *, ZFCoreArray<const ZFMethod *>, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _MethodMapType;
     _MethodMapType methodMap;
     ZFCoreArray<const ZFMethod *> allMethod = cls->methodGetAll();
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
@@ -539,10 +539,10 @@ static void _ZFP_ZFLuaLSPGen_class(
 }
 static void _ZFP_ZFLuaLSPGen_allClass(
         ZF_IN const ZFOutput &output
-        , ZF_IN const zfstlhashmap<zfstring, zfbool> &luaKeywords
+        , ZF_IN const zfimplhashmap<zfstring, zfbool> &luaKeywords
         ) {
     ZFCoreArray<const ZFClass *> allClass = ZFClassGetAll();
-    zfstlhashmap<const ZFClass *, zfbool> clsMap;
+    zfimplhashmap<const ZFClass *, zfbool> clsMap;
     for(zfindex i = 0; i < allClass.count(); ++i) {
         const ZFClass *cls = allClass[i];
         if(cls->classIsInternal()) {
@@ -557,7 +557,7 @@ static void _ZFP_ZFLuaLSPGen_allClass(
 
 static void _ZFP_ZFLuaLSPGen_allMethod(
         ZF_IN const ZFOutput &output
-        , ZF_IN const zfstlhashmap<zfstring, zfbool> &luaKeywords
+        , ZF_IN const zfimplhashmap<zfstring, zfbool> &luaKeywords
         ) {
     ZFCoreArray<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
@@ -574,7 +574,7 @@ static void _ZFP_ZFLuaLSPGen_allMethod(
 
 static void _ZFP_ZFLuaLSPGen_spec(
         ZF_IN const ZFOutput &output
-        , ZF_IN const zfstlhashmap<zfstring, zfbool> &luaKeywords
+        , ZF_IN const zfimplhashmap<zfstring, zfbool> &luaKeywords
         ) {
     output
         << "---@meta ZF"
@@ -630,7 +630,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaLSPGen
     if(!output) {
         return;
     }
-    zfstlhashmap<zfstring, zfbool> luaKeywords;
+    zfimplhashmap<zfstring, zfbool> luaKeywords;
     luaKeywords["and"] = zftrue;
     luaKeywords["break"] = zftrue;
     luaKeywords["do"] = zftrue;

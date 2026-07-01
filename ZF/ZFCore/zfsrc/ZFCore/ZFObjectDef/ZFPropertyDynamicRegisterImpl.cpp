@@ -8,16 +8,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFPropertyDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic) {
 }
-zfstlhashmap<const ZFProperty *, zfbool> m;
+zfimplhashmap<const ZFProperty *, zfbool> m;
 ZF_GLOBAL_INITIALIZER_END(ZFPropertyDynamicRegisterDataHolder)
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFPropertyDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFPropertyDynamicRegisterAutoRemove) {
-    zfstlhashmap<const ZFProperty *, zfbool> t;
+    zfimplhashmap<const ZFProperty *, zfbool> t;
     t.swap(ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m);
-    for(zfstlhashmap<const ZFProperty *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
+    for(zfimplhashmap<const ZFProperty *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
         ZFProperty::_ZFP_ZFPropertyUnregister(it->first);
     }
 }
@@ -68,15 +68,15 @@ public:
         this->_objAttached[obj] = zftrue;
     }
     void objectDetach(ZF_IN ZFObject *obj) {
-        zfstlhashmap<ZFObject *, zfbool>::iterator it = this->_objAttached.find(obj);
+        zfimplhashmap<ZFObject *, zfbool>::iterator it = this->_objAttached.find(obj);
         ZFCoreAssert(it != this->_objAttached.end());
         this->_objAttached.erase(it);
         this->objectDetachAction(obj);
     }
     void objectDetachAll(void) {
-        zfstlhashmap<ZFObject *, zfbool> t;
+        zfimplhashmap<ZFObject *, zfbool> t;
         t.swap(this->_objAttached);
-        for(zfstlhashmap<ZFObject *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
+        for(zfimplhashmap<ZFObject *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
             this->objectDetachAction(it->first);
         }
     }
@@ -180,7 +180,7 @@ public:
         property->_ZFP_ZFPropertyLifeCycleInvoke(lifeCycle, propertyOwnerObject, propertyValue, propertyValueOld);
     }
 private:
-    zfstlhashmap<ZFObject *, zfbool> _objAttached;
+    zfimplhashmap<ZFObject *, zfbool> _objAttached;
     ZFListener _objOnDeallocListener;
     ZFMETHOD_INLINE_1(void, _objOnDealloc
             , ZFMP_IN(const ZFArgs &, zfargs)
@@ -198,7 +198,7 @@ zfclass _ZFP_I_PropDynRegValueStore : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRegValueStore, ZFObject)
 
 public:
-    zfstlhashmap<void *, zfbool> m;
+    zfimplhashmap<void *, zfbool> m;
 };
 
 // ============================================================

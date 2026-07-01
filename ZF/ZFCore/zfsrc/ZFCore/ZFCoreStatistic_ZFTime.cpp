@@ -13,8 +13,8 @@ public:
     zfindex reentrantCount;
 };
 
-static zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &_ZFP_ZFCoreStatisticInvokeTimeDataMap(void) {
-    static zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> m;
+static zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &_ZFP_ZFCoreStatisticInvokeTimeDataMap(void) {
+    static zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> m;
     return m;
 }
 
@@ -22,7 +22,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeLogBegin
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData &data = m[key];
     ++(data.invokeCount);
     if(data.invokeStartTime != ZFTimeValueZero()) {
@@ -36,8 +36,8 @@ ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeLogEnd
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
     if(it != m.end()) {
         _ZFP_ZFCoreStatisticInvokeTimeData &data = it->second;
         if(data.reentrantCount > 0) {
@@ -63,8 +63,8 @@ ZFMETHOD_FUNC_DEFINE_1(zfindex, invokeTimeGetInvokeCount
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
     if(it != m.end()) {
         return it->second.invokeCount;
     }
@@ -76,8 +76,8 @@ ZFMETHOD_FUNC_DEFINE_1(ZFTimeValue, invokeTimeGetAverageTime
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
     if(it != m.end()) {
         return it->second.invokeTotalTime / it->second.invokeCount;
     }
@@ -89,8 +89,8 @@ ZFMETHOD_FUNC_DEFINE_1(ZFTimeValue, invokeTimeGetTotalTime
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
     if(it != m.end()) {
         return it->second.invokeTotalTime;
     }
@@ -103,8 +103,8 @@ ZFMETHOD_FUNC_DEFINE_2(void, invokeTimeGetSummaryT
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
     zfindex invokeCount = ((it != m.end()) ? it->second.invokeCount : 0);
     ZFTimeValue invokeTotalTime = ((it != m.end()) ? it->second.invokeTotalTime : ZFTimeValueZero());
     if(invokeCount > 1) {
@@ -133,8 +133,8 @@ ZFMETHOD_FUNC_DEFINE_1(zfstring, invokeTimeGetSummary
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<zfstring>, invokeTimeGetAllKey) {
     ZFCoreMutexLocker();
     ZFCoreArray<zfstring> ret;
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    for(zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.begin(); it != m.end(); ++it) {
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    for(zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.begin(); it != m.end(); ++it) {
         ret.add(it->first);
     }
     return ret;
@@ -144,8 +144,8 @@ ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeGetAllSummaryT
         , ZFMP_IN_OUT(zfstring &, ret)
         ) {
     ZFCoreMutexLocker();
-    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    for(zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.begin(); it != m.end(); ++it) {
+    zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    for(zfimplhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.begin(); it != m.end(); ++it) {
         invokeTimeGetSummaryT(ret, it->first);
         ret += "\n";
     }

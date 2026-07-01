@@ -54,8 +54,8 @@ static void _ZFP_ZFMEM_hint(zfstlstring &hint, const char *action, size_t size, 
     hint += "]";
 }
 
-static zfstlmap<void *, zfstlstring> &_ZFP_ZFMEM_d(void) {
-    static zfstlmap<void *, zfstlstring> d;
+static zfimplmap<void *, zfstlstring> &_ZFP_ZFMEM_d(void) {
+    static zfimplmap<void *, zfstlstring> d;
     return d;
 }
 
@@ -66,7 +66,7 @@ void _ZFP_ZFMEM_logNew(void *p, const char *action, size_t size, const char *fil
     _ZFP_ZFMemLog("%p %s", p, hint.c_str());
     #endif
 
-    zfstlmap<void *, zfstlstring> &d = _ZFP_ZFMEM_d();
+    zfimplmap<void *, zfstlstring> &d = _ZFP_ZFMEM_d();
     d[p] = hint;
 }
 void _ZFP_ZFMEM_logDelete(void *p, const char *action, const char *file, const char *func, int line) {
@@ -80,20 +80,20 @@ void _ZFP_ZFMEM_logDelete(void *p, const char *action, const char *file, const c
     _ZFP_ZFMemLog("%p %s", p, hint.c_str());
     #endif
 
-    zfstlmap<void *, zfstlstring> &d = _ZFP_ZFMEM_d();
+    zfimplmap<void *, zfstlstring> &d = _ZFP_ZFMEM_d();
     d.erase(p);
 }
 
 void _ZFP_ZFMEM_printStatus(int threshold /* = 10 */) {
-    zfstlmap<zfstlstring, zfint> m;
-    zfstlmap<void *, zfstlstring> &d = _ZFP_ZFMEM_d();
-    for(zfstlmap<void *, zfstlstring>::iterator it = d.begin(); it != d.end(); ++it) {
+    zfimplmap<zfstlstring, zfint> m;
+    zfimplmap<void *, zfstlstring> &d = _ZFP_ZFMEM_d();
+    for(zfimplmap<void *, zfstlstring>::iterator it = d.begin(); it != d.end(); ++it) {
         ++(m[it->second]);
     }
     _ZFP_ZFMemLog("============================================================");
     zfstldeque<int> countList;
     zfstldeque<const char *> hintList;
-    for(zfstlmap<zfstlstring, zfint>::iterator it = m.begin(); it != m.end(); ++it) {
+    for(zfimplmap<zfstlstring, zfint>::iterator it = m.begin(); it != m.end(); ++it) {
         if(it->second > threshold) {
             int count = it->second;
             const char *hint = it->first.c_str();

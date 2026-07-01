@@ -14,8 +14,8 @@ public:
     zfstring s;
 };
 
-typedef zfstlhashmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFSigNameMapType;
-typedef zfstlhashmap<zfidentity, _ZFP_ZFSigNamePrivate *> _ZFP_ZFSigNameIdMapType;
+typedef zfimplhashmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFSigNameMapType;
+typedef zfimplhashmap<zfidentity, _ZFP_ZFSigNamePrivate *> _ZFP_ZFSigNameIdMapType;
 typedef zfstldeque<_ZFP_ZFSigNamePrivate *> _ZFP_ZFSigNameCacheType;
 
 static zfidentity &_ZFP_ZFSigNameId(void) {

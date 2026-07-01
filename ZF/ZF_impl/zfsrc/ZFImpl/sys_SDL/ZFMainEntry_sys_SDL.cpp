@@ -155,8 +155,8 @@ public:
     ZFImpl_sys_SDL_EventHandler handler;
     ZFLevel level;
 };
-typedef zfstlhashmap<Uint32, zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> > _ZFP_ZFImpl_sys_SDL_EventHandlerMapType;
-typedef zfstlhashmap<Sint32, zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> > _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType;
+typedef zfimplhashmap<Uint32, zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> > _ZFP_ZFImpl_sys_SDL_EventHandlerMapType;
+typedef zfimplhashmap<Sint32, zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> > _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType;
 static _ZFP_ZFImpl_sys_SDL_EventHandlerMapType _ZFP_ZFImpl_sys_SDL_EventHandlerMap;
 static _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap;
 

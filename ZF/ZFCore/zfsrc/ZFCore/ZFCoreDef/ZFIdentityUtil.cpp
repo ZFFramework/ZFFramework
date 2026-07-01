@@ -9,7 +9,7 @@ zfclassNotPOD _ZFP_ZFIdentityGeneratorPrivate {
 public:
     zfuint refCount;
     zfidentity cur;
-    zfstlhashmap<zfidentity, zfbool> used;
+    zfimplhashmap<zfidentity, zfbool> used;
 
 public:
     _ZFP_ZFIdentityGeneratorPrivate(void)
@@ -66,7 +66,7 @@ zfbool ZFIdentityGenerator::idExist(ZF_IN zfidentity identity) const {
 }
 void ZFIdentityGenerator::idExistGetAll(ZF_IN_OUT ZFCoreArray<zfidentity> &ret) const {
     ret.capacity(ret.capacity() + (zfindex)d->used.size());
-    for(zfstlhashmap<zfidentity, zfbool>::iterator it = d->used.begin(); it != d->used.end(); ++it) {
+    for(zfimplhashmap<zfidentity, zfbool>::iterator it = d->used.begin(); it != d->used.end(); ++it) {
         ret.add(it->first);
     }
 }

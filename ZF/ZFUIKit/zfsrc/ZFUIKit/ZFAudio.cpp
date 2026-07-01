@@ -35,17 +35,17 @@ public:
     }
 };
 
-static zfstlmap<ZFAudio *, zfbool> &_ZFP_ZFAudio_playing(void) {
-    static zfstlmap<ZFAudio *, zfbool> d;
+static zfimplmap<ZFAudio *, zfbool> &_ZFP_ZFAudio_playing(void) {
+    static zfimplmap<ZFAudio *, zfbool> d;
     return d;
 }
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAudioAutoStop, ZFLevelZFFrameworkNormal) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFAudioAutoStop) {
     if(!_ZFP_ZFAudio_playing().empty()) {
-        zfstlmap<ZFAudio *, zfbool> m;
+        zfimplmap<ZFAudio *, zfbool> m;
         m.swap(_ZFP_ZFAudio_playing());
-        for(zfstlmap<ZFAudio *, zfbool>::iterator it = m.begin(); it != m.end(); ++it) {
+        for(zfimplmap<ZFAudio *, zfbool>::iterator it = m.begin(); it != m.end(); ++it) {
             it->first->stop();
         }
     }

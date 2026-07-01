@@ -506,7 +506,7 @@ void ZFMethod::paramInfoT(ZF_IN_OUT zfstring &ret) const {
 }
 
 // ============================================================
-typedef zfstlhashmap<zfstring, ZFMethod *> _ZFP_ZFMethodMapType;
+typedef zfimplhashmap<zfstring, ZFMethod *> _ZFP_ZFMethodMapType;
 static _ZFP_ZFMethodMapType &_ZFP_ZFMethodMap(void) {
     static _ZFP_ZFMethodMapType m;
     return m;

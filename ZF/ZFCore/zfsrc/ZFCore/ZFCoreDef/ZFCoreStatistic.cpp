@@ -5,14 +5,14 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
 
-static zfstlhashmap<zfstring, zfindex> &_ZFP_ZFCoreStatisticDataMap(void) {
-    static zfstlhashmap<zfstring, zfindex> d;
+static zfimplhashmap<zfstring, zfindex> &_ZFP_ZFCoreStatisticDataMap(void) {
+    static zfimplhashmap<zfstring, zfindex> d;
     return d;
 }
 
 void invokeCountLog(ZF_IN const zfstring &key) {
     ZFCoreMutexLocker();
-    zfstlhashmap<zfstring, zfindex> &m = _ZFP_ZFCoreStatisticDataMap();
+    zfimplhashmap<zfstring, zfindex> &m = _ZFP_ZFCoreStatisticDataMap();
     ++(m[key]);
 }
 void invokeCountRemove(ZF_IN const zfstring &key) {
@@ -25,8 +25,8 @@ void invokeCountRemoveAll(void) {
 }
 zfindex invokeCountGet(ZF_IN const zfstring &key) {
     ZFCoreMutexLocker();
-    zfstlhashmap<zfstring, zfindex> &m = _ZFP_ZFCoreStatisticDataMap();
-    zfstlhashmap<zfstring, zfindex>::iterator it = m.find(key);
+    zfimplhashmap<zfstring, zfindex> &m = _ZFP_ZFCoreStatisticDataMap();
+    zfimplhashmap<zfstring, zfindex>::iterator it = m.find(key);
     if(it != m.end()) {
         return it->second;
     }
@@ -38,8 +38,8 @@ zfindex invokeCountGet(ZF_IN const zfstring &key) {
 ZFCoreArray<zfstring> invokeCountGetAllKey(void) {
     ZFCoreMutexLocker();
     ZFCoreArray<zfstring> ret;
-    zfstlhashmap<zfstring, zfindex> &m = _ZFP_ZFCoreStatisticDataMap();
-    for(zfstlhashmap<zfstring, zfindex>::iterator it = m.begin(); it != m.end(); ++it) {
+    zfimplhashmap<zfstring, zfindex> &m = _ZFP_ZFCoreStatisticDataMap();
+    for(zfimplhashmap<zfstring, zfindex>::iterator it = m.begin(); it != m.end(); ++it) {
         ret.add(it->first);
     }
     return ret;

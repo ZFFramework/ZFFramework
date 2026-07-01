@@ -36,7 +36,7 @@ public:
     }
 };
 typedef zfimplhashmap<zfstring, _ZFP_ZFSerializableDataAttrData> _ZFP_ZFSerializableDataAttrMapType;
-typedef zfstlhashmap<zfstring, zfauto> _ZFP_ZFSerializableDataTagMapType;
+typedef zfimplhashmap<zfstring, zfauto> _ZFP_ZFSerializableDataTagMapType;
 zfclassNotPOD _ZFP_ZFSerializableDataPrivate {
 public:
     zfuint refCount;

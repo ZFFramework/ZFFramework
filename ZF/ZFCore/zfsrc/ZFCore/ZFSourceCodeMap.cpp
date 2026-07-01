@@ -11,7 +11,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_Info, zfindex, line)
 ZFEXPORT_VAR_DEFINE(zfbool, Enable, zffalse)
 
 // ============================================================
-static zfstlhashmap<zfstring, ZFCoreArray<Info> > _ZFP_SCM_Namespace;
+static zfimplhashmap<zfstring, ZFCoreArray<Info> > _ZFP_SCM_Namespace;
 ZFMETHOD_FUNC_DEFINE_2(void, attachNamespace
         , ZFMP_IN(const zfstring &, v)
         , ZFMP_IN(const Info &, info)
@@ -28,7 +28,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, detachNamespace
         , ZFMP_IN(const zfstring &, v)
         , ZFMP_IN(const Info &, info)
         ) {
-    zfstlhashmap<zfstring, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Namespace.find(v);
+    zfimplhashmap<zfstring, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Namespace.find(v);
     if(it == _ZFP_SCM_Namespace.end()) {
         return;
     }
@@ -40,7 +40,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, detachNamespace
 ZFMETHOD_FUNC_DEFINE_1(ZFCoreArray<Info>, checkNamespace
         , ZFMP_IN(const zfstring &, v)
         ) {
-    zfstlhashmap<zfstring, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Namespace.find(v);
+    zfimplhashmap<zfstring, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Namespace.find(v);
     if(it != _ZFP_SCM_Namespace.end()) {
         return it->second;
     }
@@ -50,7 +50,7 @@ ZFMETHOD_FUNC_DEFINE_1(ZFCoreArray<Info>, checkNamespace
 }
 
 // ============================================================
-static zfstlhashmap<const ZFClass *, ZFCoreArray<Info> > _ZFP_SCM_Class;
+static zfimplhashmap<const ZFClass *, ZFCoreArray<Info> > _ZFP_SCM_Class;
 ZFMETHOD_FUNC_DEFINE_2(void, attachClass
         , ZFMP_IN(const ZFClass *, v)
         , ZFMP_IN(const Info &, info)
@@ -67,7 +67,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, detachClass
         , ZFMP_IN(const ZFClass *, v)
         , ZFMP_IN(const Info &, info)
         ) {
-    zfstlhashmap<const ZFClass *, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Class.find(v);
+    zfimplhashmap<const ZFClass *, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Class.find(v);
     if(it == _ZFP_SCM_Class.end()) {
         return;
     }
@@ -79,7 +79,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, detachClass
 ZFMETHOD_FUNC_DEFINE_1(ZFCoreArray<Info>, checkClass
         , ZFMP_IN(const ZFClass *, v)
         ) {
-    zfstlhashmap<const ZFClass *, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Class.find(v);
+    zfimplhashmap<const ZFClass *, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Class.find(v);
     if(it != _ZFP_SCM_Class.end()) {
         return it->second;
     }
@@ -89,7 +89,7 @@ ZFMETHOD_FUNC_DEFINE_1(ZFCoreArray<Info>, checkClass
 }
 
 // ============================================================
-static zfstlhashmap<const ZFMethod *, ZFCoreArray<Info> > _ZFP_SCM_Method;
+static zfimplhashmap<const ZFMethod *, ZFCoreArray<Info> > _ZFP_SCM_Method;
 ZFMETHOD_FUNC_DEFINE_2(void, attachMethod
         , ZFMP_IN(const ZFMethod *, v)
         , ZFMP_IN(const Info &, info)
@@ -106,7 +106,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, detachMethod
         , ZFMP_IN(const ZFMethod *, v)
         , ZFMP_IN(const Info &, info)
         ) {
-    zfstlhashmap<const ZFMethod *, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Method.find(v);
+    zfimplhashmap<const ZFMethod *, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Method.find(v);
     if(it == _ZFP_SCM_Method.end()) {
         return;
     }
@@ -118,7 +118,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, detachMethod
 ZFMETHOD_FUNC_DEFINE_1(ZFCoreArray<Info>, checkMethod
         , ZFMP_IN(const ZFMethod *, v)
         ) {
-    zfstlhashmap<const ZFMethod *, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Method.find(v);
+    zfimplhashmap<const ZFMethod *, ZFCoreArray<Info> >::iterator it = _ZFP_SCM_Method.find(v);
     if(it != _ZFP_SCM_Method.end()) {
         return it->second;
     }

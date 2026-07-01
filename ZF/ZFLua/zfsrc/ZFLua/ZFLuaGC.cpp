@@ -32,7 +32,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGCImmediately
 }
 
 // ============================================================
-typedef zfstlhashmap<void *, zfautoT<ZFTaskId> > _ZFP_ZFLuaGCMap;
+typedef zfimplhashmap<void *, zfautoT<ZFTaskId> > _ZFP_ZFLuaGCMap;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaGCHolder, ZFLevelZFFrameworkHigh) {
     ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(luaStateOnDetach));
 }
