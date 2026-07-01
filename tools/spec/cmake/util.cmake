@@ -8,6 +8,17 @@ function(zfprojCxxStandard target stdCfg)
     endif()
 endfunction()
 
+function(zfprojCxxFlags target)
+    target_compile_options(${target} PRIVATE
+        "$<$<CONFIG:DEBUG>:-DDEBUG>"
+    )
+    set_target_properties(${target} PROPERTIES
+        CXX_VISIBILITY_PRESET hidden
+        INTERPROCEDURAL_OPTIMIZATION ON
+        VISIBILITY_INLINES_HIDDEN ON
+    )
+endfunction()
+
 # zfprojExec("${ZF_ROOT_PATH}/tools/common/copy_check" "xxx" "xxx")
 function(zfprojExec cmd)
     if(CMAKE_HOST_WIN32)

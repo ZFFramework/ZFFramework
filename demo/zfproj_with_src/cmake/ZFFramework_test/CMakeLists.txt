@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
-project(ZFFramework_test)
+set(ZF_PROJ_NAME ZFFramework_test)
+project(${ZF_PROJ_NAME})
 set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 if(WIN32)
@@ -29,7 +30,7 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
     zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${PROJ_PATH_}/zfres/" "${CMAKE_INSTALL_PREFIX}/bin/zfres")
 endfunction()
 
-ZFAddSrc(ZF_LIB_NAMES ZFFramework_test ZF_SRC_FILES ${PROJECT_SOURCE_DIR}/../../.. ${PROJECT_SOURCE_DIR})
+ZFAddSrc(ZF_LIB_NAMES ${ZF_PROJ_NAME} ZF_SRC_FILES ${PROJECT_SOURCE_DIR}/../../.. ${PROJECT_SOURCE_DIR})
 
 ZFAddSrc(ZF_LIB_NAMES ZFCore ZF_SRC_FILES ${ZF_ROOT_PATH}/ZF/ZFCore)
 ZFAddSrc(ZF_LIB_NAMES ZFAlgorithm ZF_SRC_FILES ${ZF_ROOT_PATH}/ZF/ZFAlgorithm)
@@ -50,41 +51,40 @@ ZFAddSrc(ZF_LIB_NAMES ZFUIWebKit_impl ZF_SRC_FILES ${ZF_ROOT_PATH}/ZF/ZFUIWebKit
 ZFAddSrc(ZF_LIB_NAMES ZFNet_impl ZF_SRC_FILES ${ZF_ROOT_PATH}/ZF/ZFNet_impl)
 
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
-if(COMMAND zfprojConfigBefore_ZFFramework_test)
-    zfprojConfigBefore_ZFFramework_test(ZFFramework_test ZF_SRC_FILES)
+if(COMMAND zfprojConfigBefore_${ZF_PROJ_NAME})
+    cmake_language(CALL zfprojConfigBefore_${ZF_PROJ_NAME} ${ZF_PROJ_NAME} ZF_SRC_FILES)
 endif()
 foreach(LIB_NAME_ ${ZF_LIB_NAMES})
     if(COMMAND zfprojConfigBefore_${LIB_NAME_})
-        cmake_language(CALL zfprojConfigBefore_${LIB_NAME_} ZFFramework_test ZF_SRC_FILES)
+        cmake_language(CALL zfprojConfigBefore_${LIB_NAME_} ${ZF_PROJ_NAME} ZF_SRC_FILES)
     endif()
 endforeach()
-add_executable(ZFFramework_test ${ZF_SRC_FILES})
-target_compile_options(ZFFramework_test PRIVATE "$<$<CONFIG:DEBUG>:-DDEBUG>")
-zfprojStripFILE(ZFFramework_test)
-set_target_properties(ZFFramework_test PROPERTIES LINKER_LANGUAGE CXX)
+add_executable(${ZF_PROJ_NAME} ${ZF_SRC_FILES})
+zfprojCxxFlags(${ZF_PROJ_NAME})
+zfprojStripFILE(${ZF_PROJ_NAME})
 foreach(LIB_NAME_ ${ZF_LIB_NAMES})
     if(COMMAND zfprojConfigAfter_${LIB_NAME_})
-        cmake_language(CALL zfprojConfigAfter_${LIB_NAME_} ZFFramework_test)
+        cmake_language(CALL zfprojConfigAfter_${LIB_NAME_} ${ZF_PROJ_NAME})
     endif()
 endforeach()
-if(COMMAND zfprojConfigAfter_ZFFramework_test)
-    zfprojConfigAfter_ZFFramework_test(ZFFramework_test)
+if(COMMAND zfprojConfigAfter_${ZF_PROJ_NAME})
+    cmake_language(CALL zfprojConfigAfter_${ZF_PROJ_NAME} ${ZF_PROJ_NAME})
 endif()
 
 # dllimport not work for app with all src, disable it explicitly
 foreach(LIB_NAME_ ${ZF_LIB_NAMES})
-    target_compile_definitions(ZFFramework_test PUBLIC ZFLIB_${LIB_NAME_}=)
+    target_compile_definitions(${ZF_PROJ_NAME} PUBLIC ZFLIB_${LIB_NAME_}=)
 endforeach()
 
 if(APPLE)
-    set_target_properties(ZFFramework_test PROPERTIES INSTALL_RPATH "@loader_path")
+    set_target_properties(${ZF_PROJ_NAME} PROPERTIES INSTALL_RPATH "@loader_path")
 elseif(WIN32)
 else()
-    set_target_properties(ZFFramework_test PROPERTIES INSTALL_RPATH "\\\$ORIGIN;$ORIGIN")
+    set_target_properties(${ZF_PROJ_NAME} PROPERTIES INSTALL_RPATH "\\\$ORIGIN;$ORIGIN")
 endif()
 
 install(
-    TARGETS ZFFramework_test
+    TARGETS ${ZF_PROJ_NAME}
     DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
     )
 

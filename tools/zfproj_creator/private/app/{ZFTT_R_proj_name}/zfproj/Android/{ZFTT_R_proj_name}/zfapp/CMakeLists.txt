@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
-project({ZFTT_R_proj_name})
+set(ZF_PROJ_NAME {ZFTT_R_proj_name})
+project(${ZF_PROJ_NAME})
 set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
@@ -7,33 +8,32 @@ include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 
 zfprojSrcFiles(
     ZF_SRC_FILES
-    "${CMAKE_BINARY_DIR}/zfgensrc/zfgensrc_{ZFTT_R_proj_name}.cpp"
+    "${CMAKE_BINARY_DIR}/zfgensrc/zfgensrc_${ZF_PROJ_NAME}.cpp"
     "${ZF_ROOT_PATH}"
     "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../../.."
     )
-if(COMMAND zfprojConfigBefore_{ZFTT_R_proj_name})
-    zfprojConfigBefore_{ZFTT_R_proj_name}({ZFTT_R_proj_name} ZF_SRC_FILES)
+if(COMMAND zfprojConfigBefore_${ZF_PROJ_NAME})
+    cmake_language(CALL zfprojConfigBefore_${ZF_PROJ_NAME} ${ZF_PROJ_NAME} ZF_SRC_FILES)
 endif()
-add_library({ZFTT_R_proj_name} SHARED ${ZF_SRC_FILES})
-target_compile_options({ZFTT_R_proj_name} PRIVATE "$<$<CONFIG:DEBUG>:-DDEBUG>")
-zfprojStripFILE({ZFTT_R_proj_name})
-set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
-if(COMMAND zfprojConfigAfter_{ZFTT_R_proj_name})
-    zfprojConfigAfter_{ZFTT_R_proj_name}({ZFTT_R_proj_name})
+add_library(${ZF_PROJ_NAME} SHARED ${ZF_SRC_FILES})
+zfprojCxxFlags(${ZF_PROJ_NAME})
+zfprojStripFILE(${ZF_PROJ_NAME})
+if(COMMAND zfprojConfigAfter_${ZF_PROJ_NAME})
+    cmake_language(CALL zfprojConfigAfter_${ZF_PROJ_NAME} ${ZF_PROJ_NAME})
 endif()
 
-target_include_directories({ZFTT_R_proj_name} PRIVATE "${PROJECT_SOURCE_DIR}/../../../zfsrc")
+target_include_directories(${ZF_PROJ_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../../../zfsrc")
 find_library(log-lib log)
 find_library(android-lib android)
-target_link_libraries({ZFTT_R_proj_name} PRIVATE ${android-lib} ${log-lib})
+target_link_libraries(${ZF_PROJ_NAME} PRIVATE ${android-lib} ${log-lib})
 
 function(ZFAddLib ZF_LIB_NAME_)
-    target_include_directories({ZFTT_R_proj_name} PRIVATE "${ZF_ROOT_PATH}/_release/Android/all/src/main/cpp/include")
+    target_include_directories(${ZF_PROJ_NAME} PRIVATE "${ZF_ROOT_PATH}/_release/Android/all/src/main/cpp/include")
 
     add_library(${ZF_LIB_NAME_} SHARED IMPORTED)
     set_target_properties(${ZF_LIB_NAME_} PROPERTIES IMPORTED_LOCATION "${ZF_ROOT_PATH}/_release/Android/all/src/main/jniLibs/${ANDROID_ABI}/lib${ZF_LIB_NAME_}.so")
-    target_link_libraries({ZFTT_R_proj_name} PRIVATE ${ZF_LIB_NAME_})
+    target_link_libraries(${ZF_PROJ_NAME} PRIVATE ${ZF_LIB_NAME_})
 endfunction()
 {ZFTT_C_lib_require_0}
 ZFAddLib({ZFTT_R_lib_name_0}){ZFTT_CE}{ZFTT_C_lib_require_1}

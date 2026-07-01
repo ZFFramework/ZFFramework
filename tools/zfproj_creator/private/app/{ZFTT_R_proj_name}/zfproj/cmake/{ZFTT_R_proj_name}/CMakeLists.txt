@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
-project({ZFTT_R_proj_name})
+set(ZF_PROJ_NAME {ZFTT_R_proj_name})
+project(${ZF_PROJ_NAME})
 set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 if(WIN32)
@@ -11,30 +12,29 @@ include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 
 zfprojSrcFiles(
     ZF_SRC_FILES
-    "${CMAKE_BINARY_DIR}/zfgensrc/zfgensrc_{ZFTT_R_proj_name}.cpp"
+    "${CMAKE_BINARY_DIR}/zfgensrc/zfgensrc_${ZF_PROJ_NAME}.cpp"
     "${ZF_ROOT_PATH}"
     "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../.."
     )
 list(APPEND ZF_SRC_FILES "${PROJECT_SOURCE_DIR}/cmake_main.cpp")
-if(COMMAND zfprojConfigBefore_{ZFTT_R_proj_name})
-    zfprojConfigBefore_{ZFTT_R_proj_name}({ZFTT_R_proj_name} ZF_SRC_FILES)
+if(COMMAND zfprojConfigBefore_${ZF_PROJ_NAME})
+    cmake_language(CALL zfprojConfigBefore_${ZF_PROJ_NAME} ${ZF_PROJ_NAME} ZF_SRC_FILES)
 endif()
-add_executable({ZFTT_R_proj_name} ${ZF_SRC_FILES})
-target_compile_options({ZFTT_R_proj_name} PRIVATE "$<$<CONFIG:DEBUG>:-DDEBUG>")
-zfprojStripFILE({ZFTT_R_proj_name})
-set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
-if(COMMAND zfprojConfigAfter_{ZFTT_R_proj_name})
-    zfprojConfigAfter_{ZFTT_R_proj_name}({ZFTT_R_proj_name})
+add_executable(${ZF_PROJ_NAME} ${ZF_SRC_FILES})
+zfprojCxxFlags(${ZF_PROJ_NAME})
+zfprojStripFILE(${ZF_PROJ_NAME})
+if(COMMAND zfprojConfigAfter_${ZF_PROJ_NAME})
+    cmake_language(CALL zfprojConfigAfter_${ZF_PROJ_NAME} ${ZF_PROJ_NAME})
 endif()
 
-target_include_directories({ZFTT_R_proj_name} PRIVATE "${PROJECT_SOURCE_DIR}/../../../zfsrc")
+target_include_directories(${ZF_PROJ_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../../../zfsrc")
 
 function(ZFAddLib ZF_LIB_NAME_)
-    target_include_directories({ZFTT_R_proj_name} PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
+    target_include_directories(${ZF_PROJ_NAME} PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
 
-    target_link_directories({ZFTT_R_proj_name} PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
-    target_link_libraries({ZFTT_R_proj_name} PRIVATE ${ZF_LIB_NAME_})
+    target_link_directories(${ZF_PROJ_NAME} PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
+    target_link_libraries(${ZF_PROJ_NAME} PRIVATE ${ZF_LIB_NAME_})
 
     install(
         DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/"
@@ -174,14 +174,14 @@ ZFAddLib({ZFTT_R_impl_ext_name_30}){ZFTT_CE}{ZFTT_C_impl_ext_require_31}
 ZFAddLib({ZFTT_R_impl_ext_name_31}){ZFTT_CE}
 
 if(APPLE)
-    set_target_properties({ZFTT_R_proj_name} PROPERTIES INSTALL_RPATH "@loader_path")
+    set_target_properties(${ZF_PROJ_NAME} PROPERTIES INSTALL_RPATH "@loader_path")
 elseif(WIN32)
 else()
-    set_target_properties({ZFTT_R_proj_name} PROPERTIES INSTALL_RPATH "\\\$ORIGIN;$ORIGIN")
+    set_target_properties(${ZF_PROJ_NAME} PROPERTIES INSTALL_RPATH "\\\$ORIGIN;$ORIGIN")
 endif()
 
 install(
-    TARGETS {ZFTT_R_proj_name}
+    TARGETS ${ZF_PROJ_NAME}
     DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
     )
 zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${CMAKE_INSTALL_PREFIX}/bin/zfres")
