@@ -12,10 +12,11 @@ function(zfprojCxxFlags target)
     target_compile_options(${target} PRIVATE
         "$<$<CONFIG:DEBUG>:-DDEBUG>"
     )
-    set_target_properties(${target} PROPERTIES
-        CXX_VISIBILITY_PRESET hidden
-        VISIBILITY_INLINES_HIDDEN ON
-    )
+    if(MSVC)
+        target_compile_options(${target} PRIVATE /EHs- /EHc- /GR-)
+    else()
+        target_compile_options(${target} PRIVATE -fno-exceptions -fno-rtti)
+    endif()
 endfunction()
 
 # zfprojExec("${ZF_ROOT_PATH}/tools/common/copy_check" "xxx" "xxx")

@@ -16,9 +16,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * you may use #ZFDynamic to register namespaces, classes, methods, properties,
  * but making it hard to navigate and find definitions\n
  *
- * to solve this, you may use #ZFSourceCodeMap::attach
+ * to solve this, you may use ZFSourceCodeMap
  * to attach additional location info for them,
- * and use #ZFSourceCodeMap::check to obtain info
+ * related methods:
+ * -  #ZFSourceCodeMap::attachNamespace
+ * -  #ZFSourceCodeMap::attachClass
+ * -  #ZFSourceCodeMap::attachMethod
+ * -  #ZFSourceCodeMap::checkNamespace
+ * -  #ZFSourceCodeMap::checkClas
+ * -  #ZFSourceCodeMap::checkMethod
  */
 ZF_NAMESPACE_BEGIN_REGISTER(ZFSourceCodeMap, ZF_NAMESPACE_GLOBAL)
 
