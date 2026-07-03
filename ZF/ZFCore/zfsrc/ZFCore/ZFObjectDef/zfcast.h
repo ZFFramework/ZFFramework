@@ -70,7 +70,7 @@ inline ZFObject *_ZFP_zfanyCast(ZF_IN ZFObject * const &obj) {
 // ============================================================
 // for impl
 template<typename T_ZFObjectTo, int noExt>
-zfclassNotPOD _ZFP_ObjCastImpl {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCastImpl {
 public:
     template<typename T_ZFObjectFrom>
     static T_ZFObjectTo c(T_ZFObjectFrom const &obj) {
@@ -78,7 +78,7 @@ public:
     }
 };
 template<typename T_ZFObjectTo>
-zfclassNotPOD _ZFP_ObjCastImpl<T_ZFObjectTo, 1> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCastImpl<T_ZFObjectTo, 1> {
 public:
     template<typename T_ZFObjectFrom>
     static T_ZFObjectTo c(T_ZFObjectFrom const &obj) {
@@ -103,18 +103,18 @@ public:
 // ============================================================
 // zfcast
 template<typename T_To, int noExt>
-zfclassNotPOD _ZFP_ObjCast {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCast {
 public:
     template<typename T_From>
     static inline T_To c(ZF_IN T_From const &obj);
 };
 template<int T_CanCastDirectly, int noExt, typename T_To, typename T_From, int T_ToType, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastH {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCastH {
 };
 
 // can cast directly
 template<int noExt, typename T_To, typename T_From, int T_ToType, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastH<1, noExt, T_To, T_From, T_ToType, T_FromType> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCastH<1, noExt, T_To, T_From, T_ToType, T_FromType> {
 public:
     static inline T_To c(ZF_IN T_From const &obj) {
         return static_cast<T_To>(obj);
@@ -122,7 +122,7 @@ public:
 };
 // object to object
 template<int noExt, typename T_To, typename T_From>
-zfclassNotPOD _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFObject> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFObject> {
 public:
     static inline T_To c(ZF_IN T_From const &obj) {
         return (obj
@@ -132,7 +132,7 @@ public:
 };
 // object to interface
 template<int noExt, typename T_To, typename T_From>
-zfclassNotPOD _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFObject> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFObject> {
 public:
     static inline T_To c(ZF_IN T_From const &obj) {
         return (obj
@@ -144,7 +144,7 @@ public:
 };
 // interface to object
 template<int noExt, typename T_To, typename T_From>
-zfclassNotPOD _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFInterface> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFInterface> {
 public:
     static inline T_To c(ZF_IN T_From const &obj) {
         return (obj
@@ -154,7 +154,7 @@ public:
 };
 // interface to interface
 template<int noExt, typename T_To, typename T_From>
-zfclassNotPOD _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFInterface> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFInterface> {
 public:
     static inline T_To c(ZF_IN T_From const &obj) {
         return (obj
@@ -166,7 +166,7 @@ public:
 };
 // unknown to any
 template<int noExt, typename T_To, typename T_From, int T_ToType>
-zfclassNotPOD _ZFP_ObjCastH<0, noExt, T_To, T_From, T_ToType, _ZFP_ObjCastTypeUnknown> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCastH<0, noExt, T_To, T_From, T_ToType, _ZFP_ObjCastTypeUnknown> {
 public:
     static inline T_To c(ZF_IN T_From const &obj) {
         return _ZFP_ObjCast<T_To, noExt>::c(_ZFP_zfanyCast(obj));
@@ -174,7 +174,7 @@ public:
 };
 // any to unknown
 template<int noExt, typename T_To, typename T_From, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
 public:
     static inline T_To c(ZF_IN T_From const &obj) {
         return T_To(obj);
@@ -182,7 +182,7 @@ public:
 };
 // unknown to unknown
 template<int noExt, typename T_To, typename T_From>
-zfclassNotPOD _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeUnknown, _ZFP_ObjCastTypeUnknown> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCastH<0, noExt, T_To, T_From, _ZFP_ObjCastTypeUnknown, _ZFP_ObjCastTypeUnknown> {
 public:
     static inline T_To c(ZF_IN T_From const &obj) {
         return T_To(_ZFP_zfanyCast(obj));
@@ -204,10 +204,10 @@ inline T_To _ZFP_ObjCast<T_To, noExt>::c(ZF_IN T_From const &obj) {
 }
 // direct cast to ZFInterface is not allowed
 template<int noExt>
-zfclassNotPOD _ZFP_ObjCast<ZFInterface *, noExt> {};
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCast<ZFInterface *, noExt> {};
 // spec for const void *
 template<int noExt>
-zfclassNotPOD _ZFP_ObjCast<const void *, noExt> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjCast<const void *, noExt> {
 public:
     template<typename T_From>
     static inline const void *c(ZF_IN T_From const &obj) {

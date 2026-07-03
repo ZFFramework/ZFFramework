@@ -58,7 +58,7 @@ zfclassFwd ZFClass;
 #define _ZFP_ZFMETHOD_INVOKER(N) \
     /** @brief see #ZFMethod */ \
     template<typename T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TEMPLATE, ZFM_COMMA, ZFM_COMMA)> \
-    inline T_ReturnType executeExact(ZFObject *obj ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) const { \
+    ZFLIB_HIDDEN inline T_ReturnType executeExact(ZFObject *obj ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) const { \
         if(!this->preferGenericInvoker()) { \
             return reinterpret_cast< \
                     T_ReturnType (*)(const ZFMethod *, zfany const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) \
@@ -73,7 +73,7 @@ zfclassFwd ZFClass;
     } \
     /* this would save much binary size by removing support of dynamic method forwarding, for internal impl use only, use with caution */ \
     template<typename T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TEMPLATE, ZFM_COMMA, ZFM_COMMA)> \
-    inline T_ReturnType _ZFP_execute(ZFObject *obj ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) const { \
+    ZFLIB_HIDDEN inline T_ReturnType _ZFP_execute(ZFObject *obj ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) const { \
         return reinterpret_cast< \
                 T_ReturnType (*)(const ZFMethod *, zfany const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) \
                 >(this->methodInvoker()) \

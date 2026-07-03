@@ -59,7 +59,7 @@ public:
             return this->classDynamic() ? this->classDynamic() : zfself::ClassData(); \
         } \
     private: \
-        static void _ZFP_ObjI_regCk(ZF_IN ZFClass *cls) { \
+        ZFLIB_HIDDEN static void _ZFP_ObjI_regCk(ZF_IN ZFClass *cls) { \
             if(!cls->_ZFP_ZFClass_interfaceHasRegisterCk()) { \
                 cls->_ZFP_ZFClass_interfaceHasRegisterCk(zftrue); \
                 if(zfself::_ZFP_ObjI_reg != zfsuper::_ZFP_ObjI_reg) { \

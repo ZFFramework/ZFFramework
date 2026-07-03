@@ -58,6 +58,7 @@ public:
  * @note see #ZF_STATIC_REGISTER_INIT for recommended usage
  */
 #define ZF_STATIC_INITIALIZER_INIT(Name) \
+    ZFLIB_HIDDEN_BEGIN() \
     zfclassNotPOD _ZFP_SI_##Name { \
     protected: \
         typedef _ZFP_SI_##Name zfself; \
@@ -86,6 +87,7 @@ public:
  */
 #define ZF_STATIC_INITIALIZER_END(Name) \
     }; \
+    ZFLIB_HIDDEN_END() \
     ZF_STATIC_REGISTER_INIT(SI_##Name) { \
         _ZFP_SI_##Name::_ZFP_SI_I(); \
     } \

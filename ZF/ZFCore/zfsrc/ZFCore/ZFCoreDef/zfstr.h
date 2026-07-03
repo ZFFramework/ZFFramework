@@ -88,7 +88,7 @@ inline void zfstringAppend(
 typedef void (*_ZFP_zfstrFn)(ZF_IN_OUT zfstring &s, ZF_IN const void *p);
 
 template<typename P>
-void _ZFP_zfstrIvk(ZF_IN_OUT zfstring &s, ZF_IN const void *p) {
+ZFLIB_HIDDEN void _ZFP_zfstrIvk(ZF_IN_OUT zfstring &s, ZF_IN const void *p) {
     zftToStringT(s, *(const P *)p);
 }
 

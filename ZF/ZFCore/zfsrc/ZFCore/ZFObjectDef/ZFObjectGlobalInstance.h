@@ -66,8 +66,8 @@ public:
         /** @brief see @ref accessMethodName */ \
         static void accessMethodName(ZF_IN AccessTypeName *newInstance); \
     private: \
-        static ZFObject *&_ZFP_ClsSIC_##accessMethodName(void); /* ClassSingletonCleaner */ \
-        static void _ZFP_ClsSID_##accessMethodName(ZF_IN void *instance); /* ClassSingletonOnDelete */ \
+        ZFLIB_HIDDEN static ZFObject *&_ZFP_ClsSIC_##accessMethodName(void); /* ClassSingletonCleaner */ \
+        ZFLIB_HIDDEN static void _ZFP_ClsSID_##accessMethodName(ZF_IN void *instance); /* ClassSingletonOnDelete */ \
     public:
 #define _ZFP_ZFCLASS_SINGLETON_DEFINE(OwnerClass, AccessTypeName, ObjectTypeName, sig, accessMethodName, \
                                       ZFLevel_, \
@@ -190,20 +190,20 @@ public:
         /** @cond ZFPrivateDoc */ \
     private: \
         _ZFP_ZFCLASS_SINGLETON_DECLARE(private, private, \
-                                       AccessTypeName, _ZFP_ZFObjectSingleton_##accessMethodName) \
+                                       AccessTypeName, _ZFP_ObjSI_##accessMethodName) \
         /** @endcond */ \
     public:
 #define _ZFP_ZFOBJECT_SINGLETON_DEFINE(OwnerClass, \
                                        AccessTypeName, ObjectTypeName, sig, accessMethodName, \
                                        ZFLevel_) \
     _ZFP_ZFCLASS_SINGLETON_DEFINE(OwnerClass, \
-                                  AccessTypeName, ObjectTypeName, sig, _ZFP_ZFObjectSingleton_##accessMethodName, \
+                                  AccessTypeName, ObjectTypeName, sig, _ZFP_ObjSI_##accessMethodName, \
                                   ZFLevel_, \
                                   zfobjAlloc, zfobjRetain, zfobjRelease) \
     ZFMETHOD_DEFINE_DETAIL_0(OwnerClass, G, \
             AccessTypeName *, accessMethodName \
             ) { \
-        return zfself::_ZFP_ZFObjectSingleton_##accessMethodName(); \
+        return zfself::_ZFP_ObjSI_##accessMethodName(); \
     } \
     ZFMETHOD_DEFINE_DETAIL_1(OwnerClass, S, \
             void, accessMethodName \
@@ -212,7 +212,7 @@ public:
         if(ZFFrameworkStateCheck(ZFLevel_) == ZFFrameworkStateNotAvailable) { \
             return; \
         } \
-        zfself::_ZFP_ZFObjectSingleton_##accessMethodName(param0); \
+        zfself::_ZFP_ObjSI_##accessMethodName(param0); \
     }
 
 /**

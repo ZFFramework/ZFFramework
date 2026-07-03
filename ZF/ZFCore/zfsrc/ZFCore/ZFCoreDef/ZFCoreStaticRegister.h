@@ -41,6 +41,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   use #ZF_GLOBAL_INITIALIZER_INIT or #ZF_STATIC_INITIALIZER_INIT instead
  */
 #define ZF_STATIC_REGISTER_INIT(Name) \
+    ZFLIB_HIDDEN_BEGIN() \
     /** @cond ZFPrivateDoc */ \
     zfclassNotPOD _ZFP_R_##Name { \
     protected: \
@@ -54,7 +55,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZF_STATIC_REGISTER_END(Name) \
     }; \
     static _ZFP_R_##Name _ZFP_RI_##Name; \
-    /** @endcond */
+    /** @endcond */ \
+    ZFLIB_HIDDEN_END()
 /** @brief see ZF_STATIC_REGISTER_INIT */
 #define ZF_STATIC_REGISTER_INSTANCE(Name) \
     (&_ZFP_RI_##Name)
@@ -65,6 +67,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     #undef ZF_STATIC_REGISTER_END
 
     #define ZF_STATIC_REGISTER_INIT(Name) \
+        ZFLIB_HIDDEN_BEGIN() \
         /** @cond ZFPrivateDoc */ \
         zfclassNotPOD _ZFP_R_##Name { \
         protected: \
@@ -84,7 +87,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     #define ZF_STATIC_REGISTER_END(Name) \
         }; \
         static _ZFP_R_##Name _ZFP_RI_##Name; \
-        /** @endcond */
+        /** @endcond */ \
+        ZFLIB_HIDDEN_END()
 #endif
 
 ZF_NAMESPACE_GLOBAL_END

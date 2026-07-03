@@ -49,6 +49,11 @@ zfabstract ZFLIB_ZFCore ZFContainer : zfextend ZFStyle {
 
 public:
     /**
+     * @brief change capacity
+     */
+    virtual void capacity(ZF_IN zfindex capacity) zfpurevirtual;
+
+    /**
      * @brief return total count of this iterable
      */
     virtual zfindex count(void) zfpurevirtual;

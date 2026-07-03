@@ -46,7 +46,7 @@ public:
         /** @brief typedef for self */ \
         typedef InterfaceName zfself; \
     private: \
-        static void _ZFP_ObjI_regCk(ZF_IN ZFClass *cls) { \
+        ZFLIB_HIDDEN static void _ZFP_ObjI_regCk(ZF_IN ZFClass *cls) { \
             if(!cls->_ZFP_ZFClass_interfaceHasRegisterCk()) { \
                 cls->_ZFP_ZFClass_interfaceHasRegisterCk(zftrue); \
                 if(zfself::_ZFP_ObjI_reg != zfsuper::_ZFP_ObjI_reg) { \
@@ -106,17 +106,17 @@ public:
     public:
 
 template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface, int isFromInterface>
-zfclassNotPOD _ZFP_ObjICW { // interface cast wrapper
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjICW { // interface cast wrapper
 };
 template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface>
-zfclassNotPOD _ZFP_ObjICW<T_FromZFObjectOrZFInterface, T_ToZFInterface, 0> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjICW<T_FromZFObjectOrZFInterface, T_ToZFInterface, 0> {
 public:
     static ZFInterface *_ZFP_cast(ZF_IN ZFObject *obj) {
         return (T_ToZFInterface *)zfcast(T_FromZFObjectOrZFInterface *, obj);
     }
 };
 template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface>
-zfclassNotPOD _ZFP_ObjICW<T_FromZFObjectOrZFInterface, T_ToZFInterface, 1> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjICW<T_FromZFObjectOrZFInterface, T_ToZFInterface, 1> {
 public:
     template<typename T_ZFObject>
     static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject *obj) {
@@ -124,7 +124,7 @@ public:
     }
 };
 template<typename T_FromZFObjectOrZFInterface>
-zfclassNotPOD _ZFP_ObjICW<T_FromZFObjectOrZFInterface, ZFInterface, 0> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjICW<T_FromZFObjectOrZFInterface, ZFInterface, 0> {
 public:
     template<typename T_ZFObject>
     static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject *obj) {
@@ -132,7 +132,7 @@ public:
     }
 };
 template<typename T_FromZFObjectOrZFInterface>
-zfclassNotPOD _ZFP_ObjICW<T_FromZFObjectOrZFInterface, ZFInterface, 1> {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_ObjICW<T_FromZFObjectOrZFInterface, ZFInterface, 1> {
 public:
     template<typename T_ZFObject>
     static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject *obj) {
@@ -142,7 +142,7 @@ public:
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_PARAM(Interface) \
     , Interface::ClassData(), &zfself::_ZFP_ObjICCb_##Interface
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_CAST_CALLBACK(Interface) \
-    static ZFInterface *_ZFP_ObjICCb_##Interface(ZF_IN ZFObject *obj) { \
+    ZFLIB_HIDDEN static ZFInterface *_ZFP_ObjICCb_##Interface(ZF_IN ZFObject *obj) { \
         return _ZFP_ObjICW<zfself, Interface, (zftIsTypeOf<zfself, ZFObject>::Value ? 0 : 1)>::_ZFP_cast(obj); \
     }
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_INTERFACE_ON_INIT(Interface) \
@@ -159,7 +159,7 @@ public:
                     ); \
             } \
         } \
-    public: \
+    private: \
         ZFM_FIX_PARAM(_ZFP_ZFIMPLEMENT_DECLARE_EXPAND_CAST_CALLBACK, ZFM_EMPTY, ImplementedInterfaces, ##__VA_ARGS__) \
     public:
 /**

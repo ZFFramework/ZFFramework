@@ -1,0 +1,39 @@
+#ifndef _ZFI_ZFObjectKeyPrivate_
+#define _ZFI_ZFObjectKeyPrivate_
+
+#include "ZFObjectCore.h"
+#include "../ZFSTLWrapper/zfstl_define.h"
+
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+zfclassNotPOD _ZFP_ZFObjectKeyHash {
+public:
+    zfstlsize operator () (ZFObject *const &v) const {
+        return (zfstlsize)v->objectHash();
+    }
+};
+zfclassNotPOD _ZFP_ZFObjectKeyEqual {
+public:
+    zfbool operator () (ZFObject * const &v0, ZFObject * const &v1) const {
+        return (v0->objectCompare(v1) == ZFCompareEqual);
+    }
+};
+
+zfclassNotPOD _ZFP_ZFObjectKeyCompare {
+public:
+    zfbool operator () (
+            ZF_IN ZFObject *obj1
+            , ZF_IN ZFObject *obj2
+            ) const {
+        ZFCompareResult cmp = ZFObjectCompare(obj1, obj2);
+        ZFCoreAssertWithMessageTrim(cmp != ZFCompareUncomparable, "key must comparable: %s, %s",
+            obj1,
+            obj2);
+        return (cmp == ZFCompareSmaller);
+    }
+};
+
+ZF_NAMESPACE_GLOBAL_END
+
+#endif // #ifndef _ZFI_ZFObjectKeyPrivate_
+

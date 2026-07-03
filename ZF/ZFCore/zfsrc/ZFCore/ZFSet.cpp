@@ -1,26 +1,14 @@
 #include "ZFSet.h"
+#include "ZFObjectDef/ZFObjectKeyPrivate"
 #include "ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // _ZFP_ZFSetPrivate
-zfclassNotPOD _ZFP_ZFSetKeyComparer {
-public:
-    inline zfbool operator () (
-            ZF_IN ZFObject *obj1
-            , ZF_IN ZFObject *obj2
-            ) const {
-        ZFCompareResult cmp = ZFObjectCompare(obj1, obj2);
-        ZFCoreAssertWithMessageTrim(cmp != ZFCompareUncomparable, "[ZFSet] key must comparable: %s, %s",
-            obj1,
-            obj2);
-        return (cmp == ZFCompareSmaller);
-    }
-};
 zfclassNotPOD _ZFP_ZFSetPrivate {
 public:
-    typedef zfimplmap<ZFObject *, zfbool, _ZFP_ZFSetKeyComparer> MapType;
+    typedef zfimplmap<ZFObject *, ZFObject *, _ZFP_ZFObjectKeyCompare> MapType;
 
 public:
     MapType data;
@@ -51,6 +39,11 @@ void ZFSet::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
+ZFMETHOD_DEFINE_1(ZFSet, void, capacity
+        , ZFMP_IN(zfindex, capacity)
+        ) {
+}
+
 ZFMETHOD_DEFINE_0(ZFSet, zfindex, count) {
     return (zfindex)d->data.size();
 }
@@ -67,7 +60,7 @@ ZFMETHOD_DEFINE_1(ZFSet, void, add
         , ZFMP_IN(ZFObject *, obj)
         ) {
     ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
-    zfstlpair<_ZFP_ZFSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, zfbool>(obj, zftrue));
+    zfstlpair<_ZFP_ZFSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(_ZFP_ZFSetPrivate::MapType::value_type(obj, zfnull));
     if(insertResult.second) {
         zfobjRetain(obj);
     }
@@ -78,9 +71,10 @@ ZFMETHOD_DEFINE_1(ZFSet, void, addFrom
     if(another == this || another == zfnull) {
         return;
     }
+    this->capacity(this->count() + another->count());
     for(zfiter it = another->iter(); it; ++it) {
         ZFObject *obj = another->iterValue(it);
-        zfstlpair<_ZFP_ZFSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, zfbool>(obj, zftrue));
+        zfstlpair<_ZFP_ZFSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(_ZFP_ZFSetPrivate::MapType::value_type(obj, zfnull));
         if(insertResult.second) {
             zfobjRetain(obj);
         }
@@ -160,7 +154,7 @@ ZFMETHOD_DEFINE_1(ZFSet, zfiter, iterAdd
     if(value == zfnull) {
         return zfnull;
     }
-    zfstlpair<_ZFP_ZFSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, zfbool>(value, zftrue));
+    zfstlpair<_ZFP_ZFSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(_ZFP_ZFSetPrivate::MapType::value_type(value, zfnull));
     if(insertResult.second) {
         zfobjRetain(value);
     }

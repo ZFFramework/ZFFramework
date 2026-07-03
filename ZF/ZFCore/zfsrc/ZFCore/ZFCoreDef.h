@@ -21,6 +21,7 @@
 #include "ZFCoreDef/ZFCoreMutex.h"
 #include "ZFCoreDef/ZFCoreOrderMap.h"
 #include "ZFCoreDef/ZFCoreQueue.h"
+#include "ZFCoreDef/ZFCoreSet.h"
 #include "ZFCoreDef/ZFCoreStaticInitializer.h"
 #include "ZFCoreDef/ZFCoreStaticRegister.h"
 #include "ZFCoreDef/ZFCoreStatistic.h"

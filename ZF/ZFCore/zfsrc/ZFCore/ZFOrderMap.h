@@ -19,6 +19,13 @@ zfclass ZFLIB_ZFCore ZFOrderMap: zfextend ZFKeyValueContainer {
 
 public:
     /**
+     * @brief change capacity
+     */
+    ZFMETHOD_DECLARE_1(void, capacity
+            , ZFMP_IN(zfindex, capacity)
+            )
+
+    /**
      * @brief return number of content
      */
     ZFMETHOD_DECLARE_0(zfindex, count)

@@ -192,12 +192,12 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  */
 #define ZFPROPERTY_ON_INIT_DECLARE(Type, Name) \
     public: \
-        static zfbool _ZFP_propLExt_##Name(void) {return zftrue;} \
+        ZFLIB_HIDDEN static zfbool _ZFP_propLExt_##Name(void) {return zftrue;} \
     _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DECLARE(Type, Name, OnInit, ZFM_EMPTY)
 /** @brief see #ZFPROPERTY_ON_INIT_DECLARE */
 #define ZFPROPERTY_ON_INIT_DECLARE_NO_AUTO_INIT(Type, Name) \
     public: \
-        static zfbool _ZFP_propLExt_##Name(void) {return zffalse;} \
+        ZFLIB_HIDDEN static zfbool _ZFP_propLExt_##Name(void) {return zffalse;} \
     _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DECLARE(Type, Name, OnInit, ZFM_EMPTY)
 /** @brief see #ZFPROPERTY_ON_INIT_DECLARE */
 #define ZFPROPERTY_ON_INIT_DEFINE(OwnerClass, Type, Name) \
@@ -388,7 +388,7 @@ public:
 #define _ZFP_ZFPROPERTY_DECLARE_REGISTER_RETAIN(Type, ZFTypeId_noneOrType, Name, propertyClassOfRetainProperty) \
     public: \
         static ZFProperty *_ZFP_Prop_##Name(void) { \
-            static _ZFP_ZFPropertyRegisterHolder _propertyInfoHolder(zffalse \
+            static _ZFP_ZFPropertyRegisterHolder d(zffalse \
                     , zffalse \
                     , zftrue \
                     , zftrue \
@@ -410,12 +410,12 @@ public:
                     , zfself::_ZFP_propCbEnsureInit_##Name \
                     , zfself::_ZFP_propCbDel_##Name \
                 ); \
-            return _propertyInfoHolder.propertyInfo; \
+            return d.propertyInfo; \
         }
 #define _ZFP_ZFPROPERTY_DECLARE_REGISTER_ASSIGN(Type, ZFTypeId_noneOrType, Name, propertyClassOfRetainProperty) \
     public: \
         static ZFProperty *_ZFP_Prop_##Name(void) { \
-            static _ZFP_ZFPropertyRegisterHolder _propertyInfoHolder(zffalse \
+            static _ZFP_ZFPropertyRegisterHolder d(zffalse \
                     , zffalse \
                     , zftrue \
                     , zftrue \
@@ -437,7 +437,7 @@ public:
                     , zfself::_ZFP_propCbEnsureInit_##Name \
                     , zfself::_ZFP_propCbDel_##Name \
                 ); \
-            return _propertyInfoHolder.propertyInfo; \
+            return d.propertyInfo; \
         }
 
 #define _ZFP_ZFPROPERTY_VALUE_DECLARE_RETAIN(Type, ZFTypeId_noneOrType, Name, InitValueOrEmpty) \
@@ -447,7 +447,7 @@ public:
         typedef zfauto _ZFP_PropHT_##Name; \
         /** @endcond */ \
     private: \
-        zffinal zfclassNotPOD _ZFP_PropV_##Name : zfextend _ZFP_PropRVH<_ZFP_PropVT_##Name> { \
+        zfclassNotPOD ZFLIB_HIDDEN _ZFP_PropV_##Name : zfextend _ZFP_PropRVH<_ZFP_PropVT_##Name> { \
         public: \
             _ZFP_PropV_##Name(void) \
             { \
@@ -494,7 +494,7 @@ public:
         }; \
         zfself::_ZFP_PropV_##Name Name##_PropV; \
     private: \
-        static zfbool _ZFP_propCbIsInit_##Name( \
+        ZFLIB_HIDDEN static zfbool _ZFP_propCbIsInit_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
@@ -524,7 +524,7 @@ public:
         typedef Type _ZFP_PropHT_##Name; \
         /** @endcond */ \
     private: \
-        zffinal zfclassNotPOD _ZFP_PropV_##Name : zfextend _ZFP_PropAVH<_ZFP_PropVT_##Name> { \
+        zfclassNotPOD ZFLIB_HIDDEN _ZFP_PropV_##Name : zfextend _ZFP_PropAVH<_ZFP_PropVT_##Name> { \
         public: \
             _ZFP_PropV_##Name(void) \
             { \
@@ -571,7 +571,7 @@ public:
         }; \
         zfself::_ZFP_PropV_##Name Name##_PropV; \
     private: \
-        static zfbool _ZFP_propCbIsInit_##Name( \
+        ZFLIB_HIDDEN static zfbool _ZFP_propCbIsInit_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
@@ -597,14 +597,14 @@ public:
 // ============================================================
 #define _ZFP_ZFPROPERTY_DECLARE_CALLBACK(Type, Name) \
     private: \
-        static zfbool _ZFP_propCbAccessed_##Name( \
+        ZFLIB_HIDDEN static zfbool _ZFP_propCbAccessed_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &ownerObj \
                 ) { \
             zfself *t = zfcastNoExt(zfself *, ownerObj); \
             return t && t->Name##_PropV.VA(); \
         } \
-        static void _ZFP_propCbReset_##Name( \
+        ZFLIB_HIDDEN static void _ZFP_propCbReset_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &owner \
                 ) { \
@@ -613,13 +613,13 @@ public:
                 zfcast(zfself *, owner)->Name##_PropV.Dealloc(owner, zftrue); \
             } \
         } \
-        static void _ZFP_propCbEnsureInit_##Name( \
+        ZFLIB_HIDDEN static void _ZFP_propCbEnsureInit_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &owner \
                 ) { \
             zfcast(zfself *, owner)->Name##_PropV.Init(owner, zftrue); \
         } \
-        static void _ZFP_propCbDel_##Name( \
+        ZFLIB_HIDDEN static void _ZFP_propCbDel_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &owner \
                 ) { \
@@ -774,13 +774,13 @@ public:
                     ); \
         } \
     public: \
-        zffinal void _ZFP_propL_##lifeCycleName##_##Name( \
+        ZFLIB_HIDDEN zffinal void _ZFP_propL_##lifeCycleName##_##Name( \
                 ZF_IN zfself::_ZFP_PropHT_##Name constFix(const) &propertyValue \
                 , ZF_IN zfself::_ZFP_PropHT_##Name const &propertyValueOld \
                 )
 #define _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DECLARE(Type, Name, lifeCycleName, constFix) \
     public: \
-        zffinal void _ZFP_propL_##lifeCycleName##_##Name( \
+        ZFLIB_HIDDEN zffinal void _ZFP_propL_##lifeCycleName##_##Name( \
                 ZF_IN zfself::_ZFP_PropHT_##Name constFix(const) &propertyValue \
                 , ZF_IN zfself::_ZFP_PropHT_##Name const &propertyValueOld \
                 );

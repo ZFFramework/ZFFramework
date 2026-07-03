@@ -1,0 +1,25 @@
+#ifndef _ZFI_ZFCoreMapPrivate_
+#define _ZFI_ZFCoreMapPrivate_
+
+#include "ZFCoreMap.h"
+#include "../ZFSTLWrapper/zfstl_define.h"
+
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+zfclassNotPOD _ZFP_ZFCoreMapKeyHash {
+public:
+    zfstlsize operator () (ZF_IN const _ZFP_ZFCoreMapKey *key) const {
+        return key->implHash();
+    }
+};
+zfclassNotPOD _ZFP_ZFCoreMapKeyEqual {
+public:
+    zfbool operator () (ZF_IN const _ZFP_ZFCoreMapKey *key0, ZF_IN const _ZFP_ZFCoreMapKey *key1) const {
+        return key0->implEqual(key1);
+    }
+};
+
+ZF_NAMESPACE_GLOBAL_END
+
+#endif // #ifndef _ZFI_ZFCoreMapPrivate_
+

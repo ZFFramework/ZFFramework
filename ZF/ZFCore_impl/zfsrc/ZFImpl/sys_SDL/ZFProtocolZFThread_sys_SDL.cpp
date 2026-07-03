@@ -19,13 +19,13 @@ static void *_ZFP_ZFImpl_sys_SDL_MainThreadExecute(ZF_IN const ZFListener &runna
     --it;
     ZFCoreMutexUnlock();
     _ZFP_ZFImpl_sys_SDL_MainThreadRunNext();
-    return new zfstllist<ZFListener>::iterator(it);
+    return zfnew(zfstllist<ZFListener>::iterator, it);
 }
 static void _ZFP_ZFImpl_sys_SDL_MainThreadCleanup(ZF_IN void *nativeToken) {
     ZFCoreMutexLocker();
     zfstllist<ZFListener>::iterator *it = (zfstllist<ZFListener>::iterator *)nativeToken;
     _ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.erase(*it);
-    delete it;
+    zfdelete(it);
 }
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_MainThreadImpl, ZFLevelZFFrameworkStatic) {

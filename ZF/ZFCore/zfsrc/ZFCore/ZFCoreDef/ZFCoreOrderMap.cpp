@@ -1,22 +1,8 @@
 #include "ZFCoreOrderMap.h"
-
-#include "ZFCore/ZFSTLWrapper/zfstlordermap.h"
-#include "ZFCore/ZFSTLWrapper/zfstlvector.h"
+#include "ZFCoreMapPrivate"
+#include "../ZFSTLWrapper/zfstlordermap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
-
-zfclassNotPOD _ZFP_ZFCoreOrderMapHash {
-public:
-    zfstlsize operator () (ZF_IN const _ZFP_ZFCoreOrderMap::BaseKey *key) const {
-        return key->implHash();
-    }
-};
-zfclassNotPOD _ZFP_ZFCoreOrderMapEqual {
-public:
-    zfbool operator () (ZF_IN const _ZFP_ZFCoreOrderMap::BaseKey *key0, ZF_IN const _ZFP_ZFCoreOrderMap::BaseKey *key1) const {
-        return key0->implEqual(key1);
-    }
-};
 
 zfclassNotPOD _ZFP_ZFCoreOrderMapImpl : zfextend _ZFP_ZFCoreOrderMap {
 public:
@@ -24,7 +10,7 @@ public:
         _ZFP_ZFCoreOrderMapImpl::removeAll();
     }
 public:
-    typedef zfimplordermap<const BaseKey *, BaseValue *, _ZFP_ZFCoreOrderMapHash, _ZFP_ZFCoreOrderMapEqual> MapType;
+    typedef zfimplordermap<const _ZFP_ZFCoreMapKey *, _ZFP_ZFCoreMapValue *, _ZFP_ZFCoreMapKeyHash, _ZFP_ZFCoreMapKeyEqual> MapType;
 public:
     MapType m;
 
@@ -84,6 +70,10 @@ public:
         this->addFrom(ref);
     }
     zfoverride
+    virtual void capacity(ZF_IN zfindex capacity) {
+        return m.reserve((zfstlsize)capacity);
+    }
+    zfoverride
     virtual zfindex count(void) {
         return (zfindex)m.size();
     }
@@ -92,7 +82,7 @@ public:
         return m.empty();
     }
     zfoverride
-    virtual zfbool isContain(ZF_IN BaseKey *key) {
+    virtual zfbool isContain(ZF_IN _ZFP_ZFCoreMapKey *key) {
         if(m.find(key) != m.end()) {
             key->implDestroy();
             return zftrue;
@@ -110,11 +100,11 @@ public:
         }
         m.reserve(m.size() + mRef.size());
         for(MapType::iterator itRef = mRef.begin(); itRef != mRef.end(); ++itRef) {
-            BaseKey *key = itRef->first->implCopy();
-            BaseValue *value = itRef->second->implCopy();
-            zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const BaseKey *, BaseValue *>(key, value));
+            _ZFP_ZFCoreMapKey *key = itRef->first->implCopy();
+            _ZFP_ZFCoreMapValue *value = itRef->second->implCopy();
+            zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const _ZFP_ZFCoreMapKey *, _ZFP_ZFCoreMapValue *>(key, value));
             if(!insertResult.second) {
-                BaseValue *valueOld = insertResult.first->second;
+                _ZFP_ZFCoreMapValue *valueOld = insertResult.first->second;
                 insertResult.first->second = value;
                 key->implDestroy();
                 valueOld->implDestroy();
@@ -122,17 +112,17 @@ public:
         }
     }
     zfoverride
-    virtual void set(ZF_IN BaseKey *key, ZF_IN BaseValue *value) {
-        zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const BaseKey *, BaseValue *>(key, value));
+    virtual void set(ZF_IN _ZFP_ZFCoreMapKey *key, ZF_IN _ZFP_ZFCoreMapValue *value) {
+        zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const _ZFP_ZFCoreMapKey *, _ZFP_ZFCoreMapValue *>(key, value));
         if(!insertResult.second) {
-            BaseValue *valueOld = insertResult.first->second;
+            _ZFP_ZFCoreMapValue *valueOld = insertResult.first->second;
             insertResult.first->second = value;
             key->implDestroy();
             valueOld->implDestroy();
         }
     }
     zfoverride
-    virtual BaseValue *get(ZF_IN BaseKey *key) {
+    virtual _ZFP_ZFCoreMapValue *get(ZF_IN _ZFP_ZFCoreMapKey *key) {
         MapType::iterator it = m.find(key);
         key->implDestroy();
         if(it != m.end()) {
@@ -143,9 +133,9 @@ public:
         }
     }
     zfoverride
-    virtual BaseValue *access(ZF_IN BaseKey *key, ZF_IN Fn_ValueCreate fn_ValueCreate) {
-        BaseValue *value = fn_ValueCreate();
-        zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const BaseKey *, BaseValue *>(key, value));
+    virtual _ZFP_ZFCoreMapValue *access(ZF_IN _ZFP_ZFCoreMapKey *key, ZF_IN Fn_ValueCreate fn_ValueCreate) {
+        _ZFP_ZFCoreMapValue *value = fn_ValueCreate();
+        zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const _ZFP_ZFCoreMapKey *, _ZFP_ZFCoreMapValue *>(key, value));
         if(insertResult.second) {
             return value;
         }
@@ -156,12 +146,12 @@ public:
         }
     }
     zfoverride
-    virtual void remove(ZF_IN BaseKey *key) {
+    virtual void remove(ZF_IN _ZFP_ZFCoreMapKey *key) {
         MapType::iterator it = m.find(key);
         key->implDestroy();
         if(it != m.end()) {
-            BaseKey *keyTmp = const_cast<BaseKey *>(it->first);
-            BaseValue *valueTmp = it->second;
+            _ZFP_ZFCoreMapKey *keyTmp = const_cast<_ZFP_ZFCoreMapKey *>(it->first);
+            _ZFP_ZFCoreMapValue *valueTmp = it->second;
             m.erase(it);
             keyTmp->implDestroy();
             valueTmp->implDestroy();
@@ -170,19 +160,18 @@ public:
     zfoverride
     virtual void removeAll(void) {
         if(!m.empty()) {
-            zfstlvector<BaseKey *> tmpKey;
-            tmpKey.reserve(m.size());
-            zfstlvector<BaseValue *> tmpValue;
-            tmpValue.reserve(m.size());
+            void **tmp = (void **)zfmalloc(sizeof(void *) * m.size() * 2);
+            zfindex nTmp = 0;
             for(MapType::iterator it = m.begin(); it != m.end(); ++it) {
-                tmpKey.push_back(const_cast<BaseKey *>(it->first));
-                tmpValue.push_back(it->second);
+                tmp[nTmp++] = const_cast<_ZFP_ZFCoreMapKey *>(it->first);
+                tmp[nTmp++] = it->second;
             }
             m.clear();
-            for(zfstlsize i = 0; i < tmpKey.size(); ++i) {
-                tmpKey[i]->implDestroy();
-                tmpValue[i]->implDestroy();
+            for(zfstlsize i = 0; i < nTmp; ) {
+                ((_ZFP_ZFCoreMapKey *)tmp[i++])->implDestroy();
+                ((_ZFP_ZFCoreMapValue *)tmp[i++])->implDestroy();
             }
+            zffree(tmp);
         }
     }
 
@@ -191,38 +180,38 @@ public:
         return m.iter();
     }
     zfoverride
-    virtual zfiter iterFind(ZF_IN BaseKey *key) {
+    virtual zfiter iterFind(ZF_IN _ZFP_ZFCoreMapKey *key) {
         zfiter it = m.iterFind(key);
         key->implDestroy();
         return it;
     }
     zfoverride
-    virtual const BaseKey *iterKey(ZF_IN const zfiter &it) {
+    virtual const _ZFP_ZFCoreMapKey *iterKey(ZF_IN const zfiter &it) {
         return m.iterKey(it);
     }
     zfoverride
-    virtual BaseValue *iterValue(ZF_IN const zfiter &it) {
+    virtual _ZFP_ZFCoreMapValue *iterValue(ZF_IN const zfiter &it) {
         return m.iterValue(it);
     }
     zfoverride
-    virtual void iterValue(ZF_IN_OUT zfiter &it, ZF_IN BaseValue *value) {
-        BaseValue *tmp = m.iterValue(it);
+    virtual void iterValue(ZF_IN_OUT zfiter &it, ZF_IN _ZFP_ZFCoreMapValue *value) {
+        _ZFP_ZFCoreMapValue *tmp = m.iterValue(it);
         m.iterValue(it, value);
         tmp->implDestroy();
     }
     zfoverride
     virtual void iterRemove(ZF_IN_OUT zfiter &it) {
-        BaseKey *key = const_cast<BaseKey *>(m.iterKey(it));
-        BaseValue *value = m.iterValue(it);
+        _ZFP_ZFCoreMapKey *key = const_cast<_ZFP_ZFCoreMapKey *>(m.iterKey(it));
+        _ZFP_ZFCoreMapValue *value = m.iterValue(it);
         m.iterRemove(it);
         key->implDestroy();
         value->implDestroy();
     }
     zfoverride
-    virtual zfiter iterAdd(ZF_IN BaseKey *key, ZF_IN BaseValue *value) {
-        zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const BaseKey *, BaseValue *>(key, value));
+    virtual zfiter iterAdd(ZF_IN _ZFP_ZFCoreMapKey *key, ZF_IN _ZFP_ZFCoreMapValue *value) {
+        zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const _ZFP_ZFCoreMapKey *, _ZFP_ZFCoreMapValue *>(key, value));
         if(!insertResult.second) {
-            BaseValue *valueOld = insertResult.first->second;
+            _ZFP_ZFCoreMapValue *valueOld = insertResult.first->second;
             insertResult.first->second = value;
             key->implDestroy();
             valueOld->implDestroy();
@@ -230,9 +219,9 @@ public:
         return m.iter(insertResult.first);
     }
     zfoverride
-    virtual zfiter iterAccess(ZF_IN BaseKey *key, ZF_IN Fn_ValueCreate fn_ValueCreate) {
-        BaseValue *value = fn_ValueCreate();
-        zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const BaseKey *, BaseValue *>(key, value));
+    virtual zfiter iterAccess(ZF_IN _ZFP_ZFCoreMapKey *key, ZF_IN Fn_ValueCreate fn_ValueCreate) {
+        _ZFP_ZFCoreMapValue *value = fn_ValueCreate();
+        zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const _ZFP_ZFCoreMapKey *, _ZFP_ZFCoreMapValue *>(key, value));
         if(!insertResult.second) {
             key->implDestroy();
             value->implDestroy();

@@ -114,13 +114,15 @@ extern ZFLIB_ZFCore void _ZFP_zffree(void *ptr);
  *     or base class has virtual destructor
  */
 #define zfnew(Type, ...) (new (_ZFP_zfmalloc(sizeof(Type))) Type(__VA_ARGS__))
-template<typename Type> inline void _ZFP_zfdelete(Type *obj) {obj->~Type(); _ZFP_zffree((void *)obj);}
+template<typename Type>
+ZFLIB_HIDDEN inline void _ZFP_zfdelete(Type *obj) {obj->~Type(); _ZFP_zffree((void *)obj);}
 /** @brief see #zfnew */
 #define zfdelete(instance) _ZFP_zfdelete(instance)
 
 /** @brief placement new defined for future use, see #zfnew for more info */
 #define zfnewPlacement(buf, Type, ...) (new (buf) Type(__VA_ARGS__))
-template<typename Type> inline void _ZFP_zfdeletePlacement(Type *obj) {obj->~Type();}
+template<typename Type>
+ZFLIB_HIDDEN inline void _ZFP_zfdeletePlacement(Type *obj) {obj->~Type();}
 /** @brief placement delete (instance->~Type()) defined for future use, see #zfnew for more info */
 #define zfdeletePlacement(instance) _ZFP_zfdeletePlacement(instance)
 

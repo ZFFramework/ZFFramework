@@ -63,6 +63,12 @@ void ZFArray::objectOnDealloc(void) {
 }
 
 // ============================================================
+ZFMETHOD_DEFINE_1(ZFArray, void, capacity
+        , ZFMP_IN(zfindex, capacity)
+        ) {
+    d->data.reserve((zfstlsize)capacity);
+}
+
 ZFMETHOD_DEFINE_0(ZFArray, zfindex, count) {
     return (zfindex)(d->data.size());
 }
@@ -193,6 +199,7 @@ ZFMETHOD_DEFINE_1(ZFArray, void, addFrom
     if(another == this || another == zfnull) {
         return;
     }
+    this->capacity(this->count() + another->count());
     ZFObject *obj = zfnull;
     for(zfiter it = another->iter(); it; ++it) {
         obj = another->iterValue(it);

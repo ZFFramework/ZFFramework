@@ -240,7 +240,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    zfclassNotPOD _ZFP_mReg_##MethodName##_##RegSig { \
+    zfclassNotPOD ZFLIB_HIDDEN _ZFP_mReg_##MethodName##_##RegSig { \
     public: \
         _ZFP_mReg_##MethodName##_##RegSig(void) { \
             (void)zfself::_ZFP_m_##MethodName((void (*)( \
@@ -283,7 +283,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
                 , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
             ) \
-        zfclassNotPOD _ZFP_mH_##MethodName##_##RegSig { \
+        zfclassNotPOD ZFLIB_HIDDEN _ZFP_mH_##MethodName##_##RegSig { \
         public: \
             _ZFP_ZFMETHOD_GENERIC_INVOKER_DECLARE( \
                     ReturnType \
@@ -298,7 +298,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ) \
         }; \
     private: \
-        static ReturnType _ZFP_mI_##MethodName( \
+        ZFLIB_HIDDEN static ReturnType _ZFP_mI_##MethodName( \
                 ZF_IN const ZFMethod *invokerMethod, \
                 ZF_IN zfany const &invokerObject \
                 ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
@@ -457,7 +457,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
         /** @cond ZFPrivateDoc */ /* required to make Doxygen doc placed at right pos */ \
     private: \
-        static ReturnType _ZFP_mI_##MethodName( \
+        ZFLIB_HIDDEN static ReturnType _ZFP_mI_##MethodName( \
                 ZF_IN const ZFMethod *invokerMethod, \
                 ZF_IN zfany const &invokerObject \
                 ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
@@ -480,7 +480,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     ParamExpandOrEmpty7(ZFM_COMMA() param7) \
                 ); \
         } \
-        static inline ZFMethodAccessType _ZFP_mS_P_##MethodName(void (*)( \
+        ZFLIB_HIDDEN static inline ZFMethodAccessType _ZFP_mS_P_##MethodName(void (*)( \
                 ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
                 ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
@@ -492,7 +492,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 )) { \
             return _ZFP_ZFMethod_initClassMemberType_accessType(PublicOrProtectedOrPrivate); \
         } \
-        static inline ZFMethodType _ZFP_mS_T_##MethodName(void (*)( \
+        ZFLIB_HIDDEN static inline ZFMethodType _ZFP_mS_T_##MethodName(void (*)( \
                 ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
                 ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
@@ -570,7 +570,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    zfclassNotPOD _ZFP_mH_##OwnerClass##_##MethodName##_##RegSig { \
+    zfclassNotPOD ZFLIB_HIDDEN _ZFP_mH_##OwnerClass##_##MethodName##_##RegSig { \
     public: \
         _ZFP_ZFMETHOD_GENERIC_INVOKER_DECLARE( \
                 ReturnType \

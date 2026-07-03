@@ -137,7 +137,7 @@ inline ZFCompareResult _ZFP_ZFComparerDummy(
 
 // ============================================================
 template<typename T_Comparable0, typename T_Comparable1, int hasEqual, int hasSmaller>
-zfclassNotPOD _ZFP_ZFComparerDefaultImpl {
+zfclassNotPOD _ZFP_CmpDefD {
 public:
     static inline ZFCompareResult a(
             ZF_IN T_Comparable0 const &v0
@@ -147,7 +147,7 @@ public:
     }
 };
 template<typename T_Comparable0, typename T_Comparable1>
-zfclassNotPOD _ZFP_ZFComparerDefaultImpl<T_Comparable0, T_Comparable1, 1, 1> {
+zfclassNotPOD _ZFP_CmpDefD<T_Comparable0, T_Comparable1, 1, 1> {
 public:
     static inline ZFCompareResult a(
             ZF_IN T_Comparable0 const &v0
@@ -168,7 +168,7 @@ public:
     }
 };
 template<typename T_Comparable0, typename T_Comparable1>
-zfclassNotPOD _ZFP_ZFComparerDefaultImpl<T_Comparable0, T_Comparable1, 1, 0> {
+zfclassNotPOD _ZFP_CmpDefD<T_Comparable0, T_Comparable1, 1, 0> {
 public:
     static inline ZFCompareResult a(
             ZF_IN T_Comparable0 const &v0
@@ -183,7 +183,7 @@ public:
     }
 };
 template<typename T_Comparable0, typename T_Comparable1>
-zfclassNotPOD _ZFP_ZFComparerDefaultImpl<T_Comparable0, T_Comparable1, 0, 1> {
+zfclassNotPOD _ZFP_CmpDefD<T_Comparable0, T_Comparable1, 0, 1> {
 public:
     static inline ZFCompareResult a(
             ZF_IN T_Comparable0 const &v0
@@ -220,34 +220,34 @@ public:
             ZF_IN T_Comparable0 const &v0
             , ZF_IN T_Comparable1 const &v1
             ) {
-        return _ZFP_ZFComparerDefaultImpl<T_Comparable0, T_Comparable1
+        return _ZFP_CmpDefD<T_Comparable0, T_Comparable1
             , _ZFP_ZFComparer::HasEqual<T_Comparable0, T_Comparable1>::Value ? 1 : 0
             , _ZFP_ZFComparer::HasSmaller<T_Comparable0, T_Comparable1>::Value ? 1 : 0
             >::a(v0, v1);
     }
 };
 template<typename T_Comparable0, typename T_Comparable1>
-inline ZFCompareResult _ZFP_ZFComparerDefault(
+inline ZFCompareResult _ZFP_CmpDef(
         ZF_IN T_Comparable0 const &v0
         , ZF_IN T_Comparable1 const &v1
         ) {
     return ZFComparerDefaultHolder<T_Comparable0, T_Comparable1>::comparer(v0, v1);
 }
 template<typename T_Comparable>
-inline ZFCompareResult _ZFP_ZFComparerDefault(
+inline ZFCompareResult _ZFP_CmpDef(
         ZF_IN T_Comparable const &v0
         , ZF_IN zfnullT const &v1
         ) {
     return (v0 == zfnull) ? ZFCompareEqual : ZFCompareUncomparable;
 }
 template<typename T_Comparable>
-inline ZFCompareResult _ZFP_ZFComparerDefault(
+inline ZFCompareResult _ZFP_CmpDef(
         ZF_IN zfnullT const &v0
         , ZF_IN T_Comparable const &v1
         ) {
     return (v1 == zfnull) ? ZFCompareEqual : ZFCompareUncomparable;
 }
-inline ZFCompareResult _ZFP_ZFComparerDefault(
+inline ZFCompareResult _ZFP_CmpDef(
         ZF_IN zfnullT const &v0
         , ZF_IN zfnullT const &v1
         ) {
@@ -259,7 +259,7 @@ inline ZFCompareResult _ZFP_ZFComparerDefault(
  * by default, compare by operator ==,
  * you may use #ZFCOMPARER_DEFAULT_DECLARE to supply your own type's compare method
  */
-#define ZFComparerDefault _ZFP_ZFComparerDefault
+#define ZFComparerDefault _ZFP_CmpDef
 
 /**
  * @brief declare a template specialization for #ZFComparerDefault

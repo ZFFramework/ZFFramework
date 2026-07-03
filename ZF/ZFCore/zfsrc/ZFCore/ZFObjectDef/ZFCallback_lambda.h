@@ -757,7 +757,7 @@ public:
     ) \
     T_ZFCallback name; \
     { \
-        zfclassNotPOD _ZFP_Lbd_D_##name { \
+        zfclassNotPOD ZFLIB_HIDDEN _ZFP_Lbd_D_##name { \
         public: \
             CaptureExpandOrEmpty0(CaptureType0 capture0;) \
             CaptureExpandOrEmpty1(CaptureType1 capture1;) \
@@ -814,11 +814,11 @@ public:
             } \
         public: \
             static void _ZFP_d(ZF_IN void *impl) { \
-                delete (_ZFP_Lbd_D_##name *)impl; \
+                zfdelete((_ZFP_Lbd_D_##name *)impl); \
             } \
         }; \
         ZFCallback _ZFP_Lbd_v = ZFCallback::_ZFP_ZFCallbackCreateLambda( \
-            new _ZFP_Lbd_D_##name( \
+            zfnew(_ZFP_Lbd_D_##name, \
                 CaptureExpandOrEmpty0(ZFM_EMPTY() capture0) \
                 CaptureExpandOrEmpty1(ZFM_COMMA() capture1) \
                 CaptureExpandOrEmpty2(ZFM_COMMA() capture2) \
@@ -839,7 +839,7 @@ public:
             _ZFP_Lbd_D_##name::_ZFP_d, \
             zfnull); \
         name = _ZFP_Lbd_v; \
-        zfclassNotPOD _ZFP_Lbd_P_##name { \
+        zfclassNotPOD ZFLIB_HIDDEN _ZFP_Lbd_P_##name { \
         public: \
             _ZFP_Lbd_P_##name(ZF_IN_OUT ZFCallback &cb) { \
                 cb._ZFP_ZFCallback_callbackLambdaInvoker((ZFFuncAddrType)_ZFP_Lbd_P_##name::_ZFP_i); \
@@ -901,7 +901,7 @@ public:
             zfnull, \
             zfnull); \
         name = _ZFP_Lbd_v; \
-        zfclassNotPOD _ZFP_Lbd_P_##name { \
+        zfclassNotPOD ZFLIB_HIDDEN _ZFP_Lbd_P_##name { \
         public: \
             _ZFP_Lbd_P_##name(ZF_IN_OUT ZFCallback &cb) { \
                 cb._ZFP_ZFCallback_callbackLambdaInvoker((ZFFuncAddrType)_ZFP_Lbd_P_##name::_ZFP_i); \

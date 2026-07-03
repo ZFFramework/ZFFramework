@@ -94,7 +94,7 @@ public:
     _ZFP_mGIPA<_TR##N, _T##N>(zfargs.paramAt(N)).a(DefaultExpandOrEmpty(pDef##N))
 #define _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS(N, DefaultExpandOrEmpty, ParamType, DefaultValueFix) \
     DefaultExpandOrEmpty( \
-        static zfauto pDef##N(void) { \
+        ZFLIB_HIDDEN static zfauto pDef##N(void) { \
             zftValue<zftTraits<ParamType>::TrNoRef> paramDefault; \
             zfauto ret; \
             ZFTypeId<zftTraits<ParamType>::TrNoRef>::ValueStore( \
@@ -102,7 +102,7 @@ public:
                 (paramDefault.zfv DefaultValueFix())); \
             return ret; \
         } \
-        static void pDefGI##N(ZF_IN const ZFArgs &zfargs) { \
+        ZFLIB_HIDDEN static void pDefGI##N(ZF_IN const ZFArgs &zfargs) { \
             zfargs.result(pDef##N()); \
         } \
     )
@@ -178,7 +178,7 @@ public:
         ParamExpandOrEmpty6(_ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS(6, DefaultExpandOrEmpty6, ParamType6, DefaultValueFix6)) \
         ParamExpandOrEmpty7(_ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS(7, DefaultExpandOrEmpty7, ParamType7, DefaultValueFix7)) \
     public: \
-        static void GI(ZF_IN_OUT const ZFArgs &zfargs) { \
+        ZFLIB_HIDDEN static void GI(ZF_IN_OUT const ZFArgs &zfargs) { \
             ParamExpandOrEmpty0( \
                 if( \
                                            !_ZFP_ZFMETHOD_GENERIC_INVOKER_PARAM_PREPARE_EXPAND(0, DefaultExpandOrEmpty0, ParamType0) \
@@ -196,7 +196,7 @@ public:
             _ZFP_mGIA<ReturnType>::A(Gi, zfargs); \
         } \
     private: \
-        static ReturnType Gi(ZF_IN_OUT const ZFArgs &zfargs) { \
+        ZFLIB_HIDDEN static ReturnType Gi(ZF_IN_OUT const ZFArgs &zfargs) { \
             return zfargs.ownerMethod()->_ZFP_execute<ReturnType \
                     ParamExpandOrEmpty0(ZFM_COMMA() ParamType0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \

@@ -57,6 +57,12 @@ void ZFOrderMap::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
+ZFMETHOD_DEFINE_1(ZFOrderMap, void, capacity
+        , ZFMP_IN(zfindex, capacity)
+        ) {
+    d->data.reserve((zfstlsize)capacity);
+}
+
 ZFMETHOD_DEFINE_0(ZFOrderMap, zfindex, count) {
     return d->data.size();
 }
@@ -122,6 +128,7 @@ ZFMETHOD_DEFINE_1(ZFOrderMap, void, addFrom
         return;
     }
 
+    this->capacity(this->count() + another->count());
     ZFObject *key = zfnull;
     ZFObject *value = zfnull;
     for(zfiter it = another->iter(); it; ++it) {

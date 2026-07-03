@@ -1,26 +1,14 @@
 #include "ZFHashMap.h"
+#include "ZFObjectDef/ZFObjectKeyPrivate"
 #include "ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // _ZFP_ZFHashMapPrivate
-zfclassNotPOD _ZFP_ZFHashMapKeyHasher {
-public:
-    zfstlsize operator () (ZFObject *const &v) const {
-        return (zfstlsize)v->objectHash();
-    }
-};
-zfclassNotPOD _ZFP_ZFHashMapKeyComparer {
-public:
-    zfbool operator () (ZFObject * const &v0, ZFObject * const &v1) const {
-        return (v0->objectCompare(v1) == ZFCompareEqual);
-    }
-};
-
 zfclassNotPOD _ZFP_ZFHashMapPrivate {
 public:
-    typedef zfimplhashmap<ZFObject *, ZFObject *, _ZFP_ZFHashMapKeyHasher, _ZFP_ZFHashMapKeyComparer> MapType;
+    typedef zfimplhashmap<ZFObject *, ZFObject *, _ZFP_ZFObjectKeyHash, _ZFP_ZFObjectKeyEqual> MapType;
 
 public:
     MapType data;
@@ -49,6 +37,12 @@ void ZFHashMap::objectOnDealloc(void) {
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
+}
+
+ZFMETHOD_DEFINE_1(ZFHashMap, void, capacity
+        , ZFMP_IN(zfindex, capacity)
+        ) {
+    d->data.reserve((zfstlsize)capacity);
 }
 
 ZFMETHOD_DEFINE_0(ZFHashMap, zfindex, count) {
@@ -116,6 +110,7 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, addFrom
         return;
     }
 
+    this->capacity(this->count() + another->count());
     ZFObject *key = zfnull;
     ZFObject *value = zfnull;
     for(zfiter it = another->iter(); it; ++it) {

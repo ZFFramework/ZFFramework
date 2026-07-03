@@ -35,6 +35,20 @@
     #define ZFLIB_APP ZF_ENV_EXPORT
 #endif
 
+/** @brief used to explicitly hide symbols */
+#ifndef ZFLIB_HIDDEN
+    #ifdef _WIN32
+        #define ZFLIB_HIDDEN
+    #else
+        #define ZFLIB_HIDDEN __attribute__((visibility("hidden")))
+    #endif
+#endif
+
+/** @brief used to explicitly hide symbols */
+#define ZFLIB_HIDDEN_BEGIN() namespace {
+/** @brief used to explicitly hide symbols */
+#define ZFLIB_HIDDEN_END() }
+
 /**
  * @def ZF_ENV_EXTERN_C_BEGIN
  * @brief extern "C" wrapper

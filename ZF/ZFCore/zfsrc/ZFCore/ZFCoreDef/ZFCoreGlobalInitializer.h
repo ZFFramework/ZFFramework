@@ -113,6 +113,7 @@ private:
 };
 
 #define _ZFP_ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(Name, ZFLevel_) \
+    ZFLIB_HIDDEN_BEGIN() \
     static void *_ZFP_GI_ctor_##Name(void); \
     static void _ZFP_GI_dtor_##Name(ZF_IN void *p); \
     static _ZFP_GI_Reg _ZFP_GI_reg_##Name(#Name, \
@@ -180,7 +181,8 @@ private:
     } \
     static void _ZFP_GI_dtor_##Name(ZF_IN void *p) { \
         zfdelete((_ZFP_GI_##Name *)p); \
-    }
+    } \
+    ZFLIB_HIDDEN_END()
 /**
  * @brief see #ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL
  */

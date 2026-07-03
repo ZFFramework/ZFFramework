@@ -1,26 +1,14 @@
 #include "ZFMap.h"
+#include "ZFObjectDef/ZFObjectKeyPrivate"
 #include "ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // _ZFP_ZFMapPrivate
-zfclassNotPOD _ZFP_ZFMapKeyComparer {
-public:
-    inline zfbool operator () (
-            ZF_IN ZFObject *obj1
-            , ZF_IN ZFObject *obj2
-            ) const {
-        ZFCompareResult cmp = ZFObjectCompare(obj1, obj2);
-        ZFCoreAssertWithMessageTrim(cmp != ZFCompareUncomparable, "[ZFMap] key must comparable: %s, %s",
-            obj1,
-            obj2);
-        return (cmp == ZFCompareSmaller);
-    }
-};
 zfclassNotPOD _ZFP_ZFMapPrivate {
 public:
-    typedef zfimplmap<ZFObject *, ZFObject *, _ZFP_ZFMapKeyComparer> MapType;
+    typedef zfimplmap<ZFObject *, ZFObject *, _ZFP_ZFObjectKeyCompare> MapType;
 
 public:
     MapType data;
@@ -49,6 +37,11 @@ void ZFMap::objectOnDealloc(void) {
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
+}
+
+ZFMETHOD_DEFINE_1(ZFMap, void, capacity
+        , ZFMP_IN(zfindex, capacity)
+        ) {
 }
 
 ZFMETHOD_DEFINE_0(ZFMap, zfindex, count) {
@@ -116,6 +109,7 @@ ZFMETHOD_DEFINE_1(ZFMap, void, addFrom
         return;
     }
 
+    this->capacity(this->count() + another->count());
     ZFObject *key = zfnull;
     ZFObject *value = zfnull;
     for(zfiter it = another->iter(); it; ++it) {

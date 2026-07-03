@@ -23,12 +23,12 @@ inline const zfauto &_ZFP_zfvAccessFinishDelay(ZF_IN const zfauto &obj) {
 }
 
 template<typename T_PropType>
-void *_ZFP_genericAccessWrap(T_PropType const &v) {
+ZFLIB_HIDDEN inline void *_ZFP_genericAccessWrap(T_PropType const &v) {
     return (void *)zfunsafe_zfpoolNew(T_PropType, v);
 }
 
 template<typename T_PropType>
-void _ZFP_genericAccessFinish(ZF_IN void *p) {
+ZFLIB_HIDDEN inline void _ZFP_genericAccessFinish(ZF_IN void *p) {
     zfunsafe_zfpoolDelete((T_PropType *)p);
 }
 extern ZFLIB_ZFCore zfauto _ZFP_genericAccessFinishWrap(ZF_IN const zfauto &ret, ZF_IN void *v, ZF_IN void (*type)(ZF_IN void *));

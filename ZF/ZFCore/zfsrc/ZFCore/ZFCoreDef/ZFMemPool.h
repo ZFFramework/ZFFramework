@@ -230,7 +230,7 @@ private:
 };
 
 template<typename T, typename T_Type>
-zfclassNotPOD _ZFP_MP_Obj {
+zfclassNotPOD ZFLIB_HIDDEN _ZFP_MP_Obj {
 public:
     static void *pNew(void) {
         return _ZFP_MP_H<_ZFP_MP_SA<sizeof(T_Type)>::V>::pNew();
@@ -241,7 +241,7 @@ public:
     }
 };
 template<typename T, typename T_Type>
-inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
+ZFLIB_HIDDEN inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
     if(obj) {
         _ZFP_MP_Obj<T, T_Type>::pDel(obj);
     }
