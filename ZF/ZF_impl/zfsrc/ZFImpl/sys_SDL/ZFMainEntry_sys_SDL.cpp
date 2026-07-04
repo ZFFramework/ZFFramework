@@ -23,7 +23,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_setup) {
     if(builtinWindow() != zfnull) {
         ZFImpl_sys_SDL_WindowNotifyDestroy(builtinWindow());
         SDL_DestroyWindow(builtinWindow());
-        builtinWindow() = zfnull;;
+        builtinWindow() = zfnull;
     }
 }
 public:

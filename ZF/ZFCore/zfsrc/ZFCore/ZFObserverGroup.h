@@ -132,7 +132,7 @@ public:
     /** @endcond */
 
 private:
-    _ZFP_ZFObserverGroupPrivate *d;;
+    _ZFP_ZFObserverGroupPrivate *d;
 public:
     void _ZFP_update(
             ZF_IN ZFObject *owner

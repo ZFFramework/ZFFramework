@@ -182,7 +182,7 @@ ZFMETHOD_DEFINE_0(ZFHashMap, void, removeAll) {
     if(!d->data.empty()) {
         _ZFP_ZFHashMapPrivate::MapType tmp;
         tmp.swap(d->data);
-        for(_ZFP_ZFHashMapPrivate::MapType::iterator it = d->data.begin(); it != d->data.end(); ++it) {
+        for(_ZFP_ZFHashMapPrivate::MapType::iterator it = tmp.begin(); it != tmp.end(); ++it) {
             zfobjRelease(it->first);
             zfobjRelease(it->second);
         }

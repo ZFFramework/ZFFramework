@@ -177,7 +177,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, add
         , ZFMP_IN(zfindex, indexAddTo)
         ) {
     if(indexAddTo == zfindexMax()) {
-        indexAddTo = this->count();;
+        indexAddTo = this->count();
     }
     else {
         ZFCoreAssertIndexRange(indexAddTo, this->count() + 1);

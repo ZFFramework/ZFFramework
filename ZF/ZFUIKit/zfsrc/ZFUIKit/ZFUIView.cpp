@@ -489,7 +489,7 @@ public:
         ZFCoreArray<zfautoT<ZFUIView> > tmp = layer;
         layer = ZFCoreArray<zfautoT<ZFUIView> >();
 
-        zfindex prevLayerCount = this->viewLayerPrevCount(layer);
+        zfindex prevLayerCount = this->viewLayerPrevCount(tmp);
         for(zfindex i = tmp.count() - 1; i != zfindexMax(); --i) {
             ZFUIView *child = tmp[i];
             child->_ZFP_ZFUIView_parentOnUpdate(zfnull, zfnull, v_ZFUIViewChildLayer::e_Normal);
@@ -560,9 +560,9 @@ public:
         owner->implChildOnRemove(old, fixedIndex, childLayer, atIndex);
         owner->implChildOnAdd(toReplace, fixedIndex, childLayer, atIndex);
 
-        UIScaleUpdateCheck(owner, toReplace);
         toReplace->_ZFP_ZFUIView_parentOnUpdate(owner, old->layoutParam(), childLayer);
         old->_ZFP_ZFUIView_parentOnUpdate(zfnull, zfnull, v_ZFUIViewChildLayer::e_Normal);
+        UIScaleUpdateCheck(owner, toReplace);
 
         owner->viewChildOnRemove(old, childLayer);
         old->viewOnRemoveFromParent(owner);
@@ -730,8 +730,8 @@ public:
                 if(ref != zfnull) {
                     viewsRef = &(ref->d->layerInternalImpl);
                 }
-                break;
                 categoryTag = ZFSerializableKeyword_ZFUIView_internalImplView;
+                break;
             case v_ZFUIViewChildLayer::e_InternalBg:
                 views = &(this->layerInternalBg);
                 if(ref != zfnull) {
@@ -2138,7 +2138,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFUIViewChildLayer, viewLayer) {
 ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfautoT<ZFUIView> >, childRawArray) {
     ZFCoreArray<zfautoT<ZFUIView> > ret;
     ret.capacity(
-        d->layerInternalBg.count()
+        d->layerInternalImpl.count()
         + d->layerInternalBg.count()
         + this->childCount()
         + d->layerInternalFg.count());

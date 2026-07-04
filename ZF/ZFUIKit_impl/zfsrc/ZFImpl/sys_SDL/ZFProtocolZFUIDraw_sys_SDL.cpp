@@ -189,7 +189,7 @@ public:
         rect.y = (int)(drawImpl->framePixel.y + targetFramePixel.y);
         rect.w = (int)targetFramePixel.width;
         rect.h = (int)targetFramePixel.height;
-        ZFImpl_sys_SDL_View::renderRectCalc(rect, rect, drawImpl->framePixel);;
+        ZFImpl_sys_SDL_View::renderRectCalc(rect, rect, drawImpl->framePixel);
 
         Uint8 rOld, gOld, bOld, aOld;
         SDL_GetRenderDrawColor(drawImpl->sdlRenderer, &rOld, &gOld, &bOld, &aOld);
@@ -218,7 +218,7 @@ public:
         rect.h = (int)(targetFramePixel.height);
 
         SDL_FRect rectClipped;
-        ZFImpl_sys_SDL_View::renderRectCalc(rectClipped, rect, drawImpl->framePixel);;
+        ZFImpl_sys_SDL_View::renderRectCalc(rectClipped, rect, drawImpl->framePixel);
 
         if(rectClipped.w <= 0 || rectClipped.h <= 0 || imageFramePixel.width <= 0 || imageFramePixel.height <= 0) {
             return zftrue;

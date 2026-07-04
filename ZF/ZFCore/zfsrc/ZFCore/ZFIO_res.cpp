@@ -479,7 +479,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResClose
         , _ZFP_ZFFileTokenForRes *, resToken
         );
     if(resToken->resExtToken != zfnull) {
-        zfbool ret = resToken->resExtToken->ioClose();;
+        zfbool ret = resToken->resExtToken->ioClose();
         resToken->resExtToken = zfnull;
         resToken->resExtImpl = zfnull;
         return ret;

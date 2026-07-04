@@ -218,7 +218,7 @@ public:
 
 private:
     zfbool _ioCloseImpl(void) {
-        zfbool ret = zffalse;;
+        zfbool ret = zffalse;
         ZFPathInfo cachePath;
         zfautoT<ZFIOToken> cacheIO;
         if(_modified) {

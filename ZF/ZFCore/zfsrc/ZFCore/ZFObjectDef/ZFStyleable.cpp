@@ -121,7 +121,7 @@ void ZFStyleable::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
     ZFCoreArray<const ZFProperty *> propList = _ZFP_ZFStyleable_propList(this->classData());
     const ZFClass *thisCls = this->classData();
     const ZFClass *anotherCls = anotherStyleable->classData();
-    ZFObject *anotherStyleableObject = anotherStyleable->toObject();;
+    ZFObject *anotherStyleableObject = anotherStyleable->toObject();
     const ZFProperty *property = zfnull;
 
     for(zfindex i = propList.count() - 1; i != zfindexMax(); --i) {
