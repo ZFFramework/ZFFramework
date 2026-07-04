@@ -1,3 +1,4 @@
+#include "ZFMainEntry_sys_Android.h"
 #include "ZFImpl_sys_Android_ZF_impl.h"
 #include "ZFCore/ZFMainEntry.h"
 #include "ZFCore/protocol/ZFProtocolZFMainEntry.h"
