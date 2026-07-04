@@ -1456,10 +1456,10 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         classNameFull = classNameTmp;
     }
 
-    _ZFP_ZFClassMapType::iterator it = _ZFP_ZFClassMap.find(classNameFull);
     ZFClass *cls = zfnull;
     zfbool needFinalInit = zffalse;
-    if(it != _ZFP_ZFClassMap.end()) {
+    _ZFP_ZFClassMapType::iterator it;
+    if(_ZFP_ZFClassMap.iterAccess(it, classNameFull)) {
         cls = it->second;
         if(parent == ZFInterface::ClassData()) {
             parent = zfnull;
@@ -1473,7 +1473,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
     else {
         needFinalInit = zftrue;
         cls = zfpoolNew(ZFClass);
-        _ZFP_ZFClassMap[classNameFull] = cls;
+        it->second = cls;
 
         if(classIsDynamicRegister) {
             ZFBitSet(cls->_stateFlags, _stateFlags_classIsDynamicRegister);
@@ -1569,13 +1569,13 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
 
     ZFClass *clsToRelease = zfnull;
     {
-        _ZFP_ZFClassMapType::iterator itExist = _ZFP_ZFClassDelayDeleteMap.find(cls->classNameFull());
-        if(itExist != _ZFP_ZFClassDelayDeleteMap.end()) {
-            clsToRelease = itExist->second;
-            itExist->second = itClass->second;
+        _ZFP_ZFClassMapType::iterator itDelayDel;
+        if(_ZFP_ZFClassDelayDeleteMap.iterAccess(itDelayDel, cls->classNameFull())) {
+            clsToRelease = itDelayDel->second;
+            itDelayDel->second = itClass->second;
         }
         else {
-            _ZFP_ZFClassDelayDeleteMap[cls->classNameFull()] = itClass->second;
+            itDelayDel->second = itClass->second;
         }
     }
     _ZFP_ZFClassMap.erase(itClass);
@@ -1951,15 +1951,15 @@ void ZFClassAliasRemove(
     {
         _ZFP_ZFClassMapType::iterator itClass = _ZFP_ZFClassMap.find(aliasNameFull);
         ZFCoreAssert(itClass != _ZFP_ZFClassMap.end());
-        _ZFP_ZFClassMapType::iterator itExist = _ZFP_ZFClassDelayDeleteMap.find(aliasNameFull);
-        if(itExist != _ZFP_ZFClassDelayDeleteMap.end()) {
-            clsToRelease = itExist->second;
-            itExist->second = itClass->second;
+        _ZFP_ZFClassMapType::iterator itDelayDel;
+        if(_ZFP_ZFClassDelayDeleteMap.iterAccess(itDelayDel, aliasNameFull)) {
+            clsToRelease = itDelayDel->second;
+            itDelayDel->second = itClass->second;
         }
         else {
-            _ZFP_ZFClassDelayDeleteMap[aliasNameFull] = itClass->second;
+            itDelayDel->second = itClass->second;
         }
-        _ZFP_ZFClassMap.erase(aliasNameFull);
+        _ZFP_ZFClassMap.erase(itClass);
     }
 
     _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeClassAliasDetach, cls, zfnull, zfnull, aliasNameFull);

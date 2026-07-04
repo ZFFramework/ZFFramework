@@ -45,7 +45,7 @@ public:
 zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlHash {
 public:
     zfstlsize operator () (const zfchar * const &v) const {
-        return (zfstlsize)zfidentityCalcString(v);
+        return (zfstlsize)zfidentityCalcString(v, zfindexMax());
     }
 };
 zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlEqual {
@@ -64,7 +64,7 @@ public:
 zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlHash {
 public:
     zfstlsize operator () (zfchar * const &v) const {
-        return (zfstlsize)zfidentityCalcString(v);
+        return (zfstlsize)zfidentityCalcString(v, zfindexMax());
     }
 };
 zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlEqual {

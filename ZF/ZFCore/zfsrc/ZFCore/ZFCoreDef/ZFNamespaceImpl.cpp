@@ -148,13 +148,13 @@ zfstring _ZFP_ZFNamespaceRegister(
     _ZFP_ZFNamespaceTreeType *t = &_ZFP_ZFNamespaceTree();
     for(zfindex i = 0; i < pos.count(); ++i) {
         zfstring key(ns + pos[i].start, pos[i].count);
-        zfiter it = t->d.iterFind(key);
-        if(it) {
+        zfiter it;
+        if(t->d.iterAccess(it, key)) {
             t = &(t->d.iterValue(it));
             ++(t->refCount);
         }
         else {
-            t = &(t->d.access(key));
+            t = &(t->d.iterValue(it));
             t->ns.append(ns, pos[i].start + pos[i].count);
             t->nsFull = ns;
         }

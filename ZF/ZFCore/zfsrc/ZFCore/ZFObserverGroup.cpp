@@ -127,14 +127,14 @@ public:
         {
             _ZFP_ZFObserverGroupTaskData **head = zfnull;
             {
-                _TaskMap::iterator it = this->ownerMap.find(owner);
-                if(it == this->ownerMap.end()) {
-                    head = &(this->ownerMap[owner]);
-                    *head = zfnull;
-                    owner->observerAdd(ZFObject::E_ObjectBeforeDealloc(), this->ownerOnDeallocListener);
+                _TaskMap::iterator it;
+                if(this->ownerMap.iterAccess(it, owner)) {
+                    head = &(it->second);
                 }
                 else {
                     head = &(it->second);
+                    *head = zfnull;
+                    owner->observerAdd(ZFObject::E_ObjectBeforeDealloc(), this->ownerOnDeallocListener);
                 }
             }
             task->ownerMapNext = *head;
@@ -147,14 +147,14 @@ public:
         if(target != zfnull) {
             _ZFP_ZFObserverGroupTaskData **head = zfnull;
             {
-                _TaskMap::iterator it = this->targetMap.find(target);
-                if(it == this->targetMap.end()) {
-                    head = &(this->targetMap[target]);
-                    *head = zfnull;
-                    target->observerAdd(ZFObject::E_ObjectBeforeDealloc(), this->targetOnDeallocListener);
+                _TaskMap::iterator it;
+                if(this->targetMap.iterAccess(it, target)) {
+                    head = &(it->second);
                 }
                 else {
                     head = &(it->second);
+                    *head = zfnull;
+                    target->observerAdd(ZFObject::E_ObjectBeforeDealloc(), this->targetOnDeallocListener);
                 }
             }
             task->targetMapNext = *head;

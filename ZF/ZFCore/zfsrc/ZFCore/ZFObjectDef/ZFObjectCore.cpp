@@ -835,8 +835,8 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolderAccess(ZF_IN const ZFC
     if(d->ZFImplementDynamicData == zfnull) {
         d->ZFImplementDynamicData = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate::ZFImplementDynamicDataHolder);
     }
-    zfimplhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.find(clsToImplement);
-    if(it != d->ZFImplementDynamicData->holder.end()) {
+    zfimplhashmap<const ZFClass *, ZFObject *>::iterator it;
+    if(d->ZFImplementDynamicData->holder.iterAccess(it, clsToImplement)) {
         return it->second;
     }
     else {
@@ -863,7 +863,7 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolderAccess(ZF_IN const ZFC
         }
 
         zfauto holder = clsToImplement->_ZFP_ZFClass_newInstance(dObj);
-        d->ZFImplementDynamicData->holder[clsToImplement] = zfobjRetain(holder);
+        it->second = zfobjRetain(holder);
         return holder;
     }
 }

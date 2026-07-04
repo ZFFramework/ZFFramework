@@ -92,16 +92,16 @@ public:
         m.reserve(m.size() + mRef.size());
         for(MapType::iterator itRef = mRef.begin(); itRef != mRef.end(); ++itRef) {
             _ZFP_ZFCoreMapKey *key = itRef->first->implCopy();
-            zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const _ZFP_ZFCoreMapKey *, _ZFP_ZFCoreMapValue *>(key, zfnull));
-            if(!insertResult.second) {
+            MapType::iterator implIt;
+            if(m.iterAccess(implIt, key)) {
                 key->implDestroy();
             }
         }
     }
     zfoverride
     virtual void add(ZF_IN _ZFP_ZFCoreMapKey *key) {
-        zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const _ZFP_ZFCoreMapKey *, _ZFP_ZFCoreMapValue *>(key, zfnull));
-        if(!insertResult.second) {
+        MapType::iterator implIt;
+        if(m.iterAccess(implIt, key)) {
             key->implDestroy();
         }
     }
@@ -153,11 +153,11 @@ public:
     }
     zfoverride
     virtual zfiter iterAdd(ZF_IN _ZFP_ZFCoreMapKey *key) {
-        zfstlpair<MapType::iterator, bool> insertResult = m.insert(zfstlpair<const _ZFP_ZFCoreMapKey *, _ZFP_ZFCoreMapValue *>(key, zfnull));
-        if(!insertResult.second) {
+        zfiter it;
+        if(m.iterAccess(it, key)) {
             key->implDestroy();
         }
-        return m.iter(insertResult.first);
+        return it;
     }
 };
 

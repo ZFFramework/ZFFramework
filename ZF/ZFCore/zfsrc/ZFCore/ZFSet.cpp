@@ -60,8 +60,8 @@ ZFMETHOD_DEFINE_1(ZFSet, void, add
         , ZFMP_IN(ZFObject *, obj)
         ) {
     ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
-    zfstlpair<_ZFP_ZFSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(_ZFP_ZFSetPrivate::MapType::value_type(obj, zfnull));
-    if(insertResult.second) {
+    _ZFP_ZFSetPrivate::MapType::iterator implIt;
+    if(!d->data.iterAccess(implIt, obj)) {
         zfobjRetain(obj);
     }
 }
@@ -74,8 +74,8 @@ ZFMETHOD_DEFINE_1(ZFSet, void, addFrom
     this->capacity(this->count() + another->count());
     for(zfiter it = another->iter(); it; ++it) {
         ZFObject *obj = another->iterValue(it);
-        zfstlpair<_ZFP_ZFSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(_ZFP_ZFSetPrivate::MapType::value_type(obj, zfnull));
-        if(insertResult.second) {
+        _ZFP_ZFSetPrivate::MapType::iterator implIt;
+        if(!d->data.iterAccess(implIt, obj)) {
             zfobjRetain(obj);
         }
     }
@@ -154,11 +154,11 @@ ZFMETHOD_DEFINE_1(ZFSet, zfiter, iterAdd
     if(value == zfnull) {
         return zfnull;
     }
-    zfstlpair<_ZFP_ZFSetPrivate::MapType::iterator, bool> insertResult = d->data.insert(_ZFP_ZFSetPrivate::MapType::value_type(value, zfnull));
-    if(insertResult.second) {
+    zfiter it;
+    if(!d->data.iterAccess(it, value)) {
         zfobjRetain(value);
     }
-    return d->data.iter(insertResult.first);
+    return it;
 }
 ZFMETHOD_DEFINE_2(ZFSet, zfiter, iterAdd
         , ZFMP_IN(ZFObject *, value)

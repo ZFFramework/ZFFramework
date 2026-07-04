@@ -362,8 +362,8 @@ void _ZFP_ZFEnumData::add(
         ) {
     ZFCoreAssert(value != ZFEnumInvalid());
     ZFCoreAssert(name);
-    _ZFP_ZFEnumDataPrivate::ValueMapType::iterator it = d->valueMap.find(value);
-    if(it != d->valueMap.end()) {
+    _ZFP_ZFEnumDataPrivate::ValueMapType::iterator it;
+    if(d->valueMap.iterAccess(it, value)) {
         ZFCoreAssertWithMessageTrim(isEnableDuplicateValue,
             "[ZFEnum] duplicate value %s (new: %s, old: %s) when define %s",
             value,
@@ -373,7 +373,7 @@ void _ZFP_ZFEnumData::add(
         it->second.add(name);
     }
     else {
-        d->valueMap[value].add(name);
+        it->second.add(name);
         d->vl.add(value);
         d->nl.add(name);
     }

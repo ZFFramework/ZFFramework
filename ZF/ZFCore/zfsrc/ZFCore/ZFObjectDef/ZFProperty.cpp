@@ -314,15 +314,15 @@ ZFProperty *ZFProperty::_ZFP_ZFPropertyRegister(
     {
         ZFCoreMutexLocker();
         _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
-        _ZFP_ZFPropertyMapType::iterator it = m.find(propertyId);
-        if(it != m.end()) {
+        _ZFP_ZFPropertyMapType::iterator it;
+        if(m.iterAccess(it, propertyId)) {
             propertyInfo = it->second;
             ++(propertyInfo->_refCount);
         }
         else {
             propertyInfo = zfnew(ZFProperty);
             propertyInfo->_propertyId = propertyId;
-            m[propertyId] = propertyInfo;
+            it->second = propertyInfo;
         }
     }
 

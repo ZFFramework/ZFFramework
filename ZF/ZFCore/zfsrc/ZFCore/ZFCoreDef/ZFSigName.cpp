@@ -14,7 +14,7 @@ public:
     zfstring s;
 };
 
-typedef zfimplhashmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFSigNameMapType;
+typedef zfimplhashmap<zfstring, _ZFP_ZFSigNamePrivate *> _ZFP_ZFSigNameMapType;
 typedef zfimplhashmap<zfidentity, _ZFP_ZFSigNamePrivate *> _ZFP_ZFSigNameIdMapType;
 typedef zfstldeque<_ZFP_ZFSigNamePrivate *> _ZFP_ZFSigNameCacheType;
 
@@ -70,8 +70,8 @@ static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfstring &s) {
             );
     ZFUNUSED(dummy);
 
-    _ZFP_ZFSigNameMapType::iterator it = _ZFP_ZFSigNameMap().find(s);
-    if(it != _ZFP_ZFSigNameMap().end()) {
+    _ZFP_ZFSigNameMapType::iterator it;
+    if(_ZFP_ZFSigNameMap().iterAccess(it, s)) {
         _ZFP_ZFSigNamePrivate *d = it->second;
         ++(d->refCount);
         return d;
@@ -81,7 +81,7 @@ static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfstring &s) {
         d->refCount = 1;
         d->sigId = zfidentityInvalid();
         d->s = s;
-        _ZFP_ZFSigNameMap()[d->s] = d;
+        it->second = d;
         return d;
     }
 }

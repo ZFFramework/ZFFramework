@@ -153,6 +153,16 @@ public:
         }
         return *this;
     }
+    zfiter &operator = (ZF_IN Impl *impl) {
+        if(d != impl) {
+            Impl *dOld = d;
+            d = impl;
+            if(dOld) {
+                dOld->destroy();
+            }
+        }
+        return *this;
+    }
     zfiter &operator = (ZF_IN const zfiter &ref) {
         if(this != &ref) {
             Impl *dOld = d;

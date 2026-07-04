@@ -117,14 +117,14 @@ public:
         if(d.ext == zfnull) {
             d.ext = zfpoolNew(_ZFP_ZFCallbackPrivateExt);
         }
-        _ZFP_ZFCallbackTagMap::iterator it = d.ext->callbackTagMap.find(zftext("_ZFP_ZFCallbackClearPrepare"));
-        if(it != d.ext->callbackTagMap.end()) {
+        _ZFP_ZFCallbackTagMap::iterator it;
+        if(d.ext->callbackTagMap.iterAccess(it, zftext("_ZFP_ZFCallbackClearPrepare"))) {
             v_ZFObserver *holder = it->second;
             holder->zfv.observerAdd(ZFGlobalEvent::E_CallbackClearPrepare(), observer, observerLevel);
         }
         else {
             zfobj<v_ZFObserver> holder;
-            d.ext->callbackTagMap[zftext("_ZFP_ZFCallbackClearPrepare")] = holder;
+            it->second = holder;
             holder->zfv.observerAdd(ZFGlobalEvent::E_CallbackClearPrepare(), observer, observerLevel);
         }
     }

@@ -78,10 +78,11 @@ public:
             , ZF_IN ZFObject *value
             ) zfpurevirtual;
     /**
-     * @brief access value, or insert defValue if not exist
+     * @brief return true if already exist, or false and insert <key, defValue> if not exist
      */
-    virtual zfiter iterAccess(
-            ZF_IN ZFObject *key
+    virtual zfbool iterAccess(
+            ZF_OUT zfiter &it
+            , ZF_IN ZFObject *key
             , ZF_IN_OPT ZFObject *defValue = ZFNull()
             ) zfpurevirtual;
 

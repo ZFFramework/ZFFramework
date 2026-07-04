@@ -144,8 +144,9 @@ public:
             , ZFMP_IN(ZFObject *, key)
             , ZFMP_IN(ZFObject *, value)
             )
-    /** @brief see #zfiter */
-    ZFMETHOD_DECLARE_2(zfiter, iterAccess
+    /** @brief return true if already exist, or false and insert <key, defValue> if not exist */
+    ZFMETHOD_DECLARE_3(zfbool, iterAccess
+            , ZFMP_OUT(zfiter &, it)
             , ZFMP_IN(ZFObject *, key)
             , ZFMP_IN_OPT(ZFObject *, defValue, ZFNull())
             )

@@ -92,27 +92,23 @@ const zfidentity *_ZFP_ZFIdMapRegister(
     _ZFP_ZFIdMapDataIdMapType &dataIdMap = moduleData.dataIdMap;
     _ZFP_ZFIdMapDataNameMapType &dataNameMap = moduleData.dataNameMap;
 
-    _ZFP_ZFIdMapData *data = zfnull;
-    _ZFP_ZFIdMapDataNameMapType::iterator itName = dataNameMap.find(idName);
-    if(itName != dataNameMap.end()) {
-        data = itName->second;
-    }
-    if(data != zfnull) {
+    _ZFP_ZFIdMapDataNameMapType::iterator it;
+    if(dataNameMap.iterAccess(it, idName)) {
         if(isDynamicRegister) {
             ZFCoreCriticalMessageTrim("[ZFIdMapDynamicRegister] already registered: %s", idName);
         }
-        ++(data->refCount);
+        ++(it->second->refCount);
     }
     else {
-        data = zfnew(_ZFP_ZFIdMapData);
+        _ZFP_ZFIdMapData *data = zfnew(_ZFP_ZFIdMapData);
         data->idValue = moduleData.idValueGenerator.idAcquire();
         data->idName = idName;
         data->isDynamicRegister = isDynamicRegister;
 
         dataIdMap[data->idValue] = data;
-        dataNameMap[data->idName] = data;
+        it->second = data;
     }
-    return &(data->idValue);
+    return &(it->second->idValue);
 }
 void _ZFP_ZFIdMapUnregister(
         ZF_IN zfidentity idValue

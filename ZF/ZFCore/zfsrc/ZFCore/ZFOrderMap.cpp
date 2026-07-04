@@ -134,16 +134,13 @@ ZFMETHOD_DEFINE_1(ZFOrderMap, void, addFrom
     for(zfiter it = another->iter(); it; ++it) {
         key = another->iterKey(it);
         value = another->iterValue(it);
-        zfstlpair<_ZFP_ZFOrderMapPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, value));
-        if(insertResult.second) {
-            zfobjRetain(key);
-            zfobjRetain(value);
+        _ZFP_ZFOrderMapPrivate::MapType::iterator implIt;
+        if(d->data.iterAccess(implIt, key)) {
+            zfobjRetainChange(implIt->second, value);
         }
         else {
-            ZFObject *valueOld = insertResult.first->second;
-            insertResult.first->second = value;
+            zfobjRetain(key);
             zfobjRetain(value);
-            zfobjRelease(valueOld);
         }
     }
 }
@@ -159,16 +156,13 @@ ZFMETHOD_DEFINE_2(ZFOrderMap, void, set
         this->remove(key);
         return;
     }
-    zfstlpair<_ZFP_ZFOrderMapPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, value));
-    if(insertResult.second) {
-        zfobjRetain(key);
-        zfobjRetain(value);
+    _ZFP_ZFOrderMapPrivate::MapType::iterator implIt;
+    if(d->data.iterAccess(implIt, key)) {
+        zfobjRetainChange(implIt->second, value);
     }
     else {
-        ZFObject *valueOld = insertResult.first->second;
-        insertResult.first->second = value;
+        zfobjRetain(key);
         zfobjRetain(value);
-        zfobjRelease(valueOld);
     }
 }
 
@@ -260,19 +254,25 @@ ZFMETHOD_DEFINE_2(ZFOrderMap, zfiter, iterAdd
         ) {
     return d->data.iterAdd(key, value);
 }
-ZFMETHOD_DEFINE_2(ZFOrderMap, zfiter, iterAccess
+ZFMETHOD_DEFINE_3(ZFOrderMap, zfbool, iterAccess
+        , ZFMP_OUT(zfiter &, it)
         , ZFMP_IN(ZFObject *, key)
         , ZFMP_IN_OPT(ZFObject *, defValue, ZFNull())
         ) {
     if(key == zfnull) {
-        return zfnull;
+        return zffalse;
     }
-    zfstlpair<_ZFP_ZFOrderMapPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, defValue));
-    if(insertResult.second) {
+    if(defValue == zfnull) {
+        defValue = ZFNull();
+    }
+    if(d->data.iterAccess(it, key, defValue)) {
+        return zftrue;
+    }
+    else {
         zfobjRetain(key);
         zfobjRetain(defValue);
+        return zffalse;
     }
-    return d->data.iter(insertResult.first);
 }
 
 // ============================================================

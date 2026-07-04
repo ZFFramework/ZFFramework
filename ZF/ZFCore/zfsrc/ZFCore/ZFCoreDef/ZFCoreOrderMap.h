@@ -46,7 +46,7 @@ public:
     virtual void iterValue(ZF_IN_OUT zfiter &it, ZF_IN _ZFP_ZFCoreMapValue *value) zfpurevirtual;
     virtual void iterRemove(ZF_IN_OUT zfiter &it) zfpurevirtual;
     virtual zfiter iterAdd(ZF_IN _ZFP_ZFCoreMapKey *key, ZF_IN _ZFP_ZFCoreMapValue *value) zfpurevirtual;
-    virtual zfiter iterAccess(ZF_IN _ZFP_ZFCoreMapKey *key, ZF_IN Fn_ValueCreate fn_ValueCreate) zfpurevirtual;
+    virtual zfbool iterAccess(ZF_OUT zfiter &it, ZF_IN _ZFP_ZFCoreMapKey *key, ZF_IN Fn_ValueCreate fn_ValueCreate) zfpurevirtual;
 public:
     // ============================================================
     // order map spec
@@ -408,10 +408,10 @@ public:
         _dInit();
         return d->iterAdd(_KeyCreate(key), _ValueCreate(value));
     }
-    /** @brief see #zfiter */
-    zfiter iterAccess(ZF_IN const T_Key &key) {
+    /** @brief return true if already exist, or false and insert <key, defValue> if not exist */
+    zfbool iterAccess(ZF_OUT zfiter &it, ZF_IN const T_Key &key) {
         _dInit();
-        return d->iterAccess(_KeyCreate(key), _ValueCreate);
+        return d->iterAccess(it, _KeyCreate(key), _ValueCreate);
     }
 
     // ============================================================

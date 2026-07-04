@@ -429,17 +429,17 @@ public:
         }
 
         _modified = zftrue;
-        ItemMapType::iterator itItem = _itemMap.find(itemPathTmp);
-        if(itItem == _itemMap.end()) {
-            ItemInfo &itemInfo = _itemMap[itemPathTmp];
+        ItemMapType::iterator itItem;
+        if(_itemMap.iterAccess(itItem, itemPathTmp)) {
+            ItemInfo &itemInfo = itItem->second;
+            if(itemInfo.itemType == ItemType_FileToAdd) {
+                ZFIORemove(itemInfo.fileToAdd);
+            }
             itemInfo.itemType = ItemType_FileToAdd;
             itemInfo.fileToAdd = cachePath;
         }
         else {
             ItemInfo &itemInfo = itItem->second;
-            if(itemInfo.itemType == ItemType_FileToAdd) {
-                ZFIORemove(itemInfo.fileToAdd);
-            }
             itemInfo.itemType = ItemType_FileToAdd;
             itemInfo.fileToAdd = cachePath;
         }

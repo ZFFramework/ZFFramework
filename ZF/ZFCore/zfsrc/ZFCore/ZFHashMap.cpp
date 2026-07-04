@@ -116,16 +116,13 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, addFrom
     for(zfiter it = another->iter(); it; ++it) {
         key = another->iterKey(it);
         value = another->iterValue(it);
-        zfstlpair<_ZFP_ZFHashMapPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, value));
-        if(insertResult.second) {
-            zfobjRetain(key);
-            zfobjRetain(value);
+        _ZFP_ZFHashMapPrivate::MapType::iterator implIt;
+        if(d->data.iterAccess(implIt, key, value)) {
+            zfobjRetainChange(implIt->second, value);
         }
         else {
-            ZFObject *valueOld = insertResult.first->second;
-            insertResult.first->second = value;
+            zfobjRetain(key);
             zfobjRetain(value);
-            zfobjRelease(valueOld);
         }
     }
 }
@@ -141,16 +138,13 @@ ZFMETHOD_DEFINE_2(ZFHashMap, void, set
         this->remove(key);
         return;
     }
-    zfstlpair<_ZFP_ZFHashMapPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, value));
-    if(insertResult.second) {
-        zfobjRetain(key);
-        zfobjRetain(value);
+    _ZFP_ZFHashMapPrivate::MapType::iterator implIt;
+    if(d->data.iterAccess(implIt, key, value)) {
+        zfobjRetainChange(implIt->second, value);
     }
     else {
-        ZFObject *valueOld = insertResult.first->second;
-        insertResult.first->second = value;
+        zfobjRetain(key);
         zfobjRetain(value);
-        zfobjRelease(valueOld);
     }
 }
 
@@ -243,32 +237,35 @@ ZFMETHOD_DEFINE_2(ZFHashMap, zfiter, iterAdd
     if(key == zfnull || value == zfnull) {
         return zfnull;
     }
-    zfstlpair<_ZFP_ZFHashMapPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, value));
-    if(insertResult.second) {
+    _ZFP_ZFHashMapPrivate::MapType::iterator implIt;
+    if(d->data.iterAccess(implIt, key, value)) {
+        zfobjRetainChange(implIt->second, value);
+    }
+    else {
         zfobjRetain(key);
         zfobjRetain(value);
     }
-    else {
-        ZFObject *valueOld = insertResult.first->second;
-        insertResult.first->second = value;
-        zfobjRetain(value);
-        zfobjRelease(valueOld);
-    }
-    return d->data.iter(insertResult.first);
+    return d->data.iter(implIt);
 }
-ZFMETHOD_DEFINE_2(ZFHashMap, zfiter, iterAccess
+ZFMETHOD_DEFINE_3(ZFHashMap, zfbool, iterAccess
+        , ZFMP_OUT(zfiter &, it)
         , ZFMP_IN(ZFObject *, key)
         , ZFMP_IN_OPT(ZFObject *, defValue, ZFNull())
         ) {
     if(key == zfnull) {
-        return zfnull;
+        return zffalse;
     }
-    zfstlpair<_ZFP_ZFHashMapPrivate::MapType::iterator, bool> insertResult = d->data.insert(zfstlpair<ZFObject *, ZFObject *>(key, defValue));
-    if(insertResult.second) {
+    if(defValue == zfnull) {
+        defValue = ZFNull();
+    }
+    if(d->data.iterAccess(it, key, defValue)) {
+        return zftrue;
+    }
+    else {
         zfobjRetain(key);
         zfobjRetain(defValue);
+        return zffalse;
     }
-    return d->data.iter(insertResult.first);
 }
 
 ZF_NAMESPACE_GLOBAL_END

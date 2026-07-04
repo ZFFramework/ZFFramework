@@ -139,11 +139,11 @@ void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(
     }
     if(highPriority) {
         zfstring luaFuncBodyTmp = luaFuncBody;
-        zfstlpair<_ZFP_ZFImpl_ZFLua_PathInfoMapType::iterator, bool> insertResult = d->pathInfoMap.insert(zfstlpair<zfstring, zfstring>(luaFuncName, luaFuncBodyTmp));
-        if(!insertResult.second) {
-            insertResult.first->second = luaFuncBodyTmp;
+        _ZFP_ZFImpl_ZFLua_PathInfoMapType::iterator implIt;
+        if(d->pathInfoMap.iterAccess(implIt, luaFuncName, luaFuncBodyTmp)) {
+            implIt->second = luaFuncBodyTmp;
         }
-        d->pathInfoMap.move(insertResult.first, d->pathInfoMap.begin());
+        d->pathInfoMap.move(implIt, d->pathInfoMap.begin());
     }
     else {
         d->pathInfoMap[luaFuncName] = luaFuncBody;

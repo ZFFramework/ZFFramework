@@ -501,7 +501,7 @@ void ZFDynamic::exportTag(
     ZFCoreArray<zfstring> allNamespace;
     ZFNamespaceGetAllT(allNamespace);
 
-    zfimplhashmap<zfstring, zfbool> tags;
+    ZFCoreSet<zfstring> tags;
 
     for(zfindex i = 0; i < allClass.count(); ++i) {
         const ZFClass *t = allClass[i];
@@ -509,10 +509,10 @@ void ZFDynamic::exportTag(
             continue;
         }
         if(exportScope && t->classNamespace()) {
-            tags[t->classNameFull()] = zftrue;
+            tags.add(t->classNameFull());
         }
         else {
-            tags[t->className()] = zftrue;
+            tags.add(t->className());
         }
     }
     for(zfindex i = 0; i < allMethod.count(); ++i) {
@@ -526,21 +526,21 @@ void ZFDynamic::exportTag(
                 tag += t->ownerClass()->classNameFull();
                 tag += ".";
                 tag += t->methodName();
-                tags[tag] = zftrue;
+                tags.add(tag);
             }
             else if(t->methodNamespace()) {
                 zfstring tag;
                 tag += t->methodNamespace();
                 tag += ".";
                 tag += t->methodName();
-                tags[tag] = zftrue;
+                tags.add(tag);
             }
             else {
-                tags[t->methodName()] = zftrue;
+                tags.add(t->methodName());
             }
         }
         else {
-            tags[t->methodName()] = zftrue;
+            tags.add(t->methodName());
         }
     }
     for(zfindex i = 0; i < allTypeId.count(); ++i) {
@@ -548,14 +548,14 @@ void ZFDynamic::exportTag(
         if(t->typeIdClass() == zfnull || t->typeIdClass()->classIsInternalPrivate() || (!exportInternal && t->typeIdClass()->classIsInternal())) {
             continue;
         }
-        tags[t->typeId()] = zftrue;
+        tags.add(t->typeId());
     }
     for(zfindex i = 0; i < allNamespace.count(); ++i) {
-        tags[allNamespace[i]] = zftrue;
+        tags.add(allNamespace[i]);
     }
 
-    for(zfimplhashmap<zfstring, zfbool>::iterator it = tags.begin(); it != tags.end(); ++it) {
-        output << it->first << "\n";
+    for(zfiter it = tags.iter(); it; ++it) {
+        output << tags.iterValue(it) << "\n";
     }
 }
 
@@ -712,6 +712,7 @@ ZFDynamic &ZFDynamic::classCanAllocPublic(ZF_IN zfbool value) {
 
 // ============================================================
 // onEvent()
+typedef zfimplhashmap<const ZFClass *, zfimplhashmap<zfidentity, ZFListener> > _ZFP_ZFDynamicClassEventMap;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDynamicClassEventDataHolder, ZFLevelZFFrameworkEssential) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFDynamicClassEventDataHolder) {
@@ -719,7 +720,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFDynamicClassEventDataHolder) {
         ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), this->classOnUpdateListener);
     }
 }
-zfimplhashmap<const ZFClass *, zfimplhashmap<zfidentity, ZFListener> > classEventMap;
+_ZFP_ZFDynamicClassEventMap classEventMap;
 ZFListener classOnUpdateListener;
 void classOnUpdateCheckAttach(void) {
     if(!this->classOnUpdateListener) {
@@ -742,7 +743,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFDynamicClassEventDataHolder)
 
 static void _ZFP_ZFDynamicEventImplDetach(ZF_IN const ZFDynamicEventImplInfo &info) {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFDynamicClassEventDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFDynamicClassEventDataHolder);
-    zfimplhashmap<const ZFClass *, zfimplhashmap<zfidentity, ZFListener> >::iterator it = d->classEventMap.find(info.cls);
+    _ZFP_ZFDynamicClassEventMap::iterator it = d->classEventMap.find(info.cls);
     if(it == d->classEventMap.end()) {
         return;
     }
@@ -781,16 +782,19 @@ ZFDynamic &ZFDynamic::onEvent(
     const ZFClass *cls = scope->d.cls;
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFDynamicClassEventDataHolder) *g = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFDynamicClassEventDataHolder);
-    zfimplhashmap<const ZFClass *, zfimplhashmap<zfidentity, ZFListener> >::iterator it = g->classEventMap.find(cls);
-    if(it == g->classEventMap.end()) {
-        g->classEventMap[cls][eventId] = callback;
+    _ZFP_ZFDynamicClassEventMap::iterator it;
+    if(g->classEventMap.iterAccess(it, cls)) {
+        it->second[eventId] = callback;
+    }
+    else {
+        it->second[eventId] = callback;
 
         ZFLISTENER_2(instanceOnCreate
                 , const ZFClass *, cls
                 , ZFLevel, level
                 ) {
             ZF_GLOBAL_INITIALIZER_CLASS(ZFDynamicClassEventDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFDynamicClassEventDataHolder);
-            zfimplhashmap<const ZFClass *, zfimplhashmap<zfidentity, ZFListener> >::iterator itClass = d->classEventMap.find(cls);
+            _ZFP_ZFDynamicClassEventMap::iterator itClass = d->classEventMap.find(cls);
             if(itClass == d->classEventMap.end()) {
                 return;
             }
@@ -801,9 +805,6 @@ ZFDynamic &ZFDynamic::onEvent(
             }
         } ZFLISTENER_END()
         cls->instanceObserverAdd(instanceOnCreate, zfnull, ZFLevelZFFrameworkNormal);
-    }
-    else {
-        it->second[eventId] = callback;
     }
     g->classOnUpdateCheckAttach();
 

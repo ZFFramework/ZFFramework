@@ -107,11 +107,26 @@ public:
         impl->end = this->end();
         return zfiter(impl);
     }
-    zfiter iterAccess(ZF_IN T_Key const &key) {
+    zfbool iterAccess(
+            ZF_OUT typename zfimplmap<T_Key, T_Value, T_Compare>::iterator &it
+            , ZF_IN T_Key const &key
+            , ZF_IN_OPT T_Value const &value = T_Value()
+            ) {
+        zfstlpair<typename zfimplmap<T_Key, T_Value, T_Compare>::iterator, bool> insertResult = this->insert(zfstlpair<T_Key, T_Value>(key, value));
+        it = insertResult.first;
+        return !insertResult.second;
+    }
+    zfbool iterAccess(
+            ZF_OUT zfiter &it
+            , ZF_IN T_Key const &key
+            , ZF_IN_OPT T_Value const &value = T_Value()
+            ) {
+        zfstlpair<typename zfimplmap<T_Key, T_Value, T_Compare>::iterator, bool> insertResult = this->insert(zfstlpair<T_Key, T_Value>(key, value));
         _Iter *impl = zfpoolNew(_Iter);
-        impl->it = this->insert(zfstlpair<T_Key, T_Value>(key, T_Value())).first;
+        impl->it = insertResult.first;
         impl->end = this->end();
-        return zfiter(impl);
+        it = impl;
+        return !insertResult.second;
     }
 };
 /** @endcond */

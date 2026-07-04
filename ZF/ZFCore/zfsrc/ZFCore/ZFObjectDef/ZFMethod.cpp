@@ -581,8 +581,8 @@ ZFMethod *ZFMethod::_ZFP_ZFMethodRegister(
         );
 
     _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
-    _ZFP_ZFMethodMapType::iterator it = m.find(methodId);
-    if(it != m.end()) {
+    _ZFP_ZFMethodMapType::iterator it;
+    if(m.iterAccess(it, methodId)) {
         method = it->second;
         if(method->isUserRegister()) {
             if(ownerClass != zfnull) {
@@ -616,23 +616,12 @@ ZFMethod *ZFMethod::_ZFP_ZFMethodRegister(
                     methodId);
             }
         }
-
         ++(method->_refCount);
     }
     else {
-        {
-            _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
-            _ZFP_ZFMethodMapType::iterator it = m.find(methodId);
-            if(it != m.end()) {
-                method = it->second;
-                ++(method->_refCount);
-            }
-            else {
-                method = zfnew(ZFMethod);
-                method->_methodId = methodId;
-                m[methodId] = method;
-            }
-        }
+        method = zfnew(ZFMethod);
+        method->_methodId = methodId;
+        it->second = method;
 
         if(method->_methodName == zfnull) {
             method->_ZFP_ZFMethod_init(isUserRegister
@@ -658,7 +647,6 @@ ZFMethod *ZFMethod::_ZFP_ZFMethodRegister(
             }
         }
     }
-
     return method;
 }
 void ZFMethod::_ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method) {
