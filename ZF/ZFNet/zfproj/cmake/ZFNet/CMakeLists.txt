@@ -28,7 +28,7 @@ target_include_directories(${ZF_PROJ_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/../../
 
 function(ZFAddLib ZF_LIB_NAME_)
     target_include_directories(${ZF_PROJ_NAME} PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
-    target_link_directories(${ZF_PROJ_NAME} PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
+    target_link_directories(${ZF_PROJ_NAME} PRIVATE "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
     target_link_libraries(${ZF_PROJ_NAME} PRIVATE ${ZF_LIB_NAME_})
 endfunction()
 

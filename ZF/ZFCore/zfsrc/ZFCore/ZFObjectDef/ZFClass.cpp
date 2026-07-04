@@ -1461,6 +1461,9 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
     zfbool needFinalInit = zffalse;
     if(it != _ZFP_ZFClassMap.end()) {
         cls = it->second;
+        if(parent == ZFInterface::ClassData()) {
+            parent = zfnull;
+        }
         if(cls->classIsInterface() != classIsInterface || cls->classParent() != parent) {
             ZFCoreCriticalMessageTrim("[ZFClass] register a class that already registered: %s", classNameTmp);
             return zfnull;

@@ -31,7 +31,7 @@ cd "$_OLD_DIR"
 
 cd "$_TMP_PATH"
 cmake \
-    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_INSTALL_PREFIX="$_INSTALL_PATH" \
     "$_PROJ_PATH"
 make -j4

@@ -617,22 +617,6 @@ ZFMethod *ZFMethod::_ZFP_ZFMethodRegister(
             }
         }
 
-        // param type id may be same for different cpp type
-        // strict check type name to prevent redefine
-        zfbool isRedefine = ((zfindex)mp.paramCount == method->paramCount());
-        if(!isRedefine) {
-            for(zfuint i = 0; i < mp.paramCount; ++i) {
-                if(!zfstringIsEqual(mp.paramTypeId[i], method->paramTypeIdAt(i))) {
-                    isRedefine = zftrue;
-                    break;
-                }
-            }
-        }
-        ZFCoreAssertWithMessageTrim(!isRedefine,
-            "[ZFMethod] redefine of method: %s, existing: %s",
-            methodId,
-            method);
-
         ++(method->_refCount);
     }
     else {

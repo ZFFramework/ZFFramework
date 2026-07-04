@@ -17,6 +17,10 @@ function(zfprojCxxFlags target)
     else()
         target_compile_options(${target} PRIVATE -fno-exceptions -fno-rtti)
     endif()
+    # set_target_properties(${target} PROPERTIES
+    #     CXX_VISIBILITY_PRESET hidden
+    #     VISIBILITY_INLINES_HIDDEN ON
+    # )
 endfunction()
 
 # zfprojExec("${ZF_ROOT_PATH}/tools/common/copy_check" "xxx" "xxx")

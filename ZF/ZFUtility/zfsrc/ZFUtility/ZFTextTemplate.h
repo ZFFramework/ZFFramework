@@ -51,7 +51,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   \n
  *   params:
  *   -  #ZFTextTemplateParam::enableData:\n
- *     a <string, bool> map
+ *     a <zfstring, zfbool> map
  *   -  #ZFTextTemplateParam::enableDataDefault:\n
  *     whether we should enable the entries that not exist in #ZFTextTemplateParam::enableData,
  *     false by default
