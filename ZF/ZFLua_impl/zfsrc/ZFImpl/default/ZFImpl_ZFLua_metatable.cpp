@@ -404,7 +404,7 @@ void ZFImpl_ZFLua_implSetupMetatable(
         ) {
     ZFImpl_ZFLua_execute(L,
             "function _ZFP_ZFImpl_ZFLua_metatable_index(obj, k)\n"
-            "    return function(obj, ...)\n"
+            "    return function(t, ...)\n"
             "        return zfl_call(obj, k, ...)\n"
             "    end\n"
             "end\n"
