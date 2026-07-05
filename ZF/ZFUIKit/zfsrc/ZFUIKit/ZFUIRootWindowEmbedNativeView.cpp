@@ -1,8 +1,6 @@
 #include "ZFUIRootWindow.h"
 #include "protocol/ZFProtocolZFUIRootWindowEmbedNativeView.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -64,18 +62,18 @@ ZFMETHOD_DEFINE_1(ZFUIRootWindow, zfautoT<ZFUIRootWindow>, nativeWindowEmbedNati
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIRootWindowEmbedNativeViewAutoRemove, ZFLevelZFFrameworkNormal) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIRootWindowEmbedNativeViewAutoRemove) {
-    while(!m.empty()) {
-        zfimplhashmap<zfstring, zfbool> tmp;
+    while(!m.isEmpty()) {
+        ZFCoreSet<zfstring> tmp;
         tmp.swap(m);
-        for(zfimplhashmap<zfstring, zfbool>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
-            const ZFMethod *method = ZFMethodFuncForName(zfnull, it->first);
+        for(zfiter it = tmp.iter(); it; ++it) {
+            const ZFMethod *method = ZFMethodFuncForName(zfnull, tmp.iterValue(it));
             if(method != zfnull && method->isUserRegister()) {
                 ZFMethodFuncUserUnregister(method);
             }
         }
     }
 }
-zfimplhashmap<zfstring, zfbool> m;
+ZFCoreSet<zfstring> m;
 ZF_GLOBAL_INITIALIZER_END(ZFUIRootWindowEmbedNativeViewAutoRemove)
 ZFMETHOD_DEFINE_2(ZFUIRootWindow, zfautoT<ZFUIRootWindow>, nativeWindowEmbedNativeView
         , ZFMP_IN(void *, nativeParent)
@@ -104,7 +102,7 @@ ZFMETHOD_DEFINE_2(ZFUIRootWindow, zfautoT<ZFUIRootWindow>, nativeWindowEmbedNati
     } ZFLISTENER_END()
     rootWindow->observerAdd(ZFObject::E_ObjectBeforeDealloc(), rootWindowOnDealloc);
 
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIRootWindowEmbedNativeViewAutoRemove)->m[rootWindowName] = zftrue;
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIRootWindowEmbedNativeViewAutoRemove)->m.add(rootWindowName);
     return rootWindow;
 }
 ZFMETHOD_DEFINE_1(ZFUIRootWindow, void, nativeWindowEmbedNativeViewCleanup
@@ -112,7 +110,7 @@ ZFMETHOD_DEFINE_1(ZFUIRootWindow, void, nativeWindowEmbedNativeViewCleanup
         ) {
     const ZFMethod *method = ZFMethodFuncForName(zfnull, rootWindowName);
     if(method != zfnull && method->isUserRegister()) {
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIRootWindowEmbedNativeViewAutoRemove)->m.erase(rootWindowName);
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIRootWindowEmbedNativeViewAutoRemove)->m.remove(rootWindowName);
         ZFMethodFuncUserUnregister(method);
     }
 }

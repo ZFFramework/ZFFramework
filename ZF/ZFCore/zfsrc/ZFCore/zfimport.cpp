@@ -3,8 +3,6 @@
 #include "ZFIO_res.h"
 #include "ZFIO_file.h"
 
-#include "ZFSTLWrapper/zfstlhashmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
@@ -12,7 +10,7 @@ ZFEVENT_GLOBAL_REGISTER(ZFImportBegin)
 ZFEVENT_GLOBAL_REGISTER(ZFImportEnd)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-typedef zfimplhashmap<zfstring, zfauto> _ZFP_zfimportCacheMapType;
+typedef ZFCoreMap<zfstring, zfauto> _ZFP_zfimportCacheMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfimportDataHolder, ZFLevelZFFrameworkLow) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(zfimportDataHolder) {
@@ -32,18 +30,19 @@ static zfauto _ZFP_zfimportFile(
     zfstring callbackId = input.callbackId();
     if(callbackId) {
         ZFCoreMutexLocker();
-        _ZFP_zfimportCacheMapType::iterator it = cacheMap.find(callbackId);
-        if(it != cacheMap.end()) {
-            if(it->second == ZFNull()) {
+        zfiter it = cacheMap.iterFind(callbackId);
+        if(it) {
+            ZFObject *cache = cacheMap.iterValue(it);
+            if(cache == ZFNull()) {
                 return zfnull;
             }
             else {
-                return it->second;
+                return cache;
             }
         }
 
         // mark loading
-        cacheMap[callbackId] = ZFNull();
+        cacheMap.set(callbackId, ZFNull());
     }
 
     zfobj<v_ZFInput> inputHolder;
@@ -56,11 +55,11 @@ static zfauto _ZFP_zfimportFile(
     if(callbackId) {
         ZFCoreMutexLocker();
         if(success) {
-            cacheMap[callbackId] = ret;
+            cacheMap.set(callbackId, ret);
         }
         else {
             // unmark loading
-            cacheMap.erase(callbackId);
+            cacheMap.remove(callbackId);
         }
     }
     return ret;
@@ -139,10 +138,10 @@ ZFMETHOD_FUNC_DEFINE_1(zfauto, zfimportCacheRemove
     }
     ZFCoreMutexLocker();
     _ZFP_zfimportCacheMapType &cacheMap = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder)->cacheMap;
-    _ZFP_zfimportCacheMapType::iterator it = cacheMap.find(callbackId);
-    if(it != cacheMap.end()) {
-        zfauto ret = it->second;
-        cacheMap.erase(it);
+    zfiter it = cacheMap.iterFind(callbackId);
+    if(it) {
+        zfauto ret = cacheMap.iterValue(it);
+        cacheMap.iterRemove(it);
         return ret;
     }
     else {
@@ -153,7 +152,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfauto, zfimportCacheRemove
 ZFMETHOD_FUNC_DEFINE_0(void, zfimportCacheRemoveAll) {
     ZFCoreMutexLock();
     _ZFP_zfimportCacheMapType &cacheMap = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder)->cacheMap;
-    if(cacheMap.empty()) {
+    if(cacheMap.isEmpty()) {
         ZFCoreMutexUnlock();
     }
     else {

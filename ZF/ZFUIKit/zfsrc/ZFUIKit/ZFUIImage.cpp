@@ -2,12 +2,10 @@
 #include "ZFUIImageIO.h"
 #include "protocol/ZFProtocolZFUIImage.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfimplhashmap<zfstring, _ZFP_ZFUIImageSerializeFromCallback> _ZFP_ZFUIImageSerializeDataMapType;
+typedef ZFCoreMap<zfstring, _ZFP_ZFUIImageSerializeFromCallback> _ZFP_ZFUIImageSerializeDataMapType;
 static _ZFP_ZFUIImageSerializeDataMapType &_ZFP_ZFUIImageSerializeDataMap(void) {
     static _ZFP_ZFUIImageSerializeDataMapType d;
     return d;
@@ -19,22 +17,22 @@ void _ZFP_ZFUIImageSerializeTypeRegister(
     ZFCoreMutexLocker();
     _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
     ZFCoreAssert(name != zfnull && fromCallback != zfnull);
-    ZFCoreAssertWithMessageTrim(m.find(name) == m.end(),
+    ZFCoreAssertWithMessageTrim(!m.isContain(name),
         "[ZFUIIMAGE_SERIALIZE_TYPE_DEFINE] %s already registered",
         name);
-    m[name] = fromCallback;
+    m.access(name) = fromCallback;
 }
 void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfstring &name) {
     ZFCoreMutexLocker();
     _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
-    m.erase(name);
+    m.remove(name);
 }
 
 void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
     ZFCoreMutexLocker();
     _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
-    for(_ZFP_ZFUIImageSerializeDataMapType::iterator it = m.begin(); it != m.end(); ++it) {
-        ret.add(it->first);
+    for(zfiter it = m.iter(); it; ++it) {
+        ret.add(m.iterKey(it));
     }
 }
 
@@ -156,9 +154,9 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
     {
         ZFCoreMutexLocker();
         _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
-        _ZFP_ZFUIImageSerializeDataMapType::iterator it = m.find(typeName);
-        if(it != m.end()) {
-            fromCallback = it->second;
+        zfiter it = m.iterFind(typeName);
+        if(it) {
+            fromCallback = m.iterValue(it);
         }
     }
     if(fromCallback == zfnull) {

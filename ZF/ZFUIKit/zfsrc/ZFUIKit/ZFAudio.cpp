@@ -1,8 +1,6 @@
 #include "ZFAudio.h"
 #include "protocol/ZFProtocolZFAudio.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassNotPOD _ZFP_ZFAudioPrivate {
@@ -35,18 +33,18 @@ public:
     }
 };
 
-static zfimplmap<ZFAudio *, zfbool> &_ZFP_ZFAudio_playing(void) {
-    static zfimplmap<ZFAudio *, zfbool> d;
+static ZFCoreSet<ZFAudio *> &_ZFP_ZFAudio_playing(void) {
+    static ZFCoreSet<ZFAudio *> d;
     return d;
 }
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAudioAutoStop, ZFLevelZFFrameworkNormal) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFAudioAutoStop) {
-    if(!_ZFP_ZFAudio_playing().empty()) {
-        zfimplmap<ZFAudio *, zfbool> m;
+    if(!_ZFP_ZFAudio_playing().isEmpty()) {
+        ZFCoreSet<ZFAudio *> m;
         m.swap(_ZFP_ZFAudio_playing());
-        for(zfimplmap<ZFAudio *, zfbool>::iterator it = m.begin(); it != m.end(); ++it) {
-            it->first->stop();
+        for(zfiter it = m.iter(); it; ++it) {
+            m.iterValue(it)->stop();
         }
     }
 }
@@ -135,7 +133,7 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
 
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::StartFlag);
         d->loopCur = 0;
-        _ZFP_ZFAudio_playing()[this] = zftrue;
+        _ZFP_ZFAudio_playing().add(this);
         this->audioOnStart();
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
     }
@@ -339,7 +337,7 @@ void ZFAudio::_ZFP_ZFAudio_OnLoad(
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::ImplLoaded);
 
         if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)) {
-            _ZFP_ZFAudio_playing()[this] = zftrue;
+            _ZFP_ZFAudio_playing().add(this);
             ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
             ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioVolume(this, this->volume());
         }
@@ -366,12 +364,12 @@ void ZFAudio::_ZFP_ZFAudio_OnStop(
         ++d->loopCur;
     }
     if(result != v_ZFResultType::e_Cancel && (this->loop() == zfindexMax() || d->loopCur <= this->loop())) {
-        _ZFP_ZFAudio_playing()[this] = zftrue;
+        _ZFP_ZFAudio_playing().add(this);
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
         this->audioOnLoop();
     }
     else {
-        _ZFP_ZFAudio_playing().erase(this);
+        _ZFP_ZFAudio_playing().remove(this);
         if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying)) {
             this->_ZFP_ZFAudio_OnPause();
         }

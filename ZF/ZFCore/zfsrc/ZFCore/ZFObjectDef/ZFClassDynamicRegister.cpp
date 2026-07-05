@@ -1,25 +1,23 @@
 #include "ZFClassDynamicRegister.h"
 #include "ZFObjectImpl.h"
 
-#include "../ZFSTLWrapper/zfstlhashmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFClassDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic) {
 }
-zfimplhashmap<const ZFClass *, zfbool> m;
+ZFCoreSet<const ZFClass *> m;
 ZF_GLOBAL_INITIALIZER_END(ZFClassDynamicRegisterDataHolder)
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFClassDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFClassDynamicRegisterAutoRemove) {
-    zfimplhashmap<const ZFClass *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m;
-    if(!m.empty()) {
-        zfimplhashmap<const ZFClass *, zfbool> t;
+    ZFCoreSet<const ZFClass *> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m;
+    if(!m.isEmpty()) {
+        ZFCoreSet<const ZFClass *> t;
         t.swap(m);
-        for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
-            ZFClass::_ZFP_ZFClassUnregister(it->first);
+        for(zfiter it = t.iter(); it; ++it) {
+            ZFClass::_ZFP_ZFClassUnregister(t.iterValue(it));
         }
     }
 }
@@ -67,7 +65,7 @@ const ZFClass *ZFClassDynamicRegister(
             , zftrue
             , classDynamicRegisterUserData
             );
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m[cls] = zftrue;
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m.add(cls);
     zfstring classNamespace = ZFNamespaceSkipGlobal(cls->classNamespace());
     if(classNamespace && ZFClass::classForName(classNamespace) == zfnull) {
         _ZFP_ZFNamespaceRegister(zfnull, classNamespace);
@@ -84,7 +82,7 @@ void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls) {
             cls);
     }
     _ZFP_ZFNamespaceUnregister(ZFNamespaceSkipGlobal(cls->classNamespace()));
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m.erase(cls);
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m.remove(cls);
     cls->dataCacheRemoveAll();
     cls->classTagRemoveAll();
     ZFClass::_ZFP_ZFClassUnregister(cls);

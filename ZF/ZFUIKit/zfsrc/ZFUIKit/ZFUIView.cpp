@@ -4,8 +4,6 @@
 #include "protocol/ZFProtocolZFUIViewTransform.h"
 #include "ZFUIViewFocus.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-
 #include <cmath> // for fmod on rotation
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -15,7 +13,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIView)
 
 // ============================================================
 // _ZFP_ZFUIViewPrivate
-typedef zfimplhashmap<zfstring, zfbool> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
+typedef ZFCoreSet<zfstring> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
 zfclassNotPOD _ZFP_ZFUIViewPrivate {
 public:
     void *nativeView;
@@ -754,7 +752,7 @@ public:
             for(zfindex i = 0; i < views->count(); ++i) {
                 ZFUIView *tmp = views->get(i);
                 if(tmp->viewId().isEmpty()
-                        || this->internalViewAutoSerializeTags.find(tmp->viewId()) == this->internalViewAutoSerializeTags.end()
+                        || !this->internalViewAutoSerializeTags.isContain(tmp->viewId())
                         ) {
                     continue;
                 }
@@ -770,7 +768,7 @@ public:
             for(zfindex i = 0; i < views->count(); ++i) {
                 ZFUIView *tmp = views->get(i);
                 if(tmp->viewId().isEmpty()
-                        || this->internalViewAutoSerializeTags.find(tmp->viewId()) == this->internalViewAutoSerializeTags.end()
+                        || !this->internalViewAutoSerializeTags.isContain(tmp->viewId())
                         ) {
                     continue;
                 }
@@ -1017,7 +1015,7 @@ zfbool ZFUIView::serializableOnSerializeToData(
     }
 
     { // internal views
-        if(!d->internalViewAutoSerializeTags.empty()) {
+        if(!d->internalViewAutoSerializeTags.isEmpty()) {
             if(!d->serializeInternalViewToCategoryData(v_ZFUIViewChildLayer::e_InternalImpl, serializableData, ref, outErrorHint)) {
                 return zffalse;
             }
@@ -2262,28 +2260,25 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagAdd
         , ZFMP_IN(const zfstring &, tag)
         ) {
     if(tag) {
-        d->internalViewAutoSerializeTags[tag] = zftrue;
+        d->internalViewAutoSerializeTags.add(tag);
     }
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagRemove
         , ZFMP_IN(const zfstring &, tag)
         ) {
     if(tag) {
-        d->internalViewAutoSerializeTags.erase(tag);
+        d->internalViewAutoSerializeTags.remove(tag);
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, void, internalViewAutoSerializeTagRemoveAll) {
-    d->internalViewAutoSerializeTags.clear();
+    d->internalViewAutoSerializeTags.removeAll();
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret)
         ) {
-    ret.capacity(ret.count() + d->internalViewAutoSerializeTags.size());
-    for(_ZFP_ZFUIViewInternalViewAutoSerializeTagMapType::iterator it = d->internalViewAutoSerializeTags.begin();
-            it != d->internalViewAutoSerializeTags.end();
-            ++it
-            ) {
-        ret.add(it->first);
+    ret.capacity(ret.count() + d->internalViewAutoSerializeTags.count());
+    for(zfiter it = d->internalViewAutoSerializeTags.iter(); it; ++it) {
+        ret.add(d->internalViewAutoSerializeTags.iterValue(it));
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfstring>, internalViewAutoSerializeTagGetAll) {

@@ -1,15 +1,13 @@
 #include "ZFEnvInfo.h"
 #include "protocol/ZFProtocolZFEnvInfo.h"
 
-#include "ZFSTLWrapper/zfstlmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFEnvSummaryDataHolder, ZFLevelZFFrameworkStatic) {
 }
 public:
-    zfimplmap<zfstring, ZFEnvSummaryCallback> envSummaryCallbackMap;
+    ZFCoreMap<zfstring, ZFEnvSummaryCallback> envSummaryCallbackMap;
 ZF_GLOBAL_INITIALIZER_END(ZFEnvSummaryDataHolder)
 
 // ============================================================
@@ -19,26 +17,26 @@ void envSummaryCallbackRegister(
         ZF_IN const zfstring &name
         , ZF_IN ZFEnvSummaryCallback callback
         ) {
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap[name] = callback;
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap.set(name, callback);
 }
 void envSummaryCallbackUnregister(ZF_IN const zfstring &name) {
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap.erase(name);
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap.remove(name);
 }
 
 ZFMETHOD_FUNC_DEFINE_0(zfstring, envSummary) {
     zfstring ret;
     zfbool first = zftrue;
-    zfimplmap<zfstring, ZFEnvSummaryCallback> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap;
-    for(zfimplmap<zfstring, ZFEnvSummaryCallback>::iterator it = m.begin(); it != m.end(); ++it) {
+    ZFCoreMap<zfstring, ZFEnvSummaryCallback> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap;
+    for(zfiter it = m.iter(); it; ++it) {
         if(first) {
             first = zffalse;
         }
         else {
             ret += "\n";
         }
-        ret += it->first;
+        ret += m.iterKey(it);
         ret += ": ";
-        ret += it->second();
+        ret += m.iterValue(it)();
     }
     return ret;
 }

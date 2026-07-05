@@ -1,11 +1,9 @@
 #include "ZFObjectIO_audio.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfimplhashmap<zfstring, zfbool> _ZFP_ZFObjectIO_audio_audioExtMapType;
+typedef ZFCoreSet<zfstring> _ZFP_ZFObjectIO_audio_audioExtMapType;
 static _ZFP_ZFObjectIO_audio_audioExtMapType &_ZFP_ZFObjectIO_audio_audioExtMap(void) {
     static _ZFP_ZFObjectIO_audio_audioExtMapType m;
     return m;
@@ -13,19 +11,19 @@ static _ZFP_ZFObjectIO_audio_audioExtMapType &_ZFP_ZFObjectIO_audio_audioExtMap(
 
 void ZFObjectIO_audio_audioExtAdd(ZF_IN const zfstring &audioExt) {
     ZFCoreAssert(audioExt);
-    _ZFP_ZFObjectIO_audio_audioExtMap()[audioExt] = zftrue;
+    _ZFP_ZFObjectIO_audio_audioExtMap().add(audioExt);
 }
 void ZFObjectIO_audio_audioExtRemove(ZF_IN const zfstring &audioExt) {
-    _ZFP_ZFObjectIO_audio_audioExtMap().erase(audioExt);
+    _ZFP_ZFObjectIO_audio_audioExtMap().remove(audioExt);
 }
 zfbool ZFObjectIO_audio_audioExtCheck(ZF_IN const zfstring &audioExt) {
     _ZFP_ZFObjectIO_audio_audioExtMapType &m = _ZFP_ZFObjectIO_audio_audioExtMap();
-    return m.find(audioExt) != m.end();
+    return m.isContain(audioExt);
 }
 void ZFObjectIO_audio_audioExtGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
     _ZFP_ZFObjectIO_audio_audioExtMapType &m = _ZFP_ZFObjectIO_audio_audioExtMap();
-    for(_ZFP_ZFObjectIO_audio_audioExtMapType::iterator it = m.begin(); it != m.end(); ++it) {
-        ret.add(it->first);
+    for(zfiter it = m.iter(); it; ++it) {
+        ret.add(m.iterValue(it));
     }
 }
 
