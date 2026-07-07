@@ -7,18 +7,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // zfobjAutoRelease
 void _ZFP_zfobjAutoReleaseAction(ZF_IN ZFObject *obj) {
     if(obj) {
-        ZFCoreMutexLocker();
-
-        if(ZFThread::implAvailable()) {
-            ZFThread *threadCur = ZFThread::currentThread();
-            if(threadCur == zfnull) {
-                ZFCoreCriticalMessageTrim("[zfobjAutoRelease] current thread is null, make sure the thread is started or registered by ZFThread");
-                return;
-            }
+        // ZFCoreMutexLocker();
+        ZFThread *threadCur = ZFThread::currentThread();
+        if(threadCur) {
             threadCur->autoReleasePoolAdd(obj);
         }
         else {
-            ZFAutoReleasePool::instance()->poolAdd(obj);
+            if(ZFThread::implAvailable()) {
+                ZFCoreCriticalMessageTrim("[zfobjAutoRelease] current thread is null, make sure the thread is started or registered by ZFThread");
+                return;
+            }
+            else {
+                ZFAutoReleasePool::instance()->poolAdd(obj);
+            }
         }
     }
 }

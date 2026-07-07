@@ -442,6 +442,19 @@ public:
         child->viewOnAddToParent(owner);
         owner->viewChildOnUpdate();
 
+        // for long chained call in script,
+        // it's possible that owner getting destroyed,
+        // since the shipped layoutParam only holds weak ref to owner,
+        // and no strong ref exist during the long chained call
+        // typical case:
+        //     local v = SomeParent()
+        //         :child(child0)    // after this, a shipped layoutParam would be returned,
+        //                           // no strong ref points to SomeParent any more,
+        //                           // until the ownerLayout assigned to v
+        //         :child(child1)
+        //         :ownerLayout()
+        zfobjAutoRelease(zfobjRetain(owner));
+
         return layoutParam;
     }
     void childRemove(
