@@ -2487,6 +2487,7 @@ PREDEFINED            += _ZFP_ZFIMPLEMENT_DECLARE(...):=
 PREDEFINED            += ZFIMPLEMENT_DECLARE(...):=
 PREDEFINED            += ZF_ENV_EXPORT:=
 PREDEFINED            += ZF_ENV_IMPORT:=
+PREDEFINED            += ZFLIB_HIDDEN:=
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The
