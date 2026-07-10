@@ -99,10 +99,10 @@ void ZFMethod::_ZFP_ZFMethod_init(
     ZFCoreAssert(methodGenericInvoker != zfnull);
 
     if(isUserRegister) {
-        ZFBitSet(_stateFlags, _stateFlags_isUserRegister);
+        ZFBitSet(_stateFlag, _stateFlag_isUserRegister);
     }
     if(isDynamicRegister) {
-        ZFBitSet(_stateFlags, _stateFlags_isDynamicRegister);
+        ZFBitSet(_stateFlag, _stateFlag_isDynamicRegister);
     }
     this->_methodUserData = zfobjRetain(dynamicRegisterUserData);
     _methodInvoker = methodInvoker;
@@ -149,11 +149,11 @@ void ZFMethod::_ZFP_ZFMethod_init(
 
     // internal
     if(zfstringBeginWith(methodName, "_ZFP_")) {
-        ZFBitSet(_stateFlags, _stateFlags_isInternal);
-        ZFBitSet(_stateFlags, _stateFlags_isInternalPrivate);
+        ZFBitSet(_stateFlag, _stateFlag_isInternal);
+        ZFBitSet(_stateFlag, _stateFlag_isInternalPrivate);
     }
     else if(methodName[0] == '_') {
-        ZFBitSet(_stateFlags, _stateFlags_isInternal);
+        ZFBitSet(_stateFlag, _stateFlag_isInternal);
     }
 }
 void ZFMethod::_ZFP_ZFMethod_initClassMemberType(
@@ -177,7 +177,7 @@ void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace)
 
 ZFMethod::ZFMethod(void)
 : _refCount(1)
-, _stateFlags(0)
+, _stateFlag(0)
 , _methodUserData(zfnull)
 , _methodId(zfnull)
 , _ext(zfnull)
@@ -901,7 +901,7 @@ void ZFMethod::_ZFP_ZFMethodImplReplace_attach(ZF_IN const ZFListener &impl) {
     ZFCoreMutexLocker();
     _ZFP_ZFMethod_extInit();
     _ext->methodImplReplaceList.add(impl, 0);
-    ZFBitSet(_stateFlags, _stateFlags_preferGenericInvoker);
+    ZFBitSet(_stateFlag, _stateFlag_preferGenericInvoker);
     if(_ext->methodGenericInvokerOrig == zfnull) {
         _ext->methodGenericInvokerOrig = _methodGenericInvoker;
         _methodGenericInvoker = _ZFP_ZFMethodImplReplace_GI;
@@ -914,7 +914,7 @@ void ZFMethod::_ZFP_ZFMethodImplReplace_detach(ZF_IN const ZFListener &impl) {
         _methodGenericInvoker = _ext->methodGenericInvokerOrig;
         _ext->methodGenericInvokerOrig = zfnull;
         if(_methodInvoker) {
-            ZFBitUnset(_stateFlags, _stateFlags_preferGenericInvoker);
+            ZFBitUnset(_stateFlag, _stateFlag_preferGenericInvoker);
         }
     }
 }

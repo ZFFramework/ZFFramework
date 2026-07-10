@@ -95,23 +95,23 @@ void ZFProperty::_ZFP_ZFPropertyInit(
         , ZF_IN const ZFClass *propertyClassOfRetainProperty
         ) {
     if(getterMethod->isPrivate() || zfstringBeginWith(name, "_ZFP_")) {
-        ZFBitSet(_stateFlags, _stateFlags_isInternal);
-        ZFBitSet(_stateFlags, _stateFlags_isInternalPrivate);
+        ZFBitSet(_stateFlag, _stateFlag_isInternal);
+        ZFBitSet(_stateFlag, _stateFlag_isInternalPrivate);
     }
     else if(!getterMethod->isPublic() || name[0] == '_') {
-        ZFBitSet(_stateFlags, _stateFlags_isInternal);
+        ZFBitSet(_stateFlag, _stateFlag_isInternal);
     }
     if(isUserRegister) {
-        ZFBitSet(_stateFlags, _stateFlags_isUserRegister);
+        ZFBitSet(_stateFlag, _stateFlag_isUserRegister);
     }
     if(isDynamicRegister) {
-        ZFBitSet(_stateFlags, _stateFlags_isDynamicRegister);
+        ZFBitSet(_stateFlag, _stateFlag_isDynamicRegister);
     }
     if(setterMethodAutoUnregister) {
-        ZFBitSet(_stateFlags, _stateFlags_setterMethodAutoUnregister);
+        ZFBitSet(_stateFlag, _stateFlag_setterMethodAutoUnregister);
     }
     if(getterMethodAutoUnregister) {
-        ZFBitSet(_stateFlags, _stateFlags_getterMethodAutoUnregister);
+        ZFBitSet(_stateFlag, _stateFlag_getterMethodAutoUnregister);
     }
     _dynamicRegisterUserData = zfobjRetain(dynamicRegisterUserData);
     _ownerClass = ownerClass;
@@ -371,7 +371,7 @@ void ZFProperty::_ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo)
     }
     m.erase(it);
 
-    if(ZFBitTest(v->_stateFlags, _stateFlags_setterMethodAutoUnregister)) {
+    if(ZFBitTest(v->_stateFlag, _stateFlag_setterMethodAutoUnregister)) {
         if(v->setterMethod()->aliasFrom() != zfnull) {
             ZFMethodAliasRemove(v->setterMethod());
         }
@@ -383,7 +383,7 @@ void ZFProperty::_ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo)
         }
     }
 
-    if(ZFBitTest(v->_stateFlags, _stateFlags_getterMethodAutoUnregister)) {
+    if(ZFBitTest(v->_stateFlag, _stateFlag_getterMethodAutoUnregister)) {
         if(v->getterMethod()->aliasFrom() == zfnull) {
             ZFMethodAliasRemove(v->getterMethod());
         }

@@ -314,7 +314,7 @@ public:
      * @brief whether the method is registered by #ZFMethodUserRegister_0
      */
     inline zfbool isUserRegister(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_isUserRegister);
+        return ZFBitTest(_stateFlag, _stateFlag_isUserRegister);
     }
     /**
      * @brief store impl state for #ZFMethodUserRegister_0
@@ -330,7 +330,7 @@ public:
      * @brief whether the method is registered by #ZFMethodDynamicRegister
      */
     inline zfbool isDynamicRegister(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_isDynamicRegister);
+        return ZFBitTest(_stateFlag, _stateFlag_isDynamicRegister);
     }
     /**
      * @brief see #ZFMethodDynamicRegister
@@ -558,7 +558,7 @@ public:
      * -  method impl was replaced by #ZFMethodImplReplace
      */
     inline zfbool preferGenericInvoker(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_preferGenericInvoker);
+        return ZFBitTest(_stateFlag, _stateFlag_preferGenericInvoker);
     }
 
     // ============================================================
@@ -632,7 +632,7 @@ public:
      * see also #isInternalPrivate
      */
     inline zfbool isInternal(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_isInternal);
+        return ZFBitTest(_stateFlag, _stateFlag_isInternal);
     }
     /**
      * @brief whether the method is internal private method
@@ -644,7 +644,7 @@ public:
      * see also #isInternal
      */
     inline zfbool isInternalPrivate(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_isInternalPrivate);
+        return ZFBitTest(_stateFlag, _stateFlag_isInternalPrivate);
     }
 
 public:
@@ -687,15 +687,15 @@ public:
 
 private:
     enum {
-        _stateFlags_isInternal = 1 << 0,
-        _stateFlags_isInternalPrivate = 1 << 1,
-        _stateFlags_isUserRegister = 1 << 2,
-        _stateFlags_isDynamicRegister = 1 << 3,
-        _stateFlags_preferGenericInvoker = 1 << 4,
+        _stateFlag_isInternal = 1 << 0,
+        _stateFlag_isInternalPrivate = 1 << 1,
+        _stateFlag_isUserRegister = 1 << 2,
+        _stateFlag_isDynamicRegister = 1 << 3,
+        _stateFlag_preferGenericInvoker = 1 << 4,
     };
 private:
     zfuint _refCount;
-    zfuint _stateFlags;
+    zfuint _stateFlag;
     ZFObject *_methodUserData;
     ZFSigName _methodId;
     _ZFP_ZFMethodPrivate *_ext;

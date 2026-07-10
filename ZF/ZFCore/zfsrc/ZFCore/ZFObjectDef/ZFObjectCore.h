@@ -851,13 +851,13 @@ private:
 private:
     _ZFP_ZFObjectPrivate *d;
     zfuint _refCount;
-    zfuint _stateFlags;
+    zfuint _stateFlag;
 protected:
     /** @cond ZFPrivateDoc */
     ZFObject(void)
     : d(zfnull)
     , _refCount(1)
-    , _stateFlags(0)
+    , _stateFlag(0)
     {
     }
     virtual ~ZFObject(void) {

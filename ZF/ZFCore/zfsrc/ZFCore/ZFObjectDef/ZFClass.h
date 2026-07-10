@@ -193,14 +193,14 @@ public:
      * @brief true if this class or any of parent of this class is #classIsDynamicRegister
      */
     zfbool classContainDynamicRegister(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_classContainDynamicRegister);
+        return ZFBitTest(_stateFlag, _stateFlag_classContainDynamicRegister);
     }
 
     /**
      * @brief true if class is registered by #ZFClassDynamicRegister
      */
     zfbool classIsDynamicRegister(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_classIsDynamicRegister);
+        return ZFBitTest(_stateFlag, _stateFlag_classIsDynamicRegister);
     }
     /**
      * @brief see #ZFClassDynamicRegister
@@ -212,13 +212,13 @@ public:
      * #newInstance would return zfnull if the class is abstract
      */
     inline zfbool classIsAbstract(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_classIsAbstract);
+        return ZFBitTest(_stateFlag, _stateFlag_classIsAbstract);
     }
     /**
      * @brief true if the class is an interface
      */
     inline zfbool classIsInterface(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_classIsInterface);
+        return ZFBitTest(_stateFlag, _stateFlag_classIsInterface);
     }
     /**
      * @brief whether the class is internal class
@@ -229,7 +229,7 @@ public:
      * see #classIsInternalPrivate
      */
     inline zfbool classIsInternal(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_classIsInternal);
+        return ZFBitTest(_stateFlag, _stateFlag_classIsInternal);
     }
     /**
      * @brief whether the class is internal private class
@@ -240,7 +240,7 @@ public:
      * see #classIsInternal
      */
     inline zfbool classIsInternalPrivate(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_classIsInternalPrivate);
+        return ZFBitTest(_stateFlag, _stateFlag_classIsInternalPrivate);
     }
 
     /**
@@ -700,18 +700,18 @@ public:
     void _ZFP_ZFClass_release(void);
     void _ZFP_ZFClass_autoRegister(void) const;
     inline zfbool _ZFP_ZFClass_interfaceHasRegisterCk(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_interfaceHasRegisterCk);
+        return ZFBitTest(_stateFlag, _stateFlag_interfaceHasRegisterCk);
     }
     inline void _ZFP_ZFClass_interfaceHasRegisterCk(ZF_IN zfbool v) {
         if(v) {
-            ZFBitSet(_stateFlags, _stateFlags_interfaceHasRegisterCk);
+            ZFBitSet(_stateFlag, _stateFlag_interfaceHasRegisterCk);
         }
         else {
-            ZFBitUnset(_stateFlags, _stateFlags_interfaceHasRegisterCk);
+            ZFBitUnset(_stateFlag, _stateFlag_interfaceHasRegisterCk);
         }
     }
     zfbool _ZFP_ZFClass_interfaceHasRegister(void) {
-        return ZFBitTest(_stateFlags, _stateFlags_interfaceHasRegister);
+        return ZFBitTest(_stateFlag, _stateFlag_interfaceHasRegister);
     }
     void _ZFP_ZFClass_interfaceRegister(
             ZF_IN zfint dummy
@@ -753,36 +753,36 @@ public:
     void _ZFP_classDynamicRegisterObjectInstanceDetach(ZF_IN ZFObject *obj) const;
 
     inline zfbool _ZFP_ZFClass_classCanNotAllocPublic(void) const {
-        return ZFBitTest(_stateFlags, _stateFlags_classCanNotAllocPublic);
+        return ZFBitTest(_stateFlag, _stateFlag_classCanNotAllocPublic);
     }
     inline void _ZFP_ZFClass_classCanNotAllocPublic(ZF_IN zfbool v) {
         if(v) {
-            ZFBitSet(_stateFlags, _stateFlags_classCanNotAllocPublic);
+            ZFBitSet(_stateFlag, _stateFlag_classCanNotAllocPublic);
         }
         else {
-            ZFBitUnset(_stateFlags, _stateFlags_classCanNotAllocPublic);
+            ZFBitUnset(_stateFlag, _stateFlag_classCanNotAllocPublic);
         }
     }
 
 private:
     friend zfclassFwd _ZFP_ZFClassPrivate;
     enum {
-        _stateFlags_classIsAbstract = 1 << 0,
-        _stateFlags_classIsInterface = 1 << 1,
-        _stateFlags_classIsInternal = 1 << 2,
-        _stateFlags_classIsInternalPrivate = 1 << 3,
-        _stateFlags_classIsDynamicRegister = 1 << 4,
-        _stateFlags_classContainDynamicRegister = 1 << 5,
-        _stateFlags_classCanNotAllocPublic = 1 << 6,
-        _stateFlags_interfaceHasRegisterCk = 1 << 7,
-        _stateFlags_interfaceHasRegister = 1 << 8,
-        _stateFlags_methodAndPropertyCacheNeedUpdate = 1 << 9,
-        _stateFlags_hasAutoRegister = 1 << 10,
+        _stateFlag_classIsAbstract = 1 << 0,
+        _stateFlag_classIsInterface = 1 << 1,
+        _stateFlag_classIsInternal = 1 << 2,
+        _stateFlag_classIsInternalPrivate = 1 << 3,
+        _stateFlag_classIsDynamicRegister = 1 << 4,
+        _stateFlag_classContainDynamicRegister = 1 << 5,
+        _stateFlag_classCanNotAllocPublic = 1 << 6,
+        _stateFlag_interfaceHasRegisterCk = 1 << 7,
+        _stateFlag_interfaceHasRegister = 1 << 8,
+        _stateFlag_methodAndPropertyCacheNeedUpdate = 1 << 9,
+        _stateFlag_hasAutoRegister = 1 << 10,
     };
 private:
     _ZFP_ZFClassPrivate *d;
     zfuint _refCount;
-    zfuint _stateFlags;
+    zfuint _stateFlag;
     const ZFClass *_classParent;
     ZFSigName _classNamespace;
     ZFSigName _className;
