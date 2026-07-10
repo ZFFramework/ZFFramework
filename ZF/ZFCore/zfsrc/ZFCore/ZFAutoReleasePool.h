@@ -9,7 +9,6 @@
 #include "ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassFwd _ZFP_ZFAutoReleasePoolPrivate;
 /**
  * @brief auto release pool similar to Object-C's NSAutoreleasePool
  *
@@ -30,15 +29,6 @@ zfclass ZFLIB_ZFCore ZFAutoReleasePool : zfextend ZFObject {
     ZFOBJECT_SINGLETON_DECLARE(ZFAutoReleasePool, instance)
 
 protected:
-    /**
-     * @brief init with max capacity
-     */
-    ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(zfindex, maxSize))
-
-    zfoverride
-    virtual void objectOnInit(void);
-    zfoverride
-    virtual void objectOnDealloc(void);
     zfoverride
     virtual void objectOnDeallocPrepare(void);
 
@@ -49,16 +39,57 @@ public:
     /**
      * @brief add an object which would be auto released upon pool's drain or delete
      */
-    virtual void poolAdd(ZF_IN ZFObject *obj);
+    void poolAdd(ZF_IN ZFObject *obj) {
+        if(obj != zfnull) {
+            ZFCoreMutexLocker();
+            ZFCoreAssertWithMessage(obj != this, "add autorelease pool to itself isn't allowed");
+            d.add(obj);
+        }
+    }
     /**
      * @brief manually drain a pool, all object in the pool would be released immediately
      * @note you must make sure all object in pool are safe to release
      *   when draining the pool
      */
-    virtual void poolDrain();
+    void poolDrain() {
+        if(!d.isEmpty()) {
+            ZFCoreMutexLock();
+            ZFCoreArray<ZFObject *> tmp;
+            tmp.swap(d);
+            ZFCoreMutexUnlock();
+
+            for(zfindex i = 0; i < tmp.count(); ++i) {
+                zfobjRelease(tmp[i]);
+            }
+        }
+    }
+    /**
+     * @brief manually drain a pool, all object in the pool would be released immediately
+     * @note you must make sure all object in pool are safe to release
+     *   when draining the pool
+     */
+    void poolDrain(ZF_IN zfindex count) {
+        if(d.count() > count) {
+            ZFCoreMutexLock();
+            ZFCoreArray<ZFObject *> tmp;
+            tmp.addFrom(d.arrayBuf(), d.count() - count);
+            d.remove(0, d.count() - count);
+            ZFCoreMutexUnlock();
+
+            for(zfindex i = 0; i < tmp.count(); ++i) {
+                zfobjRelease(tmp[i]);
+            }
+        }
+    }
+    /**
+     * @brief current object count
+     */
+    zfindex poolCount(void) {
+        return d.count();
+    }
 
 private:
-    _ZFP_ZFAutoReleasePoolPrivate *d;
+    ZFCoreArray<ZFObject *> d;
 };
 
 ZF_NAMESPACE_GLOBAL_END
