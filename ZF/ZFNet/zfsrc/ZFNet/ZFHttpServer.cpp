@@ -192,7 +192,7 @@ void ZFHttpServer::_ZFP_ZFHttpServer_onError(ZF_IN const zfstring &errorHint) {
         void *t = d;
         d = zfnull;
         ZFPROTOCOL_ACCESS(ZFHttpServer)->stop(this, t);
-        this->observerNotify(zfself::E_OnError(), zfobj<v_zfstring>(errorHint));
+        this->observerNotify(zfself::E_OnError(), ZFArgs().param0(zfobj<v_zfstring>(errorHint)));
         zfobjRelease(this);
     }
 }

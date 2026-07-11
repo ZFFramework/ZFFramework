@@ -26,7 +26,7 @@ public:
         zfobjRetain(this);
         this->timerThread = zfobjAlloc(ZFThread, ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, threadCallback)));
         this->timerThread->threadName(zftext("ZFTimerImpl_default"));
-        this->timerThread->threadStart(zfobj<v_zfidentity>(this->timer->timerImplId()));
+        this->timerThread->threadStart(ZFArgs().param0(zfobj<v_zfidentity>(this->timer->timerImplId())));
     }
     zffinal void stop(void) {
         this->timerThread->threadStop();

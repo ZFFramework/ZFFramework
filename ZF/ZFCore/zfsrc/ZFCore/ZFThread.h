@@ -43,14 +43,14 @@ public:
      * @brief see #ZFObject::observerNotify
      *
      * called in the same thread of the thread task,
-     * param0 and param1 is the params passed from #threadStart
+     * params are passed from #threadStart
      */
     ZFEVENT(ThreadOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called in the same thread of the thread task,
-     * param0 and param1 is the params passed from #threadStart
+     * params are passed from #threadStart
      */
     ZFEVENT(ThreadOnStop)
     /**
@@ -185,9 +185,8 @@ public:
     /**
      * @brief start thread, do nothing if already started
      */
-    ZFMETHOD_DECLARE_2(void, threadStart
-            , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-            , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+    ZFMETHOD_DECLARE_1(void, threadStart
+            , ZFMP_IN_OPT(const ZFArgs &, threadArgs, ZFArgs())
             )
     /**
      * @brief return true if start is called and hasn't been stopped or end
@@ -305,7 +304,7 @@ protected:
      * note: called before #threadRunnable
      */
     ZFMETHOD_DECLARE_PROTECTED_1(void, threadOnRun
-            , ZFMP_IN(const ZFArgs &, zfargs)
+            , ZFMP_IN(const ZFArgs &, threadArgs)
             )
 
 protected:
@@ -318,12 +317,12 @@ protected:
         this->observerNotify(ZFThread::E_ThreadOnUnregister());
     }
     /** @brief see #E_ThreadOnStart */
-    virtual inline void threadOnStart(ZF_IN const ZFArgs &zfargs) {
-        this->observerNotify(ZFThread::E_ThreadOnStart(), zfargs.param0(), zfargs.param1());
+    virtual inline void threadOnStart(ZF_IN const ZFArgs &threadArgs) {
+        this->observerNotify(ZFThread::E_ThreadOnStart(), threadArgs);
     }
     /** @brief see #E_ThreadOnStop */
-    virtual inline void threadOnStop(ZF_IN const ZFArgs &zfargs) {
-        this->observerNotify(ZFThread::E_ThreadOnStop(), zfargs.param0(), zfargs.param1());
+    virtual inline void threadOnStop(ZF_IN const ZFArgs &threadArgs) {
+        this->observerNotify(ZFThread::E_ThreadOnStop(), threadArgs);
     }
     /** @brief see #E_ThreadOnStopRequested */
     virtual inline void threadOnStopRequested(void) {

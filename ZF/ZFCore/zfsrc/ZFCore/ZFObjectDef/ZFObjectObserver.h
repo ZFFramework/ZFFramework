@@ -166,32 +166,28 @@ public:
     /** @brief see #ZFObject::observerNotify */
     zffinal inline void observerNotify(
             ZF_IN zfidentity eventId
-            , ZF_IN_OPT ZFObject *param0 = zfnull
-            , ZF_IN_OPT ZFObject *param1 = zfnull
+            , ZF_IN_OPT const ZFArgs &zfargs = ZFArgs()
             ) const {
-        this->observerNotifyWithSender(this->observerOwner(), eventId, param0, param1);
+        this->observerNotifyWithSender(this->observerOwner(), eventId, zfargs);
     }
     /** @brief see #ZFObject::observerNotify */
     zffinal void observerNotifyWithSender(
             ZF_IN ZFObject *customSender
             , ZF_IN zfidentity eventId
-            , ZF_IN_OPT ZFObject *param0 = zfnull
-            , ZF_IN_OPT ZFObject *param1 = zfnull
+            , ZF_IN_OPT const ZFArgs &zfargs = ZFArgs()
             ) const;
     /** @brief see #ZFObject::observerNotify */
     zffinal inline void observerNotifyReversely(
             ZF_IN zfidentity eventId
-            , ZF_IN_OPT ZFObject *param0 = zfnull
-            , ZF_IN_OPT ZFObject *param1 = zfnull
+            , ZF_IN_OPT const ZFArgs &zfargs = ZFArgs()
             ) const {
-        this->observerNotifyReverselyWithSender(this->observerOwner(), eventId, param0, param1);
+        this->observerNotifyReverselyWithSender(this->observerOwner(), eventId, zfargs);
     }
     /** @brief see #ZFObject::observerNotify */
     zffinal void observerNotifyReverselyWithSender(
             ZF_IN ZFObject *customSender
             , ZF_IN zfidentity eventId
-            , ZF_IN_OPT ZFObject *param0 = zfnull
-            , ZF_IN_OPT ZFObject *param1 = zfnull
+            , ZF_IN_OPT const ZFArgs &zfargs = ZFArgs()
             ) const;
 
 public:

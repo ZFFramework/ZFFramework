@@ -52,7 +52,7 @@ public:
         this->ownerThread = zfnull;
         zfobj<v_ZFResultType> resultTypeTmp = resultType;
 
-        owner->observerNotify(ZFHttpRequest::E_OnResponsePrepare(), responseTmp, resultTypeTmp);
+        owner->observerNotify(ZFHttpRequest::E_OnResponsePrepare(), ZFArgs().param0(responseTmp).param1(resultTypeTmp));
         if(callbackTmp) {
             callbackTmp.execute(ZFArgs()
                     .sender(owner)
@@ -60,7 +60,7 @@ public:
                     .param1(resultTypeTmp)
                 );
         }
-        owner->observerNotify(ZFHttpRequest::E_OnResponse(), responseTmp, resultTypeTmp);
+        owner->observerNotify(ZFHttpRequest::E_OnResponse(), ZFArgs().param0(responseTmp).param1(resultTypeTmp));
         zfobjRelease(owner);
     }
 };

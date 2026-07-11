@@ -9,7 +9,7 @@ zfclass _ZFP_ZFLua_ZFCallbackForLua_test_Object : zfextend ZFObject {
 
 public:
     ZFMETHOD_INLINE_0(void, notifyTest) {
-        this->observerNotify(zfself::E_Test(), zfobj<v_zfint>(1111), zfobj<v_zfint>(2222));
+        this->observerNotify(zfself::E_Test(), ZFArgs().param0(zfobj<v_zfint>(1111)).param1(zfobj<v_zfint>(2222)));
     }
 
 protected:

@@ -108,11 +108,11 @@ public:
 protected:
     /** @brief see #E_CacheOnAdd */
     virtual void cacheOnAdd(ZF_IN ZFObject *cache) {
-        this->observerNotify(zfself::E_CacheOnAdd(), cache);
+        this->observerNotify(zfself::E_CacheOnAdd(), ZFArgs().param0(cache));
     }
     /** @brief see #E_CacheOnRemove */
     virtual void cacheOnRemove(ZF_IN ZFObject *cache) {
-        this->observerNotify(zfself::E_CacheOnRemove(), cache);
+        this->observerNotify(zfself::E_CacheOnRemove(), ZFArgs().param0(cache));
     }
 
 protected:

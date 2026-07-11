@@ -75,11 +75,11 @@ protected:
 protected:
     /** @brief see #E_OnSend */
     virtual inline void onSend(ZF_IN_OUT ZFJson &data) {
-        this->observerNotify(ZFUIWebJSBridge::E_OnSend(), zfobj<v_ZFJson>(data));
+        this->observerNotify(ZFUIWebJSBridge::E_OnSend(), ZFArgs().param0(zfobj<v_ZFJson>(data)));
     }
     /** @brief see #E_OnRecv */
     virtual inline void onRecv(ZF_IN_OUT ZFJson &data) {
-        this->observerNotify(ZFUIWebJSBridge::E_OnRecv(), zfobj<v_ZFJson>(data));
+        this->observerNotify(ZFUIWebJSBridge::E_OnRecv(), ZFArgs().param0(zfobj<v_ZFJson>(data)));
     }
 
 private:

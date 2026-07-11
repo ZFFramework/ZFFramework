@@ -78,7 +78,7 @@ void ZFTaskQueue::taskOnStart(void) {
                     childQueue->removeFirst();
                 }
                 owner->childOnStop(child);
-                owner->observerNotify(zfself::E_ChildOnStop(), child);
+                owner->observerNotify(zfself::E_ChildOnStop(), ZFArgs().param0(child));
                 if(!child->canceled() && owner->started()) {
                     if(child->success()) {
                         if(childQueue->isEmpty()) {
@@ -97,7 +97,7 @@ void ZFTaskQueue::taskOnStart(void) {
             child->taskPending(zftrue);
             child->start(childOnStop);
             owner->childOnStart(child);
-            owner->observerNotify(zfself::E_ChildOnStart(), child);
+            owner->observerNotify(zfself::E_ChildOnStart(), ZFArgs().param0(child));
             child->taskPending(zffalse);
         }
     };

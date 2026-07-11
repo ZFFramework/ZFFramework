@@ -351,7 +351,7 @@ public:
     zffinal void _ZFP_ZFUIRootWindow_onRotate(void);
     zffinal void _ZFP_ZFUIRootWindow_layoutUpdate(void);
     zffinal void _ZFP_ZFUIRootWindow_keyEvent(ZF_IN ZFUIKeyEvent *event) {
-        this->observerNotify(ZFUIRootWindow::E_WindowOnKeyEvent(), event);
+        this->observerNotify(ZFUIRootWindow::E_WindowOnKeyEvent(), ZFArgs().param0(event));
     }
 
 private:

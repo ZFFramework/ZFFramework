@@ -16,9 +16,10 @@ ZF_NAMESPACE_BEGIN(ZFApp)
 ZFMETHOD_FUNC_DEFINE_1(void, appExit
         , ZFMP_IN_OPT(zfint, appExitCode, ZFApp::appExitCode())
         ) {
-    zfobj<v_zfboolHolder> flag;
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppExit(), zfobj<v_zfint>(appExitCode), flag);
-    if(flag->zfv) {
+    ZFArgs zfargs;
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppExit(), zfargs.param0(zfobj<v_zfint>(appExitCode)));
+    v_zfbool *bypass = zfargs.result();
+    if(bypass && bypass->zfv) {
         return;
     }
     ZFPROTOCOL_INTERFACE_CLASS(ZFApp_appExit) *impl = ZFPROTOCOL_TRY_ACCESS(ZFApp_appExit);
@@ -32,9 +33,10 @@ ZFMETHOD_FUNC_DEFINE_1(void, appExit
 }
 
 ZFMETHOD_FUNC_DEFINE_0(void, appRestart) {
-    zfobj<v_zfboolHolder> flag;
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppRestart(), flag);
-    if(flag->zfv) {
+    ZFArgs zfargs;
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppRestart(), zfargs);
+    v_zfbool *bypass = zfargs.result();
+    if(bypass && bypass->zfv) {
         return;
     }
     ZFPROTOCOL_INTERFACE_CLASS(ZFApp_appRestart) *impl = ZFPROTOCOL_TRY_ACCESS(ZFApp_appRestart);

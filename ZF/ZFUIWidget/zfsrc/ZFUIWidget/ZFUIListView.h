@@ -266,11 +266,11 @@ public:
 protected:
     /** @brief see #E_CellOnAttach */
     virtual inline void cellOnAttach(ZF_IN ZFUICell *cell) {
-        this->observerNotify(ZFUIListView::E_CellOnAttach(), cell);
+        this->observerNotify(ZFUIListView::E_CellOnAttach(), ZFArgs().param0(cell));
     }
     /** @brief see #E_CellOnDetach */
     virtual inline void cellOnDetach(ZF_IN ZFUICell *cell) {
-        this->observerNotify(ZFUIListView::E_CellOnDetach(), cell);
+        this->observerNotify(ZFUIListView::E_CellOnDetach(), ZFArgs().param0(cell));
     }
     /** @brief see #E_ListVisibleCellOnUpdate */
     virtual void visibleCellsOnUpdate(void);

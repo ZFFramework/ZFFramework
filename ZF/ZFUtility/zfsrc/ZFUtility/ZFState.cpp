@@ -481,7 +481,7 @@ ZFMETHOD_DEFINE_0(ZFState, ZFPathInfo, stateFileFixed) {
         tmp->zfv.pathType(this->stateFile().pathType());
         tmp->zfv.pathData(this->stateFile().pathData());
     }
-    this->observerNotify(zfself::E_StateFileUpdate(), tmp);
+    this->observerNotify(zfself::E_StateFileUpdate(), ZFArgs().param0(tmp));
     return tmp->zfv;
 }
 

@@ -198,37 +198,37 @@ protected:
 protected:
     /** @brief see #E_ButtonOnClick */
     virtual inline void buttonOnClick(ZF_IN ZFUIEvent *event) {
-        this->observerNotify(ZFUIButton::E_ButtonOnClick(), event);
+        this->observerNotify(ZFUIButton::E_ButtonOnClick(), ZFArgs().param0(event));
     }
 
 protected:
     /** @brief see #E_ButtonMouseOnDown */
     virtual void buttonMouseOnDown(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::E_ButtonMouseOnDown(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnDown(), ZFArgs().param0(event));
     }
     /** @brief see #E_ButtonMouseOnMoveEnter */
     virtual void buttonMouseOnMoveEnter(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveEnter(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveEnter(), ZFArgs().param0(event));
     }
     /** @brief see #E_ButtonMouseOnMoveExit */
     virtual void buttonMouseOnMoveExit(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveExit(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveExit(), ZFArgs().param0(event));
     }
     /** @brief see #E_ButtonMouseOnMoveInside */
     virtual void buttonMouseOnMoveInside(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveInside(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveInside(), ZFArgs().param0(event));
     }
     /** @brief see #E_ButtonMouseOnMoveOutside */
     virtual void buttonMouseOnMoveOutside(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveOutside(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveOutside(), ZFArgs().param0(event));
     }
     /** @brief see #E_ButtonMouseOnUpInside */
     virtual void buttonMouseOnUpInside(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::E_ButtonMouseOnUpInside(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnUpInside(), ZFArgs().param0(event));
     }
     /** @brief see #E_ButtonMouseOnUp */
     virtual void buttonMouseOnUp(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::E_ButtonMouseOnUp(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnUp(), ZFArgs().param0(event));
     }
 
 public:

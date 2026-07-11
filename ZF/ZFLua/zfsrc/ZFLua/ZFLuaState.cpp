@@ -61,7 +61,7 @@ public:
 
             zfobj<v_zfptr> LHolder;
             LHolder->zfv = L;
-            ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnAttach(), LHolder);
+            ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnAttach(), ZFArgs().param0(LHolder));
         }
         return L;
     }
@@ -83,12 +83,12 @@ public:
 
         zfobj<v_zfptr> LHolder;
         LHolder->zfv = L;
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnAttach(), LHolder);
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnAttach(), ZFArgs().param0(LHolder));
     }
     void LDetach(ZF_IN void *L) {
         zfobj<v_zfptr> LHolder;
         LHolder->zfv = L;
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnDetach(), LHolder);
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnDetach(), ZFArgs().param0(LHolder));
 
         LList.removeElement(L);
         ZFPROTOCOL_ACCESS(ZFLua)->luaStateDetach(L);
@@ -102,7 +102,7 @@ private:
 
             zfobj<v_zfptr> LHolder;
             LHolder->zfv = L;
-            ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnDetach(), LHolder);
+            ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnDetach(), ZFArgs().param0(LHolder));
 
             ZFPROTOCOL_ACCESS(ZFLua)->luaStateDetach(L);
             if(autoClose) {
@@ -114,7 +114,7 @@ private:
         for(zfindex i = 0; i < LList.count(); ++i) {
             zfobj<v_zfptr> LHolder;
             LHolder->zfv = LList[i];
-            ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnDetach(), LHolder);
+            ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnDetach(), ZFArgs().param0(LHolder));
 
             ZFPROTOCOL_ACCESS(ZFLua)->luaStateDetach(LList[i]);
         }

@@ -172,7 +172,7 @@ public:
 protected:
     /** @brief see #E_RootWindowOnUpdate */
     virtual inline void rootWindowOnUpdate(ZF_IN ZFUIRootWindow *rootWindowOld) {
-        this->observerNotify(ZFUIWindow::E_RootWindowOnUpdate(), rootWindowOld);
+        this->observerNotify(ZFUIWindow::E_RootWindowOnUpdate(), ZFArgs().param0(rootWindowOld));
     }
 
 public:

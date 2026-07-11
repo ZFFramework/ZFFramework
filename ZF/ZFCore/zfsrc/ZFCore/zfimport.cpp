@@ -47,10 +47,10 @@ static zfauto _ZFP_zfimportFile(
 
     zfobj<v_ZFInput> inputHolder;
     inputHolder->zfv = input;
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFImportBegin(), inputHolder);
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFImportBegin(), ZFArgs().param0(inputHolder));
     zfauto ret;
     zfbool success = ZFObjectIOLoadT(ret, input);
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFImportEnd(), inputHolder, ret);
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFImportEnd(), ZFArgs().param0(inputHolder).param1(ret));
 
     if(callbackId) {
         ZFCoreMutexLocker();

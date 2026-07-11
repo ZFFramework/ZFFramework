@@ -162,7 +162,7 @@ static void _ZFP_ZFAppEntry_step(
             ) {
         ZFTask *ownerTask = zfargs.sender();
         zfobj<v_zfwrap> extTaskHolder;
-        owner->observerNotify(eventId, extTaskHolder);
+        owner->observerNotify(eventId, ZFArgs().param0(extTaskHolder));
         ZFTask *extTask = extTaskHolder;
         if(!extTask) {
             ownerTask->notifySuccess();

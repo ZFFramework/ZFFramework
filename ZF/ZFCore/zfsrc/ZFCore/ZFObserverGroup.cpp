@@ -418,53 +418,49 @@ zfbool ZFObserverGroup::observerHasAdd(ZF_IN zfidentity eventId) const {
 }
 void ZFObserverGroup::observerNotify(
         ZF_IN zfidentity eventId
-        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
-        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        , ZF_IN_OPT const ZFArgs &zfargs /* = ZFArgs() */
         ) const {
     ZFObject *target = d->target;
     if(target == zfnull && d->targetObserver == zfnull) {
         return;
     }
     ZFObserver &realTarget = (target != zfnull ? target->observerHolder() : *(d->targetObserver));
-    realTarget.observerNotify(eventId, param0, param1);
+    realTarget.observerNotify(eventId, zfargs);
 }
 void ZFObserverGroup::observerNotifyWithSender(
         ZF_IN ZFObject *customSender
         , ZF_IN zfidentity eventId
-        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
-        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        , ZF_IN_OPT const ZFArgs &zfargs /* = ZFArgs() */
         ) const {
     ZFObject *target = d->target;
     if(target == zfnull && d->targetObserver == zfnull) {
         return;
     }
     ZFObserver &realTarget = (target != zfnull ? target->observerHolder() : *(d->targetObserver));
-    realTarget.observerNotifyWithSender(customSender, eventId, param0, param1);
+    realTarget.observerNotifyWithSender(customSender, eventId, zfargs);
 }
 void ZFObserverGroup::observerNotifyReversely(
         ZF_IN zfidentity eventId
-        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
-        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        , ZF_IN_OPT const ZFArgs &zfargs /* = ZFArgs() */
         ) const {
     ZFObject *target = d->target;
     if(target == zfnull && d->targetObserver == zfnull) {
         return;
     }
     ZFObserver &realTarget = (target != zfnull ? target->observerHolder() : *(d->targetObserver));
-    realTarget.observerNotifyReversely(eventId, param0, param1);
+    realTarget.observerNotifyReversely(eventId, zfargs);
 }
 void ZFObserverGroup::observerNotifyReverselyWithSender(
         ZF_IN ZFObject *customSender
         , ZF_IN zfidentity eventId
-        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
-        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        , ZF_IN_OPT const ZFArgs &zfargs /* = ZFArgs() */
         ) const {
     ZFObject *target = d->target;
     if(target == zfnull && d->targetObserver == zfnull) {
         return;
     }
     ZFObserver &realTarget = (target != zfnull ? target->observerHolder() : *(d->targetObserver));
-    realTarget.observerNotifyReverselyWithSender(customSender, eventId, param0, param1);
+    realTarget.observerNotifyReverselyWithSender(customSender, eventId, zfargs);
 }
 
 const ZFObserverGroup &ZFObserverGroup::on(
@@ -606,27 +602,23 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserverGroup, zfbool, observerHas
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFObserverGroup, zfbool, observerHasAdd
         , ZFMP_IN(zfidentity, eventId)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, void, observerNotify
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFObserverGroup, void, observerNotify
         , ZFMP_IN(zfidentity, eventId)
-        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        , ZFMP_IN_OPT(const ZFArgs &, zfargs, ZFArgs())
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserverGroup, void, observerNotifyWithSender
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, void, observerNotifyWithSender
         , ZFMP_IN(ZFObject *, customSender)
         , ZFMP_IN(zfidentity, eventId)
-        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        , ZFMP_IN_OPT(const ZFArgs &, zfargs, ZFArgs())
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, void, observerNotifyReversely
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFObserverGroup, void, observerNotifyReversely
         , ZFMP_IN(zfidentity, eventId)
-        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        , ZFMP_IN_OPT(const ZFArgs &, zfargs, ZFArgs())
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserverGroup, void, observerNotifyReverselyWithSender
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, void, observerNotifyReverselyWithSender
         , ZFMP_IN(ZFObject *, customSender)
         , ZFMP_IN(zfidentity, eventId)
-        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        , ZFMP_IN_OPT(const ZFArgs &, zfargs, ZFArgs())
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, const ZFObserverGroup &, on
         , ZFMP_IN(const zfstring &, eventName)

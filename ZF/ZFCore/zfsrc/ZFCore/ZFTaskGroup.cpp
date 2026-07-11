@@ -96,7 +96,7 @@ void ZFTaskGroup::taskOnStart(void) {
                 zfauto ownerHolder = owner;
                 ZFTask *child = zfargs.sender();
                 owner->childOnStop(child);
-                owner->observerNotify(zfself::E_ChildOnStop(), child);
+                owner->observerNotify(zfself::E_ChildOnStop(), ZFArgs().param0(child));
                 if(!child->canceled() && owner->started()) {
                     childRunning->removeElement(child);
                     if(child->success()) {
@@ -109,7 +109,7 @@ void ZFTaskGroup::taskOnStart(void) {
                             child->taskPending(zftrue);
                             child->start(_ZFP_childOnStop::a(owner, concurrentCount, childRunning, childQueued));
                             owner->childOnStart(child);
-                            owner->observerNotify(zfself::E_ChildOnStart(), child);
+                            owner->observerNotify(zfself::E_ChildOnStart(), ZFArgs().param0(child));
                             child->taskPending(zffalse);
                         }
                         if(childRunning->isEmpty()
@@ -132,7 +132,7 @@ void ZFTaskGroup::taskOnStart(void) {
         child->taskPending(zftrue);
         child->start(childOnStop);
         this->childOnStart(child);
-        this->observerNotify(zfself::E_ChildOnStart(), child);
+        this->observerNotify(zfself::E_ChildOnStart(), ZFArgs().param0(child));
         child->taskPending(zffalse);
     }
 }

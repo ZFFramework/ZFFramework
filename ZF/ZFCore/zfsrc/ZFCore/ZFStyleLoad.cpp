@@ -186,17 +186,17 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoadItem
         }
     }
     zfobj<v_ZFInput> input(ZFInputForIOToken(ioImpl->ioOpen(pathData, v_ZFIOOpenOption::e_Read)));
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemBegin(), input);
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemBegin(), ZFArgs().param0(input));
     zfauto styleValue;
     zfstring errorHint;
     if(!ZFObjectIOLoadT(styleValue, input->zfv, &errorHint)) {
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemError(), input, zfobj<v_zfstring>(errorHint));
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemEnd(), input, zfnull);
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemError(), ZFArgs().param0(input).param1(zfobj<v_zfstring>(errorHint)));
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemEnd(), ZFArgs().param0(input).param1(zfnull));
         return zffalse;
     }
     ZFStyleUpdateBlock();
     _ZFP_ZFStyleLoad_ZFStyleSet(styleKey, styleValue);
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemEnd(), input, styleValue);
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemEnd(), ZFArgs().param0(input).param1(styleValue));
     return zftrue;
 }
 
@@ -214,10 +214,9 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoadItem
                 zfstring errorHint;
                 if(!ZFObjectFromDataT(styleValueHolder, child, &errorHint)) {
                     allSuccess = zffalse;
-                    ZFGlobalObserver().observerNotify(
-                            ZFGlobalEvent::E_ZFStyleLoadItemError()
-                            , zfobj<v_ZFSerializableData>(child)
-                            , zfobj<v_zfstring>(errorHint)
+                    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemError(), ZFArgs()
+                            .param0(zfobj<v_ZFSerializableData>(child))
+                            .param1(zfobj<v_zfstring>(errorHint))
                             );
                     continue;
                 }

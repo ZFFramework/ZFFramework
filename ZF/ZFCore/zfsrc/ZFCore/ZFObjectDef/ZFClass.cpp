@@ -1903,7 +1903,7 @@ void _ZFP_ZFClassDataUpdateNotify(
         holder->zfv.changedProperty = changedProperty;
         holder->zfv.changedMethod = changedMethod;
         holder->zfv.name = name;
-        ZFClassDataUpdateObserver().observerNotify(ZFGlobalEvent::E_ClassDataUpdate(), holder);
+        ZFClassDataUpdateObserver().observerNotify(ZFGlobalEvent::E_ClassDataUpdate(), ZFArgs().param0(holder));
         zfunsafe_zfobjRelease(holder);
     }
 }

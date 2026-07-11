@@ -53,21 +53,21 @@ public:
             , ZF_IN ZFResultType result
             , ZF_IN const zfstring &reasonHint
             ) {
-        owner->observerNotify(ZFWebSocket::E_OnClose(), zfobj<v_ZFResultType>(result), zfobj<v_zfstring>(reasonHint));
+        owner->observerNotify(ZFWebSocket::E_OnClose(), ZFArgs().param0(zfobj<v_ZFResultType>(result)).param1(zfobj<v_zfstring>(reasonHint)));
     }
     /** @brief implementation must notify when recv data */
     virtual void notifyOnRecv(
             ZF_IN ZFWebSocket *owner
             , ZF_IN const zfstring &data
             ) {
-        owner->observerNotify(ZFWebSocket::E_OnRecv(), zfobj<v_zfstring>(data));
+        owner->observerNotify(ZFWebSocket::E_OnRecv(), ZFArgs().param0(zfobj<v_zfstring>(data)));
     }
     /** @brief implementation must notify when recv data */
     virtual void notifyOnRecvBin(
             ZF_IN ZFWebSocket *owner
             , ZF_IN const zfstring &data
             ) {
-        owner->observerNotify(ZFWebSocket::E_OnRecvBin(), zfobj<v_zfstring>(data));
+        owner->observerNotify(ZFWebSocket::E_OnRecvBin(), ZFArgs().param0(zfobj<v_zfstring>(data)));
     }
 ZFPROTOCOL_INTERFACE_END(ZFWebSocket)
 

@@ -236,6 +236,15 @@ ZFArgs &ZFArgs::paramInit(void) {
     ZFCoreMutexUnlock();
     return *this;
 }
+ZFArgs const &ZFArgs::paramInit(void) const {
+    ZFCoreMutexLock();
+    _ZFP_ZFArgsPrivate &dTmp = *d;
+    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
+        dTmp.param[i].zfunsafe_assign(ZFMP_DEF());
+    }
+    ZFCoreMutexUnlock();
+    return *this;
+}
 ZFArgs &ZFArgs::paramInit(
         ZF_IN ZFObject *param0
         , ZF_IN ZFObject *param1
@@ -259,6 +268,29 @@ ZFArgs &ZFArgs::paramInit(
     ZFCoreMutexUnlock();
     return *this;
 }
+ZFArgs const &ZFArgs::paramInit(
+        ZF_IN ZFObject *param0
+        , ZF_IN ZFObject *param1
+        , ZF_IN ZFObject *param2
+        , ZF_IN ZFObject *param3
+        , ZF_IN ZFObject *param4
+        , ZF_IN ZFObject *param5
+        , ZF_IN ZFObject *param6
+        , ZF_IN ZFObject *param7
+        ) const {
+    ZFCoreMutexLock();
+    _ZFP_ZFArgsPrivate &dTmp = *d;
+    dTmp.param[0].zfunsafe_assign(param0);
+    dTmp.param[1].zfunsafe_assign(param1);
+    dTmp.param[2].zfunsafe_assign(param2);
+    dTmp.param[3].zfunsafe_assign(param3);
+    dTmp.param[4].zfunsafe_assign(param4);
+    dTmp.param[5].zfunsafe_assign(param5);
+    dTmp.param[6].zfunsafe_assign(param6);
+    dTmp.param[7].zfunsafe_assign(param7);
+    ZFCoreMutexUnlock();
+    return *this;
+}
 ZFArgs &ZFArgs::paramInit(ZF_IN const ZFCoreArray<zfauto> &params) {
     ZFCoreAssert(params.count() <= ZFMETHOD_MAX_PARAM);
     ZFCoreMutexLock();
@@ -268,6 +300,35 @@ ZFArgs &ZFArgs::paramInit(ZF_IN const ZFCoreArray<zfauto> &params) {
     }
     for(zfindex i = params.count(); i < ZFMETHOD_MAX_PARAM; ++i) {
         dTmp.param[i].zfunsafe_assign(ZFMP_DEF());
+    }
+    ZFCoreMutexUnlock();
+    return *this;
+}
+ZFArgs const &ZFArgs::paramInit(ZF_IN const ZFCoreArray<zfauto> &params) const {
+    ZFCoreAssert(params.count() <= ZFMETHOD_MAX_PARAM);
+    ZFCoreMutexLock();
+    _ZFP_ZFArgsPrivate &dTmp = *d;
+    for(zfindex i = 0; i < params.count(); ++i) {
+        dTmp.param[i].zfunsafe_assign(params[i]);
+    }
+    for(zfindex i = params.count(); i < ZFMETHOD_MAX_PARAM; ++i) {
+        dTmp.param[i].zfunsafe_assign(ZFMP_DEF());
+    }
+    ZFCoreMutexUnlock();
+    return *this;
+}
+ZFArgs &ZFArgs::paramInit(ZF_IN const ZFArgs &params) {
+    ZFCoreMutexLock();
+    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
+        d->param[i].zfunsafe_assign(params.d->param[i]);
+    }
+    ZFCoreMutexUnlock();
+    return *this;
+}
+ZFArgs const &ZFArgs::paramInit(ZF_IN const ZFArgs &params) const {
+    ZFCoreMutexLock();
+    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
+        d->param[i].zfunsafe_assign(params.d->param[i]);
     }
     ZFCoreMutexUnlock();
     return *this;

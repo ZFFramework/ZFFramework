@@ -139,7 +139,7 @@ public:
             if(this->pimplOwner->autoFocus()) {
                 zfanyT<ZFUIView> v = this->pimplOwner->dialogFocusOnUpdate();
                 if(this->pimplOwner->observerHasAdd(ZFUIDialog::E_DialogFocusOnUpdate())) {
-                    this->pimplOwner->observerNotify(ZFUIDialog::E_DialogFocusOnUpdate(), zfobj<v_zfwrap>(v));
+                    this->pimplOwner->observerNotify(ZFUIDialog::E_DialogFocusOnUpdate(), ZFArgs().param0(zfobj<v_zfwrap>(v)));
                 }
                 if(v != zfnull) {
                     v->focusRequest(zftrue);

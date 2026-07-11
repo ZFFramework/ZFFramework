@@ -108,10 +108,7 @@ zfclass ZFLIB_ZFCore ZFThreadMainThread : zfextend ZFThread {
 
 public:
     zfoverride
-    virtual void threadStart(
-            ZF_IN_OPT ZFObject *param0 = zfnull
-            , ZF_IN_OPT ZFObject *param1 = zfnull
-            ) {
+    virtual void threadStart(ZF_IN_OPT const ZFArgs &threadArgs = ZFArgs()) {
         ZFCoreLogTrim("you must not start main thread");
     }
     zfoverride

@@ -307,8 +307,7 @@ zfbool ZFObserver::observerHasAdd(ZF_IN zfidentity eventId) const {
 void ZFObserver::observerNotifyWithSender(
         ZF_IN ZFObject *customSender
         , ZF_IN zfidentity eventId
-        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
-        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        , ZF_IN_OPT const ZFArgs &zfargs /* = ZFArgs() */
         ) const {
     if(eventId == zfidentityInvalid()) {
         return;
@@ -318,12 +317,9 @@ void ZFObserver::observerNotifyWithSender(
     zfstlvector<_ZFP_ZFObserverData *> toNotify;
 
     d->observerNotifyPrepare(toNotify, eventId, d->observerOwner);
-    ZFArgs zfargs;
-    zfargs
+    zfargs._ZFP_ZFArgs_removeConst()
         .eventId(eventId)
         .sender(customSender)
-        .param0(param0)
-        .param1(param1)
         ;
     if(d->observerOwner != zfnull) {
         d->observerOwner->observerOnEvent(zfargs);
@@ -349,8 +345,7 @@ void ZFObserver::observerNotifyWithSender(
 void ZFObserver::observerNotifyReverselyWithSender(
         ZF_IN ZFObject *customSender
         , ZF_IN zfidentity eventId
-        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
-        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        , ZF_IN_OPT const ZFArgs &zfargs /* = ZFArgs() */
         ) const {
     if(eventId == zfidentityInvalid()) {
         return;
@@ -360,12 +355,9 @@ void ZFObserver::observerNotifyReverselyWithSender(
     zfstlvector<_ZFP_ZFObserverData *> toNotify;
 
     d->observerNotifyPrepare(toNotify, eventId, d->observerOwner);
-    ZFArgs zfargs;
-    zfargs
+    zfargs._ZFP_ZFArgs_removeConst()
         .eventId(eventId)
         .sender(customSender)
-        .param0(param0)
-        .param1(param1)
         ;
     if(d->observerOwner != zfnull) {
         d->observerOwner->observerOnEvent(zfargs);

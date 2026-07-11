@@ -34,7 +34,7 @@ public:
             ZF_IN ZFHttpServer *owner
             , ZF_IN ZFHttpServerTask *task
             ) {
-        owner->observerNotify(ZFHttpServer::E_OnRequest(), task);
+        owner->observerNotify(ZFHttpServer::E_OnRequest(), ZFArgs().param0(task));
     }
     /**
      * @brief implementation must notify when server start fail or error occurred

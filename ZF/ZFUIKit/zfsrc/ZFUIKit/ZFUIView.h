@@ -193,8 +193,7 @@ public:
      * @brief see #ZFObject::observerNotify
      *
      * called to do actual layout steps\n
-     * param0 would be a #v_zfboolHolder init with false,
-     * set to true to bypass default layout impl
+     * result can be set to true to bypass default layout impl
      */
     ZFEVENT(ViewLayoutOnLayout)
     /**

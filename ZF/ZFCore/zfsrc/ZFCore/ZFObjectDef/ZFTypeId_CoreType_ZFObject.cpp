@@ -260,6 +260,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFArgs, ZFArgs &, paramInit
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, ZFArgs &, paramInit
         , ZFMP_IN(const ZFCoreArray<zfauto> &, params)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, ZFArgs &, paramInit
+        , ZFMP_IN(const ZFArgs &, params)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, zfauto &, paramAt
         , ZFMP_IN(zfindex, index)
         )
@@ -314,27 +317,23 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserver, zfbool, observerHasAdd)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFObserver, zfbool, observerHasAdd
         , ZFMP_IN(zfidentity, eventId)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserver, void, observerNotify
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFObserver, void, observerNotify
         , ZFMP_IN(zfidentity, eventId)
-        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        , ZFMP_IN_OPT(const ZFArgs &, zfargs, ZFArgs())
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserver, void, observerNotifyWithSender
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserver, void, observerNotifyWithSender
         , ZFMP_IN(ZFObject *, customSender)
         , ZFMP_IN(zfidentity, eventId)
-        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        , ZFMP_IN_OPT(const ZFArgs &, zfargs, ZFArgs())
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserver, void, observerNotifyReversely
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFObserver, void, observerNotifyReversely
         , ZFMP_IN(zfidentity, eventId)
-        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        , ZFMP_IN_OPT(const ZFArgs &, zfargs, ZFArgs())
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserver, void, observerNotifyReverselyWithSender
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserver, void, observerNotifyReverselyWithSender
         , ZFMP_IN(ZFObject *, customSender)
         , ZFMP_IN(zfidentity, eventId)
-        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        , ZFMP_IN_OPT(const ZFArgs &, zfargs, ZFArgs())
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserver, zfany, observerOwner)
 

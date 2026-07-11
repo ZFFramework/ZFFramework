@@ -69,7 +69,7 @@
  *   // but it's your responsibility to ensure the passed params suit for the listener
  *   zfobj<ZFObject> myParam0;
  *   zfobj<ZFObject> myParam1;
- *   obj->observerNotify(MyObject::E_MyEvent(), myParam0, myParam1);
+ *   obj->observerNotify(MyObject::E_MyEvent(), ZFArgs().param0(myParam0).param1(myParam1));
  * @endcode
  */
 

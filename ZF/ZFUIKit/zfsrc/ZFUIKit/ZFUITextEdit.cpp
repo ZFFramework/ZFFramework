@@ -351,15 +351,21 @@ void ZFUITextEdit::textOnUpdateCheck(
     }
 
     if(this->observerHasAdd(ZFUITextEdit::E_TextOnUpdateCheck())) {
-        zfobj<v_zfboolHolder> t(shouldUpdate);
-        this->observerNotify(ZFUITextEdit::E_TextOnUpdateCheck(), zfobj<v_zfstring>(newText), t);
-        shouldUpdate = t->zfv;
+        ZFArgs zfargs;
+        if(!shouldUpdate) {
+            zfargs.result(zfobj<v_zfbool>(shouldUpdate));
+        }
+        this->observerNotify(ZFUITextEdit::E_TextOnUpdateCheck(), zfargs.param0(zfobj<v_zfstring>(newText)));
+        v_zfbool *shouldUpdateNew = zfargs.result();
+        if(shouldUpdateNew) {
+            shouldUpdate = shouldUpdateNew->zfv;
+        }
     }
 }
 void ZFUITextEdit::textOnUpdate(ZF_IN const zfstring &oldText) {
     if(this->observerHasAdd(ZFUITextEdit::E_TextOnUpdate())) {
         zfobj<v_zfstring> oldTextTmp(oldText);
-        this->observerNotify(ZFUITextEdit::E_TextOnUpdate(), oldTextTmp);
+        this->observerNotify(ZFUITextEdit::E_TextOnUpdate(), ZFArgs().param0(oldTextTmp));
     }
 }
 void ZFUITextEdit::textOnReturnClick(void) {

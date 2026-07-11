@@ -90,11 +90,9 @@ void ZFStyleable::styleKey(ZF_IN const zfstring &styleKey) {
             ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_ZFStyleOnUpdate(), holder->styleOnUpdateListener);
             holder->styleOnUpdateListener = zfnull;
 
-            ZFGlobalObserver().observerNotifyWithSender(
-                    this->toObject()
-                    , ZFGlobalEvent::E_ZFStyleOnInvalid()
-                    , zfobj<v_zfstring>()
-                    , zfobj<v_zfstring>(styleKey)
+            ZFGlobalObserver().observerNotifyWithSender(this->toObject(), ZFGlobalEvent::E_ZFStyleOnInvalid(), ZFArgs()
+                    .param0(zfobj<v_zfstring>())
+                    .param1(zfobj<v_zfstring>(styleKey))
                     );
         }
     }
@@ -196,11 +194,9 @@ void ZFStyleable::propStyle(
                 ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_ZFStyleOnUpdate(), holder->stylePropertyOnUpdateListener);
                 holder->stylePropertyOnUpdateListener = zfnull;
             }
-            ZFGlobalObserver().observerNotifyWithSender(
-                    this->toObject()
-                    , ZFGlobalEvent::E_ZFStyleOnInvalid()
-                    , zfobj<v_zfstring>(propertyName)
-                    , zfobj<v_zfstring>(styleKey)
+            ZFGlobalObserver().observerNotifyWithSender(this->toObject(), ZFGlobalEvent::E_ZFStyleOnInvalid(), ZFArgs()
+                    .param0(zfobj<v_zfstring>(propertyName))
+                    .param1(zfobj<v_zfstring>(styleKey))
                     );
         }
     }

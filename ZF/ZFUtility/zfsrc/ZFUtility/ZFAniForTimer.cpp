@@ -133,9 +133,7 @@ void ZFAniForTimer::aniImplStop(void) {
 }
 
 void ZFAniForTimer::aniTimerOnUpdate(ZF_IN zffloat progress) {
-    this->observerNotify(
-        ZFAniForTimer::E_AniTimerOnUpdate(),
-        zfobj<v_zffloat>(progress));
+    this->observerNotify(ZFAniForTimer::E_AniTimerOnUpdate(), ZFArgs().param0(zfobj<v_zffloat>(progress)));
 }
 
 ZF_NAMESPACE_GLOBAL_END

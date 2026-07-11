@@ -183,7 +183,7 @@ protected:
     }
     /** @brief see #E_AniOnStop */
     virtual inline void aniOnStop(ZF_IN ZFResultType resultType) {
-        this->observerNotify(ZFAnimation::E_AniOnStop(), zfobj<v_ZFResultType>(resultType));
+        this->observerNotify(ZFAnimation::E_AniOnStop(), ZFArgs().param0(zfobj<v_ZFResultType>(resultType)));
     }
 public:
     /**

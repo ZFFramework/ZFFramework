@@ -145,7 +145,7 @@ public:
     /** @brief for impl to notify cell cache access */
     zffinal void notifyCellCacheRecycle(ZF_IN ZFUICell *cell) {
         this->cellCacheOnRecycle(cell);
-        this->toObject()->observerNotify(zfself::E_CellCacheOnRecycle(), cell);
+        this->toObject()->observerNotify(zfself::E_CellCacheOnRecycle(), ZFArgs().param0(cell));
     }
 
     // ============================================================
@@ -155,8 +155,7 @@ protected:
      * @brief see #E_CellAdapterOnReload
      */
     virtual inline void cellAdapterOnReload(ZF_IN_OPT zfindex atIndexOrMax = zfindexMax()) {
-        this->toObject()->observerNotify(zfself::E_CellAdapterOnReload(),
-            (atIndexOrMax == zfindexMax()) ? zfnull : zfobj<v_zfindex>(atIndexOrMax).toObject());
+        this->toObject()->observerNotify(zfself::E_CellAdapterOnReload(), ZFArgs().param0((atIndexOrMax == zfindexMax()) ? zfnull : zfobj<v_zfindex>(atIndexOrMax).toObject()));
     }
     /**
      * @brief see #E_CellOnUpdate
@@ -165,7 +164,7 @@ protected:
             ZF_IN zfindex atIndex
             , ZF_IN ZFUICell *cell
             ) {
-        this->toObject()->observerNotify(zfself::E_CellOnUpdate(), cell, zfobj<v_zfindex>(atIndex));
+        this->toObject()->observerNotify(zfself::E_CellOnUpdate(), ZFArgs().param0(cell).param1(zfobj<v_zfindex>(atIndex)));
     }
 
     // ============================================================

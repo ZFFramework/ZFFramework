@@ -61,7 +61,7 @@ protected:
     /** @brief see #E_TestCaseOnOutput */
     virtual inline void testCaseOnOutput(ZF_IN const zfchar *info) {
         if(this->observerHasAdd(ZFTestCase::E_TestCaseOnOutput())) {
-            this->observerNotify(ZFTestCase::E_TestCaseOnOutput(), zfobj<v_zfstring>(info));
+            this->observerNotify(ZFTestCase::E_TestCaseOnOutput(), ZFArgs().param0(zfobj<v_zfstring>(info)));
         }
     }
     /** @brief see #E_TestCaseOnStart */
@@ -70,11 +70,11 @@ protected:
     }
     /** @brief see #E_TestCaseOnProgress */
     virtual inline void testCaseOnProgress(ZF_IN ZFObject *progress) {
-        this->observerNotify(ZFTestCase::E_TestCaseOnProgress(), progress);
+        this->observerNotify(ZFTestCase::E_TestCaseOnProgress(), ZFArgs().param0(progress));
     }
     /** @brief see #E_TestCaseOnStop */
     virtual inline void testCaseOnStop(ZF_IN ZFResultType testCaseResult) {
-        this->observerNotify(ZFTestCase::E_TestCaseOnStop(), zfobj<v_ZFResultType>(testCaseResult));
+        this->observerNotify(ZFTestCase::E_TestCaseOnStop(), ZFArgs().param0(zfobj<v_ZFResultType>(testCaseResult)));
     }
 
 public:

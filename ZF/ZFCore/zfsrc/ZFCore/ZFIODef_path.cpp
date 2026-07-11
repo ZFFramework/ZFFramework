@@ -61,7 +61,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForSetting
     if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::E_ZFPathForSettingOnUpdate())) {
         zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForSetting());
         ZFPROTOCOL_ACCESS(ZFPath)->pathForSetting(path);
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForSettingOnUpdate(), old);
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForSettingOnUpdate(), ZFArgs().param0(old));
     }
     else {
         ZFPROTOCOL_ACCESS(ZFPath)->pathForSetting(path);
@@ -83,7 +83,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForStorage
     if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::E_ZFPathForStorageOnUpdate())) {
         zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForStorage());
         ZFPROTOCOL_ACCESS(ZFPath)->pathForStorage(path);
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForStorageOnUpdate(), old);
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForStorageOnUpdate(), ZFArgs().param0(old));
     }
     else {
         ZFPROTOCOL_ACCESS(ZFPath)->pathForStorage(path);
@@ -105,7 +105,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForStorageShared
     if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::E_ZFPathForStorageSharedOnUpdate())) {
         zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForStorageShared());
         ZFPROTOCOL_ACCESS(ZFPath)->pathForStorageShared(path);
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForStorageSharedOnUpdate(), old);
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForStorageSharedOnUpdate(), ZFArgs().param0(old));
     }
     else {
         ZFPROTOCOL_ACCESS(ZFPath)->pathForStorageShared(path);
@@ -189,7 +189,7 @@ private:
                     );
             _lockToken = ZFFileOpen(zfstr("%s/.ZF.lock", _realPath), v_ZFIOOpenOption::e_Write);
         } while(!_lockToken);
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForCacheOnUpdate(), zfobj<v_zfstring>(old));
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForCacheOnUpdate(), ZFArgs().param0(zfobj<v_zfstring>(old)));
     }
 ZF_STATIC_INITIALIZER_END(ZFPathForCache)
 

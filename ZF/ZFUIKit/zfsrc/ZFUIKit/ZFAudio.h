@@ -202,7 +202,7 @@ protected:
             ) {
         zfobj<v_ZFResultType> resultHolder;
         resultHolder->enumValue(result);
-        this->observerNotify(ZFAudio::E_AudioOnLoad(), resultHolder, errorHint);
+        this->observerNotify(ZFAudio::E_AudioOnLoad(), ZFArgs().param0(resultHolder).param1(errorHint));
     }
     /** @brief see #E_AudioOnStart */
     virtual void audioOnStart(void) {
@@ -215,7 +215,7 @@ protected:
             ) {
         zfobj<v_ZFResultType> resultHolder;
         resultHolder->enumValue(result);
-        this->observerNotify(ZFAudio::E_AudioOnStop(), resultHolder, errorHint);
+        this->observerNotify(ZFAudio::E_AudioOnStop(), ZFArgs().param0(resultHolder).param1(errorHint));
     }
     /** @brief see #E_AudioOnResume */
     virtual void audioOnResume(void) {

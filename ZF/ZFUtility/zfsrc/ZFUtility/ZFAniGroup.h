@@ -253,11 +253,11 @@ protected:
 protected:
     /** @brief see #E_ChildAniOnStart */
     virtual inline void childAniOnStart(ZF_IN ZFAnimation *childAni) {
-        this->observerNotify(ZFAniGroup::E_ChildAniOnStart(), childAni);
+        this->observerNotify(ZFAniGroup::E_ChildAniOnStart(), ZFArgs().param0(childAni));
     }
     /** @brief see #E_ChildAniOnStop */
     virtual inline void childAniOnStop(ZF_IN ZFAnimation *childAni) {
-        this->observerNotify(ZFAniGroup::E_ChildAniOnStop(), childAni);
+        this->observerNotify(ZFAniGroup::E_ChildAniOnStop(), ZFArgs().param0(childAni));
     }
 
 protected:

@@ -233,9 +233,10 @@ public:
         if(ZFBitTest(view->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewLayoutOnLayout)
                 || ZFBitTest(_ZFP_ZFUIView_stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewLayoutOnLayout)
                 ) {
-            zfobj<v_zfboolHolder> done;
-            view->observerNotify(ZFUIView::E_ViewLayoutOnLayout(), done);
-            if(!done->zfv) {
+            ZFArgs zfargs;
+            view->observerNotify(ZFUIView::E_ViewLayoutOnLayout(), zfargs);
+            v_zfbool *bypass = zfargs.result();
+            if(bypass && bypass->zfv) {
                 view->layoutOnLayout(bounds);
             }
         }
@@ -1691,7 +1692,7 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewLayoutOnMeasurePrepare)
             || ZFBitTest(_ZFP_ZFUIView_stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewLayoutOnMeasurePrepare)
             ) {
-        this->observerNotify(ZFUIView::E_ViewLayoutOnMeasurePrepare(), d->measureResult);
+        this->observerNotify(ZFUIView::E_ViewLayoutOnMeasurePrepare(), ZFArgs().param0(d->measureResult));
     }
 
     {
@@ -1742,7 +1743,7 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
         if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewLayoutOnMeasure)
                 || ZFBitTest(_ZFP_ZFUIView_stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewLayoutOnMeasure)
                 ) {
-            this->observerNotify(ZFUIView::E_ViewLayoutOnMeasure(), d->measureResult);
+            this->observerNotify(ZFUIView::E_ViewLayoutOnMeasure(), ZFArgs().param0(d->measureResult));
         }
 
         ZFUILayoutParam::sizeHintApplyT(d->measureResult->measuredSize, d->measureResult->measuredSize, sizeHintFixed, sizeParam);
@@ -2191,7 +2192,7 @@ void ZFUIView::viewChildOnAdd(
             || ZFBitTest(_ZFP_ZFUIView_stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewChildOnAdd)
             ) {
         zfobj<v_ZFUIViewChildLayer> t(childLayer);
-        this->observerNotify(ZFUIView::E_ViewChildOnAdd(), child, t);
+        this->observerNotify(ZFUIView::E_ViewChildOnAdd(), ZFArgs().param0(child).param1(t));
     }
 }
 void ZFUIView::viewChildOnRemove(
@@ -2202,21 +2203,21 @@ void ZFUIView::viewChildOnRemove(
             || ZFBitTest(_ZFP_ZFUIView_stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewChildOnRemove)
             ) {
         zfobj<v_ZFUIViewChildLayer> t(childLayer);
-        this->observerNotify(ZFUIView::E_ViewChildOnRemove(), child, t);
+        this->observerNotify(ZFUIView::E_ViewChildOnRemove(), ZFArgs().param0(child).param1(t));
     }
 }
 void ZFUIView::viewOnAddToParent(ZF_IN ZFUIView *parent) {
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnAddToParent)
             || ZFBitTest(_ZFP_ZFUIView_stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnAddToParent)
             ) {
-        this->observerNotify(ZFUIView::E_ViewOnAddToParent(), parent);
+        this->observerNotify(ZFUIView::E_ViewOnAddToParent(), ZFArgs().param0(parent));
     }
 }
 void ZFUIView::viewOnRemoveFromParent(ZF_IN ZFUIView *parent) {
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnRemoveFromParent)
             || ZFBitTest(_ZFP_ZFUIView_stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnRemoveFromParent)
             ) {
-        this->observerNotify(ZFUIView::E_ViewOnRemoveFromParent(), parent);
+        this->observerNotify(ZFUIView::E_ViewOnRemoveFromParent(), ZFArgs().param0(parent));
     }
 }
 
@@ -2338,7 +2339,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewEventSend
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnEvent)
             || ZFBitTest(_ZFP_ZFUIView_stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnEvent)
             ) {
-        this->observerNotify(ZFUIView::E_ViewOnEvent(), event);
+        this->observerNotify(ZFUIView::E_ViewOnEvent(), ZFArgs().param0(event));
     }
 }
 void ZFUIView::viewEventOnEvent(ZF_IN ZFUIEvent *event) {

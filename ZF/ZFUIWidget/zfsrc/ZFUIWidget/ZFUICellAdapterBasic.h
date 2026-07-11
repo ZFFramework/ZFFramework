@@ -95,14 +95,14 @@ public:
     zfoverride
     virtual zfindex cellCount(void) {
         zfobj<v_zfindex> ret;
-        this->observerNotify(zfself::E_CellCount(), ret);
+        this->observerNotify(zfself::E_CellCount(), ZFArgs().param0(ret));
         return ret->zfv;
     }
     zfoverride
     virtual zfautoT<ZFUICell> cellAt(ZF_IN zfindex index) {
         zfobj<ZFUICellAdapterBasicParam> param;
         param->cellIndex(index);
-        this->observerNotify(zfself::E_CellAt(), param);
+        this->observerNotify(zfself::E_CellAt(), ZFArgs().param0(param));
         return param->cell();
     }
     zfoverride
@@ -114,7 +114,7 @@ public:
             zfobj<ZFUICellAdapterBasicParam> param;
             param->cellIndex(index);
             param->cell(cell);
-            this->observerNotify(zfself::E_CellSizeAt(), param);
+            this->observerNotify(zfself::E_CellSizeAt(), ZFArgs().param0(param));
             return param->cellSize();
         }
         else {
@@ -128,7 +128,7 @@ protected:
         if(this->observerHasAdd(zfself::E_CellCacheOnAccess())) {
             zfobj<ZFUICellAdapterBasicParam> param;
             param->cellIndex(index);
-            this->observerNotify(zfself::E_CellCacheOnAccess(), param);
+            this->observerNotify(zfself::E_CellCacheOnAccess(), ZFArgs().param0(param));
             return param->cell();
         }
         else {

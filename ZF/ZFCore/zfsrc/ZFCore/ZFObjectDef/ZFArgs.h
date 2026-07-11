@@ -194,6 +194,10 @@ public:
      */
     ZFArgs &paramInit(void);
     /**
+     * @brief util for impl to init all params with #ZFMP_DEF
+     */
+    ZFArgs const &paramInit(void) const;
+    /**
      * @brief util for impl to init all params
      */
     ZFArgs &paramInit(
@@ -209,7 +213,32 @@ public:
     /**
      * @brief util for impl to init all params
      */
+    ZFArgs const &paramInit(
+            ZF_IN ZFObject *param0
+            , ZF_IN ZFObject *param1
+            , ZF_IN ZFObject *param2
+            , ZF_IN ZFObject *param3
+            , ZF_IN ZFObject *param4
+            , ZF_IN ZFObject *param5
+            , ZF_IN ZFObject *param6
+            , ZF_IN ZFObject *param7
+            ) const;
+    /**
+     * @brief util for impl to init all params
+     */
     ZFArgs &paramInit(ZF_IN const ZFCoreArray<zfauto> &params);
+    /**
+     * @brief util for impl to init all params
+     */
+    ZFArgs const &paramInit(ZF_IN const ZFCoreArray<zfauto> &params) const;
+    /**
+     * @brief util for impl to init all params
+     */
+    ZFArgs &paramInit(ZF_IN const ZFArgs &params);
+    /**
+     * @brief util for impl to init all params
+     */
+    ZFArgs const &paramInit(ZF_IN const ZFArgs &params) const;
 
     /** @brief get param at index */
     zfauto &paramAt(ZF_IN zfindex index) const;

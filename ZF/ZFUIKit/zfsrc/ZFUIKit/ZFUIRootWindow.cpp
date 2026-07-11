@@ -176,7 +176,7 @@ void ZFUIRootWindow::_ZFP_ZFUIRootWindow_safeArea(ZF_IN const ZFUIMargin &safeAr
 }
 void ZFUIRootWindow::safeAreaOnUpdate(ZF_IN const ZFUIMargin &safeAreaOld) {
     if(this->observerHasAdd(ZFUIRootWindow::E_WindowMarginOnUpdate())) {
-        this->observerNotify(ZFUIRootWindow::E_WindowMarginOnUpdate(), zfobj<v_ZFUIMargin>(safeAreaOld));
+        this->observerNotify(ZFUIRootWindow::E_WindowMarginOnUpdate(), ZFArgs().param0(zfobj<v_ZFUIMargin>(safeAreaOld)));
     }
 }
 

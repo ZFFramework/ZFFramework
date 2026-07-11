@@ -565,28 +565,24 @@ public:
      */
     zffinal void observerNotify(
             ZF_IN zfidentity eventId
-            , ZF_IN_OPT ZFObject *param0 = zfnull
-            , ZF_IN_OPT ZFObject *param1 = zfnull
+            , ZF_IN_OPT const ZFArgs &zfargs = ZFArgs()
             );
     /** @brief see #observerNotify */
     zffinal void observerNotifyWithSender(
             ZF_IN ZFObject *customSender
             , ZF_IN zfidentity eventId
-            , ZF_IN_OPT ZFObject *param0 = zfnull
-            , ZF_IN_OPT ZFObject *param1 = zfnull
+            , ZF_IN_OPT const ZFArgs &zfargs = ZFArgs()
             );
     /** @brief see #observerNotify */
     zffinal void observerNotifyReversely(
             ZF_IN zfidentity eventId
-            , ZF_IN_OPT ZFObject *param0 = zfnull
-            , ZF_IN_OPT ZFObject *param1 = zfnull
+            , ZF_IN_OPT const ZFArgs &zfargs = ZFArgs()
             );
     /** @brief see #observerNotify */
     zffinal void observerNotifyReverselyWithSender(
             ZF_IN ZFObject *customSender
             , ZF_IN zfidentity eventId
-            , ZF_IN_OPT ZFObject *param0 = zfnull
-            , ZF_IN_OPT ZFObject *param1 = zfnull
+            , ZF_IN_OPT const ZFArgs &zfargs = ZFArgs()
             );
 
     /**

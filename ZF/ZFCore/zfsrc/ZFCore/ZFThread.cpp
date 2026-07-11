@@ -85,8 +85,7 @@ public:
 public:
     static void threadCallback(
             ZF_IN ZFThread *zfThread
-            , ZF_IN ZFObject *param0
-            , ZF_IN ZFObject *param1
+            , ZF_IN_OPT const ZFArgs &threadArgs
             );
     static void threadCleanupCallback(ZF_IN ZFThread *zfThread);
     static void mainThreadPost(ZF_IN ZFThread *zfThread);
@@ -105,10 +104,7 @@ public:
     }
 
     zfoverride
-    virtual void threadStart(
-            ZF_IN_OPT ZFObject *param0 = zfnull
-            , ZF_IN_OPT ZFObject *param1 = zfnull
-            ) {
+    virtual void threadStart(ZF_IN_OPT const ZFArgs &threadArgs = ZFArgs()) {
         ZFCoreLogTrim("you must not start a user registered thread");
     }
     zfoverride
@@ -298,9 +294,8 @@ void ZFThread::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_2(ZFThread, void, threadStart
-        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+ZFMETHOD_DEFINE_1(ZFThread, void, threadStart
+        , ZFMP_IN_OPT(const ZFArgs &, threadArgs, ZFArgs())
         ) {
     ZFCoreMutexLocker();
     if(d->startFlag) {
@@ -314,12 +309,11 @@ ZFMETHOD_DEFINE_2(ZFThread, void, threadStart
     zfunsafe_zfobjRetain(this);
     ZFThread *zfThread = this;
     _ZFP_ZFThread_log("executeInNewThread begin %p", this);
-    ZFLISTENER_3(threadCallback
+    ZFLISTENER_2(threadCallback
         , ZFThread *, zfThread
-        , zfauto, param0
-        , zfauto, param1
+        , ZFArgs, threadArgs
         ) {
-        _ZFP_ZFThreadPrivate::threadCallback(zfThread, param0, param1);
+        _ZFP_ZFThreadPrivate::threadCallback(zfThread, threadArgs);
     } ZFLISTENER_END()
     ZFLISTENER_1(threadCleanupCallback
         , ZFThread *, zfThread
@@ -395,7 +389,7 @@ void ZFThread::autoReleasePoolDrain() {
 }
 
 ZFMETHOD_DEFINE_1(ZFThread, void, threadOnRun
-        , ZFMP_IN(const ZFArgs &, zfargs)
+        , ZFMP_IN(const ZFArgs &, threadArgs)
         ) {
     // nothing to do
 }
@@ -478,8 +472,7 @@ ZFMETHOD_DEFINE_0(ZFThread, zfbool, taskQueueRunning) {
 // ============================================================
 void _ZFP_ZFThreadPrivate::threadCallback(
         ZF_IN ZFThread *zfThread
-        , ZF_IN ZFObject *param0
-        , ZF_IN ZFObject *param1
+        , ZF_IN const ZFArgs &threadArgs
         ) {
     ZFCoreMutexLock();
     _ZFP_ZFThreadPrivate *d = zfThread->d;
@@ -491,24 +484,18 @@ void _ZFP_ZFThreadPrivate::threadCallback(
     ZFCoreMutexUnlock();
 
     _ZFP_ZFThread_log("executeInNewThread enter %p", zfThread);
+    threadArgs._ZFP_ZFArgs_removeConst().sender(zfThread);
 
-    ZFArgs zfargsTmp;
-    zfargsTmp
-        .sender(zfThread)
-        .param0(param0)
-        .param1(param1)
-        ;
-
-    zfThread->threadOnStart(zfargsTmp);
+    zfThread->threadOnStart(threadArgs);
 
     if(!d->stopRequestedFlag) {
-        zfThread->threadOnRun(zfargsTmp);
+        zfThread->threadOnRun(threadArgs);
     }
     ZFCoreMutexLock();
     if(zfThread->threadRunnable()) {
         ZFListener tmp = zfThread->threadRunnable();
         ZFCoreMutexUnlock();
-        tmp.execute(zfargsTmp);
+        tmp.execute(threadArgs);
     }
     else {
         ZFCoreMutexUnlock();
@@ -551,7 +538,7 @@ void _ZFP_ZFThreadPrivate::threadCallback(
         }
     } while(!d->stopRequestedFlag);
 
-    zfThread->threadOnStop(zfargsTmp);
+    zfThread->threadOnStop(threadArgs);
 
     ZFCoreMutexLock();
     zfThread->threadOnUnregister();

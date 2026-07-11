@@ -152,33 +152,21 @@ protected:
             , ZF_IN zfindex buttonIndex
             , ZF_IN zfidentity eventId
             ) {
-        this->observerNotifyWithSender(
-            button,
-            eventId,
-            this,
-            zfobj<v_zfindex>(buttonIndex));
+        this->observerNotifyWithSender(button, eventId, ZFArgs().param0(this).param1(zfobj<v_zfindex>(buttonIndex)));
     }
     /** @brief see #E_ButtonOnAdd */
     virtual inline void buttonOnAdd(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             ) {
-        this->observerNotifyWithSender(
-            button,
-            ZFUIButtonGroup::E_ButtonOnAdd(),
-            this,
-            zfobj<v_zfindex>(buttonIndex));
+        this->observerNotifyWithSender(button, ZFUIButtonGroup::E_ButtonOnAdd(), ZFArgs().param0(this).param1(zfobj<v_zfindex>(buttonIndex)));
     }
     /** @brief see #E_ButtonOnRemove */
     virtual inline void buttonOnRemove(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             ) {
-        this->observerNotifyWithSender(
-            button,
-            ZFUIButtonGroup::E_ButtonOnRemove(),
-            this,
-            zfobj<v_zfindex>(buttonIndex));
+        this->observerNotifyWithSender(button, ZFUIButtonGroup::E_ButtonOnRemove(), ZFArgs().param0(this).param1(zfobj<v_zfindex>(buttonIndex)));
     }
 
     // ============================================================
@@ -249,22 +237,14 @@ protected:
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndexPrev
             ) {
-        this->observerNotifyWithSender(
-            button,
-            ZFUIButtonGroup::E_TabOnUpdate(),
-            this,
-            zfobj<v_zfindex>(buttonIndexPrev));
+        this->observerNotifyWithSender(button, ZFUIButtonGroup::E_TabOnUpdate(), ZFArgs().param0(this).param1(zfobj<v_zfindex>(buttonIndexPrev)));
     }
     /** @brief see #E_TabOnClickChecked */
     virtual inline void tabOnClickChecked(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             ) {
-        this->observerNotifyWithSender(
-            button,
-            ZFUIButtonGroup::E_TabOnClickChecked(),
-            this,
-            zfobj<v_zfindex>(buttonIndex));
+        this->observerNotifyWithSender(button, ZFUIButtonGroup::E_TabOnClickChecked(), ZFArgs().param0(this).param1(zfobj<v_zfindex>(buttonIndex)));
     }
 
 protected:

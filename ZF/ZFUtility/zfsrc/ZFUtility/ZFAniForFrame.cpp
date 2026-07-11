@@ -242,9 +242,7 @@ void ZFAniForFrame::aniImplStop(void) {
 }
 
 void ZFAniForFrame::aniFrameOnUpdate(ZF_IN zfindex frameIndex) {
-    this->observerNotify(
-        ZFAniForFrame::E_AniFrameOnUpdate(),
-        zfobj<v_zfindex>(frameIndex));
+    this->observerNotify(ZFAniForFrame::E_AniFrameOnUpdate(), ZFArgs().param0(zfobj<v_zfindex>(frameIndex)));
 }
 
 ZF_NAMESPACE_GLOBAL_END
