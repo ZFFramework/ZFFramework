@@ -273,6 +273,7 @@ ZFTYPEID_PROGRESS_DEFINE(ZFUISize, ZFUISize, {
 // ============================================================
 // ZFUIRect
 ZFEXPORT_VAR_READONLY_DEFINE(ZFUIRect, ZFUIRectZero, ZFUIRectCreate(0, 0, 0, 0))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFUIRect, ZFUIRectInvalid, ZFUIRectCreate(0, 0, -1, -1))
 ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIRect, ZFUIRectCreate
         , ZFMP_IN(zffloat const &, x)
         , ZFMP_IN(zffloat const &, y)

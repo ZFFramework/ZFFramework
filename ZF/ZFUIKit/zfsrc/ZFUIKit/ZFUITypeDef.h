@@ -660,6 +660,10 @@ ZFOUTPUT_TYPE(ZFUIRect, {ZFUIRectToStringT(s, v);})
  * @brief (0, 0, 0, 0)
  */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectZero)
+/**
+ * @brief (0, 0, -1, -1)
+ */
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectInvalid)
 
 /**
  * @brief make a ZFUIRect
