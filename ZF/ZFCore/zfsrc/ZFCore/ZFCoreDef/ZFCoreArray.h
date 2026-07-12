@@ -517,6 +517,7 @@ public:
         }
         else if(this->count() < count) {
             _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf + d->count, d->buf + count);
+            d->count = count;
         }
     }
 

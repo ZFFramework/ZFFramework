@@ -449,7 +449,10 @@ public:
      *
      * when setting transform which is not supported,
      * it's ensured nothing happen,
-     * but the property value is ensured to be updated
+     * but the property value is ensured to be updated\n
+     *
+     * for translate, origin is the top left zero point\n
+     * for rotate, positive 0~360 value means clockwise direction
      */
     ZFMETHOD_DECLARE_STATIC_0(ZFUITransformFlags, transformAvailable)
 
@@ -1284,6 +1287,27 @@ protected:
      * util it's resolved
      */
     virtual void viewEventOnWheelEvent(ZF_IN ZFUIWheelEvent *wheelEvent);
+
+    // ============================================================
+    // utils
+public:
+    /**
+     * @brief util to show view in a new #ZFUIWindow
+     *
+     * the new window can be checked by #ZFUIWindow::windowForView\n
+     * note: do not remove this view directly by #removeFromParent,
+     * the associated window may be leaked,
+     * use #hideByWindow, or explicitly hide the window if necessary
+     */
+    ZFMETHOD_DECLARE_0(void, showByWindow)
+    /**
+     * @brief see #showByWindow
+     *
+     * remove this view from associated window,
+     * and if the window has no more children,
+     * auto hide the window
+     */
+    ZFMETHOD_DECLARE_0(void, hideByWindow)
 
     // ============================================================
     // override

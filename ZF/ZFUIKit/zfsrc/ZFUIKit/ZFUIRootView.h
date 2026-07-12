@@ -36,6 +36,14 @@ public:
 
 public:
     zfoverride
+    virtual void showByWindow(void) {
+        ZFCoreCriticalNotSupported();
+    }
+    zfoverride
+    virtual void hideByWindow(void) {
+        ZFCoreCriticalNotSupported();
+    }
+    zfoverride
     virtual void layoutParam(ZF_IN ZFUILayoutParam *layoutParam);
     zfoverride
     virtual zfanyT<ZFUILayoutParam> layoutParam(void);

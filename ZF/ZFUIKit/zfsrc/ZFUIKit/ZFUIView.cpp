@@ -3,6 +3,7 @@
 #include "protocol/ZFProtocolZFUIViewFocus.h"
 #include "protocol/ZFProtocolZFUIViewTransform.h"
 #include "ZFUIViewFocus.h"
+#include "ZFUIWindow.h"
 
 #include <cmath> // for fmod on rotation
 
@@ -2391,6 +2392,29 @@ void ZFUIView::viewEventOnKeyEventResolveFocus(ZF_IN ZFUIKeyEvent *keyEvent) {
 
 void ZFUIView::viewEventOnWheelEvent(ZF_IN ZFUIWheelEvent *wheelEvent) {
     // nothing to do
+}
+
+// ============================================================
+// utils
+ZFMETHOD_DEFINE_0(ZFUIView, void, showByWindow) {
+    ZFCoreAssertWithMessageTrim(
+            this->parent() == zfnull
+            , "showByWindow but view already has parent, view: %s, parent: %s"
+            , this
+            , this->parent()
+            );
+    zfobj<ZFUIWindow> window;
+    window->show();
+    window->child(this)->sizeFill();
+}
+ZFMETHOD_DEFINE_0(ZFUIView, void, hideByWindow) {
+    ZFUIWindow *window = ZFUIWindow::windowForView(this);
+    if(window != zfnull) {
+        this->removeFromParent();
+        if(window->childCount() == 0) {
+            window->hide();
+        }
+    }
 }
 
 // ============================================================

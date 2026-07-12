@@ -446,6 +446,16 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeCreate
     ZFUISize ret = {v, v};
     return ret;
 }
+/**
+ * @brief is size empty
+ *
+ * size is empty if width or height <= 0
+ */
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUISizeIsEmpty
+        , ZFMP_IN(const ZFUISize &, size)
+        ) {
+    return (size.width <= 0 || size.height <= 0);
+}
 
 /**
  * @brief check and apply size range

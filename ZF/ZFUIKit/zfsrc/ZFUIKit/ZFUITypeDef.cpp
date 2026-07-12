@@ -169,6 +169,9 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUISize, ZFUISizeCreate
 ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUISize, ZFUISizeCreate
         , ZFMP_IN(zffloat const &, v)
         )
+ZFMETHOD_FUNC_INLINE_DEFINE_1(zfbool, ZFUISizeIsEmpty
+        , ZFMP_IN(const ZFUISize &, size)
+        )
 ZFMETHOD_FUNC_INLINE_DEFINE_4(void, ZFUISizeApplyRangeT
         , ZFMP_OUT(ZFUISize &, ret)
         , ZFMP_IN(const ZFUISize &, origSize)

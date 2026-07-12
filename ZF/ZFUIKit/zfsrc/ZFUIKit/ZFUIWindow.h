@@ -201,6 +201,14 @@ public:
 
 public:
     zfoverride
+    virtual void showByWindow(void) {
+        this->show();
+    }
+    zfoverride
+    virtual void hideByWindow(void) {
+        this->hide();
+    }
+    zfoverride
     virtual void layoutParam(ZF_IN ZFUILayoutParam *layoutParam);
     zfoverride
     virtual zfanyT<ZFUILayoutParam> layoutParam(void);
