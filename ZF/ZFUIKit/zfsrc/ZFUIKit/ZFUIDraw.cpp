@@ -132,7 +132,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, drawImage
     if(image == zfnull) {
         return zffalse;
     }
-    zfautoT<ZFUIImage> imageState = image->imageStateUpdate();
+    zfautoT<ZFUIImage> imageState = image->imageState();
     if(imageState == zfnull) {
         return zffalse;
     }
