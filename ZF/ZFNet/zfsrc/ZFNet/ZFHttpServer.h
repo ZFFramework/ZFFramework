@@ -19,82 +19,120 @@ public:
     /**
      * @brief recv body
      */
-    virtual zfstring recvBody(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfstring, recvBody)
 
 public:
     /** @brief recv header count */
-    virtual zfindex recvHeaderCount(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfindex, recvHeaderCount)
     /** @brief recv header access */
-    virtual zfstring recvHeader(ZF_IN const zfstring &key) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfstring, recvHeader
+            , ZFMP_IN(const zfstring &, key)
+            )
 
     /** @brief recv header access */
-    virtual zfiter recvHeaderIter(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfiter, recvHeaderIter)
     /** @brief recv header access */
-    virtual zfstring recvHeaderIterKey(ZF_IN const zfiter &it) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfstring, recvHeaderIterKey
+            , ZFMP_IN(const zfiter &, it)
+            )
     /** @brief recv header access */
-    virtual zfstring recvHeaderIterValue(ZF_IN const zfiter &it) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfstring, recvHeaderIterValue
+            , ZFMP_IN(const zfiter &, it)
+            )
 
 public:
     /** @brief recv header count */
-    virtual zfindex recvParamCount(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfindex, recvParamCount)
     /** @brief recv header access */
-    virtual zfstring recvParam(ZF_IN const zfstring &key) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfstring, recvParam
+            , ZFMP_IN(const zfstring &, key)
+            )
 
     /** @brief recv header access */
-    virtual zfiter recvParamIter(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfiter, recvParamIter)
     /** @brief recv header access */
-    virtual zfstring recvParamIterKey(ZF_IN const zfiter &it) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfstring, recvParamIterKey
+            , ZFMP_IN(const zfiter &, it)
+            )
     /** @brief recv header access */
-    virtual zfstring recvParamIterValue(ZF_IN const zfiter &it) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfstring, recvParamIterValue
+            , ZFMP_IN(const zfiter &, it)
+            )
 
 public:
     /** @brief recv http method */
-    virtual ZFHttpMethod recvMethod(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(ZFHttpMethod, recvMethod)
     /** @brief recv url path */
-    virtual zfstring recvPath(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfstring, recvPath)
     /** @brief the addr of the client */
-    virtual zfstring recvClientAddr(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfstring, recvClientAddr)
     /** @brief the addr of the client */
-    virtual zfuint recvClientPort(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfuint, recvClientPort)
     /** @brief the addr of the server */
-    virtual zfstring recvServerAddr(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfstring, recvServerAddr)
     /** @brief the addr of the server */
-    virtual zfuint recvServerPort(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfuint, recvServerPort)
 
     // ============================================================
     // resp
 public:
     /** @brief resp status code */
-    virtual void respCode(ZF_IN zfuint code) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(void, respCode
+            , ZFMP_IN(zfuint, code)
+            )
 
     /** @brief resp body */
-    virtual void respBody(ZF_IN const zfstring &value, ZF_IN const zfstring &contentType) zfpurevirtual;
+    ZFMETHOD_INTERFACE_2(void, respBody
+            , ZFMP_IN(const zfstring &, value)
+            , ZFMP_IN(const zfstring &, contentType)
+            )
     /** @brief resp body */
-    virtual void respBody(ZF_IN const ZFInput &value, ZF_IN const zfstring &contentType) zfpurevirtual;
+    ZFMETHOD_INTERFACE_2(void, respBody
+            , ZFMP_IN(const ZFInput &, value)
+            , ZFMP_IN(const zfstring &, contentType)
+            )
 
 public:
     /** @brief resp header count */
-    virtual zfindex respHeaderCount(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfindex, respHeaderCount)
     /** @brief resp header access */
-    virtual zfstring respHeader(ZF_IN const zfstring &key) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfstring, respHeader
+            , ZFMP_IN(const zfstring &, key)
+            )
 
     /** @brief resp header access */
-    virtual zfiter respHeaderIter(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfiter, respHeaderIter)
     /** @brief resp header access */
-    virtual zfstring respHeaderIterKey(ZF_IN const zfiter &it) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfstring, respHeaderIterKey
+            , ZFMP_IN(const zfiter &, it)
+            )
     /** @brief resp header access */
-    virtual zfstring respHeaderIterValue(ZF_IN const zfiter &it) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfstring, respHeaderIterValue
+            , ZFMP_IN(const zfiter &, it)
+            )
 
     /** @brief resp header modify */
-    virtual void respHeader(ZF_IN const zfstring &key, ZF_IN const zfstring &value) zfpurevirtual;
+    ZFMETHOD_INTERFACE_2(void, respHeader
+            , ZFMP_IN(const zfstring &, key)
+            , ZFMP_IN(const zfstring &, value)
+            )
     /** @brief resp header modify */
-    virtual void respHeaderRemove(ZF_IN const zfstring &key) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(void, respHeaderRemove
+            , ZFMP_IN(const zfstring &, key)
+            )
     /** @brief resp header modify */
-    virtual zfiter respHeaderIterFind(ZF_IN const zfstring &key) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfiter, respHeaderIterFind
+            , ZFMP_IN(const zfstring &, key)
+            )
     /** @brief resp header modify */
-    virtual void respHeaderIterValue(ZF_IN_OUT zfiter &it, ZF_IN const zfstring &value) zfpurevirtual;
+    ZFMETHOD_INTERFACE_2(void, respHeaderIterValue
+            , ZFMP_IN_OUT(zfiter &, it)
+            , ZFMP_IN(const zfstring &, value)
+            )
     /** @brief resp header modify */
-    virtual void respHeaderIterRemove(ZF_IN_OUT zfiter &it) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(void, respHeaderIterRemove
+            , ZFMP_IN_OUT(zfiter &, it)
+            )
 
     // ============================================================
     // util

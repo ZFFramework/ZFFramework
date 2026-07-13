@@ -51,64 +51,86 @@ public:
     /**
      * @brief change capacity
      */
-    virtual void capacity(ZF_IN zfindex capacity) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(void, capacity
+            , ZFMP_IN(zfindex, capacity)
+            )
 
     /**
      * @brief return total count of this iterable
      */
-    virtual zfindex count(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfindex, count)
+    /**
+     * @brief whether empty
+     */
+    ZFMETHOD_INTERFACE_0(zfbool, isEmpty)
+    /**
+     * @brief whether contain element
+     */
+    ZFMETHOD_INTERFACE_1(zfbool, isContain
+            , ZFMP_IN(ZFObject *, element)
+            )
     /**
      * @brief return a iter, see #zfiter
      */
-    virtual zfiter iter(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfiter, iter)
 
     /**
      * @brief find element
      */
-    virtual zfiter iterFind(ZF_IN ZFObject *element) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfiter, iterFind
+            , ZFMP_IN(ZFObject *, element)
+            )
 
     /**
      * @brief get value by iter, see #zfiter
      *
      * iter must be valid
      */
-    virtual zfany iterValue(ZF_IN const zfiter &it) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfany, iterValue
+            , ZFMP_IN(const zfiter &, it)
+            )
 
 public:
     /**
      * @brief set value at iter, see #zfiter
      */
-    virtual void iterValue(
-            ZF_IN_OUT zfiter &it
-            , ZF_IN ZFObject *value
-            ) zfpurevirtual;
+    ZFMETHOD_INTERFACE_2(void, iterValue
+            , ZFMP_IN_OUT(zfiter &, it)
+            , ZFMP_IN(ZFObject *, value)
+            )
     /**
      * @brief remove value at iter, see #zfiter
      */
-    virtual void iterRemove(ZF_IN_OUT zfiter &it) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(void, iterRemove
+            , ZFMP_IN_OUT(zfiter &, it)
+            )
     /**
      * @brief remove all contents of this iterable
      */
-    virtual void removeAll(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(void, removeAll)
 
     /**
      * @brief add value to tail
      */
-    virtual zfiter iterAdd(ZF_IN ZFObject *value) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfiter, iterAdd
+            , ZFMP_IN(ZFObject *, value)
+            )
     /**
      * @brief add value before iter,
      *   see #zfiter
      */
-    virtual zfiter iterAdd(
-            ZF_IN ZFObject *value
-            , ZF_IN_OUT zfiter &it
-            ) zfpurevirtual;
+    ZFMETHOD_INTERFACE_2(zfiter, iterAdd
+            , ZFMP_IN(ZFObject *, value)
+            , ZFMP_IN_OUT(zfiter &, it)
+            )
 
 public:
     /**
      * @brief add data from another container
      */
-    virtual void addFrom(ZF_IN ZFContainer *another) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(void, addFrom
+            , ZFMP_IN(ZFContainer *, another)
+            )
 
 public:
     /**

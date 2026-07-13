@@ -44,10 +44,9 @@ public:
      * @brief return true if contains the object,
      *   compared by instance compare by default
      */
-    virtual zfbool isContain(
-            ZF_IN ZFObject *obj
-            , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer = ZFComparerDefault
-            );
+    ZFMETHOD_DECLARE_1(zfbool, isContain
+            , ZFMP_IN(ZFObject *, obj)
+            )
     /**
      * @brief return true if contains the object,
      *   compared by instance compare by default
@@ -56,6 +55,14 @@ public:
             , ZFMP_IN(ZFObject *, obj)
             , ZFMP_IN(const ZFListener &, comparer)
             )
+    /**
+     * @brief return true if contains the object,
+     *   compared by instance compare by default
+     */
+    virtual zfbool isContain(
+            ZF_IN ZFObject *obj
+            , ZF_IN ZFComparer<ZFObject *>::Comparer comparer
+            );
 
     /**
      * @brief return object at index, assert failure if out of range

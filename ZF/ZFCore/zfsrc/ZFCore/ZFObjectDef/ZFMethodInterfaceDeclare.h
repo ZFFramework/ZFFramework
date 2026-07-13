@@ -9,12 +9,12 @@
 #include "ZFMethod.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define _ZFP_ZFMETHOD_IMPL_isInline()
-#define _ZFP_ZFMETHOD_IMPL_notInline() ;
+#define _ZFP_ZFMETHOD_OVERRIDE_isInline()
+#define _ZFP_ZFMETHOD_OVERRIDE_notInline() ;
 
-#define _ZFP_ZFMETHOD_IMPL_DECLARE(...) \
-    _ZFP_mD_EXPAND(_ZFP_ZFMETHOD_IMPL_DECLARE_(__VA_ARGS__))
-#define _ZFP_ZFMETHOD_IMPL_DECLARE_( \
+#define _ZFP_ZFMETHOD_OVERRIDE_DECLARE(...) \
+    _ZFP_mD_EXPAND(_ZFP_ZFMETHOD_OVERRIDE_DECLARE_(__VA_ARGS__))
+#define _ZFP_ZFMETHOD_OVERRIDE_DECLARE_( \
         inlineOrNot \
         , ReturnType, MethodName \
         , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
@@ -38,9 +38,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7 DefaultValueFix7()) \
             ) inlineOrNot()
 
-#define _ZFP_ZFMETHOD_IMPL_DEFINE(...) \
-    _ZFP_mD_EXPAND(_ZFP_ZFMETHOD_IMPL_DEFINE_(__VA_ARGS__))
-#define _ZFP_ZFMETHOD_IMPL_DEFINE_( \
+#define _ZFP_ZFMETHOD_OVERRIDE_DEFINE(...) \
+    _ZFP_mD_EXPAND(_ZFP_ZFMETHOD_OVERRIDE_DEFINE_(__VA_ARGS__))
+#define _ZFP_ZFMETHOD_OVERRIDE_DEFINE_( \
         OwnerClass, ReturnType, MethodName \
         , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
         , ParamExpandOrEmpty1, ParamType1, param1, DefaultExpandOrEmpty1, DefaultValueFix1 \
@@ -95,10 +95,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DECLARE_0(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_DECLARE_0(ReturnType, MethodName \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_notInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_notInline, \
         ReturnType, MethodName \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -110,10 +110,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_INLINE_0(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_INLINE_0(ReturnType, MethodName \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_isInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_isInline, \
         ReturnType, MethodName \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -125,10 +125,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DEFINE_0(OwnerClass, \
+#define ZFMETHOD_OVERRIDE_DEFINE_0(OwnerClass, \
     ReturnType, MethodName \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
+    _ZFP_ZFMETHOD_OVERRIDE_DEFINE(OwnerClass, ReturnType, MethodName \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -174,11 +174,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DECLARE_1(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_DECLARE_1(ReturnType, MethodName \
     , ZFMP_0 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_notInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_notInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
@@ -190,11 +190,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_INLINE_1(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_INLINE_1(ReturnType, MethodName \
     , ZFMP_0 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_isInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_isInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
@@ -206,11 +206,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DEFINE_1(OwnerClass, \
+#define ZFMETHOD_OVERRIDE_DEFINE_1(OwnerClass, \
     ReturnType, MethodName \
     , ZFMP_0 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
+    _ZFP_ZFMETHOD_OVERRIDE_DEFINE(OwnerClass, ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -258,12 +258,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DECLARE_2(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_DECLARE_2(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_notInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_notInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -275,12 +275,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_INLINE_2(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_INLINE_2(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_isInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_isInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -292,12 +292,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DEFINE_2(OwnerClass, \
+#define ZFMETHOD_OVERRIDE_DEFINE_2(OwnerClass, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
+    _ZFP_ZFMETHOD_OVERRIDE_DEFINE(OwnerClass, ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_ZFMP_DUMMY() \
@@ -347,13 +347,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DECLARE_3(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_DECLARE_3(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_notInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_notInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -365,13 +365,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_INLINE_3(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_INLINE_3(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_isInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_isInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -383,13 +383,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DEFINE_3(OwnerClass, \
+#define ZFMETHOD_OVERRIDE_DEFINE_3(OwnerClass, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
+    _ZFP_ZFMETHOD_OVERRIDE_DEFINE(OwnerClass, ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_mP_EXPAND(ZFMP_2) \
@@ -441,14 +441,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DECLARE_4(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_DECLARE_4(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     , ZFMP_3 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_notInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_notInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -460,14 +460,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_INLINE_4(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_INLINE_4(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     , ZFMP_3 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_isInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_isInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -479,14 +479,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DEFINE_4(OwnerClass, \
+#define ZFMETHOD_OVERRIDE_DEFINE_4(OwnerClass, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     , ZFMP_3 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
+    _ZFP_ZFMETHOD_OVERRIDE_DEFINE(OwnerClass, ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_mP_EXPAND(ZFMP_2) \
@@ -540,15 +540,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DECLARE_5(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_DECLARE_5(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     , ZFMP_3 \
     , ZFMP_4 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_notInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_notInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -560,15 +560,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_INLINE_5(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_INLINE_5(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     , ZFMP_3 \
     , ZFMP_4 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_isInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_isInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -580,7 +580,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DEFINE_5(OwnerClass, \
+#define ZFMETHOD_OVERRIDE_DEFINE_5(OwnerClass, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -588,7 +588,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_3 \
     , ZFMP_4 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
+    _ZFP_ZFMETHOD_OVERRIDE_DEFINE(OwnerClass, ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_mP_EXPAND(ZFMP_2) \
@@ -644,7 +644,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DECLARE_6(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_DECLARE_6(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
@@ -652,8 +652,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_4 \
     , ZFMP_5 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_notInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_notInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -665,7 +665,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_INLINE_6(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_INLINE_6(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
@@ -673,8 +673,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_4 \
     , ZFMP_5 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_isInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_isInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -686,7 +686,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DEFINE_6(OwnerClass, \
+#define ZFMETHOD_OVERRIDE_DEFINE_6(OwnerClass, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -695,7 +695,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_4 \
     , ZFMP_5 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
+    _ZFP_ZFMETHOD_OVERRIDE_DEFINE(OwnerClass, ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_mP_EXPAND(ZFMP_2) \
@@ -753,7 +753,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DECLARE_7(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_DECLARE_7(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
@@ -762,8 +762,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_5 \
     , ZFMP_6 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_notInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_notInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -775,7 +775,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_INLINE_7(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_INLINE_7(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
@@ -784,8 +784,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_5 \
     , ZFMP_6 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_isInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_isInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -797,7 +797,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DEFINE_7(OwnerClass, \
+#define ZFMETHOD_OVERRIDE_DEFINE_7(OwnerClass, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -807,7 +807,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_5 \
     , ZFMP_6 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
+    _ZFP_ZFMETHOD_OVERRIDE_DEFINE(OwnerClass, ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_mP_EXPAND(ZFMP_2) \
@@ -867,7 +867,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DECLARE_8(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_DECLARE_8(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
@@ -877,8 +877,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_6 \
     , ZFMP_7 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_notInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_notInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -890,7 +890,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_INLINE_8(ReturnType, MethodName \
+#define ZFMETHOD_OVERRIDE_INLINE_8(ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
@@ -900,8 +900,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_6 \
     , ZFMP_7 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DECLARE( \
-        _ZFP_ZFMETHOD_IMPL_isInline, \
+    _ZFP_ZFMETHOD_OVERRIDE_DECLARE( \
+        _ZFP_ZFMETHOD_OVERRIDE_isInline, \
         ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
@@ -913,7 +913,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 /** @brief see #ZFMethod */
-#define ZFMETHOD_IMPL_DEFINE_8(OwnerClass, \
+#define ZFMETHOD_OVERRIDE_DEFINE_8(OwnerClass, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -924,7 +924,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_6 \
     , ZFMP_7 \
     ) \
-    _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
+    _ZFP_ZFMETHOD_OVERRIDE_DEFINE(OwnerClass, ReturnType, MethodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_mP_EXPAND(ZFMP_2) \

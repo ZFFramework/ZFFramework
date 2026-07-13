@@ -64,7 +64,9 @@ public:
     /**
      * @brief get key value pair with iter, see #zfiter
      */
-    virtual zfany iterKey(ZF_IN const zfiter &it) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfany, iterKey
+            , ZFMP_IN(const zfiter &, it)
+            )
 
 public:
     /**
@@ -73,42 +75,45 @@ public:
      * for most key value container,
      * this is same as set key with value
      */
-    virtual zfiter iterAdd(
-            ZF_IN ZFObject *key
-            , ZF_IN ZFObject *value
-            ) zfpurevirtual;
+    ZFMETHOD_INTERFACE_2(zfiter, iterAdd
+            , ZFMP_IN(ZFObject *, key)
+            , ZFMP_IN(ZFObject *, value)
+            )
     /**
      * @brief return true if already exist, or false and insert <key, defValue> if not exist
      */
-    virtual zfbool iterAccess(
-            ZF_OUT zfiter &it
-            , ZF_IN ZFObject *key
-            , ZF_IN_OPT ZFObject *defValue = ZFNull()
-            ) zfpurevirtual;
+    ZFMETHOD_INTERFACE_3(zfbool, iterAccess
+            , ZFMP_OUT(zfiter &, it)
+            , ZFMP_IN(ZFObject *, key)
+            , ZFMP_IN_OPT(ZFObject *, defValue, ZFNull())
+            )
 
 public:
     /**
      * @brief add data from another container
      */
-    virtual void addFrom(ZF_IN ZFKeyValueContainer *another) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(void, addFrom
+            , ZFMP_IN(ZFKeyValueContainer *, another)
+            )
 
 private:
     /** @cond ZFPrivateDoc */
-    zfoverride
-    virtual zfiter iterAdd(ZF_IN ZFObject *value) {
-        ZFCoreCriticalNotSupported();
-        return zfnull;
-    }
-    zfoverride
-    virtual zfiter iterAdd(
-            ZF_IN ZFObject *value
-            , ZF_IN_OUT zfiter &it
+    ZFMETHOD_OVERRIDE_INLINE_1(zfiter, iterAdd
+            , ZFMP_IN(ZFObject *, value)
             ) {
         ZFCoreCriticalNotSupported();
         return zfnull;
     }
-    zfoverride
-    virtual void addFrom(ZF_IN ZFContainer *another) {
+    ZFMETHOD_OVERRIDE_INLINE_2(zfiter, iterAdd
+            , ZFMP_IN(ZFObject *, value)
+            , ZFMP_IN_OUT(zfiter &, it)
+            ) {
+        ZFCoreCriticalNotSupported();
+        return zfnull;
+    }
+    ZFMETHOD_OVERRIDE_INLINE_1(void, addFrom
+            , ZFMP_IN(ZFContainer *, another)
+            ) {
         if(another != zfnull) {
             zfself *tmp = zfcast(zfself *, another);
             if(tmp == zfnull) {

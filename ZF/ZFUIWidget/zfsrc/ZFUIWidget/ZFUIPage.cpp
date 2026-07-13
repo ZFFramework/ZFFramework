@@ -18,7 +18,9 @@ ZFEVENT_REGISTER(ZFUIPage, PageAniOnPrepare)
 ZFEVENT_REGISTER(ZFUIPage, PageAniOnStart)
 ZFEVENT_REGISTER(ZFUIPage, PageAniOnStop)
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIPage, zfanyT<ZFUIPageManager>, pageManager)
+ZFMETHOD_DEFINE_0(ZFUIPage, zfanyT<ZFUIPageManager>, pageManager) {
+    return _ZFP_ZFUIPage_pageManager;
+}
 ZFMETHOD_DEFINE_0(ZFUIPage, ZFUIView *, pageView) {
     return _ZFP_ZFUIPage_pageView;
 }

@@ -17,12 +17,11 @@ void ZFTestCase::objectOnDeallocPrepare(void) {
 ZFMETHOD_DEFINE_0(ZFTestCase, zfbool, started) {
     return this->_started;
 }
-void ZFTestCase::output(ZF_IN const zfchar *info) {
+ZFMETHOD_DEFINE_1(ZFTestCase, void, output
+        , ZFMP_IN(const zfchar *, info)
+        ) {
     this->testCaseOnOutput(info);
 }
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTestCase, void, output
-        , ZFMP_IN(const zfchar *, info)
-        )
 ZFMETHOD_DEFINE_0(ZFTestCase, void, start) {
     if(this->_started) {
         return;

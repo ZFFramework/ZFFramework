@@ -114,6 +114,7 @@ private:
     }
 
 protected:
+    zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
 
@@ -122,6 +123,7 @@ protected:
         this->_recvMethodCache = (ZFHttpMethod)-1;
         this->_recvBodyCache = zfnull;
     }
+    zfoverride
     virtual void objectOnDealloc(void) {
         if(this->_recvBodyCache) {
             zfpoolDelete(this->_recvBodyCache);
@@ -133,8 +135,7 @@ protected:
     // ============================================================
     // recv
 public:
-    zfoverride
-    virtual zfstring recvBody(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfstring, recvBody) {
         if(this->_recvBodyCache == zfnull) {
             this->_recvBodyCache = zfpoolNew(zfstring);
             zfstring &buf = *(this->_recvBodyCache);
@@ -151,13 +152,13 @@ public:
     }
 
 public:
-    zfoverride
-    virtual zfindex recvHeaderCount(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfindex, recvHeaderCount) {
         _recvHeaderCacheUpdate();
         return _recvHeaderCache.count();
     }
-    zfoverride
-    virtual zfstring recvHeader(ZF_IN const zfstring &key) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfstring, recvHeader
+            , ZFMP_IN(const zfstring &, key)
+            ) {
         if(_recvHeaderCache.isEmpty()) {
             auto range = this->req->headers.equal_range(key.cString());
             zfstring ret;
@@ -180,28 +181,29 @@ public:
         }
     }
 
-    zfoverride
-    virtual zfiter recvHeaderIter(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfiter, recvHeaderIter) {
         _recvHeaderCacheUpdate();
         return _recvHeaderCache.iter();
     }
-    zfoverride
-    virtual zfstring recvHeaderIterKey(ZF_IN const zfiter &it) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfstring, recvHeaderIterKey
+            , ZFMP_IN(const zfiter &, it)
+            ) {
         return _recvHeaderCache.iterKey(it);
     }
-    zfoverride
-    virtual zfstring recvHeaderIterValue(ZF_IN const zfiter &it) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfstring, recvHeaderIterValue
+            , ZFMP_IN(const zfiter &, it)
+            ) {
         return _recvHeaderCache.iterValue(it);
     }
 
 public:
-    zfoverride
-    virtual zfindex recvParamCount(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfindex, recvParamCount) {
         _recvParamCacheUpdate();
         return _recvParamCache.count();
     }
-    zfoverride
-    virtual zfstring recvParam(ZF_IN const zfstring &key) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfstring, recvParam
+            , ZFMP_IN(const zfstring &, key)
+            ) {
         if(_recvParamCache.isEmpty()) {
             auto range = this->req->params.equal_range(key.cString());
             zfstring ret;
@@ -224,23 +226,23 @@ public:
         }
     }
 
-    zfoverride
-    virtual zfiter recvParamIter(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfiter, recvParamIter) {
         _recvParamCacheUpdate();
         return _recvParamCache.iter();
     }
-    zfoverride
-    virtual zfstring recvParamIterKey(ZF_IN const zfiter &it) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfstring, recvParamIterKey
+            , ZFMP_IN(const zfiter &, it)
+            ) {
         return _recvParamCache.iterKey(it);
     }
-    zfoverride
-    virtual zfstring recvParamIterValue(ZF_IN const zfiter &it) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfstring, recvParamIterValue
+            , ZFMP_IN(const zfiter &, it)
+            ) {
         return _recvParamCache.iterValue(it);
     }
 
 public:
-    zfoverride
-    virtual ZFHttpMethod recvMethod(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(ZFHttpMethod, recvMethod) {
         if(_recvMethodCache == (ZFHttpMethod)-1) {
             const zfchar *method = this->req->method.c_str();
             if(zffalse) {
@@ -275,41 +277,41 @@ public:
         }
         return _recvMethodCache;
     }
-    zfoverride
-    virtual zfstring recvPath(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfstring, recvPath) {
         return this->req->path.c_str();
     }
-    zfoverride
-    virtual zfstring recvClientAddr(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfstring, recvClientAddr) {
         return this->req->remote_addr.c_str();
     }
-    zfoverride
-    virtual zfuint recvClientPort(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfuint, recvClientPort) {
         return (zfuint)this->req->remote_port;
     }
-    zfoverride
-    virtual zfstring recvServerAddr(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfstring, recvServerAddr) {
         return this->req->local_addr.c_str();
     }
-    zfoverride
-    virtual zfuint recvServerPort(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfuint, recvServerPort) {
         return (zfuint)this->req->local_port;
     }
 
     // ============================================================
     // resp
 public:
-    zfoverride
-    virtual void respCode(ZF_IN zfuint code) {
+    ZFMETHOD_OVERRIDE_INLINE_1(void, respCode
+            , ZFMP_IN(zfuint, code)
+            ) {
         this->res->status = (int)code;
     }
 
-    zfoverride
-    virtual void respBody(ZF_IN const zfstring &value, ZF_IN const zfstring &contentType) {
+    ZFMETHOD_OVERRIDE_INLINE_2(void, respBody
+            , ZFMP_IN(const zfstring &, value)
+            , ZFMP_IN(const zfstring &, contentType)
+            ) {
         this->res->set_content(value.cString(), value.length(), contentType.cString());
     }
-    zfoverride
-    virtual void respBody(ZF_IN const ZFInput &value, ZF_IN const zfstring &contentType) {
+    ZFMETHOD_OVERRIDE_INLINE_2(void, respBody
+            , ZFMP_IN(const ZFInput &, value)
+            , ZFMP_IN(const zfstring &, contentType)
+            ) {
         zfindex size = value.ioSize();
         zfautoT<v_zfstring> buf = zfobj<v_zfstring>();
         buf->zfv.capacity(4096);
@@ -338,13 +340,13 @@ public:
     }
 
 public:
-    zfoverride
-    virtual zfindex respHeaderCount(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfindex, respHeaderCount) {
         _respHeaderCacheUpdate();
         return _respHeaderCache.count();
     }
-    zfoverride
-    virtual zfstring respHeader(ZF_IN const zfstring &key) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfstring, respHeader
+            , ZFMP_IN(const zfstring &, key)
+            ) {
         if(_respHeaderCache.isEmpty()) {
             auto range = this->res->headers.equal_range(key.cString());
             zfstring ret;
@@ -367,45 +369,54 @@ public:
         }
     }
 
-    zfoverride
-    virtual zfiter respHeaderIter(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfiter, respHeaderIter) {
         _respHeaderCacheUpdate();
         return _respHeaderCache.iter();
     }
-    zfoverride
-    virtual zfstring respHeaderIterKey(ZF_IN const zfiter &it) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfstring, respHeaderIterKey
+            , ZFMP_IN(const zfiter &, it)
+            ) {
         return _respHeaderCache.iterKey(it);
     }
-    zfoverride
-    virtual zfstring respHeaderIterValue(ZF_IN const zfiter &it) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfstring, respHeaderIterValue
+            , ZFMP_IN(const zfiter &, it)
+            ) {
         return _respHeaderCache.iterValue(it);
     }
 
-    zfoverride
-    virtual void respHeader(ZF_IN const zfstring &key, ZF_IN const zfstring &value) {
+    ZFMETHOD_OVERRIDE_INLINE_2(void, respHeader
+            , ZFMP_IN(const zfstring &, key)
+            , ZFMP_IN(const zfstring &, value)
+            ) {
         std::string keyTmp = key.cString();
         this->res->headers.erase(keyTmp);
         this->res->headers.insert(std::pair<std::string, std::string>(keyTmp, value.cString()));
         _respHeaderCache.removeAll();
     }
-    zfoverride
-    virtual void respHeaderRemove(ZF_IN const zfstring &key) {
+    ZFMETHOD_OVERRIDE_INLINE_1(void, respHeaderRemove
+            , ZFMP_IN(const zfstring &, key)
+            ) {
         this->res->headers.erase(key.cString());
         _respHeaderCache.removeAll();
     }
-    zfoverride
-    virtual zfiter respHeaderIterFind(ZF_IN const zfstring &key) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfiter, respHeaderIterFind
+            , ZFMP_IN(const zfstring &, key)
+            ) {
         _respHeaderCacheUpdate();
         return _respHeaderCache.iterFind(key);
     }
-    virtual void respHeaderIterValue(ZF_IN_OUT zfiter &it, ZF_IN const zfstring &value) {
+    ZFMETHOD_OVERRIDE_INLINE_2(void, respHeaderIterValue
+            , ZFMP_IN_OUT(zfiter &, it)
+            , ZFMP_IN(const zfstring &, value)
+            ) {
         std::string key = _respHeaderCache.iterKey(it).cString();
         this->res->headers.erase(key);
         this->res->headers.insert(std::pair<std::string, std::string>(key, value.cString()));
         _respHeaderCache.iterValue(it, value);
     }
-    zfoverride
-    virtual void respHeaderIterRemove(ZF_IN_OUT zfiter &it) {
+    ZFMETHOD_OVERRIDE_INLINE_1(void, respHeaderIterRemove
+            , ZFMP_IN_OUT(zfiter &, it)
+            ) {
         this->res->headers.erase(_respHeaderCache.iterKey(it).cString());
         _respHeaderCache.iterRemove(it);
     }

@@ -96,11 +96,13 @@ public:
     /**
      * @brief cell count
      */
-    virtual zfindex cellCount(void) zfpurevirtual;
+    ZFMETHOD_INTERFACE_0(zfindex, cellCount)
     /**
      * @brief access cell at index, assert fail if return null object
      */
-    virtual zfautoT<ZFUICell> cellAt(ZF_IN zfindex index) zfpurevirtual;
+    ZFMETHOD_INTERFACE_1(zfautoT<ZFUICell>, cellAt
+            , ZFMP_IN(zfindex, index)
+            )
     /**
      * @brief check cell size at index
      *

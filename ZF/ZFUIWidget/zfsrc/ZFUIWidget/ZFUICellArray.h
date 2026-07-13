@@ -95,12 +95,12 @@ public:
     }
 
 public:
-    zfoverride
-    virtual zfindex cellCount(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfindex, cellCount) {
         return d->count();
     }
-    zfoverride
-    virtual zfautoT<ZFUICell> cellAt(ZF_IN zfindex index) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfautoT<ZFUICell>, cellAt
+            , ZFMP_IN(zfindex, index)
+            ) {
         return d->get(index);
     }
 

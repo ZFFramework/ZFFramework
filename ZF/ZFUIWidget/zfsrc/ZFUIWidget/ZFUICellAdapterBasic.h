@@ -92,23 +92,22 @@ public:
     ZFEVENT(CellCacheOnAccess)
 
 public:
-    zfoverride
-    virtual zfindex cellCount(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfindex, cellCount) {
         zfobj<v_zfindex> ret;
         this->observerNotify(zfself::E_CellCount(), ZFArgs().param0(ret));
         return ret->zfv;
     }
-    zfoverride
-    virtual zfautoT<ZFUICell> cellAt(ZF_IN zfindex index) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfautoT<ZFUICell>, cellAt
+            , ZFMP_IN(zfindex, index)
+            ) {
         zfobj<ZFUICellAdapterBasicParam> param;
         param->cellIndex(index);
         this->observerNotify(zfself::E_CellAt(), ZFArgs().param0(param));
         return param->cell();
     }
-    zfoverride
-    virtual zffloat cellSizeAt(
-            ZF_IN zfindex index
-            , ZF_IN ZFUICell *cell
+    ZFMETHOD_OVERRIDE_INLINE_2(zffloat, cellSizeAt
+            , ZFMP_IN(zfindex, index)
+            , ZFMP_IN(ZFUICell *, cell)
             ) {
         if(this->observerHasAdd(zfself::E_CellSizeAt())) {
             zfobj<ZFUICellAdapterBasicParam> param;

@@ -87,7 +87,9 @@ public:
      * @brief output something for the test case,
      *   used to debug
      */
-    zffinal void output(ZF_IN const zfchar *info);
+    ZFMETHOD_DECLARE_1(void, output
+            , ZFMP_IN(const zfchar *, info)
+            )
     /**
      * @brief manually start a test case
      *

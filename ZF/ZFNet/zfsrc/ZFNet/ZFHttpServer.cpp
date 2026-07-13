@@ -69,72 +69,72 @@ void ZFHttpServerTask::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
 }
 
 // ============================================================
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfstring, recvBody)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfindex, recvHeaderCount)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, zfstring, recvHeader
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfstring, recvBody)
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfindex, recvHeaderCount)
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, zfstring, recvHeader
         , ZFMP_IN(const zfstring &, key)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfiter, recvHeaderIter)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, zfstring, recvHeaderIterKey
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfiter, recvHeaderIter)
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, zfstring, recvHeaderIterKey
         , ZFMP_IN(const zfiter &, it)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, zfstring, recvHeaderIterValue
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, zfstring, recvHeaderIterValue
         , ZFMP_IN(const zfiter &, it)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfindex, recvParamCount)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, zfstring, recvParam
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfindex, recvParamCount)
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, zfstring, recvParam
         , ZFMP_IN(const zfstring &, key)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfiter, recvParamIter)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, zfstring, recvParamIterKey
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfiter, recvParamIter)
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, zfstring, recvParamIterKey
         , ZFMP_IN(const zfiter &, it)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, zfstring, recvParamIterValue
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, zfstring, recvParamIterValue
         , ZFMP_IN(const zfiter &, it)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, ZFHttpMethod, recvMethod)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfstring, recvPath)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfstring, recvClientAddr)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfuint, recvClientPort)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfstring, recvServerAddr)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfuint, recvServerPort)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, void, respCode
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, ZFHttpMethod, recvMethod)
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfstring, recvPath)
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfstring, recvClientAddr)
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfuint, recvClientPort)
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfstring, recvServerAddr)
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfuint, recvServerPort)
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, void, respCode
         , ZFMP_IN(zfuint, code)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFHttpServerTask, void, respBody
+ZFMETHOD_INTERFACE_DEFINE_2(ZFHttpServerTask, void, respBody
         , ZFMP_IN(const zfstring &, value)
         , ZFMP_IN(const zfstring &, contentType)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFHttpServerTask, void, respBody
+ZFMETHOD_INTERFACE_DEFINE_2(ZFHttpServerTask, void, respBody
         , ZFMP_IN(const ZFInput &, value)
         , ZFMP_IN(const zfstring &, contentType)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfindex, respHeaderCount)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, zfstring, respHeader
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfindex, respHeaderCount)
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, zfstring, respHeader
         , ZFMP_IN(const zfstring &, key)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFHttpServerTask, zfiter, respHeaderIter)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, zfstring, respHeaderIterKey
+ZFMETHOD_INTERFACE_DEFINE_0(ZFHttpServerTask, zfiter, respHeaderIter)
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, zfstring, respHeaderIterKey
         , ZFMP_IN(const zfiter &, it)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, zfstring, respHeaderIterValue
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, zfstring, respHeaderIterValue
         , ZFMP_IN(const zfiter &, it)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFHttpServerTask, void, respHeader
+ZFMETHOD_INTERFACE_DEFINE_2(ZFHttpServerTask, void, respHeader
         , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(const zfstring &, value)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, void, respHeaderRemove
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, void, respHeaderRemove
         , ZFMP_IN(const zfstring &, key)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, zfiter, respHeaderIterFind
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, zfiter, respHeaderIterFind
         , ZFMP_IN(const zfstring &, key)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFHttpServerTask, void, respHeaderIterValue
+ZFMETHOD_INTERFACE_DEFINE_2(ZFHttpServerTask, void, respHeaderIterValue
         , ZFMP_IN_OUT(zfiter &, it)
         , ZFMP_IN(const zfstring &, value)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, void, respHeaderIterRemove
+ZFMETHOD_INTERFACE_DEFINE_1(ZFHttpServerTask, void, respHeaderIterRemove
         , ZFMP_IN_OUT(zfiter &, it)
         )
 

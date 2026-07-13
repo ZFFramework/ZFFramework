@@ -153,9 +153,7 @@ public:
     // page manager
 public:
     /** @brief owner page manager */
-    virtual zfanyT<ZFUIPageManager> pageManager(void) {
-        return this->_ZFP_ZFUIPage_pageManager;
-    }
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIPageManager>, pageManager)
 
     /** @brief the page's container view, ensured not null */
     ZFMETHOD_DECLARE_0(ZFUIView *, pageView)

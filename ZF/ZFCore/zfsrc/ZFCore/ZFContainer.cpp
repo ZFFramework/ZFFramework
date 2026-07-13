@@ -4,6 +4,40 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFContainer)
 
+ZFMETHOD_INTERFACE_DEFINE_1(ZFContainer, void, capacity
+        , ZFMP_IN(zfindex, capacity)
+        )
+ZFMETHOD_INTERFACE_DEFINE_0(ZFContainer, zfindex, count)
+ZFMETHOD_INTERFACE_DEFINE_0(ZFContainer, zfbool, isEmpty)
+ZFMETHOD_INTERFACE_DEFINE_1(ZFContainer, zfbool, isContain
+        , ZFMP_IN(ZFObject *, element)
+        )
+ZFMETHOD_INTERFACE_DEFINE_0(ZFContainer, zfiter, iter)
+ZFMETHOD_INTERFACE_DEFINE_1(ZFContainer, zfiter, iterFind
+        , ZFMP_IN(ZFObject *, element)
+        )
+ZFMETHOD_INTERFACE_DEFINE_1(ZFContainer, zfany, iterValue
+        , ZFMP_IN(const zfiter &, it)
+        )
+ZFMETHOD_INTERFACE_DEFINE_2(ZFContainer, void, iterValue
+        , ZFMP_IN_OUT(zfiter &, it)
+        , ZFMP_IN(ZFObject *, value)
+        )
+ZFMETHOD_INTERFACE_DEFINE_1(ZFContainer, void, iterRemove
+        , ZFMP_IN_OUT(zfiter &, it)
+        )
+ZFMETHOD_INTERFACE_DEFINE_0(ZFContainer, void, removeAll)
+ZFMETHOD_INTERFACE_DEFINE_1(ZFContainer, zfiter, iterAdd
+        , ZFMP_IN(ZFObject *, value)
+        )
+ZFMETHOD_INTERFACE_DEFINE_2(ZFContainer, zfiter, iterAdd
+        , ZFMP_IN(ZFObject *, value)
+        , ZFMP_IN_OUT(zfiter &, it)
+        )
+ZFMETHOD_INTERFACE_DEFINE_1(ZFContainer, void, addFrom
+        , ZFMP_IN(ZFContainer *, another)
+        )
+
 ZFMETHOD_DEFINE_3(ZFContainer, void, objectInfoOfContentT
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())

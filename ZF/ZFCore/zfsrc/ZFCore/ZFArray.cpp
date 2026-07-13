@@ -75,18 +75,20 @@ ZFMETHOD_DEFINE_0(ZFArray, zfindex, count) {
 ZFMETHOD_DEFINE_0(ZFArray, zfbool, isEmpty) {
     return d->data.empty();
 }
-zfbool ZFArray::isContain(
-        ZF_IN ZFObject *obj
-        , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer /* = ZFComparerDefault */
-        ) {
-    return (this->find(obj, comparer) != zfindexMax());
-}
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFArray, zfbool, isContain
+ZFMETHOD_DEFINE_1(ZFArray, zfbool, isContain
         , ZFMP_IN(ZFObject *, obj)
-        )
+        ) {
+    return (this->find(obj) != zfindexMax());
+}
 ZFMETHOD_DEFINE_2(ZFArray, zfbool, isContain
         , ZFMP_IN(ZFObject *, obj)
         , ZFMP_IN(const ZFListener &, comparer)
+        ) {
+    return (this->find(obj, comparer) != zfindexMax());
+}
+zfbool ZFArray::isContain(
+        ZF_IN ZFObject *obj
+        , ZF_IN ZFComparer<ZFObject *>::Comparer comparer
         ) {
     return (this->find(obj, comparer) != zfindexMax());
 }

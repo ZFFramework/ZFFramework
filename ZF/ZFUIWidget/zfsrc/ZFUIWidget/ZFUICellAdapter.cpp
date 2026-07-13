@@ -82,8 +82,8 @@ ZFMETHOD_DEFINE_2(ZFUICellAdapter, void, cellCacheDefaultRecycle
 }
 
 // ============================================================
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUICellAdapter, zfindex, cellCount)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFUICellAdapter, zfautoT<ZFUICell>, cellAt
+ZFMETHOD_INTERFACE_DEFINE_0(ZFUICellAdapter, zfindex, cellCount)
+ZFMETHOD_INTERFACE_DEFINE_1(ZFUICellAdapter, zfautoT<ZFUICell>, cellAt
         , ZFMP_IN(zfindex, index)
         )
 

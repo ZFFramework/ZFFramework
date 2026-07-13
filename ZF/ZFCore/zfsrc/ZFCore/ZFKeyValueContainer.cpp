@@ -4,6 +4,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFKeyValueContainer)
 
+ZFMETHOD_INTERFACE_DEFINE_1(ZFKeyValueContainer, zfany, iterKey
+        , ZFMP_IN(const zfiter &, it)
+        )
+ZFMETHOD_INTERFACE_DEFINE_2(ZFKeyValueContainer, zfiter, iterAdd
+        , ZFMP_IN(ZFObject *, key)
+        , ZFMP_IN(ZFObject *, value)
+        )
+ZFMETHOD_INTERFACE_DEFINE_3(ZFKeyValueContainer, zfbool, iterAccess
+        , ZFMP_OUT(zfiter &, it)
+        , ZFMP_IN(ZFObject *, key)
+        , ZFMP_IN_OPT(ZFObject *, defValue, ZFNull())
+        )
+ZFMETHOD_INTERFACE_DEFINE_1(ZFKeyValueContainer, void, addFrom
+        , ZFMP_IN(ZFKeyValueContainer *, another)
+        )
+
 void ZFKeyValueContainer::objectInfoOfContentT(
         ZF_IN_OUT zfstring &ret
         , ZF_IN_OPT zfindex maxCount /* = zfindexMax() */

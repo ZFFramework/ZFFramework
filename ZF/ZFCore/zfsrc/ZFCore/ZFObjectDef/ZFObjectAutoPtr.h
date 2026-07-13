@@ -150,8 +150,6 @@ public:
     inline ZFObject *toObject(void) const { // required for _ZFP_zfanyCast to work
         return zfautoT<T_ZFObjectBase>::toObject();
     }
-
-public:
     /** @endcond */
 };
 

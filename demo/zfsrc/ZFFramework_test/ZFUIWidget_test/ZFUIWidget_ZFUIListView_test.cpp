@@ -7,12 +7,12 @@ zfclass ZFUIWidget_ZFUIListView_test_CellAdapter : zfextend ZFObject, zfimplemen
     ZFIMPLEMENT_DECLARE(ZFUICellAdapter)
 
 public:
-    virtual zfindex cellCount(void) {
+    ZFMETHOD_OVERRIDE_INLINE_0(zfindex, cellCount) {
         return 2000;
     }
-    virtual zffloat cellSizeAt(
-            ZF_IN zfindex index
-            , ZF_IN ZFUICell *cell
+    ZFMETHOD_OVERRIDE_INLINE_2(zffloat, cellSizeAt
+            , ZFMP_IN(zfindex, index)
+            , ZFMP_IN(ZFUICell *, cell)
             ) {
         #if 1
             return this->cellSizeHint() + zfmRand(100);
@@ -20,11 +20,14 @@ public:
             return zfsuperI(ZFUICellAdapter)::cellSizeAt(index, cell);
         #endif
     }
-    virtual zfautoT<ZFUICell> cellAt(ZF_IN zfindex index) {
+    ZFMETHOD_OVERRIDE_INLINE_1(zfautoT<ZFUICell>, cellAt
+            , ZFMP_IN(zfindex, index)
+            ) {
         zfobj<ZFUICell> ret;
         ret->cellView(zfobj<ZFUICellViewBasic>());
         return ret;
     }
+    zfoverride
     virtual inline void cellOnUpdate(
             ZF_IN zfindex atIndex
             , ZF_IN ZFUICell *cell
@@ -43,9 +46,11 @@ public:
     }
 
     #if 1 // whether use cache
+        zfoverride
         virtual inline zfauto cellCacheOnAccess(ZF_IN zfindex index) {
             return this->cellCacheDefaultAccess(zfnull);
         }
+        zfoverride
         virtual inline void cellCacheOnRecycle(ZF_IN ZFUICell *cell) {
             this->cellCacheDefaultRecycle(zfnull, cell);
         }
