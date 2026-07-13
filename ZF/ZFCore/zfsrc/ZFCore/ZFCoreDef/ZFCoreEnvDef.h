@@ -67,7 +67,7 @@
 /**
  * @brief dummy macro to show the code is env sensitive
  */
-#define ZF_ENV_SENSITIVE(hint)
+#define ZF_ENV_SENSITIVE(hint, ...)
 
 // ============================================================
 /**

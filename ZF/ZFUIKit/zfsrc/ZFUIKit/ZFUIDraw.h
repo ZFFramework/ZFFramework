@@ -42,12 +42,12 @@ public:
 protected:
     /** @brief see #E_OnDraw */
     virtual inline void onDraw(void) {
-        this->observerNotify(zfself::E_OnDraw());
     }
 public:
     zffinal inline void _ZFP_ZFUIDrawableView_onDraw(void) {
         this->_drawing = zftrue;
         this->onDraw();
+        this->observerNotify(zfself::E_OnDraw());
         this->_drawing = zffalse;
     }
 

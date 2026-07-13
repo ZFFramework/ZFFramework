@@ -77,7 +77,7 @@ private:
             , ZF_IN const SDL_FRect &childRect
             , ZF_IN zffloat treeAlpha
             ) {
-        ZFUIDrawableView *drawableView = zfcast(ZFUIDrawableView *, nativeView->ownerZFUIView);
+        ZFUIDrawableView *drawableView = zfcast(ZFUIDrawableView *, nativeView->parent->ownerZFUIView);
         if(drawableView == zfnull) {
             return zffalse;
         }
