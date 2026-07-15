@@ -511,11 +511,11 @@ public:
 
     zfoverride
     virtual void resize(ZF_IN zfindex count) {
-        _capacityRequire(count);
         if(this->count() > count) {
-            this->remove(this->count(), zfindexMax());
+            this->remove(count, zfindexMax());
         }
         else if(this->count() < count) {
+            _capacityRequire(count);
             _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf + d->count, d->buf + count);
             d->count = count;
         }
