@@ -2,7 +2,7 @@
 
 ```
 // for ZF libs
-~/ZF/LibName/
+~/(ZF|ZFModule)/LibName/
     zfproj/
         Android/
             LibName/
@@ -25,7 +25,7 @@
     zfsrc/
 
 // for ZF impl libs
-~/ZF/ImplLibName_impl/
+~/(ZF|ZFModule)/ImplLibName_impl/
     zfproj/
         Android/
             ImplLibName_impl/
@@ -48,7 +48,7 @@
     zfsrc/
 
 // for app
-~/
+~/app/
     zfproj/
         Android/
             AppName/

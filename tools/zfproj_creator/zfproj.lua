@@ -610,16 +610,16 @@ appIconSetup = function(dstPath, CONFIG_FILE_PATH, config)
         output:ioClose()
     end
 
-    iconConv(zfstr('%s/zfproj/Android/%s/zfapp/src/main/res/mipmap-xxxhdpi/ic_launcher.png', ZF_NAME, ZF_NAME), 192)
-    iconConv(zfstr('%s/zfproj_with_src/Android/%s/zfapp/src/main/res/mipmap-xxxhdpi/ic_launcher.png', ZF_NAME, ZF_NAME), 192)
+    iconConv(zfstr('app/zfproj/Android/%s/zfapp/src/main/res/mipmap-xxxhdpi/ic_launcher.png', ZF_NAME), 192)
+    iconConv(zfstr('app/zfproj_with_src/Android/%s/zfapp/src/main/res/mipmap-xxxhdpi/ic_launcher.png', ZF_NAME), 192)
 
-    iconConv(zfstr('%s/zfproj/cmake/%s/AppIcon.png', ZF_NAME, ZF_NAME), 192)
-    iconConv(zfstr('%s/zfproj_with_src/cmake/%s/AppIcon.png', ZF_NAME, ZF_NAME), 192)
+    iconConv(zfstr('app/zfproj/cmake/%s/AppIcon.png', ZF_NAME), 192)
+    iconConv(zfstr('app/zfproj_with_src/cmake/%s/AppIcon.png', ZF_NAME), 192)
 
-    iconConv(zfstr('%s/zfproj/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_256.png', ZF_NAME, ZF_NAME), 256)
-    iconConv(zfstr('%s/zfproj/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_1024.png', ZF_NAME, ZF_NAME), 1024)
-    iconConv(zfstr('%s/zfproj_with_src/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_256.png', ZF_NAME, ZF_NAME), 256)
-    iconConv(zfstr('%s/zfproj_with_src/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_1024.png', ZF_NAME, ZF_NAME), 1024)
+    iconConv(zfstr('app/zfproj/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_256.png', ZF_NAME), 256)
+    iconConv(zfstr('app/zfproj/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_1024.png', ZF_NAME), 1024)
+    iconConv(zfstr('app/zfproj_with_src/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_256.png', ZF_NAME), 256)
+    iconConv(zfstr('app/zfproj_with_src/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_1024.png', ZF_NAME), 1024)
 end
 
 zfproj_entry()

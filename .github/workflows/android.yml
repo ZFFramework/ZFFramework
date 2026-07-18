@@ -14,7 +14,7 @@ jobs:
     env:
       ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
       ZF_ANDROID_ABI: arm64-v8a
-      ZF_PROJ_PATH: demo/zfproj
+      ZF_PROJ_PATH: app/zfproj
       ZF_PROJ_NAME: ZFFramework_test
 
     steps:

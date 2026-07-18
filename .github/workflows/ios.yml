@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: macos-latest
     env:
-      ZF_PROJ_PATH: demo/zfproj
+      ZF_PROJ_PATH: app/zfproj
       ZF_PROJ_NAME: ZFFramework_test
 
     steps:
