@@ -1610,7 +1610,9 @@ void ZFClass::_ZFP_ZFClass_release(void) {
 }
 
 void ZFClass::_ZFP_ZFClass_autoRegister(void) const {
-    if(!ZFBitTest(_stateFlag, _stateFlag_hasAutoRegister)) {
+    if(!ZFBitTest(_stateFlag, _stateFlag_hasAutoRegister)
+            && ZFFrameworkStateCheck() != ZFFrameworkStateNotAvailable
+            ) {
         ZFBitSet(this->_ZFP_ZFClass_removeConst()->_stateFlag, _stateFlag_hasAutoRegister);
 
         // create dummy instance to ensure static init of the object would take effect
