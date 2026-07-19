@@ -63,9 +63,9 @@ if "%_GIT_VALID%" == "1" (
     robocopy "%DST_PATH%\.git_check_tmp\.git" "%DST_PATH%\.git" /E /MOVE >nul 2>&1
     rmdir /s/q "%DST_PATH%\.git_check_tmp" >nul 2>&1
     if "!_DST_HAS_CONTENT!" == "0" (
-        cd "%DST_PATH%"
+        cd /d "%DST_PATH%"
         git checkout .
-        cd "%_OLD_DIR%"
+        cd /d "%_OLD_DIR%"
     )
 )
 
