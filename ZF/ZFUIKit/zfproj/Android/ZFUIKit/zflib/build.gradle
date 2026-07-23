@@ -3,10 +3,10 @@ apply plugin: 'com.android.library'
 def ZF_ROOT_PATH = file(this.projectDir.absolutePath + '/../../../../../../../ZFFramework').absolutePath
 android {
     namespace 'com.ZFFramework.ZFUIKit'
-    compileSdk 35
+    compileSdk 37
 
     defaultConfig {
-        minSdk 21
+        minSdk 24
 
         externalNativeBuild {
             cmake {

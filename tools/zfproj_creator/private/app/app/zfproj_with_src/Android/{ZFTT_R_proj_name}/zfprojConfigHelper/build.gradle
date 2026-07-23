@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     namespace 'com.ZFFramework.zfprojConfig.{ZFTT_R_proj_name}'
-    compileSdk 35
+    compileSdk 37
     sourceSets {
         main {
             if (file(this.projectDir.absolutePath + '/../zfapp/zfprojConfig/zfprojConfig.xml').exists()) {
