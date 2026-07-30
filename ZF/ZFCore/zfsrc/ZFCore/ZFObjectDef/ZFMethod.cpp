@@ -325,6 +325,7 @@ zfauto ZFMethod::methodInvoke(
         .sender(ownerObjOrNull)
         .ownerMethod(this)
         .paramInit()
+        .ignoreError(zftrue)
         ;
     this->methodGenericInvoker()(zfargs);
     if(zfargs.success()) {
@@ -362,6 +363,7 @@ zfauto ZFMethod::methodInvoke(
                 , param6
                 , param7
                 )
+        .ignoreError(zftrue)
         ;
     this->methodGenericInvoker()(zfargs);
     if(zfargs.success()) {
@@ -401,7 +403,7 @@ zfbool ZFMethod::methodInvokeT(
                 , param6
                 , param7
                 )
-        .ignoreErrorEvent(errorHint != zfnull)
+        .ignoreError(errorHint != zfnull)
         ;
     this->methodGenericInvoker()(zfargs);
     if(zfargs.success()) {
@@ -429,7 +431,7 @@ zfauto ZFMethod::methodInvokeDetail(
         .sender(ownerObjOrNull)
         .ownerMethod(this)
         .paramInit(params)
-        .ignoreErrorEvent(errorHint != zfnull)
+        .ignoreError(errorHint != zfnull)
         ;
     this->methodGenericInvoker()(zfargs);
     if(success != zfnull) {

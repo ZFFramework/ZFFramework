@@ -464,8 +464,9 @@ static void _ZFP_ZFDI_invoke(
                 zfargs.sender()->objectInfoT(errorHint);
             }
             zfargs.errorHint(errorHint);
+            _ZFP_ZFDI_errorOccurred(zfargs);
         }
-        return _ZFP_ZFDI_errorOccurred(zfargs);
+        return;
     }
 
     ZFObject *obj = zfargs.sender();
@@ -476,8 +477,9 @@ static void _ZFP_ZFDI_invoke(
         zfargs.success(zffalse);
         if(!zfargs.ignoreError()) {
             zfargs.errorHint("no method to call");
+            _ZFP_ZFDI_errorOccurred(zfargs);
         }
-        return _ZFP_ZFDI_errorOccurred(zfargs);
+        return;
     }
 
     zfstring errorHint;
@@ -541,8 +543,9 @@ static void _ZFP_ZFDI_invoke(
             errorHintTmp += ")";
         }
         zfargs.errorHint(errorHintTmp);
+        _ZFP_ZFDI_errorOccurred(zfargs);
     }
-    return _ZFP_ZFDI_errorOccurred(zfargs);
+    return;
 }
 
 static zfbool _ZFP_ZFDI_alloc(
@@ -742,8 +745,8 @@ static zfbool _ZFP_ZFDI_alloc(
             zfargs.errorHint(zfstr("class is abstract: \"%s\""
                         , cls->classNameFull()
                         ));
+            _ZFP_ZFDI_errorOccurred(zfargs);
         }
-        _ZFP_ZFDI_errorOccurred(zfargs);
         return zffalse;
     }
     if(!cls->classCanAllocPublic()) {
@@ -752,8 +755,8 @@ static zfbool _ZFP_ZFDI_alloc(
             zfargs.errorHint(zfstr("class can only create by reflection: \"%s\""
                         , cls->classNameFull()
                         ));
+            _ZFP_ZFDI_errorOccurred(zfargs);
         }
-        _ZFP_ZFDI_errorOccurred(zfargs);
         return zffalse;
     }
 
@@ -765,8 +768,8 @@ static zfbool _ZFP_ZFDI_alloc(
                 zfargs.errorHint(zfstr("unable to alloc class \"%s\""
                             , cls->classNameFull()
                             ));
+                _ZFP_ZFDI_errorOccurred(zfargs);
             }
-            _ZFP_ZFDI_errorOccurred(zfargs);
             return zffalse;
         }
         else {
@@ -785,8 +788,8 @@ static zfbool _ZFP_ZFDI_alloc(
             zfargs.errorHint(zfstr("class \"%s\" has no reflectable objectOnInit"
                         , cls->classNameFull()
                         ));
+            _ZFP_ZFDI_errorOccurred(zfargs);
         }
-        _ZFP_ZFDI_errorOccurred(zfargs);
         return zffalse;
     }
 
@@ -797,8 +800,8 @@ static zfbool _ZFP_ZFDI_alloc(
             zfargs.errorHint(zfstr("unable to alloc class \"%s\""
                         , cls->classNameFull()
                         ));
+            _ZFP_ZFDI_errorOccurred(zfargs);
         }
-        _ZFP_ZFDI_errorOccurred(zfargs);
         return zffalse;
     }
 
@@ -881,8 +884,8 @@ static zfbool _ZFP_ZFDI_alloc(
             errorHintTmp += ")";
         }
         zfargs.errorHint(errorHintTmp);
+        _ZFP_ZFDI_errorOccurred(zfargs);
     }
-    _ZFP_ZFDI_errorOccurred(zfargs);
     return zffalse;
 }
 void ZFDI_alloc(
@@ -894,8 +897,8 @@ void ZFDI_alloc(
         zfargs.success(zffalse);
         if(!zfargs.ignoreError()) {
             zfargs.errorHint("null class");
+            _ZFP_ZFDI_errorOccurred(zfargs);
         }
-        _ZFP_ZFDI_errorOccurred(zfargs);
         return;
     }
     _ZFP_ZFDI_alloc(zfargs, cls, convStr);
@@ -964,6 +967,7 @@ zfauto ZFInvoke(
     ZFArgs zfargs;
     zfargs
         .paramInit()
+        .ignoreError(zftrue)
         ;
     ZFDI_invoke(zfargs, name, zftrue);
     return zfargs.result();
@@ -991,6 +995,7 @@ zfauto ZFInvoke(
                 , param6
                 , param7
                 )
+        .ignoreError(zftrue)
         ;
     ZFDI_invoke(zfargs, name, zftrue);
     return zfargs.result();
@@ -1020,7 +1025,7 @@ zfbool ZFInvokeT(
                 , param6
                 , param7
                 )
-        .ignoreErrorEvent(errorHint != zfnull)
+        .ignoreError(errorHint != zfnull)
         ;
     ZFDI_invoke(zfargs, name, zftrue);
     ret = zfargs.result();
@@ -1038,7 +1043,7 @@ zfauto ZFInvokeDetail(
     ZFArgs zfargs;
     zfargs
         .paramInit(params)
-        .ignoreErrorEvent(errorHint != zfnull)
+        .ignoreError(errorHint != zfnull)
         ;
     ZFDI_invoke(zfargs, name, zftrue);
     if(success != zfnull) {

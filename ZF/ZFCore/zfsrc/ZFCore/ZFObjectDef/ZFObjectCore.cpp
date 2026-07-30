@@ -186,6 +186,7 @@ zfauto ZFObject::invoke(
     zfargs
         .sender(this)
         .paramInit()
+        .ignoreError(zftrue)
         ;
     ZFDI_invoke(zfargs, methodName, zftrue);
     return zfargs.result();
@@ -214,6 +215,7 @@ zfauto ZFObject::invoke(
                 , param6
                 , param7
                 )
+        .ignoreError(zftrue)
         ;
     ZFDI_invoke(zfargs, methodName, zftrue);
     return zfargs.result();
@@ -244,7 +246,7 @@ zfbool ZFObject::invokeT(
                 , param6
                 , param7
                 )
-        .ignoreErrorEvent(errorHint != zfnull)
+        .ignoreError(errorHint != zfnull)
         ;
     ZFDI_invoke(zfargs, methodName, zftrue);
     ret = zfargs.result();
@@ -263,7 +265,7 @@ zfauto ZFObject::invokeDetail(
     zfargs
         .sender(this)
         .paramInit(params)
-        .ignoreErrorEvent(errorHint != zfnull)
+        .ignoreError(errorHint != zfnull)
         ;
     ZFDI_invoke(zfargs, methodName, zftrue);
     if(success != zfnull) {
