@@ -3,12 +3,12 @@ apply plugin: 'com.android.application'
 def ZF_ROOT_PATH = file(this.projectDir.absolutePath + '/../../../../../../ZFFramework').absolutePath
 android {
     namespace 'com.ZFFramework.ZFFramework_test'
-    compileSdk 35
+    compileSdk 37
 
     defaultConfig {
         applicationId 'com.ZFFramework.ZFFramework_test'
         minSdk 24
-        targetSdk 35
+        targetSdk 37
         versionCode 1
         versionName '0.0.1'
 
