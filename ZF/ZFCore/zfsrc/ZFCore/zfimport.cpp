@@ -73,7 +73,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
         // done
     }
     else if(pathInfo == zfnull) {
-        if(ZFResIsDir(path)) {
+        if(ZFResIsExist(path)) {
             abs.pathType(ZFPathType_res());
         }
         else {

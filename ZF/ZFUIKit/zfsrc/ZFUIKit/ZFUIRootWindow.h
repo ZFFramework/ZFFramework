@@ -209,12 +209,12 @@ public:
 
 public:
     /**
-     * @brief window background color, #ZFUIColorZero by default
+     * @brief window background color, white color by default
      *
      * this is the bottom most container's color, which may exceeds #safeArea\n
      * this may (or may not) same to window root view's bgColor
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, windowColor, ZFUIColorZero())
+    ZFPROPERTY_ASSIGN(ZFUIColor, windowColor, ZFUIColorCreateRGB(0xFFFFFF))
     ZFPROPERTY_ON_UPDATE_DECLARE(ZFUIColor, windowColor)
 
 public:
