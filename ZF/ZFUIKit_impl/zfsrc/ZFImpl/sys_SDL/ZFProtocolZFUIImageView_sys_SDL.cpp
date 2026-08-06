@@ -4,7 +4,6 @@
 #if ZF_ENV_sys_SDL
 
 #include "ZFImpl_sys_SDL_Image.h"
-#include "ZFUIKit/ZFUIWindow.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
