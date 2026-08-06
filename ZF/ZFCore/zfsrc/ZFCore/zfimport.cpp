@@ -72,33 +72,40 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
     if(ZFPathInfoFromStringT(abs, path)) {
         // done
     }
-    else if(pathInfo == zfnull) {
-        if(ZFResIsExist(path)) {
-            abs.pathType(ZFPathType_res());
-        }
-        else {
-            abs.pathType(ZFPathType_file());
-        }
-        abs.pathData(path);
-    }
     else {
-        zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfo.pathType());
-        if(ioImpl == zfnull) {
-            return zfnull;
+        zfbool isRel = zffalse;
+        while(pathInfo) {
+            zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfo.pathType());
+            if(ioImpl == zfnull) {
+                break;
+            }
+            zfstring pathData;
+            if(!ioImpl->ioIsDir(pathInfo.pathData())) {
+                ioImpl->ioToParent(pathData, pathInfo.pathData());
+                ioImpl->ioToChild(pathData, pathData, path);
+            }
+            else {
+                ioImpl->ioToChild(pathData, pathInfo.pathData(), path);
+            }
+            if(!pathData
+                    || !ioImpl->ioIsExist(pathData)
+                    ) {
+                break;
+            }
+            abs.pathType(pathInfo.pathType());
+            abs.pathData(pathData);
+            isRel = zftrue;
+            break;
         }
-        zfstring pathData;
-        if(!ioImpl->ioIsDir(pathInfo.pathData())) {
-            ioImpl->ioToParent(pathData, pathInfo.pathData());
-            ioImpl->ioToChild(pathData, pathData, path);
+        if(!isRel) {
+            if(ZFResIsExist(path)) {
+                abs.pathType(ZFPathType_res());
+            }
+            else {
+                abs.pathType(ZFPathType_file());
+            }
+            abs.pathData(path);
         }
-        else {
-            ioImpl->ioToChild(pathData, pathInfo.pathData(), path);
-        }
-        if(!pathData) {
-            return zfnull;
-        }
-        abs.pathType(pathInfo.pathType());
-        abs.pathData(pathData);
     }
 
     {
