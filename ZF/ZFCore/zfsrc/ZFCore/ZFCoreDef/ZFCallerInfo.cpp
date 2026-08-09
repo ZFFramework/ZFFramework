@@ -3,12 +3,15 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void _ZFP_ZF_CALLER_FILE_TO_NAME(
+void _ZFP_ZF_CALLER_FILE_TO_NAME_T(
         ZF_IN_OUT zfstring &ret
         , ZF_IN const zfchar *filePath
         ) {
+    ret += _ZFP_ZF_CALLER_FILE_TO_NAME(filePath);
+}
+const zfchar *_ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *filePath) {
     if(filePath == zfnull) {
-        return;
+        return zfnull;
     }
     const zfchar *p = filePath + zfslen(filePath);
     while(p > filePath) {
@@ -18,12 +21,25 @@ void _ZFP_ZF_CALLER_FILE_TO_NAME(
             break;
         }
     }
-    ret += p;
+    return p;
 }
-zfstring _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *filePath) {
-    zfstring ret;
-    _ZFP_ZF_CALLER_FILE_TO_NAME(ret, filePath);
-    return ret;
+
+const zfchar *_ZFP_ZF_CALLER_FUNC_TRIM(ZF_IN const zfchar *filePath) {
+    if(filePath == zfnull) {
+        return zfnull;
+    }
+    const zfchar *p = filePath + zfslen(filePath);
+    while(p > filePath) {
+        if(*p == ']') {
+            return filePath;
+        }
+        --p;
+        if(*p == ':') {
+            ++p;
+            break;
+        }
+    }
+    return p;
 }
 
 const ZFCallerInfo &_ZFP_ZFCallerInfoEmpty(void) {
@@ -130,7 +146,7 @@ void ZFCallerInfo::callerInfo(
 zfbool ZFCallerInfo::callerInfoT(ZF_IN_OUT zfstring &ret) const {
     if(this->callerFile() != zfnull) {
         ret += "[";
-        ZF_CALLER_FILE_TO_NAME_REF(ret, this->callerFile());
+        ZF_CALLER_FILE_TO_NAME_T(ret, this->callerFile());
         ret += " ";
         ret += this->callerFunc();
         ret += " (";

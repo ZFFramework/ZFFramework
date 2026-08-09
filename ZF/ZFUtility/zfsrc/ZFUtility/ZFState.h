@@ -68,7 +68,8 @@ public:
      * @brief whether internal state has been loaded
      *
      * by default, internal state would be loaded when #set or #getAsync called,
-     * use #load to explicit load
+     * use #load to explicit load\n
+     * when modifing #stateFile, ready state may be changed from true to false
      */
     ZFMETHOD_DECLARE_0(zfbool, ready)
     /**

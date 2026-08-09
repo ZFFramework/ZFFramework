@@ -9,11 +9,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-extern ZFLIB_ZFCore void _ZFP_ZF_CALLER_FILE_TO_NAME(
+extern ZFLIB_ZFCore void _ZFP_ZF_CALLER_FILE_TO_NAME_T(
         ZF_IN_OUT zfstring &ret
         , ZF_IN const zfchar *filePath
         );
-extern ZFLIB_ZFCore zfstring _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *filePath);
+extern ZFLIB_ZFCore const zfchar *_ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *filePath);
+extern ZFLIB_ZFCore const zfchar *_ZFP_ZF_CALLER_FUNC_TRIM(ZF_IN const zfchar *filePath);
 
 /**
  * @brief convert file path to file name
@@ -23,11 +24,11 @@ extern ZFLIB_ZFCore zfstring _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *fil
  * you should not save the value for future use,
  * store it in a std::string if necessary
  */
-#define ZF_CALLER_FILE_TO_NAME(path) (_ZFP_ZF_CALLER_FILE_TO_NAME(path).cString())
+#define ZF_CALLER_FILE_TO_NAME(path) _ZFP_ZF_CALLER_FILE_TO_NAME(path)
 /**
  * @brief see #ZF_CALLER_FILE_TO_NAME
  */
-#define ZF_CALLER_FILE_TO_NAME_REF(ret, path) _ZFP_ZF_CALLER_FILE_TO_NAME(ret, path)
+#define ZF_CALLER_FILE_TO_NAME_T(ret, path) _ZFP_ZF_CALLER_FILE_TO_NAME_T(ret, path)
 /**
  * @brief similar to __FILE__ in C++ world, except that don't include full path
  *
@@ -40,16 +41,16 @@ extern ZFLIB_ZFCore zfstring _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *fil
 
 /**
  * @brief same as __FILE__ in C++ world
- *
- * ensured in zfchar format, you should convert to zfchar type if necessary
  */
 #define ZF_CALLER_FILE __FILE__
 /**
  * @brief same as __FUNCTION__ in C++ world
- *
- * ensured in zfchar format, you should convert to zfchar type if necessary
  */
-#define ZF_CALLER_FUNCTION __FUNCTION__
+#define ZF_CALLER_FUNC __FUNCTION__
+/**
+ * @brief short form of __FUNCTION__ in C++ world
+ */
+#define ZF_CALLER_FUNC_TRIM _ZFP_ZF_CALLER_FUNC_TRIM(__FUNCTION__)
 /**
  * @brief same as __LINE__ in C++ world
  */
@@ -86,7 +87,7 @@ public:
 public:
     /** @brief see #ZF_CALLER_FILE */
     inline const zfchar *callerFile(void) const {return _callerFile;}
-    /** @brief see #ZF_CALLER_FUNCTION */
+    /** @brief see #ZF_CALLER_FUNC */
     inline const zfchar *callerFunc(void) const {return _callerFunc;}
     /** @brief see #ZF_CALLER_LINE */
     inline zfuint callerLine(void) const {return _callerLine;}
@@ -146,7 +147,7 @@ ZFOUTPUT_TYPE(ZFCallerInfo, v.objectInfoT(s);)
  * @brief util macro to make #ZFCallerInfo
  */
 #define ZFCallerInfoCreate() \
-    ZFCallerInfo()._ZFP_callerInfo(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE)
+    ZFCallerInfo()._ZFP_callerInfo(ZF_CALLER_FILE, ZF_CALLER_FUNC_TRIM, ZF_CALLER_LINE)
 
 extern ZFLIB_ZFCore const ZFCallerInfo &_ZFP_ZFCallerInfoEmpty(void);
 /**

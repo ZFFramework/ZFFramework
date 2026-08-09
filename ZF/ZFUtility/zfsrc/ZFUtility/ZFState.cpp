@@ -33,6 +33,7 @@ public:
     zfautoT<ZFTaskId> taskId; // taskId for load or save
     zfautoT<ZFTimer> delayId; // taskId for delay save
     zfbool changed;
+    zfbool pendingUpdate;
 
 public:
     _ZFP_ZFStatePrivate(void)
@@ -42,6 +43,7 @@ public:
     , taskId()
     , delayId()
     , changed(zffalse)
+    , pendingUpdate(zffalse)
     {
     }
     ~_ZFP_ZFStatePrivate(void) {
@@ -93,6 +95,11 @@ public:
                 }
             }
             d->_resolvePending(owner);
+            if(d->pendingUpdate) {
+                d->pendingUpdate = zffalse;
+                d->loadCheck(owner);
+                return;
+            }
 
             ZFCoreArray<ZFListener> *loadQueueTmp = d->loadQueue;
             d->loadQueue = zfnull;
@@ -453,6 +460,11 @@ private:
         ioImpl->ioMove(stateFilePathData, tmpFilePathData);
         ioLock.set(zfnull);
         ioImpl->ioRemove(lockFilePathData);
+        if(d->pendingUpdate) {
+            d->pendingUpdate = zffalse;
+            d->saveCheck(owner);
+            return;
+        }
 
         if(!d->saveQueue.isEmpty()) {
             ZFCoreArray<ZFListener> saveQueue;
@@ -481,7 +493,11 @@ ZFMETHOD_DEFINE_0(ZFState, ZFPathInfo, stateFileDefault) {
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFState, ZFPathInfo, stateFile) {
     if(propertyValue != propertyValueOld) {
         this->stateFileCandidates().add(propertyValueOld ? propertyValueOld : stateFileDefault());
-        d->saveCheck(this);
+        d->pendingUpdate = zftrue;
+        if(d->loadQueue == zfnull) {
+            d->loadQueue = zfpoolNew(ZFCoreArray<ZFListener>);
+        }
+        d->loadCheck(this);
     }
 }
 ZFMETHOD_DEFINE_0(ZFState, ZFPathInfo, stateFileFixed) {

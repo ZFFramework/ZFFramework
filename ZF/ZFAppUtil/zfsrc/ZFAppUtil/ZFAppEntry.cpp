@@ -111,7 +111,22 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, stateEncrypt
         , ZFMP_IN(const zfstring &, encryptKey)
         ) {
     if(encryptKey) {
-        ZFState::instance()->stateFile(ZFPathInfoForEncrypt(ZFState::stateFileDefault(), encryptKey));
+        ZFPathInfo mod;
+        {
+            ZFPathInfo def = ZFState::stateFileDefault();
+            mod.pathType(def.pathType());
+            zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(def.pathType());
+            if(!ioImpl) {
+                mod.pathData(def.pathData());
+            }
+            else {
+                zfstring pathData;
+                ioImpl->ioToFileName(pathData, def.pathData());
+                pathData += ".enc";
+                mod.pathData(pathData);
+            }
+        }
+        ZFState::instance()->stateFile(ZFPathInfoForEncrypt(mod, encryptKey));
     }
 }
 
