@@ -54,6 +54,15 @@ public:
      */
     ZFMETHOD_DECLARE_0(ZFPathInfo, stateFileFixed)
 
+    /**
+     * @brief a list of candidates to load
+     *
+     * typically used for backward compatibility,
+     * e.g. load previous version with different pathInfo\n
+     * automatically updated when modifing #stateFile
+     */
+    ZFPROPERTY_ASSIGN(ZFCoreArray<ZFPathInfo>, stateFileCandidates)
+
 public:
     /**
      * @brief whether internal state has been loaded

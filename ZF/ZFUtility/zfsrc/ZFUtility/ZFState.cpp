@@ -71,6 +71,7 @@ public:
                 holder->valueCreate<ZFCoreMap<zfstring, _ZFP_ZFStateData> >();
                 _loadImpl(
                         holder->value<ZFCoreMap<zfstring, _ZFP_ZFStateData> >()
+                        , owner
                         , zfargs
                         , ioImpl
                         , stateFilePathData
@@ -296,11 +297,20 @@ private:
     //     updateTime:expireTime:encode(key):encode(value)
     static void _loadImpl(
             ZF_OUT ZFCoreMap<zfstring, _ZFP_ZFStateData> &mNew
+            , ZF_IN ZFState *owner
             , ZF_IN const ZFArgs &zfargs
             , ZF_IN ZFIOImpl *ioImpl
             , ZF_IN const zfstring &stateFilePathData
             , ZF_IN const zfstring &tmpFilePathData
             ) {
+        for(zfindex i = 0; i < owner->stateFileCandidates().count(); ++i) {
+            _loadImpl(
+                    mNew
+                    , zfargs
+                    , ZFInputForPathInfo(owner->stateFileCandidates().get(i))
+                    );
+        }
+
         _loadImpl(
                 mNew
                 , zfargs
@@ -377,6 +387,7 @@ private:
             ZFCoreMap<zfstring, _ZFP_ZFStateData> mNew;
             _loadImpl(
                     mNew
+                    , owner
                     , zfargs
                     , ioImpl
                     , stateFilePathData
@@ -469,6 +480,7 @@ ZFMETHOD_DEFINE_0(ZFState, ZFPathInfo, stateFileDefault) {
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFState, ZFPathInfo, stateFile) {
     if(propertyValue != propertyValueOld) {
+        this->stateFileCandidates().add(propertyValueOld ? propertyValueOld : stateFileDefault());
         d->saveCheck(this);
     }
 }
