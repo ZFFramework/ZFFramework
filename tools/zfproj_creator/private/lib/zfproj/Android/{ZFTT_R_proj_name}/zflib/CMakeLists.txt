@@ -10,7 +10,6 @@ zfprojSrcFiles(
     ZF_SRC_FILES
     "${CMAKE_BINARY_DIR}/zfgensrc/zfgensrc_${ZF_PROJ_NAME}.cpp"
     "${ZF_ROOT_PATH}"
-    "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../../.."
     )
 if(COMMAND zfprojConfigBefore_${ZF_PROJ_NAME})

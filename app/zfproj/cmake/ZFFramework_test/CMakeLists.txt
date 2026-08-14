@@ -14,7 +14,6 @@ zfprojSrcFiles(
     ZF_SRC_FILES
     "${CMAKE_BINARY_DIR}/zfgensrc/zfgensrc_${ZF_PROJ_NAME}.cpp"
     "${ZF_ROOT_PATH}"
-    "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../.."
     )
 list(APPEND ZF_SRC_FILES "${PROJECT_SOURCE_DIR}/cmake_main.cpp")

@@ -44,7 +44,7 @@ function(zfprojExec cmd)
     execute_process(COMMAND ${params})
 endfunction()
 
-function(zfprojSrcFiles result unityBuildFile ZF_ROOT_PATH relDir zfsrcBaseDir)
+function(zfprojSrcFiles result unityBuildFile ZF_ROOT_PATH zfsrcBaseDir)
     if("$ENV{ZF_UNITY_BUILD}" STREQUAL "0")
         file(GLOB_RECURSE resultTmp
             "${zfsrcBaseDir}/zfsrc/*.c"
@@ -63,27 +63,48 @@ function(zfprojSrcFiles result unityBuildFile ZF_ROOT_PATH relDir zfsrcBaseDir)
         )
     list(APPEND resultTmp ${resultExt})
 
-    set(resultFixed "")
-    foreach(abs ${resultTmp})
-        file(RELATIVE_PATH rel ${relDir} ${abs})
-        list(APPEND resultFixed ${rel})
-    endforeach()
-    set(${result} ${resultFixed} PARENT_SCOPE)
+    set(${result} ${resultTmp} PARENT_SCOPE)
 endfunction()
 
 function(zfprojStripFILE targetName)
-    if(WIN32)
-        target_compile_options(${targetName} PUBLIC "/wd4117;")
+    get_filename_component(ZF_ROOT_PATH_ABS "${ZF_ROOT_PATH}" ABSOLUTE BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+    get_filename_component(baseDir "${ZF_ROOT_PATH}/.." ABSOLUTE BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+    if(MSVC)
+        target_compile_options(${targetName} PUBLIC
+            "/pathmap:${CMAKE_SOURCE_DIR}=."
+            "/pathmap:${CMAKE_BINARY_DIR}=."
+            "/pathmap:${CMAKE_CURRENT_SOURCE_DIR}=."
+            "/pathmap:${CMAKE_CURRENT_BINARY_DIR}=."
+            "/pathmap:${PROJECT_SOURCE_DIR}=."
+            "/pathmap:${ZF_ROOT_PATH}=."
+            "/pathmap:${ZF_ROOT_PATH_ABS}=."
+            "/pathmap:${baseDir}=."
+        )
     else()
-        target_compile_options(${targetName} PUBLIC "-Wno-builtin-macro-redefined")
+        target_compile_options(${targetName} PUBLIC
+            "-fmacro-prefix-map=${CMAKE_SOURCE_DIR}=."
+            "-fmacro-prefix-map=${CMAKE_BINARY_DIR}=."
+            "-fmacro-prefix-map=${CMAKE_CURRENT_SOURCE_DIR}=."
+            "-fmacro-prefix-map=${CMAKE_CURRENT_BINARY_DIR}=."
+            "-fmacro-prefix-map=${PROJECT_SOURCE_DIR}=."
+            "-fmacro-prefix-map=${ZF_ROOT_PATH}=."
+            "-fmacro-prefix-map=${ZF_ROOT_PATH_ABS}=."
+            "-fmacro-prefix-map=${baseDir}=."
+        )
     endif()
-    get_target_property(source_files "${targetName}" SOURCES)
-    foreach(sourcefile ${source_files})
-        get_property(defs SOURCE "${sourcefile}" PROPERTY COMPILE_DEFINITIONS)
-        get_filename_component(filename "${sourcefile}" NAME)
-        list(APPEND defs "__FILE__=\"${filename}\"")
-        set_property(SOURCE "${sourcefile}" PROPERTY COMPILE_DEFINITIONS ${defs})
-    endforeach()
+
+    # if(WIN32)
+    #     target_compile_options(${targetName} PUBLIC "/wd4117;")
+    # else()
+    #     target_compile_options(${targetName} PUBLIC "-Wno-builtin-macro-redefined")
+    # endif()
+    # get_target_property(source_files "${targetName}" SOURCES)
+    # foreach(sourcefile ${source_files})
+    #     get_property(defs SOURCE "${sourcefile}" PROPERTY COMPILE_DEFINITIONS)
+    #     get_filename_component(filename "${sourcefile}" NAME)
+    #     list(APPEND defs "__FILE__=\"${filename}\"")
+    #     set_property(SOURCE "${sourcefile}" PROPERTY COMPILE_DEFINITIONS ${defs})
+    # endforeach()
 endfunction()
 
 function(zfprojLoadAllSymbol targetName)
