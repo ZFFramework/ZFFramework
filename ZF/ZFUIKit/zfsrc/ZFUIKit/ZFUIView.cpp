@@ -1796,6 +1796,11 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
             }
             d->viewFrameUpdateForImpl(this);
         }
+
+        // update transform
+        if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewTransformUpdate)) {
+            d->viewTransformUpdateAction(this);
+        }
         return;
     }
     // else, changed by parent layout step

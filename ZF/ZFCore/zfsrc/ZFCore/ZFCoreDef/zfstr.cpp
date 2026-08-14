@@ -245,8 +245,13 @@ void _ZFP_zfstringAppend(
                 zfint decimalLen = (zfint)(tmp.length() - pos - 1);
                 if(decimalLen > option.precision) {
                     zfindex newLen = pos + option.precision + 1;
-                    if(tmp[newLen] >= '5') {
-                        tmp.set(newLen - 1, (zfchar)(tmp[newLen - 1] + 1));
+                    if(tmp[newLen] >= '5' && tmp[newLen] <= '9') {
+                        zfdouble f;
+                        if(zfsToFloatT(f, tmp, tmp.length())) {
+                            zfchar fmt[32];
+                            snprintf(fmt, sizeof(fmt), "%%.%dlf", (int)option.precision);
+                            snprintf(tmp.zfunsafe_buffer(), tmp.capacity(), fmt, (double)f);
+                        }
                     }
                     tmp.remove(newLen);
                 }

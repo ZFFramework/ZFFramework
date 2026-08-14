@@ -47,7 +47,7 @@ ZFOBJECT_REGISTER(_ZFP_I_ZFGlobalTimer)
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFGlobalTimerDataHolder, ZFLevelZFFrameworkHigh) {
     this->globalTimer = zfnull;
-    this->globalTimerIntervalDefault = 33; // 1000/30, 30fps by default
+    this->globalTimerIntervalDefault = 30; // 1000/30, 30fps by default
     this->globalTimerInterval = this->globalTimerIntervalDefault;
     this->globalTimerManualStep = zffalse;
 }

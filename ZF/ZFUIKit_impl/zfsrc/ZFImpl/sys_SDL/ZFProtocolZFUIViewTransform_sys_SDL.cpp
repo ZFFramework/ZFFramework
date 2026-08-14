@@ -17,16 +17,31 @@ public:
 
     virtual void viewTransform(ZF_IN ZFUIView *view) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
-        nativeView->viewTransformPrepare();
-        nativeView->viewTransform->translateX = view->translateX() * view->UIScaleFixed();
-        nativeView->viewTransform->translateY = view->translateY() * view->UIScaleFixed();
-        nativeView->viewTransform->scaleX = view->scaleX();
-        nativeView->viewTransform->scaleY = view->scaleY();
-        nativeView->viewTransform->rotateZ = view->rotateZ();
-        nativeView->renderRequest();
+        if(zftrue
+                || view->translateX() != 0
+                || view->translateY() != 0
+                || view->scaleX() != 1
+                || view->scaleY() != 1
+                || view->rotateZ() != 0
+                ) {
+            nativeView->viewTransformPrepare();
+            nativeView->viewTransform->translateX = view->translateX() * view->UIScaleFixed();
+            nativeView->viewTransform->translateY = view->translateY() * view->UIScaleFixed();
+            nativeView->viewTransform->scaleX = view->scaleX();
+            nativeView->viewTransform->scaleY = view->scaleY();
+            nativeView->viewTransform->rotateZ = view->rotateZ();
+            nativeView->renderRequest();
+        }
+        else {
+            if(nativeView->viewTransform) {
+                nativeView->viewTransformRemove();
+                nativeView->renderRequest();
+            }
+        }
     }
     virtual void viewTransformReset(ZF_IN ZFUIView *view) {
-        // nothing to do
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
+        nativeView->viewTransformRemove();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewTransformImpl_sys_SDL)
 
