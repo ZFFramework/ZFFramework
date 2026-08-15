@@ -71,6 +71,7 @@ function(zfprojStripFILE targetName)
     get_filename_component(baseDir "${ZF_ROOT_PATH}/.." ABSOLUTE BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
     if(MSVC)
         target_compile_options(${targetName} PUBLIC
+            "/experimental:deterministic"
             "/pathmap:${CMAKE_SOURCE_DIR}=."
             "/pathmap:${CMAKE_BINARY_DIR}=."
             "/pathmap:${CMAKE_CURRENT_SOURCE_DIR}=."
