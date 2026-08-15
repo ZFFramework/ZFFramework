@@ -24,6 +24,8 @@ jobs:
       with:
         host: mac
         target: desktop
+        modules: qtwebengine
+        version: '>=6.9.2' # https://qt-project.atlassian.net/browse/QTBUG-137687
 
     - name: ZFSetup
       run: |
