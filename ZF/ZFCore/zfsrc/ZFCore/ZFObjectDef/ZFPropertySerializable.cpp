@@ -13,28 +13,28 @@ ZFTYPEID_DEFINE(ZFProperty, const ZFProperty *, {
             serializableData.resolveMark();
             return zftrue;
         }
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFProperty(), outErrorHint, outErrorPos) == zfnull) {
+        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFProperty(), errorHint, errorPos) == zfnull) {
             return zffalse;
         }
 
-        zfstring tmpValue = ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_ZFProperty_owner, outErrorHint, outErrorPos);
+        zfstring tmpValue = ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_ZFProperty_owner, errorHint, errorPos);
         if(tmpValue == zfnull) {
             return zffalse;
         }
         const ZFClass *ownerClass = ZFClass::classForName(tmpValue);
         if(ownerClass == zfnull) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData,
                 "no such class \"%s\"", tmpValue);
             return zffalse;
         }
 
-        tmpValue = ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_ZFProperty_property, outErrorHint, outErrorPos);
+        tmpValue = ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_ZFProperty_property, errorHint, errorPos);
         if(tmpValue == zfnull) {
             return zffalse;
         }
         v = ownerClass->propertyForName(tmpValue);
         if(v == zfnull) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData,
                 "no such property \"%s\" in class \"%s\"", tmpValue, ownerClass->classNameFull());
             return zffalse;
         }

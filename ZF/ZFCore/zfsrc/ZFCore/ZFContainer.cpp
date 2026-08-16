@@ -82,10 +82,10 @@ zfbool ZFContainer::serializableOnCheck(void) {
 }
 zfbool ZFContainer::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
 
     this->removeAll();
 
@@ -98,11 +98,11 @@ zfbool ZFContainer::serializableOnSerializeFromData(
         }
 
         zfauto element;
-        if(!ZFObjectFromDataT(element, elementData, outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(element, elementData, errorHint, errorPos)) {
             return zffalse;
         }
         if(element == zfnull) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, elementData,
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, elementData,
                 "null element");
             return zffalse;
         }
@@ -114,35 +114,35 @@ zfbool ZFContainer::serializableOnSerializeFromData(
 }
 zfbool ZFContainer::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {return zffalse;}
     zfself *ref = zfcast(zfself *, refOwner);
 
     if(ref == zfnull) {
         for(zfiter it = this->iter(); it; ++it) {
             ZFSerializableData elementData;
-            if(!ZFObjectToDataT(elementData, this->iterValue(it), outErrorHint)) {
+            if(!ZFObjectToDataT(elementData, this->iterValue(it), errorHint)) {
                 return zffalse;
             }
             serializableData.child(elementData);
         }
     }
     else {
-        return this->serializableOnSerializeToDataWithRef(serializableData, outErrorHint, ref);
+        return this->serializableOnSerializeToDataWithRef(serializableData, errorHint, ref);
     }
 
     return zftrue;
 }
 zfbool ZFContainer::serializableOnSerializeToDataWithRef(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
     zfself *ref = zfcast(zfself *, refOwner);
     if(ref == zfnull) {
-        ZFSerializableUtilErrorOccurred(outErrorHint,
+        ZFSerializableUtilErrorOccurred(errorHint,
             "%s not type of %s",
             refOwner->toObject()->objectInfoOfInstance(), ZFContainer::ClassData()->classNameFull());
         return zffalse;
@@ -152,7 +152,7 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
         for(zfiter it = this->iter(); it; ++it) {
             ZFObject *element = this->iterValue(it);
             ZFSerializableData elementData;
-            if(!ZFObjectToDataT(elementData, element, outErrorHint)) {
+            if(!ZFObjectToDataT(elementData, element, errorHint)) {
                 return zffalse;
             }
             serializableData.child(elementData);
@@ -171,14 +171,14 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
         }
 
         ZFSerializableData elementData;
-        if(!ZFObjectToDataT(elementData, element, outErrorHint)) {
+        if(!ZFObjectToDataT(elementData, element, errorHint)) {
             return zffalse;
         }
         serializableData.child(elementData);
     }
 
     if(tmp->count() > 0) {
-        ZFSerializableUtilErrorOccurred(outErrorHint,
+        ZFSerializableUtilErrorOccurred(errorHint,
             "missing elements from referenced container: %s", tmp->objectInfoOfContent());
         return zffalse;
     }

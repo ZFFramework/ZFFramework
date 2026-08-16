@@ -38,7 +38,7 @@ ZFOBJECTIO_DEFINE(audio, ZFLevelZFFrameworkPostNormal, ZFM_EXPAND({
     }), {
         ret = ZFAudioLoad(input);
         if(ret == zfnull) {
-            zfstringAppend(outErrorHint,
+            zfstringAppend(errorHint,
                 "unable to load audio from %s",
                 input.pathInfo());
             return zffalse;
@@ -49,20 +49,20 @@ ZFOBJECTIO_DEFINE(audio, ZFLevelZFFrameworkPostNormal, ZFM_EXPAND({
     }, {
         ZFAudio *audio = obj;
         if(audio == zfnull) {
-            zfstringAppend(outErrorHint,
+            zfstringAppend(errorHint,
                 "object %s is not type of %s",
                 ZFObjectInfoOfInstance(obj),
                 ZFAudio::ClassData()->classNameFull());
             return zffalse;
         }
         if(audio->pathInfo().isEmpty()) {
-            zfstringAppend(outErrorHint,
+            zfstringAppend(errorHint,
                 "object %s contains no audio data",
                 audio);
             return zffalse;
         }
         if(ZFInputRead(output, ZFInputForPathInfo(audio->pathInfo())) == zfindexMax()) {
-            zfstringAppend(outErrorHint,
+            zfstringAppend(errorHint,
                 "unable to convert audio %s to audio file",
                 audio);
             return zffalse;

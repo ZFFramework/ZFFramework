@@ -95,15 +95,15 @@ public:
      */
     virtual zfbool zfvFromData(
             ZF_IN const ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
             ) zfpurevirtual;
     /**
      * @brief convert to serializable data
      */
     virtual zfbool zfvToData(
             ZF_OUT ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) zfpurevirtual;
     /**
      * @brief convert from string
@@ -138,17 +138,17 @@ protected:
     zfoverride
     virtual zfbool serializableOnSerializeFromData(
             ZF_IN const ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
             ) {
-        if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+        if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
 
         zfstring valueString = ZFSerializableUtil::checkPropertyValue(serializableData);
         if(valueString == zfnull) {
             this->zfvReset();
         }
         else if(!this->zfvFromString(valueString)) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData,
                 "failed to convert from \"%s\"", valueString);
             return zffalse;
         }
@@ -157,10 +157,10 @@ protected:
     zfoverride
     virtual zfbool serializableOnSerializeToData(
             ZF_IN_OUT ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             , ZF_IN_OPT ZFSerializable *refOwner = zfnull
             ) {
-        if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+        if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {return zffalse;}
         zfself *ref = zfcast(zfself *, refOwner);
 
         if((ref == zfnull && !this->zfvIsInit())
@@ -168,13 +168,13 @@ protected:
                 ) {
             if(this->wrappedValuePreferStringConverter()) {
                 zfstring valueString;
-                if(!this->zfvToString(valueString, outErrorHint)) {
+                if(!this->zfvToString(valueString, errorHint)) {
                     return zffalse;
                 }
                 serializableData.propertyValue(valueString);
             }
             else {
-                if(!this->zfvToData(serializableData, outErrorHint)) {
+                if(!this->zfvToData(serializableData, errorHint)) {
                     return zffalse;
                 }
             }

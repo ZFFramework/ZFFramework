@@ -290,20 +290,20 @@ ZFOBJECT_REGISTER(ZFTime)
 
 zfbool ZFTime::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
 
     ZFTimeValue timeValue = ZFTimeValueZero();
-    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos,
             check, ZFSerializableKeyword_ZFTime_timeValue, ZFTimeValue, timeValue, {
                 return zffalse;
             });
     this->timeValue(timeValue);
 
     ZFTimeValue timeZone = ZFTime::timeZoneLocal();
-    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos,
             check, ZFSerializableKeyword_ZFTime_timeZone, ZFTimeValue, timeZone, {
                 return zffalse;
             });
@@ -313,18 +313,18 @@ zfbool ZFTime::serializableOnSerializeFromData(
 }
 zfbool ZFTime::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {return zffalse;}
     zfself *ref = zfcast(zfself *, refOwner);
 
-    ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref,
+    ZFSerializableUtilSerializeAttrToData(serializableData, errorHint, ref,
             ZFSerializableKeyword_ZFTime_timeValue, ZFTimeValue, this->timeValue(), ref->timeValue(), ZFTimeValueZero(), {
                 return zffalse;
             });
 
-    ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref,
+    ZFSerializableUtilSerializeAttrToData(serializableData, errorHint, ref,
             ZFSerializableKeyword_ZFTime_timeZone, ZFTimeValue, this->timeZone(), ref->timeZone(), ZFTime::timeZoneLocal(), {
                 return zffalse;
             });

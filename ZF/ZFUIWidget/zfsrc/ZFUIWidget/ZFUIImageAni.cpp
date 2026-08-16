@@ -215,12 +215,12 @@ public:
                 containerData.attr(ZFSerializableKeyword_ZFUIImageAni_duration, zftimetToString(duration));
             }
 
-            zfstring outErrorHint;
+            zfstring errorHint;
             for(zfindex i = 0; i < images->count(); ++i) {
                 ZFSerializableData imageData;
                 containerData.child(imageData);
-                if(!ZFObjectToDataT(imageData, images->get(i), &outErrorHint)) {
-                    zfargs.result(zfobj<v_zfstring>(outErrorHint));
+                if(!ZFObjectToDataT(imageData, images->get(i), &errorHint)) {
+                    zfargs.result(zfobj<v_zfstring>(errorHint));
                     return;
                 }
                 if(frameDurations && i < frameDurations->count()) {
@@ -246,12 +246,12 @@ public:
                 , zftimet, frameDuration
                 ) {
             ZFSerializableData data;
-            zfstring outErrorHint;
+            zfstring errorHint;
 
             ZFSerializableData refData;
             data.child(refData);
-            if(!ZFObjectToDataT(refData, ref, &outErrorHint)) {
-                zfargs.result(zfobj<v_zfstring>(outErrorHint));
+            if(!ZFObjectToDataT(refData, ref, &errorHint)) {
+                zfargs.result(zfobj<v_zfstring>(errorHint));
                 return;
             }
             refData.category(ZFSerializableKeyword_ZFUIImageAni_ref);
@@ -287,7 +287,7 @@ public:
                         , zftimet, frameDuration
                         ) {
                     ZFSerializableData data;
-                    zfstring outErrorHint;
+                    zfstring errorHint;
 
                     data.child(refSrcData);
                     refSrcData.category(ZFSerializableKeyword_ZFUIImageAni_refSrc);
@@ -322,12 +322,12 @@ public:
                 , zfautoT<ZFArray>, frameDurations
                 ) {
             ZFSerializableData data;
-            zfstring outErrorHint;
+            zfstring errorHint;
 
             ZFSerializableData refData;
             data.child(refData);
-            if(!ZFObjectToDataT(refData, ref, &outErrorHint)) {
-                zfargs.result(zfobj<v_zfstring>(outErrorHint));
+            if(!ZFObjectToDataT(refData, ref, &errorHint)) {
+                zfargs.result(zfobj<v_zfstring>(errorHint));
                 return;
             }
             refData.category(ZFSerializableKeyword_ZFUIImageAni_ref);
@@ -374,7 +374,7 @@ public:
                         , zfautoT<ZFArray>, frameDurations
                         ) {
                     ZFSerializableData data;
-                    zfstring outErrorHint;
+                    zfstring errorHint;
 
                     data.child(refSrcData);
                     refSrcData.category(ZFSerializableKeyword_ZFUIImageAni_refSrc);
@@ -669,7 +669,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
         zfobj<ZFArray> frameDurations;
         zfbool hasSpecDuration = zffalse;
 
-        ZFSerializableUtilSerializeAttrFromData(refData, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeAttrFromData(refData, errorHint, errorPos,
                 check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, duration, {
                     return zffalse;
                 });
@@ -677,17 +677,17 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
             const ZFSerializableData &frameData = refData.childAt(i);
 
             zftimet frameDuration = duration;
-            ZFSerializableUtilSerializeAttrFromData(frameData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(frameData, errorHint, errorPos,
                     check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, frameDuration, {
                         return zffalse;
                     });
 
             zfauto frameImage;
-            if(!ZFObjectFromDataT(frameImage, frameData, outErrorHint, outErrorPos)) {
+            if(!ZFObjectFromDataT(frameImage, frameData, errorHint, errorPos)) {
                 return zffalse;
             }
             if(frameImage == zfnull) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, frameData
+                ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, frameData
                         , "failed to serialize frame image"
                         );
                 return zffalse;
@@ -700,7 +700,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
             }
         }
         if(images->isEmpty()) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, refData
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, refData
                     , "no valid frame image"
                     );
             return zffalse;
@@ -716,7 +716,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
         ZFSerializableData splitData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageAni_split);
         ZFSerializableData framesData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageAni_frames);
         if(splitData == zfnull && framesData == zfnull) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, refData
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, refData
                     , "missing split or frames node"
                     );
             return zffalse;
@@ -725,12 +725,12 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
         zfautoT<ZFUIImage> ref;
         ZFInput refSrc;
         if(refData) {
-            if(!ZFObjectFromDataT(ref, refData, outErrorHint, outErrorPos)) {
+            if(!ZFObjectFromDataT(ref, refData, errorHint, errorPos)) {
                 return zffalse;
             }
         }
         else {
-            if(!ZFCallbackFromDataT(refSrc, refSrcData, outErrorHint, outErrorPos)) {
+            if(!ZFCallbackFromDataT(refSrc, refSrcData, errorHint, errorPos)) {
                 return zffalse;
             }
         }
@@ -741,15 +741,15 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
             zfindex frameCount = 0;
             zftimet frameDuration = 0;
 
-            ZFSerializableUtilSerializeAttrFromData(splitData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(splitData, errorHint, errorPos,
                     require, ZFSerializableKeyword_ZFUIImageAni_size, ZFUISize, frameSize, {
                         return zffalse;
                     });
-            ZFSerializableUtilSerializeAttrFromData(splitData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(splitData, errorHint, errorPos,
                     require, ZFSerializableKeyword_ZFUIImageAni_count, zfindex, frameCount, {
                         return zffalse;
                     });
-            ZFSerializableUtilSerializeAttrFromData(splitData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(splitData, errorHint, errorPos,
                     check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, frameDuration, {
                         return zffalse;
                     });
@@ -769,7 +769,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
             zfobj<ZFArray> frameDurations;
             zfbool hasSpecDuration = zffalse;
 
-            ZFSerializableUtilSerializeAttrFromData(framesData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(framesData, errorHint, errorPos,
                     check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, duration, {
                         return zffalse;
                     });
@@ -779,11 +779,11 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
                 nodeData.resolveMark();
                 ZFUIRect frameRect = ZFUIRectZero();
                 zftimet frameDuration = duration;
-                ZFSerializableUtilSerializeAttrFromData(nodeData, outErrorHint, outErrorPos,
+                ZFSerializableUtilSerializeAttrFromData(nodeData, errorHint, errorPos,
                         require, ZFSerializableKeyword_ZFUIImageAni_rect, ZFUIRect, frameRect, {
                             return zffalse;
                         });
-                ZFSerializableUtilSerializeAttrFromData(nodeData, outErrorHint, outErrorPos,
+                ZFSerializableUtilSerializeAttrFromData(nodeData, errorHint, errorPos,
                         check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, frameDuration, {
                             return zffalse;
                         });
@@ -803,7 +803,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
         }
     }
 
-    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, refData
+    ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, refData
             , "no valid image ref"
             );
     return zffalse;

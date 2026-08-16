@@ -227,10 +227,10 @@ zftimet ZFAniGroup::durationFixed(void) {
 // serialize
 zfbool ZFAniGroup::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
 
     this->childRemoveAll();
 
@@ -242,28 +242,28 @@ zfbool ZFAniGroup::serializableOnSerializeFromData(
 
         if(zfstringIsEqual(category, ZFSerializableKeyword_ZFAniGroup_child)) {
             zftimet childDuration = 0;
-            ZFSerializableUtilSerializeAttrFromData(categoryData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(categoryData, errorHint, errorPos,
                     check, ZFSerializableKeyword_ZFAniGroup_childDuration, zftimet, childDuration, {
                         return zffalse;
                     });
 
             zfautoT<ZFCurve> childCurve;
-            ZFSerializableUtilSerializeCategoryFromData(categoryData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeCategoryFromData(categoryData, errorHint, errorPos,
                     check, ZFSerializableKeyword_ZFAniGroup_childCurve, ZFObject, childCurve, {
                         return zffalse;
                     });
 
             zfauto element;
-            if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
+            if(!ZFObjectFromDataT(element, categoryData, errorHint, errorPos)) {
                 return zffalse;
             }
             if(element == zfnull) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+                ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, categoryData,
                     "null child");
                 return zffalse;
             }
             if(!element->classData()->classIsTypeOf(ZFAnimation::ClassData())) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+                ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, categoryData,
                     "object %s not type of %s", element->objectInfoOfInstance(), ZFAnimation::ClassData());
                 return zffalse;
             }
@@ -282,10 +282,10 @@ zfbool ZFAniGroup::serializableOnSerializeFromData(
 }
 zfbool ZFAniGroup::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {return zffalse;}
     zfself *ref = zfcast(zfself *, refOwner);
 
     if(ref == zfnull) {
@@ -299,15 +299,15 @@ zfbool ZFAniGroup::serializableOnSerializeToData(
             if(this->autoUpdateCurve() && this->curve()) {
                 ZFPropertyValueReset(ZFPropertyAccess(ZFAnimation, curve), child);
             }
-            if(!ZFObjectToDataT(elementData, child, outErrorHint)) {
+            if(!ZFObjectToDataT(elementData, child, errorHint)) {
                 return zffalse;
             }
 
-            ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
+            ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, errorHint,
                     ZFSerializableKeyword_ZFAniGroup_childDuration, zftimet, this->childDurationAt(i), (zftimet)0, {
                         return zffalse;
                     });
-            ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint,
+            ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, errorHint,
                     ZFSerializableKeyword_ZFAniGroup_childCurve, ZFObject, this->childCurveAt(i), zfnull, {
                         return zffalse;
                     });
@@ -332,7 +332,7 @@ zfbool ZFAniGroup::serializableOnSerializeToData(
             }
         }
         if(mismatch) {
-            ZFSerializableUtilErrorOccurred(outErrorHint,
+            ZFSerializableUtilErrorOccurred(errorHint,
                 "animation group contents mismatch, this: %s, ref: %s",
                 d->childDatas->objectInfoOfContent(), ref->d->childDatas->objectInfoOfContent());
             return zffalse;

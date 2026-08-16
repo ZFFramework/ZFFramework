@@ -6,10 +6,10 @@ ZFOBJECT_REGISTER(ZFUICellArray)
 
 zfbool ZFUICellArray::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
 
     this->cellRemoveAll();
 
@@ -20,16 +20,16 @@ zfbool ZFUICellArray::serializableOnSerializeFromData(
         if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUICellArray_cell)) {continue;}
 
         zfauto element;
-        if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(element, categoryData, errorHint, errorPos)) {
             return zffalse;
         }
         if(element == zfnull) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, categoryData,
                 "null cell");
             return zffalse;
         }
         if(!element->classData()->classIsTypeOf(ZFUICell::ClassData())) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, categoryData,
                 "%s not type of %s",
                 element->objectInfoOfInstance(), ZFUICell::ClassData()->classNameFull());
             return zffalse;
@@ -42,16 +42,16 @@ zfbool ZFUICellArray::serializableOnSerializeFromData(
 }
 zfbool ZFUICellArray::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {return zffalse;}
     zfself *ref = zfcast(zfself *, refOwner);
 
     if(ref == zfnull || ref->cellCount() == 0) {
         for(zfindex i = 0, count = this->cellCount(); i < count; ++i) {
             ZFSerializableData cellData;
-            if(!ZFObjectToDataT(cellData, this->cellAt(i), outErrorHint)) {
+            if(!ZFObjectToDataT(cellData, this->cellAt(i), errorHint)) {
                 return zffalse;
             }
             cellData.category(ZFSerializableKeyword_ZFUICellArray_cell);
@@ -71,7 +71,7 @@ zfbool ZFUICellArray::serializableOnSerializeToData(
             }
         }
         if(!cellAllSame) {
-            ZFSerializableUtilErrorOccurred(outErrorHint,
+            ZFSerializableUtilErrorOccurred(errorHint,
                 "cell list mismatch, this: %s, ref: %s",
                 this->objectInfoOfInstance(), ref->objectInfoOfInstance());
             return zffalse;

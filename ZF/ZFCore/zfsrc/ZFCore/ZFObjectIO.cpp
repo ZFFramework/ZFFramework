@@ -66,10 +66,10 @@ void _ZFP_ZFObjectIOUnregister(
 zfbool ZFObjectIOLoadT(
         ZF_OUT zfauto &ret
         , ZF_IN const ZFInput &input
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(input.pathInfo() == zfnull) {
-        zfstringAppend(outErrorHint, "callback %s does not have path info", input);
+        zfstringAppend(errorHint, "callback %s does not have path info", input);
         return zffalse;
     }
 
@@ -90,34 +90,34 @@ zfbool ZFObjectIOLoadT(
         _ZFP_ZFObjectIOData *d = l[i];
         ZFCoreMutexUnlock();
         if(d->checker(zffalse, input.pathInfo(), fileName, fileExt)) {
-            if(d->fromInput(ret, input, outErrorHint)) {
+            if(d->fromInput(ret, input, errorHint)) {
                 return zftrue;
             }
             else {
-                zfstringAppend(outErrorHint, "\n");
+                zfstringAppend(errorHint, "\n");
             }
         }
         ZFCoreMutexLock();
     }
     ZFCoreMutexUnlock();
-    zfstringAppend(outErrorHint, "no ZFObjectIO impl can resolve %s", input.pathInfo());
+    zfstringAppend(errorHint, "no ZFObjectIO impl can resolve %s", input.pathInfo());
     return zffalse;
 }
 zfauto ZFObjectIOLoad(
         ZF_IN const ZFInput &input
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     zfauto ret;
-    ZFObjectIOLoadT(ret, input, outErrorHint);
+    ZFObjectIOLoadT(ret, input, errorHint);
     return ret;
 }
 zfbool ZFObjectIOSave(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN ZFObject *obj
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(output.pathInfo() == zfnull) {
-        zfstringAppend(outErrorHint, "callback %s does not have path info",
+        zfstringAppend(errorHint, "callback %s does not have path info",
             output);
         return zffalse;
     }
@@ -139,17 +139,17 @@ zfbool ZFObjectIOSave(
         _ZFP_ZFObjectIOData *d = l[i];
         ZFCoreMutexUnlock();
         if(d->checker(zftrue, output.pathInfo(), fileName, fileExt)) {
-            if(d->toOutput(output, obj, outErrorHint)) {
+            if(d->toOutput(output, obj, errorHint)) {
                 return zftrue;
             }
             else {
-                zfstringAppend(outErrorHint, "\n");
+                zfstringAppend(errorHint, "\n");
             }
         }
         ZFCoreMutexLock();
     }
     ZFCoreMutexUnlock();
-    zfstringAppend(outErrorHint, "no ZFObjectIO impl can resolve %s",
+    zfstringAppend(errorHint, "no ZFObjectIO impl can resolve %s",
         output.pathInfo());
     return zffalse;
 }
@@ -157,16 +157,16 @@ zfbool ZFObjectIOSave(
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectIOLoadT
         , ZFMP_OUT(zfauto &, ret)
         , ZFMP_IN(const ZFInput &, input)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfauto, ZFObjectIOLoad
         , ZFMP_IN(const ZFInput &, input)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectIOSave
         , ZFMP_IN_OUT(const ZFOutput &, output)
         , ZFMP_IN(ZFObject *, obj)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 
 // ============================================================

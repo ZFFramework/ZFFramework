@@ -136,10 +136,10 @@ void ZFAniForFrame::objectOnDealloc(void) {
 
 zfbool ZFAniForFrame::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
     this->frameRemoveAll();
     zfstring framesStr = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFAniForFrame_frames);
     ZFCoreArray<zftimet> frames;
@@ -152,17 +152,17 @@ zfbool ZFAniForFrame::serializableOnSerializeFromData(
                 , zfnull
                 , zfnull
                 )) {
-        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "invalid frames value: %s", framesStr);
+        ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData, "invalid frames value: %s", framesStr);
         return zffalse;
     }
     return zftrue;
 }
 zfbool ZFAniForFrame::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {return zffalse;}
     zfself *ref = zfcast(zfself *, refOwner);
     if(ref != zfnull
             && d->frames.objectCompare(ref->d->frames) == ZFCompareEqual

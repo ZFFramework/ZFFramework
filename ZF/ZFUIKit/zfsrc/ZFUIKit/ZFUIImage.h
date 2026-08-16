@@ -48,13 +48,13 @@ protected:
     zfoverride
     virtual zfbool serializableOnSerializeFromData(
             ZF_IN const ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
             );
     zfoverride
     virtual zfbool serializableOnSerializeToData(
             ZF_IN_OUT ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             , ZF_IN_OPT ZFSerializable *refOwner = zfnull
             );
 
@@ -265,8 +265,8 @@ private:
 typedef zfbool (*_ZFP_ZFUIImageSerializeFromCallback)(
         ZF_IN_OUT ZFUIImage *image
         , ZF_IN const ZFSerializableData &imageData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         );
 
 extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeRegister(
@@ -291,8 +291,8 @@ extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfst
  *       //   zfbool action(
  *       //           ZF_IN_OUT ZFUIImage *ret
  *       //           , ZF_IN const ZFSerializableData &serializableData
- *       //           , ZF_OUT_OPT zfstring *outErrorHint
- *       //           , ZF_OUT_OPT ZFSerializableData *outErrorPos
+ *       //           , ZF_OUT_OPT zfstring *errorHint
+ *       //           , ZF_OUT_OPT ZFSerializableData *errorPos
  *       //           );
  *       return zftrue;
  *   }
@@ -308,8 +308,8 @@ extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfst
 #define ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(registerSig, typeName) \
     static zfbool _ZFP_ZFUIImageSerializeFromCallback_##registerSig(ZF_IN_OUT ZFUIImage *ret, \
                                                                     ZF_IN const ZFSerializableData &serializableData, \
-                                                                    ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
-                                                                    ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */); \
+                                                                    ZF_OUT_OPT zfstring *errorHint /* = zfnull */, \
+                                                                    ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */); \
     ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIImageSerializeReg_##registerSig, ZFLevelZFFrameworkHigh) { \
         _ZFP_ZFUIImageSerializeTypeRegister(typeName, _ZFP_ZFUIImageSerializeFromCallback_##registerSig); \
     } \
@@ -319,8 +319,8 @@ extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfst
     ZF_GLOBAL_INITIALIZER_END(ZFUIImageSerializeReg_##registerSig) \
     static zfbool _ZFP_ZFUIImageSerializeFromCallback_##registerSig(ZF_IN_OUT ZFUIImage *ret, \
                                                                     ZF_IN const ZFSerializableData &serializableData, \
-                                                                    ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
-                                                                    ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
+                                                                    ZF_OUT_OPT zfstring *errorHint /* = zfnull */, \
+                                                                    ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */)
 
 /** @brief see #ZFUIImageSerializeTypeGetAll */
 extern ZFLIB_ZFUIKit void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret);

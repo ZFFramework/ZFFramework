@@ -58,14 +58,14 @@ extern ZFLIB_ZFCore void ZFSDOutputTokenDetail(ZF_IN const ZFSDOutputToken &v);
 extern ZFLIB_ZFCore zfbool ZFSerializableDataFromZFSD(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN const ZFInput &input
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /**
  * @brief convert serializable data from string
  */
 extern ZFLIB_ZFCore ZFSerializableData ZFSerializableDataFromZFSD(
         ZF_IN const ZFInput &input
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 
 /**
@@ -74,7 +74,7 @@ extern ZFLIB_ZFCore ZFSerializableData ZFSerializableDataFromZFSD(
 extern ZFLIB_ZFCore zfbool ZFSerializableDataToZFSD(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         , ZF_IN_OPT const ZFSDOutputToken &token = ZFSDOutputTokenDefault()
         );
 
@@ -86,7 +86,7 @@ extern ZFLIB_ZFCore zfbool ZFSerializableDataFromZFSD(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN const zfchar *encodedData
         , ZF_IN_OPT zfindex encodedDataLen = zfindexMax()
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /**
  * @brief convert serializable data from string
@@ -94,7 +94,7 @@ extern ZFLIB_ZFCore zfbool ZFSerializableDataFromZFSD(
 extern ZFLIB_ZFCore ZFSerializableData ZFSerializableDataFromZFSD(
         ZF_IN const zfchar *encodedData
         , ZF_IN_OPT zfindex encodedDataLen = zfindexMax()
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 
 /**
@@ -103,7 +103,7 @@ extern ZFLIB_ZFCore ZFSerializableData ZFSerializableDataFromZFSD(
 extern ZFLIB_ZFCore zfbool ZFSerializableDataToZFSD(
         ZF_OUT zfstring &result
         , ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         , ZF_IN_OPT const ZFSDOutputToken &token = ZFSDOutputTokenDefault()
         );
 /**
@@ -111,7 +111,7 @@ extern ZFLIB_ZFCore zfbool ZFSerializableDataToZFSD(
  */
 extern ZFLIB_ZFCore zfstring ZFSerializableDataToZFSD(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         , ZF_IN_OPT const ZFSDOutputToken &token = ZFSDOutputTokenDefault()
         );
 
@@ -122,12 +122,12 @@ extern ZFLIB_ZFCore zfstring ZFSerializableDataToZFSD(
 extern ZFLIB_ZFCore zfbool ZFObjectFromZFSDT(
         ZF_OUT zfauto &ret
         , ZF_IN const ZFInput &input
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /** @brief see #ZFObjectFromZFSDT */
 extern ZFLIB_ZFCore zfauto ZFObjectFromZFSD(
         ZF_IN const ZFInput &input
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 
 /**
@@ -136,7 +136,7 @@ extern ZFLIB_ZFCore zfauto ZFObjectFromZFSD(
 extern ZFLIB_ZFCore zfbool ZFObjectToZFSD(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN ZFObject *obj
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         , ZF_IN_OPT const ZFSDOutputToken &token = ZFSDOutputTokenDefault()
         );
 

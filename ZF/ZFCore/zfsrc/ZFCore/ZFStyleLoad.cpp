@@ -71,10 +71,10 @@ void ZFStyleList::objectOnDealloc(void) {
 
 zfbool ZFStyleList::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuper::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {
+    if(!zfsuper::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {
         return zffalse;
     }
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
@@ -87,11 +87,11 @@ zfbool ZFStyleList::serializableOnSerializeFromData(
             continue;
         }
         zfauto value;
-        if(!ZFObjectFromDataT(value, elementData, outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(value, elementData, errorHint, errorPos)) {
             return zffalse;
         }
         if(zfcast(ZFStyleable *, value) == zfnull) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, elementData,
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, elementData,
                 "%s not type of %s",
                 value,
                 ZFStyleable::ClassData()->className());
@@ -103,19 +103,19 @@ zfbool ZFStyleList::serializableOnSerializeFromData(
 }
 zfbool ZFStyleList::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuper::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {
+    if(!zfsuper::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {
         return zffalse;
     }
     if(refOwner != zfnull) {
-        ZFSerializableUtilErrorOccurred(outErrorHint, "reference not supported");
+        ZFSerializableUtilErrorOccurred(errorHint, "reference not supported");
         return zffalse;
     }
     for(zfindex i = 0; i < d->keyList.count(); ++i) {
         ZFSerializableData elementData;
-        if(!ZFObjectToDataT(elementData, d->valueList[i]->toObject(), outErrorHint)) {
+        if(!ZFObjectToDataT(elementData, d->valueList[i]->toObject(), errorHint)) {
             return zffalse;
         }
         elementData.propertyName(d->keyList[i]);

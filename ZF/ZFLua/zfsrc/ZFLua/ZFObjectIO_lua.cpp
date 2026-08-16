@@ -8,7 +8,7 @@ ZFOBJECTIO_DEFINE(lua, ZFLevelZFFrameworkPostNormal, {
         ret = ZFLuaExecute(input);
         return input;
     }, {
-        zfstringAppend(outErrorHint, "not supported");
+        zfstringAppend(errorHint, "not supported");
         return zffalse;
     })
 

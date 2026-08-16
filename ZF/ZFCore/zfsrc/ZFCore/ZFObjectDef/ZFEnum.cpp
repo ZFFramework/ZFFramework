@@ -16,10 +16,10 @@ ZFOBJECT_REGISTER(ZFEnum)
 
 zfbool ZFEnum::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
 
     zfstring valueString = ZFSerializableUtil::checkPropertyValue(serializableData);
     if(valueString != zfnull) {
@@ -35,7 +35,7 @@ zfbool ZFEnum::serializableOnSerializeFromData(
                 enumValue = this->enumValueForName(valueString);
             }
             if(enumValue == ZFEnumInvalid()) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+                ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData,
                     "invalid value %s for enum %s", valueString, this->classData()->classNameFull());
                 return zffalse;
             }
@@ -49,10 +49,10 @@ zfbool ZFEnum::serializableOnSerializeFromData(
 }
 zfbool ZFEnum::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {return zffalse;}
     zfself *ref = zfcast(zfself *, refOwner);
 
     if((ref == zfnull && this->enumValue() != ZFEnumInvalid())
@@ -61,7 +61,7 @@ zfbool ZFEnum::serializableOnSerializeToData(
         if(this->enumIsFlags()) {
             zfstring s;
             if(!zfflagsToStringT(s, this->classData(), (zfflags)this->enumValue())) {
-                ZFSerializableUtilErrorOccurred(outErrorHint,
+                ZFSerializableUtilErrorOccurred(errorHint,
                     "unable convert enum value to string: %s",
                     this);
                 return zffalse;
@@ -150,16 +150,16 @@ zfbool ZFEnum::zfvIsInit(void) {
 }
 zfbool ZFEnum::zfvFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    return this->serializeFromData(serializableData, outErrorHint, outErrorPos);
+    return this->serializeFromData(serializableData, errorHint, errorPos);
 }
 zfbool ZFEnum::zfvToData(
         ZF_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
-    return this->serializeToData(serializableData, outErrorHint);
+    return this->serializeToData(serializableData, errorHint);
 }
 zfbool ZFEnum::zfvFromString(
         ZF_IN const zfchar *src

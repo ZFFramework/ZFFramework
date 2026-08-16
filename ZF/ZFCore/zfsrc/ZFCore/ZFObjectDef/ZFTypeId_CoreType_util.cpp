@@ -124,10 +124,10 @@ zfbool zfflagsFromStringT(
 zfbool zfstringFromDataT(
         ZF_OUT const zfchar * &v
         , ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_zfstring(), outErrorHint, outErrorPos) == zfnull) {
+    if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_zfstring(), errorHint, errorPos) == zfnull) {
         return zffalse;
     }
     zfstring valueString = ZFSerializableUtil::checkPropertyValue(serializableData);
@@ -142,10 +142,10 @@ zfbool zfstringFromDataT(
 zfbool zfstringToDataT(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN const zfchar * const &v
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(v == zfnull) {
-        ZFSerializableUtilErrorOccurred(outErrorHint,
+        ZFSerializableUtilErrorOccurred(errorHint,
             "null string");
         return zffalse;
     }

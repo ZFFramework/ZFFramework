@@ -60,8 +60,8 @@ _ZFP_ZFCALLBACK_DECLARE_END_REG(ZFLIB_ZFCore, ZFInput, ZFIOCallback)
 typedef zfbool (*_ZFP_ZFCallbackSerializeCustomCallback)(
         ZF_IN_OUT ZFCallback &ret
         , ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         );
 extern ZFLIB_ZFCore void _ZFP_ZFCallbackSerializeCustomTypeRegister(
         ZF_IN const zfstring &customType
@@ -82,8 +82,8 @@ extern ZFLIB_ZFCore _ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerial
  *       //   zfbool action(
  *       //           ZF_IN_OUT ZFCallback &ret
  *       //           , ZF_IN const ZFSerializableData &serializableData
- *       //           , ZF_OUT_OPT zfstring *outErrorHint
- *       //           , ZF_OUT_OPT ZFSerializableData *outErrorPos
+ *       //           , ZF_OUT_OPT zfstring *errorHint
+ *       //           , ZF_OUT_OPT ZFSerializableData *errorPos
  *       //           );
  *       return zftrue;
  *   }
@@ -92,8 +92,8 @@ extern ZFLIB_ZFCore _ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerial
 #define ZFCALLBACK_SERIALIZE_TYPE_DEFINE(registerSig, type) \
     static zfbool _ZFP_ZFCallbackSerializeCustom_##registerSig(ZF_IN_OUT ZFCallback &ret, \
                                                                ZF_IN const ZFSerializableData &serializableData, \
-                                                               ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
-                                                               ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */); \
+                                                               ZF_OUT_OPT zfstring *errorHint /* = zfnull */, \
+                                                               ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */); \
     ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFCallbackSerializeCustomTypeReg_##registerSig, ZFLevelZFFrameworkNormal) { \
         _ZFP_ZFCallbackSerializeCustomTypeRegister(type, _ZFP_ZFCallbackSerializeCustom_##registerSig); \
     } \
@@ -103,8 +103,8 @@ extern ZFLIB_ZFCore _ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerial
     ZF_GLOBAL_INITIALIZER_END(ZFCallbackSerializeCustomTypeReg_##registerSig) \
     static zfbool _ZFP_ZFCallbackSerializeCustom_##registerSig(ZF_IN_OUT ZFCallback &ret, \
                                                                ZF_IN const ZFSerializableData &serializableData, \
-                                                               ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
-                                                               ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
+                                                               ZF_OUT_OPT zfstring *errorHint /* = zfnull */, \
+                                                               ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFCallbackSerializable_h_

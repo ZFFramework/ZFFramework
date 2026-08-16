@@ -130,11 +130,11 @@ zfbool ZFKeyValueContainer::serializableOnCheck(void) {
 }
 zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
     // completely override ZFContainer's version
-    // if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+    // if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
 
     this->removeAll();
 
@@ -149,20 +149,20 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
         }
 
         zfauto key;
-        if(!ZFObjectFromDataT(key, nodeData.childAt(0), outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(key, nodeData.childAt(0), errorHint, errorPos)) {
             return zffalse;
         }
         if(key == zfnull) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "null key");
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData, "null key");
             return zffalse;
         }
 
         zfauto value;
-        if(!ZFObjectFromDataT(value, nodeData.childAt(1), outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(value, nodeData.childAt(1), errorHint, errorPos)) {
             return zffalse;
         }
         if(value == zfnull) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "null value");
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData, "null value");
             return zffalse;
         }
         this->iterAdd(key, value);
@@ -173,11 +173,11 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
 }
 zfbool ZFKeyValueContainer::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
     // completely override ZFContainer's version
-    // if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    // if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {return zffalse;}
     zfself *ref = zfcast(zfself *, refOwner);
 
     if(ref == zfnull) {
@@ -186,12 +186,12 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToData(
             ZFObject *value = this->iterValue(it);
 
             ZFSerializableData keyData;
-            if(!ZFObjectToDataT(keyData, key, outErrorHint)) {
+            if(!ZFObjectToDataT(keyData, key, errorHint)) {
                 return zffalse;
             }
 
             ZFSerializableData valueData;
-            if(!ZFObjectToDataT(valueData, value, outErrorHint)) {
+            if(!ZFObjectToDataT(valueData, value, errorHint)) {
                 return zffalse;
             }
 
@@ -203,19 +203,19 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToData(
         }
     }
     else {
-        return this->serializableOnSerializeToDataWithRef(serializableData, outErrorHint, ref);
+        return this->serializableOnSerializeToDataWithRef(serializableData, errorHint, ref);
     }
 
     return zftrue;
 }
 zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
     zfself *ref = zfcast(zfself *, refOwner);
     if(ref == zfnull) {
-        ZFSerializableUtilErrorOccurred(outErrorHint,
+        ZFSerializableUtilErrorOccurred(errorHint,
             "%s not type of %s",
             refOwner->toObject()->objectInfoOfInstance(), ZFKeyValueContainer::ClassData()->classNameFull());
         return zffalse;
@@ -226,11 +226,11 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
             ZFObject *key = this->iterKey(it);
             ZFObject *value = this->iterValue(it);
             ZFSerializableData keyData;
-            if(!ZFObjectToDataT(keyData, key, outErrorHint)) {
+            if(!ZFObjectToDataT(keyData, key, errorHint)) {
                 return zffalse;
             }
             ZFSerializableData valueData;
-            if(!ZFObjectToDataT(valueData, value, outErrorHint)) {
+            if(!ZFObjectToDataT(valueData, value, errorHint)) {
                 return zffalse;
             }
 
@@ -260,11 +260,11 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
         }
 
         ZFSerializableData keyData;
-        if(!ZFObjectToDataT(keyData, key, outErrorHint)) {
+        if(!ZFObjectToDataT(keyData, key, errorHint)) {
             return zffalse;
         }
         ZFSerializableData valueData;
-        if(!ZFObjectToDataT(valueData, value, outErrorHint)) {
+        if(!ZFObjectToDataT(valueData, value, errorHint)) {
             return zffalse;
         }
 
@@ -276,7 +276,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
     }
 
     if(tmp->count() > 0) {
-        ZFSerializableUtilErrorOccurred(outErrorHint,
+        ZFSerializableUtilErrorOccurred(errorHint,
             "missing elements from referenced container: %s", tmp->objectInfoOfContent());
         return zffalse;
     }

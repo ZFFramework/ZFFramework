@@ -14,22 +14,22 @@ ZF_NAMESPACE_BEGIN_REGISTER(ZFSerializableUtil, ZF_NAMESPACE_GLOBAL)
 /**
  * @brief util method to set error
  */
-#define ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, errorPos, fmt, ...) \
-        ZFSerializableUtil::_ZFP_errorOccurredAt(outErrorHint, outErrorPos, errorPos, zfstr(fmt, ##__VA_ARGS__))
+#define ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, pos, fmt, ...) \
+        ZFSerializableUtil::_ZFP_errorOccurredAt(errorHint, errorPos, pos, zfstr(fmt, ##__VA_ARGS__))
 /**
  * @brief util method to set error
  */
-#define ZFSerializableUtilErrorOccurred(outErrorHint, fmt, ...) \
-        ZFSerializableUtil::_ZFP_errorOccurred(outErrorHint, zfstr(fmt, ##__VA_ARGS__))
+#define ZFSerializableUtilErrorOccurred(errorHint, fmt, ...) \
+        ZFSerializableUtil::_ZFP_errorOccurred(errorHint, zfstr(fmt, ##__VA_ARGS__))
 
 extern ZFLIB_ZFCore void _ZFP_errorOccurredAt(
-        ZF_OUT_OPT zfstring *outErrorHint
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos
-        , ZF_IN const ZFSerializableData &errorPos
+        ZF_OUT_OPT zfstring *errorHint
+        , ZF_OUT_OPT ZFSerializableData *errorPos
+        , ZF_IN const ZFSerializableData &pos
         , ZF_IN const zfstring &text
         );
 extern ZFLIB_ZFCore void _ZFP_errorOccurred(
-        ZF_OUT_OPT zfstring *outErrorHint
+        ZF_OUT_OPT zfstring *errorHint
         , ZF_IN const zfstring &text
         );
 
@@ -49,8 +49,8 @@ extern ZFLIB_ZFCore zfstring checkItemClass(
 extern ZFLIB_ZFCore zfstring requireItemClass(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredClass
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         );
 
 /**
@@ -70,8 +70,8 @@ extern ZFLIB_ZFCore zfstring checkAttr(
 extern ZFLIB_ZFCore zfstring requireAttr(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredAttr
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         );
 
 /**
@@ -89,8 +89,8 @@ extern ZFLIB_ZFCore ZFSerializableData checkElementByName(
 extern ZFLIB_ZFCore ZFSerializableData requireElementByName(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredElementName
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         );
 
 /**
@@ -108,8 +108,8 @@ extern ZFLIB_ZFCore ZFSerializableData checkElementByCategory(
 extern ZFLIB_ZFCore ZFSerializableData requireElementByCategory(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredElementCategory
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         );
 
 /**
@@ -125,10 +125,10 @@ inline zfstring checkPropertyName(ZF_IN const ZFSerializableData &serializableDa
  */
 inline zfstring requirePropertyName(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         ) {
-    return ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_prop, outErrorHint, outErrorPos);
+    return ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_prop, errorHint, errorPos);
 }
 
 /**
@@ -144,10 +144,10 @@ inline zfstring checkPropertyValue(ZF_IN const ZFSerializableData &serializableD
  */
 inline zfstring requirePropertyValue(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         ) {
-    return ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_value, outErrorHint, outErrorPos);
+    return ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_value, errorHint, errorPos);
 }
 
 /**
@@ -163,10 +163,10 @@ inline zfstring checkCategory(ZF_IN const ZFSerializableData &serializableData) 
  */
 inline zfstring requireCategory(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         ) {
-    return ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_category, outErrorHint, outErrorPos);
+    return ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_category, errorHint, errorPos);
 }
 
 /**
@@ -182,29 +182,29 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
 
 // ============================================================
 // util macro for impl
-#define _ZFP_ZFSerializableUtilSerializeFromData_check(outErrorHint, outErrorPos)
-#define _ZFP_ZFSerializableUtilSerializeFromData_require(outErrorHint, outErrorPos) , outErrorHint, outErrorPos
-#define _ZFP_ZFSerializableUtilSerializeFromData_(check_or_require, outErrorHint, outErrorPos) \
-    _ZFP_ZFSerializableUtilSerializeFromData_##check_or_require(outErrorHint, outErrorPos)
-#define _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, outErrorHint, outErrorPos) \
-    _ZFP_ZFSerializableUtilSerializeFromData_(check_or_require, outErrorHint, outErrorPos)
+#define _ZFP_ZFSerializableUtilSerializeFromData_check(errorHint, errorPos)
+#define _ZFP_ZFSerializableUtilSerializeFromData_require(errorHint, errorPos) , errorHint, errorPos
+#define _ZFP_ZFSerializableUtilSerializeFromData_(check_or_require, errorHint, errorPos) \
+    _ZFP_ZFSerializableUtilSerializeFromData_##check_or_require(errorHint, errorPos)
+#define _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, errorHint, errorPos) \
+    _ZFP_ZFSerializableUtilSerializeFromData_(check_or_require, errorHint, errorPos)
 
 /** @brief util macro to impl #ZFSerializable */
-#define ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos, \
+#define ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos, \
     check_or_require, key, TypeName, value, failAction) \
     do { \
         zfstring valueString = ZFSerializableUtil::check_or_require##Attr(serializableData, key \
-            _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, outErrorHint, outErrorPos)); \
+            _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, errorHint, errorPos)); \
         if(valueString != zfnull) { \
             if(!TypeName##FromStringT(value, valueString)) { \
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, \
+                ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData, \
                     "failed to convert from \"%s\"", valueString); \
                 failAction \
             } \
         } \
     } while(zffalse)
 /** @brief util macro to impl #ZFSerializable */
-#define ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref, \
+#define ZFSerializableUtilSerializeAttrToData(serializableData, errorHint, ref, \
     key, TypeName, thisValue, refData, defaultValue, failAction) \
     do { \
         if((ref == zfnull && ZFComparerDefault(thisValue, defaultValue) != ZFCompareEqual) \
@@ -212,7 +212,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
                 ) { \
             zfstring valueString; \
             if(!TypeName##ToStringT(valueString, thisValue)) { \
-                ZFSerializableUtilErrorOccurred(outErrorHint, \
+                ZFSerializableUtilErrorOccurred(errorHint, \
                     "failed to convert %s to string", key); \
                 failAction \
             } \
@@ -222,13 +222,13 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
         } \
     } while(zffalse)
 /** @brief util macro to impl #ZFSerializable */
-#define ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint, \
+#define ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, errorHint, \
     key, TypeName, thisValue, defaultValue, failAction) \
     do { \
         if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareEqual) { \
             zfstring valueString; \
             if(!TypeName##ToStringT(valueString, thisValue)) { \
-                ZFSerializableUtilErrorOccurred(outErrorHint, \
+                ZFSerializableUtilErrorOccurred(errorHint, \
                     "failed to convert %s to string", key); \
                 failAction \
             } \
@@ -240,26 +240,26 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
 
 // ============================================================
 /** @brief util macro to impl #ZFSerializable */
-#define ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos, \
+#define ZFSerializableUtilSerializeCategoryFromData(serializableData, errorHint, errorPos, \
     check_or_require, key, TypeName, value, failAction) \
     do { \
         ZFSerializableData valueData = ZFSerializableUtil::check_or_require##ElementByCategory(serializableData, key \
-            _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, outErrorHint, outErrorPos)); \
+            _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, errorHint, errorPos)); \
         if(valueData != zfnull) { \
-            if(!TypeName##FromDataT(value, valueData, outErrorHint, outErrorPos)) { \
+            if(!TypeName##FromDataT(value, valueData, errorHint, errorPos)) { \
                 failAction \
             } \
         } \
     } while(zffalse)
 /** @brief util macro to impl #ZFSerializable */
-#define ZFSerializableUtilSerializeCategoryToData(serializableData, outErrorHint, ref, \
+#define ZFSerializableUtilSerializeCategoryToData(serializableData, errorHint, ref, \
     key, TypeName, thisValue, refData, defaultValue, failAction) \
     do { \
         if((ref == zfnull && ZFComparerDefault(thisValue, defaultValue) != ZFCompareEqual) \
                 || (ref != zfnull && ZFComparerDefault(thisValue, refData) != ZFCompareEqual) \
                 ) { \
             ZFSerializableData categoryData; \
-            if(!TypeName##ToDataT(categoryData, thisValue, outErrorHint)) { \
+            if(!TypeName##ToDataT(categoryData, thisValue, errorHint)) { \
                 failAction \
             } \
             else { \
@@ -269,12 +269,12 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
         } \
     } while(zffalse)
 /** @brief util macro to impl #ZFSerializable */
-#define ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint, \
+#define ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, errorHint, \
     key, TypeName, thisValue, defaultValue, failAction) \
     do { \
         if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareEqual) { \
             ZFSerializableData categoryData; \
-            if(!TypeName##ToDataT(categoryData, thisValue, outErrorHint)) { \
+            if(!TypeName##ToDataT(categoryData, thisValue, errorHint)) { \
                 failAction \
             } \
             else { \

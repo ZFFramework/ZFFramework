@@ -13,11 +13,11 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             if(customType != zfnull) {
                 _ZFP_ZFCallbackSerializeCustomCallback serializeCallback = _ZFP_ZFCallbackSerializeCustomTypeForName(customType);
                 if(serializeCallback == zfnull) {
-                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+                    ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData,
                         "no such callback custom serialize type: %s", customType);
                     return zffalse;
                 }
-                if(!serializeCallback(v, serializableData, outErrorHint, outErrorPos)) {
+                if(!serializeCallback(v, serializableData, errorHint, errorPos)) {
                     return zffalse;
                 }
                 v.callbackSerializeType(customType);
@@ -36,12 +36,12 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             serializableData.resolveMark();
             return zftrue;
         }
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCallback(), outErrorHint, outErrorPos) == zfnull) {
+        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCallback(), errorHint, errorPos) == zfnull) {
             return zffalse;
         }
 
         const ZFMethod *method = zfnull;
-        ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos,
                 require, ZFSerializableKeyword_ZFCallback_method, ZFMethod, method, {
                     return zffalse;
                 });
@@ -53,7 +53,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             v = ZFCallbackForMethod(method);
         }
         else {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData,
                 "member method callback is not supported");
             return zffalse;
         }
@@ -63,12 +63,12 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
     }, {
         if(v.callbackSerializeType() != zfnull) {
             if(v.callbackSerializeDisable()) {
-                ZFSerializableUtilErrorOccurred(outErrorHint, "callback was marked as not serializable");
+                ZFSerializableUtilErrorOccurred(errorHint, "callback was marked as not serializable");
                 return zffalse;
             }
 
             if(v.callbackSerializeData() == zfnull) {
-                ZFSerializableUtilErrorOccurred(outErrorHint, "missing callback serialize custom data");
+                ZFSerializableUtilErrorOccurred(errorHint, "missing callback serialize custom data");
                 return zffalse;
             }
 
@@ -91,23 +91,23 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
                 break;
             case ZFCallbackTypeMethod:
                 serializableData.itemClass(ZFTypeId_ZFCallback());
-                ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
+                ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, errorHint,
                         ZFSerializableKeyword_ZFCallback_method, ZFMethod, v.callbackMethod(), zfnull, {
                             return zffalse;
                         });
                 break;
             case ZFCallbackTypeMemberMethod: {
-                ZFSerializableUtilErrorOccurred(outErrorHint,
+                ZFSerializableUtilErrorOccurred(errorHint,
                     "member method callback is not supported");
                 return zffalse;
             }
                 break;
             case ZFCallbackTypeRawFunction:
-                ZFSerializableUtilErrorOccurred(outErrorHint,
+                ZFSerializableUtilErrorOccurred(errorHint,
                     "raw function is not supported");
                 return zffalse;
             case ZFCallbackTypeLambda:
-                ZFSerializableUtilErrorOccurred(outErrorHint,
+                ZFSerializableUtilErrorOccurred(errorHint,
                     "lambda function is not supported");
                 return zffalse;
             default:

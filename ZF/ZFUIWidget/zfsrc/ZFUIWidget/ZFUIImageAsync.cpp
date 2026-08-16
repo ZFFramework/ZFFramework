@@ -170,22 +170,22 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAsyncT
 
 ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(async, ZFUIImageSerializeType_ZFUIImageAsync) {
     ZFCallback input;
-    ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeCategoryFromData(serializableData, errorHint, errorPos,
             require, ZFSerializableKeyword_ZFUIImageAsync_imageSrc, ZFCallback, input, {
                 return zffalse;
             });
     if(!input) {
-        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData,
             "invalid callback");
         return zffalse;
     }
     zfauto imageLoadFail;
-    ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeCategoryFromData(serializableData, errorHint, errorPos,
             check, ZFSerializableKeyword_ZFUIImageAsync_imageLoadFail, ZFObject, imageLoadFail, {
                 return zffalse;
             });
     zfauto imageLoading;
-    ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeCategoryFromData(serializableData, errorHint, errorPos,
             check, ZFSerializableKeyword_ZFUIImageAsync_imageLoading, ZFObject, imageLoading, {
                 return zffalse;
             });

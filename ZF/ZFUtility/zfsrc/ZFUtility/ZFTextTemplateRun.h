@@ -57,7 +57,7 @@ protected:
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfbool, ZFTextTemplateRun
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN(const ZFTextTemplateParam &, textTemplateParam)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 
 ZF_NAMESPACE_GLOBAL_END

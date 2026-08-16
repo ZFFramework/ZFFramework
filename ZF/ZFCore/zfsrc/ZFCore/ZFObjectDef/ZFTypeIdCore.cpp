@@ -15,12 +15,12 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTypeIdWrapper, void, zfvReset)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTypeIdWrapper, zfbool, zfvIsInit)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFTypeIdWrapper, zfbool, zfvFromData
         , ZFMP_IN(const ZFSerializableData &, serializableData)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        , ZFMP_OUT_OPT(ZFSerializableData *, errorPos, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFTypeIdWrapper, zfbool, zfvToData
         , ZFMP_OUT(ZFSerializableData &, serializableData)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFTypeIdWrapper, zfbool, zfvFromString
         , ZFMP_IN(const zfchar *, src)

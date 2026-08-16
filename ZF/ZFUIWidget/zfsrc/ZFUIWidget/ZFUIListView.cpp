@@ -1295,10 +1295,10 @@ ZFSerializablePropertyType ZFUIListView::serializableOnCheckPropertyType(ZF_IN c
 
 zfbool ZFUIListView::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
 
     this->cellAdapter(zfnull);
 
@@ -1309,13 +1309,13 @@ zfbool ZFUIListView::serializableOnSerializeFromData(
         if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUIListView_cellAdapter)) {continue;}
 
         zfauto element;
-        if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(element, categoryData, errorHint, errorPos)) {
             return zffalse;
         }
         if(element != zfnull
                 && !element->classData()->classIsTypeOf(ZFUICellAdapter::ClassData())
                 ) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, categoryData,
                 "%s not type of %s",
                 element->objectInfoOfInstance(), ZFUICellAdapter::ClassData()->classNameFull());
             return zffalse;
@@ -1328,10 +1328,10 @@ zfbool ZFUIListView::serializableOnSerializeFromData(
 }
 zfbool ZFUIListView::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {return zffalse;}
     zfself *ref = zfcast(zfself *, refOwner);
 
     if(!this->cellAdapterSerializable() || this->cellAdapter() == zfnull) {
@@ -1339,7 +1339,7 @@ zfbool ZFUIListView::serializableOnSerializeToData(
     }
 
     ZFSerializableData categoryData;
-    if(!ZFObjectToDataT(categoryData, this->cellAdapter()->toObject(), outErrorHint,
+    if(!ZFObjectToDataT(categoryData, this->cellAdapter()->toObject(), errorHint,
                 ref ? zfcast(ZFSerializable *, ref->cellAdapter()) : zfnull
                 )) {
         return zffalse;

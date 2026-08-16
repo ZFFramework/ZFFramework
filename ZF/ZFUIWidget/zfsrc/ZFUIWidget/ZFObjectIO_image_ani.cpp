@@ -13,7 +13,7 @@ ZFOBJECTIO_DEFINE(image_ani, ZFLevelZFFrameworkPostLow, ZFM_EXPAND({
     }), {
         ret = ZFUIImageAniLoad(input);
         if(ret == zfnull) {
-            zfstringAppend(outErrorHint
+            zfstringAppend(errorHint
                 , "unable to load image ani from %s"
                 , input.pathInfo()
                 );
@@ -23,7 +23,7 @@ ZFOBJECTIO_DEFINE(image_ani, ZFLevelZFFrameworkPostLow, ZFM_EXPAND({
             return zftrue;
         }
     }, {
-        zfstringAppend(outErrorHint
+        zfstringAppend(errorHint
             , "image_ani does not support write to file"
             );
         return zffalse;

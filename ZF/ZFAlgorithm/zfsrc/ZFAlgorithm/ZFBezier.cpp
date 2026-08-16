@@ -146,30 +146,30 @@ ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierBackInOut, ZFBezier(0.2f, -0.5f, 
 
 // ============================================================
 ZFTYPEID_DEFINE(ZFBezier, ZFBezier, {
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFBezier(), outErrorHint, outErrorPos) == zfnull) {
+        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFBezier(), errorHint, errorPos) == zfnull) {
             return zffalse;
         }
 
         zffloat p0x = 0;
-        ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos,
                 check, ZFSerializableKeyword_ZFBezier_p0x, zffloat, p0x, {
                     return zffalse;
                 });
 
         zffloat p0y = 0;
-        ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos,
                 check, ZFSerializableKeyword_ZFBezier_p0y, zffloat, p0y, {
                     return zffalse;
                 });
 
         zffloat p1x = 1;
-        ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos,
                 check, ZFSerializableKeyword_ZFBezier_p1x, zffloat, p1x, {
                     return zffalse;
                 });
 
         zffloat p1y = 1;
-        ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos,
                 check, ZFSerializableKeyword_ZFBezier_p1y, zffloat, p1y, {
                     return zffalse;
                 });
@@ -181,20 +181,20 @@ ZFTYPEID_DEFINE(ZFBezier, ZFBezier, {
     }, {
         serializableData.itemClass(ZFTypeId_ZFBezier());
 
-        ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
+        ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, errorHint,
                 ZFSerializableKeyword_ZFBezier_p0x, zffloat, v.p0x, (zffloat)0, {
                     return zffalse;
                 });
-        ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
+        ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, errorHint,
                 ZFSerializableKeyword_ZFBezier_p0y, zffloat, v.p0y, (zffloat)0, {
                     return zffalse;
                 });
 
-        ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
+        ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, errorHint,
                 ZFSerializableKeyword_ZFBezier_p1x, zffloat, v.p1x, (zffloat)1, {
                     return zffalse;
                 });
-        ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
+        ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, errorHint,
                 ZFSerializableKeyword_ZFBezier_p1y, zffloat, v.p1y, (zffloat)1, {
                     return zffalse;
                 });

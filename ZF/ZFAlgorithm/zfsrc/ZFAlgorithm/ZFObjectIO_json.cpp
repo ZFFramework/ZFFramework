@@ -6,9 +6,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFOBJECTIO_DEFINE(json, ZFLevelZFFrameworkPostNormal, {
         return fileExt == "json";
     }, {
-        return ZFObjectFromJsonT(ret, input, outErrorHint);
+        return ZFObjectFromJsonT(ret, input, errorHint);
     }, {
-        return ZFObjectToJson(output, obj, outErrorHint);
+        return ZFObjectToJson(output, obj, errorHint);
     })
 
 ZF_NAMESPACE_GLOBAL_END

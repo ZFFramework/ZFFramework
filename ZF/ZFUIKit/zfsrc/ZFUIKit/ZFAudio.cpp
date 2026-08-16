@@ -297,13 +297,13 @@ void ZFAudio::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
 
 zfbool ZFAudio::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuper::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {
+    if(!zfsuper::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {
         return zffalse;
     }
-    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos
+    ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos
             , check, "src", ZFPathInfo, d->pathInfo, {
                 return zffalse;
             });
@@ -311,15 +311,15 @@ zfbool ZFAudio::serializableOnSerializeFromData(
 }
 zfbool ZFAudio::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
     zfself *ref = zfcast(zfself *, refOwner);
-    ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref
+    ZFSerializableUtilSerializeAttrToData(serializableData, errorHint, ref
             , "src", ZFPathInfo, this->pathInfo(), ref->pathInfo(), ZFPathInfo(), {
                 return zffalse;
             });
-    return zfsuper::serializableOnSerializeToData(serializableData, outErrorHint, refOwner);
+    return zfsuper::serializableOnSerializeToData(serializableData, errorHint, refOwner);
 }
 
 void ZFAudio::_ZFP_ZFAudio_OnLoad(

@@ -109,10 +109,10 @@ ZFSerializablePropertyType ZFUIAutoLayoutParam::serializableOnCheckPropertyType(
 
 zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
     // remove all rule
     for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         _ZFP_AL_d.ruleList[i].removeAll();
@@ -124,7 +124,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
         const zfstring &ruleStr = ruleList[iRule];
         ZFCoreArray<ZFIndexRange> itemPos = zfstringSplitIndex(ruleStr, ":");
         if(!(itemPos.count() >= 3 && itemPos.count() <= 4)) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData
                 , "invalid rule: \"%s\""
                 , ruleStr
                 );
@@ -135,7 +135,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
         if(!ZFUIAutoLayoutPosFromStringT(pos, ruleStr + itemPos[0].start, itemPos[0].count)
                 || pos == v_ZFUIAutoLayoutPos::e_None
                 ) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData
                 , "invalid pos rule \"%s\", declared in rule \"%s\""
                 , zfstring(ruleStr + itemPos[0].start, itemPos[0].count)
                 , ruleStr
@@ -147,7 +147,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
         if(!ZFUIAutoLayoutPosFromStringT(targetPos, ruleStr + itemPos[1].start, itemPos[1].count)
                 || pos == v_ZFUIAutoLayoutPos::e_None
                 ) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData
                 , "invalid targetPos rule \"%s\", declared in rule \"%s\""
                 , zfstring(ruleStr + itemPos[1].start, itemPos[1].count)
                 , ruleStr
@@ -164,7 +164,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
                     ) {
                 zfindex refIndex = zfindexMax();
                 if(!zfindexFromStringT(refIndex, target + 1)) {
-                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+                    ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData
                             , "invalid target rule \"%s\", declared in rule \"%s\""
                             , target
                             , ruleStr
@@ -182,10 +182,10 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
 }
 zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {return zffalse;}
     zfself *ref = zfcast(zfself *, refOwner);
     zfstring charMap = ZFCoreDataEncodeCharMapCreate(ZFCoreDataEncodeCharMapAllPrintable()
             , -'%'
@@ -204,14 +204,14 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
         }
 
         if(rule.targetPos() == v_ZFUIAutoLayoutPos::e_None) {
-            ZFSerializableUtilErrorOccurred(outErrorHint
+            ZFSerializableUtilErrorOccurred(errorHint
                     , "invalid targetPos"
                     );
             return zffalse;
         }
         _ZFP_ZFUIAutoLayout_targetIdUpdate(rule._ZFP_AL_targetId, rule, zfcast(ZFUIAutoLayout *, this->ownerLayout()), this->ownerView());
         if(!rule._ZFP_AL_targetId) {
-            ZFSerializableUtilErrorOccurred(outErrorHint
+            ZFSerializableUtilErrorOccurred(errorHint
                     , "no target specified"
                     );
             return zffalse;
@@ -311,10 +311,10 @@ void ZFUIAutoLayout::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
 }
 zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuper::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {
+    if(!zfsuper::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {
         return zffalse;
     }
 
@@ -324,7 +324,7 @@ zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
         for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
             ZFUIAutoLayoutRule &rule = lp->_ZFP_AL_d.ruleList[i];
             if(!_ZFP_ZFUIAutoLayout_targetUpdate(rule, this, child)) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+                ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData,
                     "%s invalid target \"%s\" for %s",
                     this,
                     rule._ZFP_AL_targetId,

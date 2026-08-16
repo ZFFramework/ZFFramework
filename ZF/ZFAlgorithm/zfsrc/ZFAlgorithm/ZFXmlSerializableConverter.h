@@ -16,16 +16,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataFromXml
         , ZFMP_OUT(ZFSerializableData &, serializableData)
         , ZFMP_IN(const ZFXml &, xmlElement)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_OUT_OPT(ZFXml *, outErrorPos, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        , ZFMP_OUT_OPT(ZFXml *, errorPos, zfnull)
         )
 /**
  * @brief see #ZFSerializableDataFromXml
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFSerializableData, ZFSerializableDataFromXml
         , ZFMP_IN(const ZFXml &, xmlElement)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_OUT_OPT(ZFXml *, outErrorPos, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        , ZFMP_OUT_OPT(ZFXml *, errorPos, zfnull)
         )
 /**
  * @brief print serializable to xml formated data
@@ -33,16 +33,16 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFSerializableData, ZFSerializableDat
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataToXml
         , ZFMP_OUT(ZFXml &, xmlElement)
         , ZFMP_IN(const ZFSerializableData &, serializableData)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        , ZFMP_OUT_OPT(ZFSerializableData *, errorPos, zfnull)
         )
 /**
  * @brief see #ZFSerializableDataToXml
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFXml, ZFSerializableDataToXml
         , ZFMP_IN(const ZFSerializableData &, serializableData)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        , ZFMP_OUT_OPT(ZFSerializableData *, errorPos, zfnull)
         )
 
 // ============================================================
@@ -52,12 +52,12 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFXml, ZFSerializableDataToXml
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataFromXml
         , ZFMP_OUT(ZFSerializableData &, ret)
         , ZFMP_IN(const ZFInput &, input)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 /** @brief see #ZFSerializableDataFromXml */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFSerializableData, ZFSerializableDataFromXml
         , ZFMP_IN(const ZFInput &, input)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 /**
  * @brief util method to convert serializable object to xml format
@@ -65,7 +65,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFSerializableData, ZFSerializableDat
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataToXml
         , ZFMP_IN(const ZFOutput &, outputCallback)
         , ZFMP_IN(const ZFSerializableData &, serializableData)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         , ZFMP_IN_OPT(const ZFXmlOutputToken &, token, ZFXmlOutputTokenDefault())
         )
 
@@ -76,12 +76,12 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataToXml
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFObjectFromXmlT
         , ZFMP_OUT(zfauto &, ret)
         , ZFMP_IN(const ZFInput &, input)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 /** @brief see #ZFObjectFromXmlT */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfauto, ZFObjectFromXml
         , ZFMP_IN(const ZFInput &, input)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 /**
  * @brief util method to convert serializable object to xml format
@@ -89,7 +89,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfauto, ZFObjectFromXml
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFObjectToXml
         , ZFMP_IN(const ZFOutput &, outputCallback)
         , ZFMP_IN(ZFObject *, obj)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         , ZFMP_IN_OPT(const ZFXmlOutputToken &, token, ZFXmlOutputTokenDefault())
         )
 

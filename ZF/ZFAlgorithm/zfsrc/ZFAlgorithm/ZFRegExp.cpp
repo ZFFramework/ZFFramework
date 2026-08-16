@@ -28,20 +28,20 @@ void ZFRegExpResult::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 }
 
 ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFRegExpResult(), outErrorHint, outErrorPos) == zfnull) {
+        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFRegExpResult(), errorHint, errorPos) == zfnull) {
             return zffalse;
         }
 
         ZFSerializableData element;
 
         v.matched = zffalse;
-        ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeCategoryFromData(serializableData, errorHint, errorPos,
                 check, ZFSerializableKeyword_ZFRegExpResult_matched, zfbool, v.matched, {
                     return zffalse;
                 });
 
         v.matchedRange = ZFIndexRangeMax();
-        ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeCategoryFromData(serializableData, errorHint, errorPos,
                 check, ZFSerializableKeyword_ZFRegExpResult_matchedRange, ZFIndexRange, v.matchedRange, {
                     return zffalse;
                 });
@@ -51,8 +51,8 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
         if(element != zfnull && !ZFCoreArrayFromDataT(
                     v.namedGroups,
                     serializableData,
-                    outErrorHint,
-                    outErrorPos
+                    errorHint,
+                    errorPos
                     )) {
             return zffalse;
         }
@@ -60,19 +60,19 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
     }, {
         serializableData.itemClass(ZFTypeId_ZFRegExpResult());
 
-        ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint,
+        ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, errorHint,
                 ZFSerializableKeyword_ZFRegExpResult_matched, zfbool, v.matched, zffalse, {
                     return zffalse;
                 });
 
-        ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint,
+        ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, errorHint,
                 ZFSerializableKeyword_ZFRegExpResult_matchedRange, ZFIndexRange, v.matchedRange, ZFIndexRangeMax(), {
                     return zffalse;
                 });
 
         if(!v.namedGroups.isEmpty()) {
             ZFSerializableData element;
-            if(!ZFCoreArrayToDataT(element, v.namedGroups, outErrorHint)) {
+            if(!ZFCoreArrayToDataT(element, v.namedGroups, errorHint)) {
                 return zffalse;
             }
             element.category(ZFSerializableKeyword_ZFRegExpResult_namedGroups);
@@ -112,19 +112,19 @@ ZFOBJECT_REGISTER(ZFRegExp)
 
 zfbool ZFRegExp::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
 
     const zfchar *pattern = zfnull;
-    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos,
             check, ZFSerializableKeyword_ZFRegExp_pattern, zfstring, pattern, {
                 return zffalse;
             });
 
     ZFRegExpOptionFlags flag = ZFRegExpOptionFlags::EnumDefault();
-    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos,
             check, ZFSerializableKeyword_ZFRegExp_flag, ZFRegExpOptionFlags, flag, {
                 return zffalse;
             });
@@ -135,18 +135,18 @@ zfbool ZFRegExp::serializableOnSerializeFromData(
 }
 zfbool ZFRegExp::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner)) {return zffalse;}
     zfself *ref = zfcast(zfself *, refOwner);
 
-    ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref,
+    ZFSerializableUtilSerializeAttrToData(serializableData, errorHint, ref,
             ZFSerializableKeyword_ZFRegExp_pattern, zfstring, this->pattern(), ref->pattern(), "", {
                 return zffalse;
             });
 
-    ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref,
+    ZFSerializableUtilSerializeAttrToData(serializableData, errorHint, ref,
             ZFSerializableKeyword_ZFRegExp_flag, ZFRegExpOptionFlags, this->options(), ref->options(), ZFRegExpOptionFlags::EnumDefault(), {
                 return zffalse;
             });

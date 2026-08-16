@@ -163,6 +163,44 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
 zfinterface ZFLIB_ZFCore ZFSerializable : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFSerializable, ZFInterface)
 
+public:
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called before serialize from string or data,
+     * param0 is #v_zfstring or #v_ZFSerializableData of the root data\n
+     * you may update #ZFArgs::success and #ZFArgs::errorHint
+     * to indicate serialize failed
+     */
+    ZFEVENT(SerializeFromPrev)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called after serialize from string or data,
+     * param0 is #v_zfstring or #v_ZFSerializableData of the root data\n
+     * you may update #ZFArgs::success and #ZFArgs::errorHint
+     * to indicate serialize failed
+     */
+    ZFEVENT(SerializeFromPost)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called before serialize to string or data,
+     * param0 is #v_zfstring or #v_ZFSerializableData of the root data\n
+     * you may update #ZFArgs::success and #ZFArgs::errorHint
+     * to indicate serialize failed
+     */
+    ZFEVENT(SerializeToPrev)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called after serialize to string or data,
+     * param0 is #v_zfstring or #v_ZFSerializableData of the root data\n
+     * you may update #ZFArgs::success and #ZFArgs::errorHint
+     * to indicate serialize failed
+     */
+    ZFEVENT(SerializeToPost)
+
     // ============================================================
 public:
     /**
@@ -188,8 +226,8 @@ public:
      */
     zffinal zfbool serializeFromData(
             ZF_IN const ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
             );
     /**
      * @brief serialize to data, see #ZFSerializable
@@ -198,7 +236,7 @@ public:
      */
     zffinal zfbool serializeToData(
             ZF_OUT ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             , ZF_IN_OPT ZFSerializable *refOwner = zfnull
             );
 
@@ -326,8 +364,8 @@ protected:
      */
     virtual inline zfbool serializableOnSerializeFromData(
             ZF_IN const ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
             ) {
         return zftrue;
     }
@@ -338,7 +376,7 @@ protected:
      */
     virtual inline zfbool serializableOnSerializeToData(
             ZF_IN_OUT ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             , ZF_IN_OPT ZFSerializable *refOwner = zfnull
             ) {
         return zftrue;
@@ -369,8 +407,8 @@ protected:
     virtual zfbool serializableOnSerializePropertyFromData(
             ZF_IN const ZFSerializableData &propertyData
             , ZF_IN const ZFProperty *property
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
             );
     /**
      * @brief see #serializableOnCheckPropertyType, usually you have no need to override this method,
@@ -382,7 +420,7 @@ protected:
     virtual zfbool serializableOnSerializePropertyToData(
             ZF_OUT ZFSerializableData &ownerData
             , ZF_IN const ZFProperty *property
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             , ZF_IN_OPT ZFSerializable *refOwner = zfnull
             );
     /**
@@ -392,8 +430,8 @@ protected:
     virtual zfbool serializableOnSerializeEmbededPropertyFromData(
             ZF_IN const ZFSerializableData &propertyData
             , ZF_IN const ZFProperty *property
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
             );
     /**
      * @brief see #serializableOnCheckPropertyType, usually you have no need to override this method,
@@ -406,7 +444,7 @@ protected:
             ZF_OUT ZFSerializableData &ownerData
             , ZF_IN const ZFProperty *property
             , ZF_IN ZFSerializable *refOwner
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             );
 
 protected:
@@ -459,27 +497,27 @@ extern ZFLIB_ZFCore zfbool ZFObjectIsSerializable(ZF_IN ZFObject *obj);
 extern ZFLIB_ZFCore zfbool ZFObjectFromDataT(
         ZF_OUT zfauto &result
         , ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         );
 /** @brief see #ZFObjectFromDataT */
 extern ZFLIB_ZFCore zfauto ZFObjectFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         );
 /** @brief see #ZFObjectFromDataT */
 extern ZFLIB_ZFCore zfbool ZFObjectToDataT(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN ZFObject *obj
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         , ZF_IN_OPT ZFSerializable *refOwner = zfnull
         );
 /** @brief see #ZFObjectFromDataT */
 extern ZFLIB_ZFCore ZFSerializableData ZFObjectToData(
         ZF_IN ZFObject *obj
         , ZF_OUT_OPT zfbool *outSuccess = zfnull
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         , ZF_IN_OPT ZFSerializable *refOwner = zfnull
         );
 

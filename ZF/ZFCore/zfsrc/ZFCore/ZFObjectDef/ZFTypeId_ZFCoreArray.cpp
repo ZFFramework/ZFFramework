@@ -5,11 +5,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfbool v_ZFCoreArray::zfvFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
     if(this->zfv == zfnull) {
-        if(!ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCoreArray(), outErrorHint, outErrorPos)) {
+        if(!ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCoreArray(), errorHint, errorPos)) {
             return zffalse;
         }
 
@@ -20,7 +20,7 @@ zfbool v_ZFCoreArray::zfvFromData(
         if(!this->elementTypeInit(itemClass)
                 || this->zfv == zfnull
                 ) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+            ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData
                     , "unable to detect array type from item class: %s"
                     , itemClass
                     );
@@ -31,13 +31,13 @@ zfbool v_ZFCoreArray::zfvFromData(
             *this->elementType
             , *(this->zfv)
             , serializableData
-            , outErrorHint
-            , outErrorPos
+            , errorHint
+            , errorPos
             );
 }
 zfbool v_ZFCoreArray::zfvToData(
         ZF_OUT ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(this->zfv == zfnull) {
         serializableData.itemClass(ZFTypeId_ZFCoreArray());
@@ -47,7 +47,7 @@ zfbool v_ZFCoreArray::zfvToData(
             *this->elementType
             , serializableData
             , *(this->zfv)
-            , outErrorHint
+            , errorHint
             );
 }
 zfbool v_ZFCoreArray::zfvFromString(
@@ -190,11 +190,11 @@ zfbool _ZFP_ZFCoreArrayFromDataT(
         ZF_IN const ZFTypeInfo &elementType
         , ZF_IN_OUT ZFCoreArrayBase &v
         , ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *errorPos /* = zfnull */
         ) {
     v.removeAll();
-    if(!ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCoreArray(), outErrorHint, outErrorPos)) {
+    if(!ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCoreArray(), errorHint, errorPos)) {
         return zffalse;
     }
     if(elementType.typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
@@ -205,7 +205,7 @@ zfbool _ZFP_ZFCoreArrayFromDataT(
             }
             zfauto e = elementType.typeIdClass()->newInstance();
             ZFTypeIdWrapper *eTmp = e;
-            if(eTmp == zfnull || !eTmp->zfvFromData(element, outErrorHint, outErrorPos)) {
+            if(eTmp == zfnull || !eTmp->zfvFromData(element, errorHint, errorPos)) {
                 return zffalse;
             }
             void *eGeneric = elementType.genericAccess(e);
@@ -224,7 +224,7 @@ zfbool _ZFP_ZFCoreArrayFromDataT(
             }
             zfauto e = elementType.typeIdClass()->newInstance();
             ZFSerializable *eTmp = e;
-            if(eTmp == zfnull || !eTmp->serializeFromData(element, outErrorHint, outErrorPos)) {
+            if(eTmp == zfnull || !eTmp->serializeFromData(element, errorHint, errorPos)) {
                 return zffalse;
             }
             void *eGeneric = elementType.genericAccess(e);
@@ -243,7 +243,7 @@ zfbool _ZFP_ZFCoreArrayToDataT(
         ZF_IN const ZFTypeInfo &elementType
         , ZF_OUT ZFSerializableData &serializableData
         , ZF_IN ZFCoreArrayBase const &v
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     serializableData.itemClass(ZFTypeId_ZFCoreArray());
     if(elementType.typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
@@ -257,7 +257,7 @@ zfbool _ZFP_ZFCoreArrayToDataT(
                 return zffalse;
             }
             ZFSerializableData element;
-            if(!eTmp->zfvToData(element, outErrorHint)) {
+            if(!eTmp->zfvToData(element, errorHint)) {
                 return zffalse;
             }
             serializableData.child(element);
@@ -274,7 +274,7 @@ zfbool _ZFP_ZFCoreArrayToDataT(
                 return zffalse;
             }
             ZFSerializableData element;
-            if(!eTmp->serializeToData(element, outErrorHint)) {
+            if(!eTmp->serializeToData(element, errorHint)) {
                 return zffalse;
             }
             serializableData.child(element);

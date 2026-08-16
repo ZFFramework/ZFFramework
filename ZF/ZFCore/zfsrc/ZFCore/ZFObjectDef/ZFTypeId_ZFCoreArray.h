@@ -26,14 +26,14 @@ extern ZFLIB_ZFCore zfbool _ZFP_ZFCoreArrayFromDataT(
         ZF_IN const ZFTypeInfo &elementType
         , ZF_IN_OUT ZFCoreArrayBase &v
         , ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         );
 extern ZFLIB_ZFCore zfbool _ZFP_ZFCoreArrayToDataT(
         ZF_IN const ZFTypeInfo &elementType
         , ZF_OUT ZFSerializableData &serializableData
         , ZF_IN ZFCoreArrayBase const &v
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 
 // ============================================================
@@ -240,13 +240,13 @@ public:
     zfoverride
     virtual zfbool zfvFromData(
             ZF_IN const ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
             );
     zfoverride
     virtual zfbool zfvToData(
             ZF_OUT ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             );
     zfoverride
     virtual zfbool zfvFromString(
@@ -568,27 +568,27 @@ protected:
     zfoverride
     virtual zfbool serializableOnSerializeFromData(
             ZF_IN const ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
             ) {
         if(this->zfv != zfnull && !this->elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-            return this->zfvFromData(serializableData, outErrorHint, outErrorPos);
+            return this->zfvFromData(serializableData, errorHint, errorPos);
         }
         else {
-            return zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos);
+            return zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos);
         }
     }
     zfoverride
     virtual zfbool serializableOnSerializeToData(
             ZF_IN_OUT ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             , ZF_IN_OPT ZFSerializable *refOwner = zfnull
             ) {
         if(this->zfv != zfnull && !this->elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-            return this->zfvToData(serializableData, outErrorHint);
+            return this->zfvToData(serializableData, errorHint);
         }
         else {
-            return zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner);
+            return zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, errorHint, refOwner);
         }
     }
     zfoverride
@@ -784,31 +784,31 @@ template<typename T_Type>
 zfbool ZFCoreArrayFromDataT(
         ZF_IN_OUT ZFCoreArray<T_Type> &v
         , ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         ) {
     return _ZFP_ZFCoreArrayFromDataT(
             ZFTypeId<T_Type>()
             , v
             , serializableData
-            , outErrorHint
-            , outErrorPos
+            , errorHint
+            , errorPos
             );
 }
 /** @brief convert array from serializable data */
 template<typename T_Type>
 ZFCoreArray<T_Type> ZFCoreArrayFromData(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *errorPos = zfnull
         ) {
     ZFCoreArray<T_Type> ret;
     _ZFP_ZFCoreArrayFromDataT(
             ZFTypeId<T_Type>()
             , ret
             , serializableData
-            , outErrorHint
-            , outErrorPos
+            , errorHint
+            , errorPos
             );
     return ret;
 }
@@ -817,23 +817,23 @@ template<typename T_Type>
 zfbool ZFCoreArrayToDataT(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN ZFCoreArray<T_Type> const &v
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         ) {
     return _ZFP_ZFCoreArrayToDataT(
             ZFTypeId<T_Type>()
             , serializableData
             , v
-            , outErrorHint
+            , errorHint
             );
 }
 /** @brief convert array to serializable data */
 template<typename T_Type>
 ZFSerializableData ZFCoreArrayToData(
         ZF_IN ZFCoreArray<T_Type> const &v
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         ) {
     ZFSerializableData ret;
-    ZFCoreArrayToDataT(ret, v, outErrorHint);
+    ZFCoreArrayToDataT(ret, v, errorHint);
     return ret;
 }
 

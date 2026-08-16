@@ -146,23 +146,23 @@ ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForFormat
 
 ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeType_ZFOutputForFormat) {
     ZFOutput output;
-    ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeCategoryFromData(serializableData, errorHint, errorPos,
             require, ZFSerializableKeyword_ZFOutputForFormat_output, ZFCallback, output, {
                 return zffalse;
             });
 
     ZFSerializableData formatData = ZFSerializableUtil::requireElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFOutputForFormat_format, outErrorHint, outErrorPos);
+        serializableData, ZFSerializableKeyword_ZFOutputForFormat_format, errorHint, errorPos);
     if(formatData == zfnull) {
         return zffalse;
     }
     zfauto formatHolder;
-    if(!ZFObjectFromDataT(formatHolder, formatData, outErrorHint, outErrorPos)) {
+    if(!ZFObjectFromDataT(formatHolder, formatData, errorHint, errorPos)) {
         return zffalse;
     }
     ZFOutputFormat *format = formatHolder;
     if(format == zfnull) {
-        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, formatData,
+        ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, formatData,
             "format object %s not type of %s",
             formatHolder,
             ZFOutputFormat::ClassData()->classNameFull());
@@ -172,7 +172,7 @@ ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeType_ZFOu
     ZFOutput retTmp;
     retTmp.callbackSerializeDisable(zftrue);
     if(!ZFOutputForFormatT(retTmp, output, format)) {
-        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, formatData,
+        ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, formatData,
             "unable to create from output %s and format %s",
             output,
             formatHolder);

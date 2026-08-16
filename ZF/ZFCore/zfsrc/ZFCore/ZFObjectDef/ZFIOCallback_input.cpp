@@ -158,25 +158,25 @@ ZFInput ZFInputForInputInRange(
 }
 ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerializeType_ZFInputForInputInRange) {
     ZFCallback input;
-    ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeCategoryFromData(serializableData, errorHint, errorPos,
             require, ZFSerializableKeyword_ZFInputForInputInRange_input, ZFCallback, input, {
                 return zffalse;
             });
 
     zfindex start = 0;
-    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos, check,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos, check,
             ZFSerializableKeyword_ZFInputForInputInRange_start, zfindex, start, {
                 return zffalse;
             });
 
     zfindex count = zfindexMax();
-    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos, check,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos, check,
             ZFSerializableKeyword_ZFInputForInputInRange_count, zfindex, count, {
                 return zffalse;
             });
 
     zfbool autoRestorePos = zftrue;
-    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos, check,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, errorHint, errorPos, check,
             ZFSerializableKeyword_ZFInputForInputInRange_autoRestorePos, zfbool, autoRestorePos, {
                 return zffalse;
             });

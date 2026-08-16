@@ -44,12 +44,12 @@ inline zfbool zfstringFromStringT(
 extern ZFLIB_ZFCore zfbool zfstringFromDataT(
         ZF_OUT const zfchar * &propertyValue
         , ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 extern ZFLIB_ZFCore zfbool zfstringToDataT(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN const zfchar * const &propertyValue
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         );
 /** @endcond */
 

@@ -41,19 +41,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 extern ZFLIB_ZFCore zfauto ZFObjectIOLoad(
         ZF_IN const ZFInput &input
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /** @brief see #ZFObjectIOLoad */
 extern ZFLIB_ZFCore zfbool ZFObjectIOLoadT(
         ZF_OUT zfauto &ret
         , ZF_IN const ZFInput &input
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /** @brief see #ZFObjectIOLoad */
 extern ZFLIB_ZFCore zfbool ZFObjectIOSave(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN ZFObject *obj
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 
 // ============================================================
@@ -78,7 +78,7 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOSave(
  *           //   zfbool fromInput(
  *           //           ZF_OUT zfauto &ret
  *           //           , ZF_IN_OUT const ZFInput &input
- *           //           , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+ *           //           , ZF_OUT_OPT zfstring *errorHint = zfnull
  *           //           );
  *       }, {
  *           // callback to save object to output
@@ -86,7 +86,7 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOSave(
  *           //   zfbool toOutput(
  *           //           ZF_IN_OUT const ZFOutput &output
  *           //           , ZF_IN zfany const &obj
- *           //           , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+ *           //           , ZF_OUT_OPT zfstring *errorHint = zfnull
  *           //           );
  *       })
  * @endcode
@@ -109,14 +109,14 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOSave(
     static zfbool _ZFP_fromInput( \
             ZF_OUT zfauto &ret \
             , ZF_IN_OUT const ZFInput &input \
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ) { \
         fromInputAction \
     } \
     static zfbool _ZFP_toOutput( \
             ZF_IN_OUT const ZFOutput &output \
             , ZF_IN zfany const &obj \
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ) { \
         toOutputAction \
     } \
@@ -131,12 +131,12 @@ typedef zfbool (*_ZFP_ZFObjectIOCallback_checker)(
 typedef zfbool (*_ZFP_ZFObjectIOCallback_fromInput)(
         ZF_OUT zfauto &ret
         , ZF_IN_OUT const ZFInput &input
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         );
 typedef zfbool (*_ZFP_ZFObjectIOCallback_toOutput)(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN zfany const &obj
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         );
 extern ZFLIB_ZFCore void _ZFP_ZFObjectIORegister(
         ZF_IN const zfchar *registerSig
