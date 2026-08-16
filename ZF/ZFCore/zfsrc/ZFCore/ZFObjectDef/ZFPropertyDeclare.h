@@ -171,10 +171,16 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  * \n
  * \n
  * here's a simple hint for the property's life cycle:
- * -  property first time accessed:
+ * -  property first time accessed, by getter:
  *   -# store raw init value
  *   -# propertyOnInit
  *   -# propertyOnAttach
+ * -  property first time accessed, by setter:
+ *   -# store raw init value
+ *   -# propertyOnInit
+ *   -# propertyOnUpdate
+ *   -# propertyOnAttach
+ *   -# #ZFObject::E_ObjectPropertyValueOnUpdate
  * -  property's setter called:
  *   -# propertyOnDetach
  *   -# store raw value
