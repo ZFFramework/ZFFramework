@@ -335,6 +335,18 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserver, void, observerNotifyReve
         , ZFMP_IN(zfidentity, eventId)
         , ZFMP_IN_OPT(const ZFArgs &, zfargs, ZFArgs())
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFObserver, void, forwardOnAdd
+        , ZFMP_IN(ZFObject *, owner)
+        , ZFMP_IN(zfidentity, eventId)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFObserver, void, forwardOnRemove
+        , ZFMP_IN(ZFObject *, owner)
+        , ZFMP_IN(zfidentity, eventId)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFObserver, void, forwardOnEvent
+        , ZFMP_IN(ZFObject *, owner)
+        , ZFMP_IN(const ZFArgs &, zfargs)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserver, zfany, observerOwner)
 
 // ============================================================

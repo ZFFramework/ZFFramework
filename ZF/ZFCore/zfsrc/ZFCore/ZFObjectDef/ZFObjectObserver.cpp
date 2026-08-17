@@ -423,6 +423,22 @@ void ZFObserver::observerHasAddStateDetach(
     }
 }
 
+void ZFObserver::forwardOnAdd(ZF_IN ZFObject *owner, ZF_IN zfidentity eventId) {
+    if(owner) {
+        owner->observerOnAdd(eventId);
+    }
+}
+void ZFObserver::forwardOnRemove(ZF_IN ZFObject *owner, ZF_IN zfidentity eventId) {
+    if(owner) {
+        owner->observerOnRemove(eventId);
+    }
+}
+void ZFObserver::forwardOnEvent(ZF_IN ZFObject *owner, ZF_IN const ZFArgs &zfargs) {
+    if(owner) {
+        owner->observerOnEvent(zfargs);
+    }
+}
+
 void ZFObserver::objectInfoT(ZF_OUT zfstring &ret) const {
     ZFCoreMutexLocker();
     ret += "<ZFObserver";

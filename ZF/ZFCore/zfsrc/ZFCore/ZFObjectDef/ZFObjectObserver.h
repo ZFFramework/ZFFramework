@@ -244,6 +244,18 @@ public:
             , ZF_IN_OUT zfuint flagBit
             );
 
+    /**
+     * @brief explicitly forward #ZFObject::observerOnAdd to specified owner
+     *
+     * #ZFObject::observerOnAdd won't be called for #ZFCLASS_EXTEND,
+     * you may use this method to explicitly forward event dispatch
+     */
+    static void forwardOnAdd(ZF_IN ZFObject *owner, ZF_IN zfidentity eventId);
+    /** @brief see #forwardOnAdd */
+    static void forwardOnRemove(ZF_IN ZFObject *owner, ZF_IN zfidentity eventId);
+    /** @brief see #forwardOnAdd */
+    static void forwardOnEvent(ZF_IN ZFObject *owner, ZF_IN const ZFArgs &zfargs);
+
 public:
     /** @brief see #objectInfo */
     void objectInfoT(ZF_OUT zfstring &ret) const;
