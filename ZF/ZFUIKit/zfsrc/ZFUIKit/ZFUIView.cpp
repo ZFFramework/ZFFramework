@@ -1773,6 +1773,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
             && (d->parent == zfnull || !ZFBitTest(d->parent->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting))
             ) { // changed by user or animation
         if(d->viewFrame != viewFrame) {
+            zfbool sizeChanged = (d->viewFrame.width != viewFrame.width || d->viewFrame.height != viewFrame.height);
             if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)) {
                 ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag);
                 if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_mask)) {
@@ -1788,18 +1789,10 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
                 }
             }
             d->viewFrameUpdate(viewFrame);
-            if(d->viewFrame.width != d->viewFramePrev.width
-                    || d->viewFrame.height != d->viewFramePrev.height
-                    ) {
-                // request layout only for the changed view
-                d->layoutRequest(this, zffalse);
-            }
             d->viewFrameUpdateForImpl(this);
-        }
-
-        // update transform
-        if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewTransformUpdate)) {
-            d->viewTransformUpdateAction(this);
+            if(sizeChanged) {
+                d->layoutAction(this, ZFUIRectGetBounds(d->viewFrame));
+            }
         }
         return;
     }
@@ -1808,7 +1801,9 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)
             && d->viewFrameOverrideFix(this, viewFrame)
             ) { // user has set viewFrame, ignore parent layout logic
-        if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting)) {
+        if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting)
+                && ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested)
+                ) {
             d->layoutAction(this, ZFUIRectGetBounds(d->viewFrame));
         }
         d->viewFrameUpdateForImpl(this);
@@ -1822,10 +1817,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
             if(d->viewFrame != d->viewFramePrev || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleOnUpdate)) {
                 d->viewFrameUpdateForImpl(this);
             }
-
-            ZFUIRect bounds = ZFUIRectGetBounds(d->viewFrame);
-
-            d->layoutAction(this, bounds);
+            d->layoutAction(this, ZFUIRectGetBounds(d->viewFrame));
         }
         else if(d->viewFrame != viewFrame || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleOnUpdate)) {
             d->viewFrameUpdate(viewFrame);
@@ -1966,8 +1958,7 @@ void ZFUIView::layoutOnLayoutRequest(void) {
 void ZFUIView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
     for(zfindex i = 0; i < this->childCount(); ++i) {
         ZFUIView *child = this->childAt(i);
-        child->viewFrame(
-            ZFUILayoutParam::layoutParamApply(bounds, child));
+        child->viewFrame(ZFUILayoutParam::layoutParamApply(bounds, child));
     }
 }
 
