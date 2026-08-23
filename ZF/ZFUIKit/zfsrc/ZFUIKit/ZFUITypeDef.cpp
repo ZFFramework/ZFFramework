@@ -48,6 +48,14 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIPoint, ZFUIPointApplyScaleReversely
         , ZFMP_IN(const ZFUIPoint &, point)
         , ZFMP_IN(zffloat, scale)
         )
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIPoint, ZFUIPointInc
+        , ZFMP_IN(const ZFUIPoint &, point)
+        , ZFMP_IN(const ZFUIPoint &, offset)
+        )
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIPoint, ZFUIPointDec
+        , ZFMP_IN(const ZFUIPoint &, point)
+        , ZFMP_IN(const ZFUIPoint &, offset)
+        )
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIPoint, ZFUIPoint, {
         ZFCoreArray<zffloat> buf;
         if(!ZFCoreDataPairSplitFloat(buf, 2, src, srcLen)) {

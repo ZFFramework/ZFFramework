@@ -139,6 +139,27 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIPointApplyScaleReve
     return ret;
 }
 
+/**
+ * @brief increase the point
+ */
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIPointInc
+        , ZFMP_IN(const ZFUIPoint &, point)
+        , ZFMP_IN(const ZFUIPoint &, offset)
+        ) {
+    ZFUIPoint ret = {point.x + offset.x, point.y + offset.y};
+    return ret;
+}
+/**
+ * @brief decrease the point
+ */
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIPointDec
+        , ZFMP_IN(const ZFUIPoint &, point)
+        , ZFMP_IN(const ZFUIPoint &, offset)
+        ) {
+    ZFUIPoint ret = {point.x - offset.x, point.y - offset.y};
+    return ret;
+}
+
 // ============================================================
 // ZFUIMargin
 /**
