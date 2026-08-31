@@ -8,7 +8,7 @@
 
 #include "ZFCore/ZFProtocol.h"
 #include "../ZFUIOnScreenKeyboardState.h"
-#include "../ZFUIViewPositionOnScreen.h"
+#include "../ZFUIViewPositionMap.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
@@ -34,7 +34,7 @@ public:
             , ZF_IN const ZFUIRect &keyboardFrame
             , ZF_OUT ZFUIRect &clientFrame
             ) {
-        ZFUIViewPositionOnScreen(clientFrame, keyboardState->rootWindow()->rootView());
+        clientFrame = ZFUIViewPositionOnScreen(keyboardState->rootWindow()->rootView());
         ZFUIRectApplyScaleT(clientFrame, clientFrame, keyboardState->rootWindow()->rootView()->UIScaleFixed());
         if(ZFUIRectGetBottom(clientFrame) > ZFUIRectGetTop(keyboardFrame)) {
             clientFrame.height -= ZFUIRectGetBottom(clientFrame) - ZFUIRectGetTop(keyboardFrame);
