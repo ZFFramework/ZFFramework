@@ -30,8 +30,8 @@ public:
             ).c_str());
         jintArray jobjRect = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIViewPositionMap(), jmId
             , (jobject)view->nativeView()
-            , localPos.x
-            , localPos.y
+            , (jint)localPos.x
+            , (jint)localPos.y
             );
         jint *jarrRet = JNIUtilGetIntArrayElements(jniEnv, jobjRect, NULL);
         ret.x = (zffloat)jarrRet[0];
