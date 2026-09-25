@@ -9,8 +9,7 @@ public:
     zfbool useGlobalTimer;
 
     ZFListener globalTimerTask;
-    zfuint globalTimerFrameCount;
-    zfuint globalTimerFrameIndex;
+    zftimet globalTimerOffsetTime;
 
     ZFTimer *builtinTimer;
     zftimet builtinTimerStartTime;
@@ -18,8 +17,7 @@ public:
     _ZFP_ZFAniForTimerPrivate(void)
     : useGlobalTimer(zffalse)
     , globalTimerTask()
-    , globalTimerFrameCount(0)
-    , globalTimerFrameIndex(0)
+    , globalTimerOffsetTime(0)
     , builtinTimer(zfnull)
     , builtinTimerStartTime(0)
     {
@@ -32,8 +30,7 @@ public:
     static void doStart(ZF_IN ZFAniForTimer *owner) {
         if(owner->aniInterval() == 0) {
             owner->d->useGlobalTimer = zftrue;
-            owner->d->globalTimerFrameCount = (zfuint)zfmRound(owner->durationFixed() / ZFGlobalTimerIntervalDefault());
-            owner->d->globalTimerFrameIndex = 0;
+            owner->d->globalTimerOffsetTime = 0;
 
             ZFLISTENER_1(globalTimerOnActivate
                     , ZFAniForTimer *, owner
@@ -73,21 +70,27 @@ public:
 
 private:
     static void globalTimerOnActivate(ZF_IN ZFAniForTimer *owner) {
-        ++(owner->d->globalTimerFrameIndex);
-        zffloat progress = 1;
-        if(owner->d->globalTimerFrameIndex < owner->d->globalTimerFrameCount) {
-            progress = (zffloat)owner->d->globalTimerFrameIndex / owner->d->globalTimerFrameCount;
-        }
+        zftimet durationFixed = owner->durationFixed();
+        owner->d->globalTimerOffsetTime += ZFGlobalTimerIntervalDefault();
+        zffloat progress = (owner->d->globalTimerOffsetTime > durationFixed - ZFGlobalTimerIntervalDefault() / 2)
+            ? 1.0f
+            : ((zffloat)owner->d->globalTimerOffsetTime / durationFixed)
+            ;
         _update(owner, progress);
-        if(owner->d->globalTimerFrameIndex >= owner->d->globalTimerFrameCount) {
+        if(progress >= 1.0f) {
             owner->aniImplNotifyStop();
         }
     }
     static void builtinTimerOnActivate(ZF_IN ZFAniForTimer *owner) {
         zftimet curTime = ZFTime::timestamp();
-        zffloat progress = ((zffloat)(curTime - owner->d->builtinTimerStartTime)) / owner->durationFixed();
+        zftimet durationFixed = owner->durationFixed();
+        zffloat progress = (curTime - owner->d->builtinTimerStartTime
+                >= durationFixed - (owner->aniInterval() > 0 ? owner->aniInterval() : ZFGlobalTimerIntervalDefault()))
+            ? 1.0f
+            : ((zffloat)(curTime - owner->d->builtinTimerStartTime)) / durationFixed
+            ;
         _update(owner, progress);
-        if(curTime - owner->d->builtinTimerStartTime >= owner->durationFixed()) {
+        if(progress >= 1.0f) {
             owner->aniImplNotifyStop();
         }
     }

@@ -52,11 +52,8 @@ public:
     /**
      * @brief interval to update timer, in miliseconds, 0 by default
      *
-     * -  when set to 0, we would use special logic to achieve global timer control:
-     *   -# calculate frame count by #durationFixed/#ZFGlobalTimerIntervalDefault
-     *   -# step each frame by #ZFGlobalTimerInterval, until reach the frame count
-     *
-     *   for example, if you increace #ZFGlobalTimerInterval,
+     * -  when set to 0, we would use special logic to achieve global timer control,
+     *   if you increace #ZFGlobalTimerInterval,
      *   the animation would looks slower\n
      *   this is useful to achieve accurate timer control
      * -  when set to -1, it's always treated as #ZFGlobalTimerIntervalDefault when used
