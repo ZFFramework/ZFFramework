@@ -1621,6 +1621,16 @@ void ZFClass::_ZFP_ZFClass_autoRegister(void) const {
             _ZFP_ZFClass_invokeTimeLogger("autoReg: %s", this->className().cString());
             d->destructor(d->constructor());
         }
+        else {
+            // try to find a constructable child
+            for(zfimplhashmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
+                const ZFClass *child = it->first;
+                if(child->d->constructor) {
+                    child->_ZFP_ZFClass_autoRegister();
+                    break;
+                }
+            }
+        }
     }
 }
 
