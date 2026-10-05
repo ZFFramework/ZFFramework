@@ -2,7 +2,6 @@
 #include "ZFUIKit/protocol/ZFProtocolZFUIViewPositionMap.h"
 
 #if ZF_ENV_sys_SDL
-#include <cmath> // for sinf/cosf
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -26,8 +25,8 @@ public:
                 zffloat sx = (ret.x - v->rect.w / 2) * v->viewTransform->scaleX;
                 zffloat sy = (ret.y - v->rect.h / 2) * v->viewTransform->scaleY;
                 zffloat r = v->viewTransform->rotateZ * pi / 180;
-                zffloat cosR = cosf(r);
-                zffloat sinR = sinf(r);
+                zffloat cosR = zfm_cos(r);
+                zffloat sinR = zfm_sin(r);
                 ret.x = (sx * cosR + sy * sinR) + (v->rect.x + v->rect.w / 2);
                 ret.y = (-sx * sinR + sy * cosR) + (v->rect.y + v->rect.h / 2);
             }

@@ -5,8 +5,6 @@
 #include "ZFUIViewFocus.h"
 #include "ZFUIWindow.h"
 
-#include <cmath> // for fmodf on rotation
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 static zfuint _ZFP_ZFUIView_stateFlag = 0;
@@ -1210,7 +1208,7 @@ ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, scaleZ) {
     }
 }
 ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateX) {
-    propertyValue = (zffloat)fmodf(propertyValue, 360);
+    propertyValue = (zffloat)zfm_fmod(propertyValue, 360);
     if(propertyValue < 0) {
         propertyValue += 360;
     }
@@ -1219,7 +1217,7 @@ ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateX) {
     }
 }
 ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateY) {
-    propertyValue = (zffloat)fmodf(propertyValue, 360);
+    propertyValue = (zffloat)zfm_fmod(propertyValue, 360);
     if(propertyValue < 0) {
         propertyValue += 360;
     }
@@ -1228,7 +1226,7 @@ ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateY) {
     }
 }
 ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateZ) {
-    propertyValue = (zffloat)fmodf(propertyValue, 360);
+    propertyValue = (zffloat)zfm_fmod(propertyValue, 360);
     if(propertyValue < 0) {
         propertyValue += 360;
     }

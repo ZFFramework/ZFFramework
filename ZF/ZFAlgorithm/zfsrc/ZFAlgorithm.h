@@ -18,6 +18,7 @@
 #include "ZFAlgorithm/ZFIO_encrypt.h"
 #include "ZFAlgorithm/ZFJson.h"
 #include "ZFAlgorithm/ZFJsonSerializableConverter.h"
+#include "ZFAlgorithm/ZFMath.h"
 #include "ZFAlgorithm/ZFMd5.h"
 #include "ZFAlgorithm/ZFObjectIO_json.h"
 #include "ZFAlgorithm/ZFObjectIO_xml.h"

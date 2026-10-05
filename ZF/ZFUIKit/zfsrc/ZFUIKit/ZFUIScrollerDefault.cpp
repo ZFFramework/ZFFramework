@@ -1,7 +1,5 @@
 #include "ZFUIScrollerDefault.h"
 
-#include <cmath> // for sqrt
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFUIScrollerDefault_scrollAniBounceMax ((zffloat)40)
@@ -447,7 +445,7 @@ private:
             , ZF_IN zffloat offset
             , ZF_IN zffloat a
             ) {
-        zftimet t = (zft_zftimet)((-v + sqrt((double)((long)v * v + (long)2 * a * offset))) * 1000 / a);
+        zftimet t = (zft_zftimet)((-v + zfm_sqrt((zffloat)((zfint)v * v + (zfint)2 * a * offset))) * 1000 / a);
         return zfmMax((zftimet)0, t);
     }
 
