@@ -2,6 +2,8 @@
 
 #if ZF_ENV_sys_SDL
 
+#include "ZFUIKit/ZFUIGlobalStyle.h"
+
 #include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 #include "ZFCore/ZFSTLWrapper/zfstllist.h"
 #include "ZFImpl/sys_SDL/ZFMainEntry_sys_SDL.h"
@@ -45,6 +47,7 @@ public:
                 , h
                 );
         SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+        SDL_SetTextureScaleMode(texture, ZFUIGlobalStyle::DefaultStyle()->scaleByPixel() ? SDL_SCALEMODE_NEAREST : SDL_SCALEMODE_LINEAR);
         return texture;
     }
     void release(ZF_IN SDL_Renderer *renderer, ZF_IN SDL_Texture *texture) {

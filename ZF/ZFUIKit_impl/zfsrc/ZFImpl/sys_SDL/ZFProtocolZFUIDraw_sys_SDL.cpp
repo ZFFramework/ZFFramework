@@ -212,10 +212,10 @@ public:
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.impl;
 
         SDL_FRect rect;
-        rect.x = (int)(drawImpl->framePixel.x + targetFramePixel.x);
-        rect.y = (int)(drawImpl->framePixel.y + targetFramePixel.y);
-        rect.w = (int)(targetFramePixel.width);
-        rect.h = (int)(targetFramePixel.height);
+        rect.x = zfmRound(drawImpl->framePixel.x + targetFramePixel.x);
+        rect.y = zfmRound(drawImpl->framePixel.y + targetFramePixel.y);
+        rect.w = zfmRound(drawImpl->framePixel.x + targetFramePixel.x + targetFramePixel.width) - rect.x;
+        rect.h = zfmRound(drawImpl->framePixel.y + targetFramePixel.y + targetFramePixel.height) - rect.y;
 
         SDL_FRect rectClipped;
         ZFImpl_sys_SDL_View::renderRectCalc(rectClipped, rect, drawImpl->framePixel);
@@ -227,23 +227,43 @@ public:
         SDL_FRect srcRect;
 
         ZFImpl_sys_SDL_Image *sdlImg = (ZFImpl_sys_SDL_Image *)image->nativeImage();
-        if(zfmemcmp(&rect, &rectClipped, sizeof(SDL_FRect)) == 0) {
-            srcRect.x = (int)imageFramePixel.x;
-            srcRect.y = (int)imageFramePixel.y;
-            srcRect.w = (int)imageFramePixel.width;
-            srcRect.h = (int)imageFramePixel.height;
-        }
-        else {
-            srcRect.x = (int)((float)imageFramePixel.width * (rectClipped.x - rect.x) / rect.w);
-            srcRect.y = (int)((float)imageFramePixel.height * (rectClipped.y - rect.y) / rect.w);
-            srcRect.w = (int)((float)imageFramePixel.width * rectClipped.w / rect.w);
-            srcRect.h = (int)((float)imageFramePixel.height * rectClipped.h / rect.h);
-        }
-
         SDL_Texture *sdlTexture = sdlImg->sdlTexture(drawImpl->sdlRenderer);
         if(sdlTexture != zfnull) {
             SDL_SetTextureAlphaMod(sdlTexture, drawImpl->treeAlpha != 1 ? (Uint8)(drawImpl->treeAlpha * 255) : (Uint8)255);
         }
+
+        if(zfmAbs(rectClipped.w - rect.w) < 1 && zfmAbs(rectClipped.h - rect.h) < 1) {
+            srcRect.x = zfmRound(imageFramePixel.x);
+            srcRect.y = zfmRound(imageFramePixel.y);
+            srcRect.w = zfmRound(imageFramePixel.width);
+            srcRect.h = zfmRound(imageFramePixel.height);
+        }
+        else {
+            srcRect.x = zfmRound(imageFramePixel.x + imageFramePixel.width * (rectClipped.x - rect.x) / rect.w);
+            srcRect.y = zfmRound(imageFramePixel.y + imageFramePixel.height * (rectClipped.y - rect.y) / rect.w);
+            srcRect.w = zfmRound(imageFramePixel.width * rectClipped.w / rect.w);
+            srcRect.h = zfmRound(imageFramePixel.height * rectClipped.h / rect.h);
+        }
+
+        if(srcRect.w > 0 && srcRect.h > 0 && !ZFUIGlobalStyle::DefaultStyle()->scaleByPixel()) {
+            // fix extra pixel from linear filtering when clipping src image
+            zffloat fix = 0.4f;
+            if(srcRect.x + srcRect.w < sdlTexture->w) {
+                srcRect.w -= fix;
+            }
+            if(srcRect.y + srcRect.h < sdlTexture->h) {
+                srcRect.h -= fix;
+            }
+            if(srcRect.x > 0) {
+                srcRect.x += fix;
+                srcRect.w -= fix;
+            }
+            if(srcRect.y > 0) {
+                srcRect.y += fix;
+                srcRect.h -= fix;
+            }
+        }
+
         return SDL_RenderTexture(drawImpl->sdlRenderer, sdlTexture, &srcRect, &rectClipped);
     }
     virtual zfbool drawText(

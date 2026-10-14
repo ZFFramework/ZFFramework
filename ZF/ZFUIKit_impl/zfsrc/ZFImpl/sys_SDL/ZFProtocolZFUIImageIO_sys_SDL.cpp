@@ -39,7 +39,13 @@ public:
 
         SDL_SetSurfaceBlendMode(nativeImageOld, SDL_BLENDMODE_NONE);
         if(ninePatch == ZFUIMarginZero()) {
-            SDL_BlitSurfaceScaled(nativeImageOld, zfnull, nativeImageNew, zfnull, SDL_SCALEMODE_LINEAR);
+            SDL_BlitSurfaceScaled(
+                    nativeImageOld
+                    , zfnull
+                    , nativeImageNew
+                    , zfnull
+                    , ZFUIGlobalStyle::DefaultStyle()->scaleByPixel() ? SDL_SCALEMODE_NEAREST : SDL_SCALEMODE_LINEAR
+                    );
         }
         else {
             ZFUIImageImplNinePatchDrawData drawDatas[9];
@@ -62,7 +68,13 @@ public:
                 dstRect.y = (int)drawData.dst.y;
                 dstRect.w = (int)drawData.dst.width;
                 dstRect.h = (int)drawData.dst.height;
-                SDL_BlitSurfaceScaled(nativeImageOld, &srcRect, nativeImageNew, &dstRect, SDL_SCALEMODE_LINEAR);
+                SDL_BlitSurfaceScaled(
+                        nativeImageOld
+                        , &srcRect
+                        , nativeImageNew
+                        , &dstRect
+                        , ZFUIGlobalStyle::DefaultStyle()->scaleByPixel() ? SDL_SCALEMODE_NEAREST : SDL_SCALEMODE_LINEAR
+                        );
             }
         }
         SDL_SetSurfaceBlendMode(nativeImageOld, SDL_BLENDMODE_BLEND);

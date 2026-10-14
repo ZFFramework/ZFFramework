@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
     ZFImpl_ZFLua_luaErrorPrepare(L);
 
-    ZFCoreArray<zfauto> retArr;
+    zfobj<v_ZFCoreArray> retArr;
     int count = (int)lua_gettop(L);
 
     for(int i = 0; i < count; ++i) {
@@ -13,13 +13,13 @@ static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
         if(ZFImpl_ZFLua_toObject(p, L, i + 1)
                 || ZFImpl_ZFLua_toCallback(p, L, i + 1)
                 ) {
-            retArr.add(p);
+            retArr->add(p);
             continue;
         }
 
         zfobj<v_zfstring> pTmp;
         if(ZFImpl_ZFLua_toStringT(pTmp->zfv, L, i + 1, zftrue)) {
-            retArr.add(pTmp);
+            retArr->add(pTmp);
             continue;
         }
 
@@ -28,7 +28,7 @@ static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
             ZFImpl_ZFLua_luaObjectInfo(L, i + 1, zftrue));
     }
 
-    ZFImpl_ZFLua_luaPush(L, zfobj<v_ZFCoreArray>(retArr));
+    ZFImpl_ZFLua_luaPush(L, retArr);
     return 1;
 }
 

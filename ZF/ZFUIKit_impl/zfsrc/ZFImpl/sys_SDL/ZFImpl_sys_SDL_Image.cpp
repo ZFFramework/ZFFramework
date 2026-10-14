@@ -34,6 +34,7 @@ public:
         Cache &cache = cacheHolder->valueCreate<Cache>();
         cache.sdlTexture = SDL_CreateTextureFromSurface(owner, sdlSurface);
         SDL_SetTextureBlendMode(cache.sdlTexture, SDL_BLENDMODE_BLEND);
+        SDL_SetTextureScaleMode(cache.sdlTexture, ZFUIGlobalStyle::DefaultStyle()->scaleByPixel() ? SDL_SCALEMODE_NEAREST : SDL_SCALEMODE_LINEAR);
         cache.surfaceIt = surfaceIt;
         if(surfaceIt->second.iterAccess(cache.surfaceSubIt, owner, cacheHolder)) {
             cache.surfaceSubIt->second = cacheHolder;

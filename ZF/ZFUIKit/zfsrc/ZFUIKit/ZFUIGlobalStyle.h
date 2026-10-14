@@ -29,6 +29,10 @@ public:
      * supply larger pixel image and increase this scale value
      */
     ZFPROPERTY_ASSIGN(zffloat, imageScale, 2.0f)
+    /**
+     * @brief whether prefer scale by pixel
+     */
+    ZFPROPERTY_ASSIGN(zfbool, scaleByPixel, zffalse)
 
     // ============================================================
     // common size hints

@@ -44,6 +44,7 @@ ZFMETHOD_FUNC_DEFINE_1(void *, beginForView
             , ZFUIDrawToken::TypeView
             , view
             , ZFUISizeApplyScale(ZFUIRectGetSize(view->viewFrame()), view->UIScaleFixed())
+            , view->UIScaleFixed()
             );
     if(!ZFPROTOCOL_ACCESS(ZFUIDrawForView)->beginForView(*token)) {
         zfpoolDelete(token);
@@ -72,6 +73,7 @@ ZFMETHOD_FUNC_DEFINE_1(void *, beginForImage
             , ZFUIDrawToken::TypeImage
             , ZFUIImage::ClassData()->newInstance()
             , imageSizePixel
+            , ZFUIGlobalStyle::DefaultStyle()->imageScale()
             );
     if(!ZFPROTOCOL_ACCESS(ZFUIDrawForImage)->beginForImage(*token, imageSizePixel)) {
         zfpoolDelete(token);
@@ -103,10 +105,11 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, drawClear
         , ZFMP_IN(void *, context)
         , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         ) {
-    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawClear(*(ZFUIDrawToken *)context
+    ZFUIDrawToken &token = *(ZFUIDrawToken *)context;
+    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawClear(token
             , targetFrame == ZFUIRectZero()
-                ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-                : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
+                ? ZFUIRectCreate(ZFUIPointZero(), token.targetSizePixel)
+                : ZFUIRectApplyScale(targetFrame, token.targetScale)
             );
 }
 
@@ -115,11 +118,12 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, drawColor
         , ZFMP_IN(const ZFUIColor &, color)
         , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         ) {
-    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawColor(*(ZFUIDrawToken *)context
+    ZFUIDrawToken &token = *(ZFUIDrawToken *)context;
+    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawColor(token
             , color
             , targetFrame == ZFUIRectZero()
-                ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-                : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
+                ? ZFUIRectCreate(ZFUIPointZero(), token.targetSizePixel)
+                : ZFUIRectApplyScale(targetFrame, token.targetScale)
             );
 }
 
@@ -136,14 +140,15 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, drawImage
     if(imageState == zfnull) {
         return zffalse;
     }
-    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context
+    ZFUIDrawToken &token = *(ZFUIDrawToken *)context;
+    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(token
             , imageState
             , imageFrame == ZFUIRectZero()
                 ? ZFUIRectCreate(ZFUIPointZero(), image->imageSizeFixed())
-                : ZFUIRectApplyScale(targetFrame, imageState->imageScaleFixed())
+                : ZFUIRectApplyScale(imageFrame, imageState->imageScaleFixed())
             , targetFrame == ZFUIRectZero()
-                ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-                : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
+                ? ZFUIRectCreate(ZFUIPointZero(), token.targetSizePixel)
+                : ZFUIRectApplyScale(targetFrame, token.targetScale)
             );
 }
 ZFMETHOD_FUNC_DEFINE_4(zfbool, drawText
@@ -152,12 +157,13 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, drawText
         , ZFMP_IN_OPT(ZFUITextConfig *, config, zfnull)
         , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         ) {
-    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawText(*(ZFUIDrawToken *)context
+    ZFUIDrawToken &token = *(ZFUIDrawToken *)context;
+    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawText(token
             , text
             , config ? config : zfcast(ZFUITextConfig *, ZFUITextConfig::DefaultStyle())
             , targetFrame == ZFUIRectZero()
-                ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-                : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
+                ? ZFUIRectCreate(ZFUIPointZero(), token.targetSizePixel)
+                : ZFUIRectApplyScale(targetFrame, token.targetScale)
             );
 }
 

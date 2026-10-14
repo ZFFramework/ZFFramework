@@ -239,6 +239,9 @@ static SDL_PixelFormat _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_PIXELFORMA
 SDL_PixelFormat ZFImpl_sys_SDL_PixelFormatPreferred(void) {
     return _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred;
 }
+void ZFImpl_sys_SDL_PixelFormatPreferred(ZF_IN SDL_PixelFormat f) {
+    _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = f;
+}
 
 zfbool ZFImpl_sys_SDL_embed = zffalse;
 

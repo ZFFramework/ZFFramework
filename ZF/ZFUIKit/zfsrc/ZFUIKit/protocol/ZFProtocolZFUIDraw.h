@@ -21,6 +21,7 @@ public:
     Type type; /**< @brief type */
     zfauto target; /**< @brief target */
     ZFUISize targetSizePixel; /**< @brief target size in pixel */
+    zffloat targetScale; /**< @brief target scale */
     void *impl; /**< @brief impl */
 
 public:
@@ -29,10 +30,12 @@ public:
             ZF_IN ZFUIDrawToken::Type type
             , ZF_IN ZFObject *target
             , ZF_IN ZFUISize targetSizePixel
+            , ZF_IN zffloat targetScale
             )
     : type(type)
     , target(target)
     , targetSizePixel(targetSizePixel)
+    , targetScale(targetScale)
     , impl(zfnull)
     {
     }

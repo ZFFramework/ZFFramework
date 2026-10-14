@@ -73,6 +73,7 @@ zfbool ZFImpl_sys_SDL_TextureToOutput(
     else {
         SDL_Texture *tmp = SDL_CreateTexture(sdlRenderer, ZFImpl_sys_SDL_PixelFormatPreferred(), SDL_TEXTUREACCESS_TARGET, w, h);
         ZFImpl_sys_SDL_DestroyTextureInScope(tmp);
+        SDL_SetTextureScaleMode(tmp, ZFUIGlobalStyle::DefaultStyle()->scaleByPixel() ? SDL_SCALEMODE_NEAREST : SDL_SCALEMODE_LINEAR);
         {
             SDL_BlendMode blendMode;
             SDL_GetTextureBlendMode(sdlTexture, &blendMode);

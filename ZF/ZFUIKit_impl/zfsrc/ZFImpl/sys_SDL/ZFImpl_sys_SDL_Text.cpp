@@ -311,6 +311,7 @@ zfbool ZFImpl_sys_SDL_textRender(
     ZFImpl_sys_SDL_DestroySurfaceInScope(sdlSurface);
     SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(renderer, sdlSurface);
     SDL_SetTextureBlendMode(sdlTexture, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureScaleMode(sdlTexture, ZFUIGlobalStyle::DefaultStyle()->scaleByPixel() ? SDL_SCALEMODE_NEAREST : SDL_SCALEMODE_LINEAR);
     ZFImpl_sys_SDL_DestroyTextureInScope(sdlTexture);
 
     SDL_FRect srcRect;
