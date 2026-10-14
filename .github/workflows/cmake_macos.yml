@@ -17,10 +17,10 @@ jobs:
       ZF_PROJ_NAME: ZFFramework_test
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
     - name: get-cmake
-      uses: lukka/get-cmake@v3.31.6
+      uses: lukka/get-cmake@latest
 
     - name: Set up NASM
       uses: ilammy/setup-nasm@v1
