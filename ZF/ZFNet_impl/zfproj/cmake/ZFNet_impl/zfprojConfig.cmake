@@ -1,13 +1,7 @@
 
 function(zfprojConfigBefore_ZFNet_impl projName ZF_SRC_FILES)
     set(OPENSSL_USE_STATIC_LIBS TRUE)
-    find_package(OpenSSL MODULE)
-    if(OPENSSL_FOUND)
-        include_directories(${OPENSSL_INCLUDE_DIR})
-        message("OpenSSL: ${OPENSSL_INCLUDE_DIR} ${OPENSSL_LIBRARIES}")
-    else()
-        message("OpenSSL: NOT FOUND")
-    endif()
+    find_package(OpenSSL)
 endfunction()
 
 function(zfprojConfigAfter_ZFNet_impl projName)
@@ -16,10 +10,10 @@ function(zfprojConfigAfter_ZFNet_impl projName)
         target_compile_options(${projName} PRIVATE /Zc:__cplusplus)
     endif()
 
-    find_package(OpenSSL MODULE)
+    find_package(OpenSSL)
     if(OPENSSL_FOUND)
         target_compile_options(${projName} PUBLIC -DZF_ENV_HTTPS=1)
-        target_link_libraries(${projName} PRIVATE ${OPENSSL_LIBRARIES})
+        target_link_libraries(${projName} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
     endif()
 
     target_compile_definitions(${projName} PUBLIC ZF_ENV_FORCE_sys_SDL=1)
