@@ -365,7 +365,6 @@ void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls)
         return;
     }
     ZFBitUnset(cls->_ZFP_ZFClass_removeConst()->_stateFlag, ZFClass::_stateFlag_methodAndPropertyCacheNeedUpdate);
-    cls->_ZFP_ZFClass_autoRegister();
     _ZFP_ZFClassMethodMapType &methodMapCache = cls->d->methodMapCache;
     _ZFP_ZFClassPropertyMapType &propertyMapCache = cls->d->propertyMapCache;
     methodMapCache.clear();
@@ -375,6 +374,7 @@ void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls)
     toCheck.add(cls);
     do {
         const ZFClass *t = toCheck.take();
+        t->_ZFP_ZFClass_autoRegister();
         if(t->classParent() != zfnull) {
             toCheck.add(t->classParent());
         }
