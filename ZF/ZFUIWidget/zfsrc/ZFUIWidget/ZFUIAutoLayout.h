@@ -10,6 +10,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
+#define _ZFP_ZFUIAutoLayoutPosCount 7
 /** @brief see #ZFUIAutoLayout */
 ZFENUM_BEGIN(ZFLIB_ZFUIWidget, ZFUIAutoLayoutPos)
     ZFENUM_VALUE(None)
@@ -227,8 +228,8 @@ protected:
 public:
     zfclassLikePOD _ZFP_Data {
     public:
-        ZFUIAutoLayoutRule ruleList[v_ZFUIAutoLayoutPos::ZFEnumCount];
-        zfbool posAttached[v_ZFUIAutoLayoutPos::ZFEnumCount];
+        ZFUIAutoLayoutRule ruleList[_ZFP_ZFUIAutoLayoutPosCount];
+        zfbool posAttached[_ZFP_ZFUIAutoLayoutPosCount];
         zfbool posReset;
     public:
         _ZFP_Data(void) : ruleList(), posAttached(), posReset(zffalse) {}

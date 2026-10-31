@@ -20,48 +20,48 @@ zfclass _ZFP_I_ZFEnumDynamic : zfextend ZFEnum {
 public:
     zfoverride
     virtual zfindex enumCount(void) {
-        return _ZFP_ZFEnumDataRef()->enumCount();
+        return _ZFP_ZFEnumDataRef().enumCount();
     }
     zfoverride
     virtual zfuint enumDefault(void) {
-        return _ZFP_ZFEnumDataRef()->enumDefault;
+        return _ZFP_ZFEnumDataRef().enumDefault;
     }
     zfoverride
     virtual zfbool enumIsFlags(void) {
-        return _ZFP_ZFEnumDataRef()->enumIsFlags;
+        return _ZFP_ZFEnumDataRef().enumIsFlags;
     }
     zfoverride
     virtual zfindex enumIndexForValue(ZF_IN zfuint value) {
-        return _ZFP_ZFEnumDataRef()->enumIndexForValue(value);
+        return _ZFP_ZFEnumDataRef().enumIndexForValue(value);
     }
     zfoverride
     virtual zfuint enumValueAt(ZF_IN zfindex index) {
-        return _ZFP_ZFEnumDataRef()->enumValueAt(index);
+        return _ZFP_ZFEnumDataRef().enumValueAt(index);
     }
     zfoverride
     virtual const zfstring &enumNameAt(ZF_IN zfindex index) {
-        return _ZFP_ZFEnumDataRef()->enumNameAt(index);
+        return _ZFP_ZFEnumDataRef().enumNameAt(index);
     }
     zfoverride
     virtual zfbool enumValueContain(ZF_IN zfuint value) {
-        return _ZFP_ZFEnumDataRef()->enumValueContain(value);
+        return _ZFP_ZFEnumDataRef().enumValueContain(value);
     }
     zfoverride
     virtual zfuint enumValueForName(ZF_IN const zfstring &name) {
-        return _ZFP_ZFEnumDataRef()->enumValueForName(name);
+        return _ZFP_ZFEnumDataRef().enumValueForName(name);
     }
     zfoverride
     virtual const zfstring &enumNameForValue(ZF_IN zfuint value) {
-        return _ZFP_ZFEnumDataRef()->enumNameForValue(value);
+        return _ZFP_ZFEnumDataRef().enumNameForValue(value);
     }
 public:
     zfoverride
     virtual const zfstring &zfvTypeId(void) {
-        return _ZFP_ZFEnumDataRef()->ownerClass->classNameFull();
+        return _ZFP_ZFEnumDataRef().ownerClass->classNameFull();
     }
 private:
-    const _ZFP_ZFEnumData *_ZFP_ZFEnumDataRef(void) {
-        return this->classData()->classDynamicRegisterUserData()->to<_ZFP_I_ZFEnumDynamicHolder *>()->d;
+    const _ZFP_ZFEnumData &_ZFP_ZFEnumDataRef(void) {
+        return *(this->classData()->classDynamicRegisterUserData()->to<_ZFP_I_ZFEnumDynamicHolder *>()->d);
     }
 };
 zfclassNotPOD _ZFP_ZFEnumTypeId : zfextend ZFTypeInfo {
@@ -173,7 +173,7 @@ const ZFClass *ZFEnumDynamicRegister(
     }
 
     // internal data
-    d->d = _ZFP_ZFEnumDataAccess(enumClass);
+    d->d = &(_ZFP_ZFEnumDataAccess(enumClass));
     for(zfindex i = 0; i < enumValues.count(); ++i) {
         d->d->add(zftrue, enumValues[i], enumNames[i]);
     }
@@ -195,7 +195,7 @@ const ZFClass *ZFEnumDynamicRegister(
     }
 
     // method
-    _ZFP_ZFEnumMethodReg(d->userRegMethods, d->d);
+    _ZFP_ZFEnumMethodReg(d->userRegMethods, *(d->d));
     for(zfindex i = 0; i < d->d->enumCount(); ++i) {
         ZFMethodUserRegisterDetail_0(resultMethod, {
                 return _ZFP_ZFEnumDynamic_e(invokerMethod, invokerObject);

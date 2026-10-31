@@ -114,7 +114,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, errorHint, errorPos)) {return zffalse;}
     // remove all rule
-    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::EnumCount(); ++i) {
         _ZFP_AL_d.ruleList[i].removeAll();
     }
 
@@ -194,7 +194,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
             );
 
     zfstring ruleStr;
-    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::EnumCount(); ++i) {
         ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[i];
         if(ref != zfnull && ref->_ZFP_AL_d.ruleList[i] == rule) {
             continue;
@@ -321,7 +321,7 @@ zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
     for(zfindex iChild = this->childCount() - 1; iChild != zfindexMax(); --iChild) {
         ZFUIView *child = this->childAt(iChild);
         ZFUIAutoLayoutParam *lp = child->layoutParam();
-        for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+        for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::EnumCount(); ++i) {
             ZFUIAutoLayoutRule &rule = lp->_ZFP_AL_d.ruleList[i];
             if(!_ZFP_ZFUIAutoLayout_targetUpdate(rule, this, child)) {
                 ZFSerializableUtilErrorOccurredAt(errorHint, errorPos, serializableData,

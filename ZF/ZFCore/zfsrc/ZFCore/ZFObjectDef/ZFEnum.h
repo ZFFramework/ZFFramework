@@ -308,25 +308,25 @@ public:
 private:
     _ZFP_ZFEnumDataPrivate *d;
 };
-extern ZFLIB_ZFCore _ZFP_ZFEnumData *_ZFP_ZFEnumDataAccess(ZF_IN const ZFClass *ownerClass);
+extern ZFLIB_ZFCore _ZFP_ZFEnumData &_ZFP_ZFEnumDataAccess(ZF_IN const ZFClass *ownerClass);
 extern ZFLIB_ZFCore void _ZFP_ZFEnumDataCleanup(ZF_IN const ZFClass *ownerClass);
-extern ZFLIB_ZFCore void _ZFP_ZFEnumDataCleanup(ZF_IN const _ZFP_ZFEnumData *d);
+extern ZFLIB_ZFCore void _ZFP_ZFEnumDataCleanup(ZF_IN const _ZFP_ZFEnumData &d);
 zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFEnumDataHolder {
 public:
-    _ZFP_ZFEnumDataHolder(ZF_IN const _ZFP_ZFEnumData *d)
+    _ZFP_ZFEnumDataHolder(ZF_IN const _ZFP_ZFEnumData &d)
     : d(d)
     {
     }
-    _ZFP_ZFEnumDataHolder(void) {
+    ~_ZFP_ZFEnumDataHolder(void) {
         _ZFP_ZFEnumDataCleanup(d);
     }
 public:
-    const _ZFP_ZFEnumData *d;
+    const _ZFP_ZFEnumData &d;
 };
 extern ZFLIB_ZFCore const _ZFP_ZFEnumData *_ZFP_ZFEnumDataFind(ZF_IN const ZFClass *enumClass);
 extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
         ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-        , ZF_IN const _ZFP_ZFEnumData *d
+        , ZF_IN const _ZFP_ZFEnumData &d
         );
 
 ZF_NAMESPACE_GLOBAL_END

@@ -71,7 +71,7 @@ static void _ZFP_ZFUIAutoLayout_targetAttach(
     ZFUIAutoLayoutParam::_ZFP_Data &d = lp->_ZFP_AL_d;
     ZFUIAutoLayout *parent = zfcast(ZFUIAutoLayout *, lp->ownerLayout());
     zfbool posAttached = zffalse;
-    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::EnumCount(); ++i) {
         if(d.posAttached[i] && _ZFP_ZFUIAutoLayout_posValid(
                     lp
                     , (ZFUIAutoLayoutPos)i
@@ -106,7 +106,7 @@ static void _ZFP_ZFUIAutoLayout_targetAttach(
         target = parent;
     }
     zfbool posAttached = zffalse;
-    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::EnumCount(); ++i) {
         if(d.posAttached[i] && _ZFP_ZFUIAutoLayout_posValid(
                     lp
                     , (ZFUIAutoLayoutPos)i
@@ -144,7 +144,7 @@ ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, ruleRemove
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, ruleRemoveAll) {
     ZFUIAutoLayout *parent = zfcast(ZFUIAutoLayout *, this->ownerLayout());
-    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::EnumCount(); ++i) {
         ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[i];
         if(rule.valid()) {
             if(parent != zfnull) {

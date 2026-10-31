@@ -78,8 +78,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFENUM_INNER_VALUE_WITH_INIT(Value, initValue) /** @brief \n Value(initValue)\n */ e_##Value = initValue,
 
 #define _ZFP_ZFENUM_INNER_SEPARATOR(isEnableDuplicateValue_) \
-            /** @brief max enum value */ \
-            ZFEnumCount, \
             /* used to ensure sizeof(enum) == sizeof(zfuint) */ \
             /* required for enum value reinterpret cast (ZFTAG_TRICKS: EnumReinterpretCast) */ \
             _ZFP_ZFEnumMax = ((zfuint)-1), \
@@ -87,31 +85,31 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     public: \
         /** @brief get the count of enum value */ \
         static zfindex EnumCount(void) { \
-            return zfself::_ZFP_ZFEnumDataRef()->enumCount(); \
+            return zfself::_ZFP_ZFEnumDataRef().enumCount(); \
         } \
         /** @brief get the index of enum value, or zfindexMax() if no such enum value */ \
         static zfindex EnumIndexForValue(ZF_IN zfuint value) { \
-            return zfself::_ZFP_ZFEnumDataRef()->enumIndexForValue(value); \
+            return zfself::_ZFP_ZFEnumDataRef().enumIndexForValue(value); \
         } \
         /** @brief get the value at index, or ZFEnumInvalid if not exist */ \
         static zfuint EnumValueAt(ZF_IN zfindex index) { \
-            return zfself::_ZFP_ZFEnumDataRef()->enumValueAt(index); \
+            return zfself::_ZFP_ZFEnumDataRef().enumValueAt(index); \
         } \
         /** @brief get the name at index, or ZFEnumNameInvalid if not exist */ \
         static const zfstring &EnumNameAt(ZF_IN zfindex index) { \
-            return zfself::_ZFP_ZFEnumDataRef()->enumNameAt(index); \
+            return zfself::_ZFP_ZFEnumDataRef().enumNameAt(index); \
         } \
         /** @brief return true if contain the specified value */ \
         static zfbool EnumValueContain(ZF_IN zfuint value) { \
-            return zfself::_ZFP_ZFEnumDataRef()->enumValueContain(value); \
+            return zfself::_ZFP_ZFEnumDataRef().enumValueContain(value); \
         } \
         /** @brief get value with name, or ZFEnumInvalid if not exist */ \
         static zfuint EnumValueForName(ZF_IN const zfstring &name) { \
-            return zfself::_ZFP_ZFEnumDataRef()->enumValueForName(name); \
+            return zfself::_ZFP_ZFEnumDataRef().enumValueForName(name); \
         } \
         /** @brief get name with value, or ZFEnumNameInvalid if not exist */ \
         static const zfstring &EnumNameForValue(ZF_IN zfuint value) { \
-            return zfself::_ZFP_ZFEnumDataRef()->enumNameForValue(value); \
+            return zfself::_ZFP_ZFEnumDataRef().enumNameForValue(value); \
         } \
     public: \
         /** @cond ZFPrivateDoc */ \
@@ -153,46 +151,46 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         /** @endcond */ \
     public: \
-        static const _ZFP_ZFEnumData *_ZFP_ZFEnumDataRef(void) { \
+        static const _ZFP_ZFEnumData &_ZFP_ZFEnumDataRef(void) { \
             static _ZFP_ZFEnumDataHolder d(_ZFP_ZFEnumDataInit()); \
             return d.d; \
         } \
-        static const _ZFP_ZFEnumData *_ZFP_ZFEnumDataInit(void) { \
+        static const _ZFP_ZFEnumData &_ZFP_ZFEnumDataInit(void) { \
             ZFCoreMutexLocker(); \
-            _ZFP_ZFEnumData *d = _ZFP_ZFEnumDataAccess(zfself::ClassData()); \
-            if(d->needInitFlag) { \
-                d->needInitFlag = zffalse; \
+            _ZFP_ZFEnumData &d = _ZFP_ZFEnumDataAccess(zfself::ClassData()); \
+            if(d.needInitFlag) { \
+                d.needInitFlag = zffalse; \
                 zfbool isEnableDuplicateValue = isEnableDuplicateValue_;
 
 #define _ZFP_ZFENUM_INNER_VALUE_REGISTER_WITH_NAME(Value, Name) \
-                d->add(isEnableDuplicateValue, zfself::e_##Value, Name);
+                d.add(isEnableDuplicateValue, zfself::e_##Value, Name);
 
 #define _ZFP_ZFENUM_INNER_END(OuterClass, EnumName) \
-    _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, zffalse, d->enumValueAt(0))
+    _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, zffalse, d.enumValueAt(0))
 #define _ZFP_ZFENUM_INNER_END_WITH_DEFAULT(OuterClass, EnumName, defaultEnum) \
     _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, zffalse, zfself::e_##defaultEnum)
 
 #define _ZFP_ZFENUM_INNER_END_FLAGS(OuterClass, EnumName, EnumFlagsName) \
-    _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, zftrue, d->enumValueAt(0)) \
+    _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, zftrue, d.enumValueAt(0)) \
     _ZFP_ZFENUM_INNER_FLAGS_DECLARE(OuterClass, EnumName, EnumFlagsName, v_##EnumName::EnumDefault())
 #define _ZFP_ZFENUM_INNER_END_FLAGS_WITH_DEFAULT(OuterClass, EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags) \
     _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, zftrue, zfself::e_##defaultEnum) \
     _ZFP_ZFENUM_INNER_FLAGS_DECLARE(OuterClass, EnumName, EnumFlagsName, defaultEnumFlags)
 
 #define _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, IsFlags, defaultEnum) \
-                d->enumDefault = (zfuint)(defaultEnum); \
-                d->enumIsFlags = (IsFlags); \
+                d.enumDefault = (zfuint)(defaultEnum); \
+                d.enumIsFlags = (IsFlags); \
             } \
             return d; \
         } \
     public: \
         /** @brief see #ZFEnum::enumIsFlags */ \
         static inline zfbool EnumIsFlags(void) { \
-            return (v_##EnumName::ZFEnumType)zfself::_ZFP_ZFEnumDataRef()->enumIsFlags; \
+            return (v_##EnumName::ZFEnumType)zfself::_ZFP_ZFEnumDataRef().enumIsFlags; \
         } \
         /** @brief default value for @ref EnumName */ \
         static inline v_##EnumName::ZFEnumType EnumDefault(void) { \
-            return (v_##EnumName::ZFEnumType)zfself::_ZFP_ZFEnumDataRef()->enumDefault; \
+            return (v_##EnumName::ZFEnumType)zfself::_ZFP_ZFEnumDataRef().enumDefault; \
         } \
     public: \
         /** @brief util method to access original enum value */ \
