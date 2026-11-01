@@ -2,8 +2,6 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -18,13 +16,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_Font_init)
 // ============================================================
 ZFImpl_sys_SDL_FontLoader ZFImpl_sys_SDL_fontLoader = zfnull;
 
-zfclassNotPOD _ZFP_ZFImpl_sys_SDL_FontTypeHash {
-public:
-    inline zfstlsize operator () (ZFImpl_sys_SDL_FontType const &v) const {
-        return (zfstlsize)zfidentityCalc(v);
-    }
-};
-typedef zfimplhashmap<ZFImpl_sys_SDL_FontType, ZFImpl_sys_SDL_FontData *, _ZFP_ZFImpl_sys_SDL_FontTypeHash> _ZFP_ZFImpl_sys_SDL_FontMapType;
+typedef ZFCoreMap<ZFImpl_sys_SDL_FontType, ZFImpl_sys_SDL_FontData *> _ZFP_ZFImpl_sys_SDL_FontMapType;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_fontDataHolder, ZFLevelZFFrameworkNormal) {
     ZFImpl_sys_SDL_fontLoader = zfnull;
@@ -36,10 +28,10 @@ public:
     _ZFP_ZFImpl_sys_SDL_FontMapType fontCache;
 public:
     void fontCacheRemoveAll(void) {
-        for(_ZFP_ZFImpl_sys_SDL_FontMapType::iterator it = this->fontCache.begin(); it != this->fontCache.end(); ++it) {
-            ZFImpl_sys_SDL_fontRelease(it->second);
+        for(zfiter it = this->fontCache.iter(); it; ++it) {
+            ZFImpl_sys_SDL_fontRelease(this->fontCache.iterValue(it));
         }
-        this->fontCache.clear();
+        this->fontCache.removeAll();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_fontDataHolder)
 
@@ -134,16 +126,16 @@ void _ZFP_ZFImpl_sys_SDL_fontAccess::_load(
         ) {
     this->fontData = zfnull;
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_sys_SDL_fontDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_SDL_fontDataHolder);
-    _ZFP_ZFImpl_sys_SDL_FontMapType::iterator it = d->fontCache.find(fontType);
-    if(it != d->fontCache.end()) {
-        this->fontData = it->second;
+    zfiter it = d->fontCache.iterFind(fontType);
+    if(it) {
+        this->fontData = d->fontCache.iterValue(it);
         this->fontData->ptsize = ptsize;
         TTF_SetFontSize(this->fontData->font, ptsize);
         return;
     }
     this->fontData = ZFImpl_sys_SDL_fontAlloc(fontType, ptsize);
     if(this->fontData != zfnull) {
-        d->fontCache[fontType] = this->fontData;
+        d->fontCache.set(fontType, this->fontData);
     }
 }
 _ZFP_ZFImpl_sys_SDL_fontAccess::_ZFP_ZFImpl_sys_SDL_fontAccess(

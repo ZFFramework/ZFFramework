@@ -1,13 +1,8 @@
 #include "ZFImpl_ZFLua_PathInfo.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-#include "ZFCore/ZFSTLWrapper/zfstlordermap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfimplhashmap<lua_State *, zfbool> _ZFP_ZFImpl_ZFLua_PathInfoStateMapType;
-typedef zfimplordermap<zfstring, zfstring> _ZFP_ZFImpl_ZFLua_PathInfoMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_implPathInfoData, ZFLevelZFFrameworkEssential) {
     ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnAttach(), ZFCallbackForFunc(zfself::luaStateOnAttach));
     ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(zfself::luaStateOnDetach));
@@ -17,8 +12,8 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_implPathInfoData) {
     ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(zfself::luaStateOnDetach));
 }
 public:
-    _ZFP_ZFImpl_ZFLua_PathInfoStateMapType stateMap; // <lua_State *, needUpdate>
-    _ZFP_ZFImpl_ZFLua_PathInfoMapType pathInfoMap; // <luaFuncName, luaFuncBody>
+    ZFCoreMap<lua_State *, zfbool> stateMap; // <lua_State *, needUpdate>
+    ZFCoreOrderMap<zfstring, zfstring> pathInfoMap; // <luaFuncName, luaFuncBody>
     zfstring cmdPrefixCache;
     ZFCoreArray<zfstring> luaFuncNameList;
 private:
@@ -26,13 +21,13 @@ private:
         ZFCoreMutexLocker();
         ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_implPathInfoData) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_implPathInfoData);
         lua_State *L = (lua_State *)const_cast<void *>(zfargs.param0()->to<v_zfptr *>()->zfv);
-        d->stateMap[L] = zftrue;
+        d->stateMap.set(L, zftrue);
     }
     static void luaStateOnDetach(ZF_IN const ZFArgs &zfargs) {
         ZFCoreMutexLocker();
         ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_implPathInfoData) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_implPathInfoData);
         lua_State *L = (lua_State *)const_cast<void *>(zfargs.param0()->to<v_zfptr *>()->zfv);
-        d->stateMap.erase(L);
+        d->stateMap.remove(L);
     }
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_implPathInfoData)
 
@@ -49,32 +44,32 @@ void ZFImpl_ZFLua_implPathInfoSetup(
         ) {
     ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_implPathInfoData) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_implPathInfoData);
-    if(d->pathInfoMap.empty()) {
+    if(d->pathInfoMap.isEmpty()) {
         return;
     }
-    _ZFP_ZFImpl_ZFLua_PathInfoStateMapType::iterator itState = d->stateMap.find(L);
-    if(itState == d->stateMap.end()) {
+    zfiter itState = d->stateMap.iterFind(L);
+    if(!itState) {
         return;
     }
 
-    if(itState->second) {
-        itState->second = zffalse;
+    if(d->stateMap.iterValue(itState)) {
+        d->stateMap.iterValue(itState, zffalse);
         zfstring cmd;
-        if(d->pathInfoMap.empty()) {
+        if(d->pathInfoMap.isEmpty()) {
             cmd += "_ZFP_l=nil;";
         }
         else {
             cmd += "function _ZFP_l(zfl_l)";
             cmd += "    return ";
             zfbool first = zftrue;
-            for(_ZFP_ZFImpl_ZFLua_PathInfoMapType::iterator it = d->pathInfoMap.begin(); it != d->pathInfoMap.end(); ++it) {
+            for(zfiter it = d->pathInfoMap.iter(); it; ++it) {
                 if(first) {
                     first = zffalse;
                 }
                 else {
                     cmd += ',';
                 }
-                cmd += it->second;
+                cmd += d->pathInfoMap.iterValue(it);
             }
             cmd += "    ;";
             cmd += "end;";
@@ -88,14 +83,14 @@ void ZFImpl_ZFLua_implPathInfoSetup(
             zfstring &t = d->cmdPrefixCache;
             t += "local ";
             zfbool first = zftrue;
-            for(_ZFP_ZFImpl_ZFLua_PathInfoMapType::iterator it = d->pathInfoMap.begin(); it != d->pathInfoMap.end(); ++it) {
+            for(zfiter it = d->pathInfoMap.iter(); it; ++it) {
                 if(first) {
                     first = zffalse;
                 }
                 else {
                     t += ',';
                 }
-                t += it->first;
+                t += d->pathInfoMap.iterKey(it);
             }
             t += '=';
         }
@@ -134,46 +129,45 @@ void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(
         ) {
     ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_implPathInfoData) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_implPathInfoData);
-    for(_ZFP_ZFImpl_ZFLua_PathInfoStateMapType::iterator itState = d->stateMap.begin(); itState != d->stateMap.end(); ++itState) {
-        itState->second = zftrue;
+    for(zfiter itState = d->stateMap.iter(); itState; ++itState) {
+        d->stateMap.iterValue(itState, zftrue);
     }
     if(highPriority) {
         zfstring luaFuncBodyTmp = luaFuncBody;
-        _ZFP_ZFImpl_ZFLua_PathInfoMapType::iterator implIt;
-        if(d->pathInfoMap.iterAccess(implIt, luaFuncName, luaFuncBodyTmp)) {
-            implIt->second = luaFuncBodyTmp;
-        }
-        d->pathInfoMap.move(implIt, d->pathInfoMap.begin());
+        zfiter implIt;
+        d->pathInfoMap.iterAccess(implIt, luaFuncName);
+        d->pathInfoMap.iterValue(implIt, luaFuncBodyTmp);
+        d->pathInfoMap.move(implIt, d->pathInfoMap.iter());
     }
     else {
-        d->pathInfoMap[luaFuncName] = luaFuncBody;
+        d->pathInfoMap.set(luaFuncName, luaFuncBody);
     }
     d->cmdPrefixCache.removeAll();
 
     d->luaFuncNameList.removeAll();
-    for(_ZFP_ZFImpl_ZFLua_PathInfoMapType::iterator it = d->pathInfoMap.begin(); it != d->pathInfoMap.end(); ++it) {
-        d->luaFuncNameList.add(it->first);
+    for(zfiter it = d->pathInfoMap.iter(); it; ++it) {
+        d->luaFuncNameList.add(d->pathInfoMap.iterKey(it));
     }
 }
 void _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZF_IN const zfstring &luaFuncName) {
     ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_implPathInfoData) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_implPathInfoData);
-    d->pathInfoMap.erase(luaFuncName);
+    d->pathInfoMap.remove(luaFuncName);
     d->cmdPrefixCache.removeAll();
-    for(_ZFP_ZFImpl_ZFLua_PathInfoStateMapType::iterator itState = d->stateMap.begin(); itState != d->stateMap.end(); ++itState) {
-        itState->second = zftrue;
+    for(zfiter itState = d->stateMap.iter(); itState; ++itState) {
+        d->stateMap.iterValue(itState, zftrue);
     }
 
     d->luaFuncNameList.removeAll();
-    for(_ZFP_ZFImpl_ZFLua_PathInfoMapType::iterator it = d->pathInfoMap.begin(); it != d->pathInfoMap.end(); ++it) {
-        d->luaFuncNameList.add(it->first);
+    for(zfiter it = d->pathInfoMap.iter(); it; ++it) {
+        d->luaFuncNameList.add(d->pathInfoMap.iterKey(it));
     }
 }
 
 zfbool ZFImpl_ZFLua_implPathInfoExist(ZF_IN const zfchar *luaFuncName) {
     ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_implPathInfoData) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_implPathInfoData);
-    return d->pathInfoMap.find(luaFuncName) != d->pathInfoMap.end();
+    return d->pathInfoMap.isContain(luaFuncName);
 }
 
 const ZFCoreArray<zfstring> &ZFImpl_ZFLua_implPathInfoList(void) {

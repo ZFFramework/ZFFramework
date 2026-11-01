@@ -3,8 +3,6 @@
 #include "ZFUIKit/protocol/ZFProtocolZFUIViewFocus.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIRootWindow.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-
 #if ZF_ENV_sys_SDL
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -25,7 +23,7 @@ public:
     zfint lastWidth;
     zfint lastHeight;
 
-    zfimplhashmap<zfidentity, ZFImpl_sys_SDL_MouseState> mouseState;
+    ZFCoreMap<zfidentity, ZFImpl_sys_SDL_MouseState> mouseState;
 
 public:
     _ZFP_ZFImpl_sys_SDL_RootWindowPrivate(ZF_IN ZFImpl_sys_SDL_RootWindow *ownerWindow)
@@ -184,7 +182,7 @@ ZFImpl_sys_SDL_MouseState &ZFImpl_sys_SDL_RootWindow::mouseState(
         ZF_IN Uint32 which
         , ZF_IN Uint8 button
         ) {
-    return d->mouseState[zfidentityHash(which, button)];
+    return d->mouseState.access(zfidentityHash(which, button));
 }
 
 // ============================================================

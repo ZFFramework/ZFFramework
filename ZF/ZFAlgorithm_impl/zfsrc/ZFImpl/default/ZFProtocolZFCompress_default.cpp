@@ -6,8 +6,6 @@
 #define MINIZ_NO_ZLIB_COMPATIBLE_NAMES
 #include "../_repo/miniz/miniz.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclass _ZFP_I_ZFCompressToken_default : zfextend ZFCompressToken {
@@ -22,7 +20,6 @@ private:
         ItemType itemType;
         ZFPathInfo fileToAdd; // store cache path info for ItemType_FileToAdd
     };
-    typedef zfimplhashmap<zfstring, ItemInfo> ItemMapType;
 private:
     zfautoT<ZFIOToken> _refIOToken;
     ZFPathInfo _refPathInfo;
@@ -33,7 +30,7 @@ private:
     // for modify
     zfbool _modified;
     zfbool _itemLoaded;
-    ItemMapType _itemMap; // <itemPath, ItemInfo>
+    ZFCoreMap<zfstring, ItemInfo> _itemMap; // <itemPath, ItemInfo>
 
 protected:
     _ZFP_I_ZFCompressToken_default(void)
@@ -196,7 +193,7 @@ private:
                     // dir, discard
                 }
                 else {
-                    _itemMap[itemPath].itemType = ItemType_FileToKeep;
+                    _itemMap.access(itemPath).itemType = ItemType_FileToKeep;
                 }
             }
         }
@@ -257,9 +254,9 @@ private:
             }
 
             ret = zftrue;
-            for(ItemMapType::iterator itItem = _itemMap.begin(); itItem != _itemMap.end(); ++itItem) {
-                const zfstring &itemPath = itItem->first;
-                const ItemInfo &itemInfo = itItem->second;
+            for(zfiter itItem = _itemMap.iter(); itItem; ++itItem) {
+                const zfstring &itemPath = _itemMap.iterKey(itItem);
+                const ItemInfo &itemInfo = _itemMap.iterValue(itItem);
                 switch(itemInfo.itemType) {
                     case ItemType_FileToKeep: {
                         zfobj<ZFIOBuffer> buf;
@@ -354,8 +351,8 @@ private:
             ret = ret && ZFIOMove(_refPathInfo.pathData(), cachePath);
         }
 
-        for(ItemMapType::iterator itItem = _itemMap.begin(); itItem != _itemMap.end(); ++itItem) {
-            const ItemInfo &itemInfo = itItem->second;
+        for(zfiter itItem = _itemMap.iter(); itItem; ++itItem) {
+            const ItemInfo &itemInfo = _itemMap.iterValue(itItem);
             if(itemInfo.itemType == ItemType_FileToAdd) {
                 ZFIORemove(itemInfo.fileToAdd);
             }
@@ -363,7 +360,7 @@ private:
         _refPathInfo = zfnull;
         _modified = zffalse;
         _itemLoaded = zffalse;
-        _itemMap.clear();
+        _itemMap.removeAll();
         return ret;
     }
 public:
@@ -387,12 +384,13 @@ public:
             return zffalse;
         }
         _itemLoadCheck();
-        ItemMapType::iterator itItem = _itemMap.find(itemPathTmp);
-        if(itItem == _itemMap.end()) {
+        zfiter itItem = _itemMap.iterFind(itemPathTmp);
+        if(!itItem) {
             return zffalse;
         }
+        ItemInfo &itemInfo = _itemMap.iterValue(itItem);
 
-        switch(itItem->second.itemType) {
+        switch(itemInfo.itemType) {
             case ItemType_FileToKeep: {
                 ZFOutput outputTmp = output;
                 return mz_zip_reader_extract_file_to_callback(
@@ -404,7 +402,7 @@ public:
                         );
             }
             case ItemType_FileToAdd: {
-                return ZFInputRead(output, ZFInputForPathInfo(itItem->second.fileToAdd)) != zfindexMax();
+                return ZFInputRead(output, ZFInputForPathInfo(itemInfo.fileToAdd)) != zfindexMax();
             }
             default:
                 ZFCoreCriticalShouldNotGoHere();
@@ -429,9 +427,9 @@ public:
         }
 
         _modified = zftrue;
-        ItemMapType::iterator itItem;
+        zfiter itItem;
         if(_itemMap.iterAccess(itItem, itemPathTmp)) {
-            ItemInfo &itemInfo = itItem->second;
+            ItemInfo &itemInfo = _itemMap.iterValue(itItem);
             if(itemInfo.itemType == ItemType_FileToAdd) {
                 ZFIORemove(itemInfo.fileToAdd);
             }
@@ -439,7 +437,7 @@ public:
             itemInfo.fileToAdd = cachePath;
         }
         else {
-            ItemInfo &itemInfo = itItem->second;
+            ItemInfo &itemInfo = _itemMap.iterValue(itItem);
             itemInfo.itemType = ItemType_FileToAdd;
             itemInfo.fileToAdd = cachePath;
         }
@@ -458,15 +456,15 @@ public:
         }
         _itemLoadCheck();
 
-        for(ItemMapType::iterator itItem = _itemMap.begin(); itItem != _itemMap.end(); ) {
-            const zfstring &itemPath = itItem->first;
-            const ItemInfo &itemInfo = itItem->second;
+        for(zfiter itItem = _itemMap.iter(); itItem; ) {
+            const zfstring &itemPath = _itemMap.iterKey(itItem);
+            const ItemInfo &itemInfo = _itemMap.iterValue(itItem);
             if(_isSameOrChildOf(itemPath, itemPathTmp)) {
                 _modified = zftrue;
                 if(itemInfo.itemType == ItemType_FileToAdd) {
                     ZFIORemove(itemInfo.fileToAdd);
                 }
-                _itemMap.erase(itItem++);
+                _itemMap.iterRemove(itItem);
             }
             else {
                 ++itItem;
@@ -484,35 +482,38 @@ public:
         }
         _itemLoadCheck();
 
-        ItemMapType toMove;
-        ItemMapType toRemove;
-        for(ItemMapType::iterator itItem = _itemMap.begin(); itItem != _itemMap.end(); ++itItem) {
-            const zfstring &itemPath = itItem->first;
-            ItemInfo &itemInfo = itItem->second;
+        ZFCoreMap<zfstring, ItemInfo> toMove;
+        ZFCoreMap<zfstring, ItemInfo> toRemove;
+        for(zfiter itItem = _itemMap.iter(); itItem; ++itItem) {
+            const zfstring &itemPath = _itemMap.iterKey(itItem);
+            ItemInfo &itemInfo = _itemMap.iterValue(itItem);
             if(_isSameOrChildOf(itemPath, itemPathFrom)) {
-                toMove[itemPath] = itemInfo;
+                toMove.set(itemPath, itemInfo);
             }
             else if(_isSameOrChildOf(itemPath, itemPathTo)) {
-                toRemove[itemPath] = itemInfo;
+                toRemove.set(itemPath, itemInfo);
             }
         }
-        if(toMove.empty()) {
+        if(toMove.isEmpty()) {
             return zffalse;
         }
 
-        for(ItemMapType::iterator itToRemove = toRemove.begin(); itToRemove != toRemove.end(); ++itToRemove) {
-            if(itToRemove->second.itemType == ItemType_FileToAdd) {
-                ZFIORemove(itToRemove->second.fileToAdd);
+        for(zfiter itToRemove = toRemove.iter(); itToRemove; ++itToRemove) {
+            ItemInfo &itemInfo = toRemove.iterValue(itToRemove);
+            if(itemInfo.itemType == ItemType_FileToAdd) {
+                ZFIORemove(itemInfo.fileToAdd);
             }
-            _itemMap.erase(itToRemove->first);
+            _itemMap.remove(toRemove.iterKey(itToRemove));
         }
-        for(ItemMapType::iterator itToMove = toMove.begin(); itToMove != toMove.end(); ++itToMove) {
-            zfstring itemPath = (itToMove->first.length() == itemPathFrom.length()
+        for(zfiter itToMove = toMove.iter(); itToMove; ++itToMove) {
+            const zfstring &pathToMove = toMove.iterKey(itToMove);
+            ItemInfo &itemInfo = toMove.iterValue(itToMove);
+            zfstring itemPath = (pathToMove.length() == itemPathFrom.length()
                     ? itemPathTo
-                    : zfstr("%s/%s", itemPathTo, itToMove->first.cString() + itemPathFrom.length() + 1)
+                    : zfstr("%s/%s", itemPathTo, pathToMove.cString() + itemPathFrom.length() + 1)
                     );
             ZFPathInfo cachePath = ZFIO_cachePathGen();
-            switch(itToMove->second.itemType) {
+            switch(itemInfo.itemType) {
                 case ItemType_FileToKeep: {
                     ZFOutput outputTmp = ZFOutputForPathInfo(cachePath);
                     if(!mz_zip_reader_extract_file_to_callback(
@@ -524,15 +525,15 @@ public:
                             )) {
                         return zffalse;
                     }
-                    ItemInfo &itemInfo = _itemMap[itemPath];
+                    ItemInfo &itemInfo = _itemMap.access(itemPath);
                     itemInfo.itemType = ItemType_FileToAdd;
                     itemInfo.fileToAdd = cachePath;
-                    _itemMap.erase(itToMove->first);
+                    _itemMap.remove(pathToMove);
                     break;
                 }
                 case ItemType_FileToAdd: {
-                    _itemMap[itemPath] = itToMove->second;
-                    _itemMap.erase(itToMove->first);
+                    _itemMap.set(itemPath, itemInfo);
+                    _itemMap.remove(pathToMove);
                     break;
                 }
                 default:
@@ -547,29 +548,29 @@ private:
     zfclassNotPOD _FindData {
     public:
         zfstring itemPath;
-        ItemMapType::iterator itItem;
-        zfimplhashmap<zfstring, zfbool> processed;
+        zfiter itItem;
+        ZFCoreSet<zfstring> processed;
     };
     zfbool _itemFindNext(
             ZF_IN_OUT ZFIOFindData &fd
             , ZF_IN_OUT _FindData &d
             ) {
         zfstring itemName;
-        while(d.itItem != _itemMap.end()) {
-            const zfstring &itemPath = d.itItem->first;
+        while(d.itItem) {
+            const zfstring &itemPath = _itemMap.iterKey(d.itItem);
             ++(d.itItem);
             switch(_directChildNameOf(itemName, itemPath, d.itemPath)) {
                 case 1: // grand child with direct child dir
-                    if(d.processed.find(itemName) == d.processed.end()) {
-                        d.processed[itemName] = zftrue;
+                    if(!d.processed.isContain(itemName)) {
+                        d.processed.add(itemName);
                         fd.impl().name = itemName;
                         fd.impl().isDir = zftrue;
                         return zftrue;
                     }
                     break;
                 case 2: // direct child file
-                    if(d.processed.find(itemName) == d.processed.end()) {
-                        d.processed[itemName] = zftrue;
+                    if(!d.processed.isContain(itemName)) {
+                        d.processed.add(itemName);
                         fd.impl().name = itemName;
                         fd.impl().isDir = zffalse;
                         return zftrue;
@@ -591,7 +592,7 @@ public:
         _itemLoadCheck();
         _FindData *d = zfpoolNew(_FindData);
         d->itemPath = _itemPathFormat(itemPath);
-        d->itItem = _itemMap.begin();
+        d->itItem = _itemMap.iter();
         if(this->_itemFindNext(fd, *d)) {
             fd.implAttach("ZFCompressToken_default", d);
             return zftrue;
@@ -616,8 +617,8 @@ public:
     zfoverride
     virtual zfbool ioIsExist(ZF_IN const zfstring &itemPath) {
         _itemLoadCheck();
-        for(ItemMapType::iterator itItem = _itemMap.begin(); itItem != _itemMap.end(); ++itItem) {
-            if(_isSameOrChildOf(itItem->first, itemPath)) {
+        for(zfiter itItem = _itemMap.iter(); itItem; ++itItem) {
+            if(_isSameOrChildOf(_itemMap.iterKey(itItem), itemPath)) {
                 return zftrue;
             }
         }
@@ -627,9 +628,10 @@ public:
     zfoverride
     virtual zfbool ioIsDir(ZF_IN const zfstring &itemPath) {
         _itemLoadCheck();
-        for(ItemMapType::iterator itItem = _itemMap.begin(); itItem != _itemMap.end(); ++itItem) {
-            if(_isSameOrChildOf(itItem->first, itemPath)) {
-                if(itItem->first.length() == itemPath.length()) {
+        for(zfiter itItem = _itemMap.iter(); itItem; ++itItem) {
+            const zfstring &path = _itemMap.iterKey(itItem);
+            if(_isSameOrChildOf(path, itemPath)) {
+                if(path.length() == itemPath.length()) {
                     return zffalse;
                 }
                 else {
@@ -643,48 +645,13 @@ public:
     zfoverride
     virtual zfindex itemCount(void) {
         _itemLoadCheck();
-        return (zfindex)_itemMap.size();
+        return _itemMap.count();
     }
 
-    zfclassNotPOD _Iter : zfextend zfiter::Impl {
-    public:
-        ItemMapType::iterator itItem;
-        ItemMapType::iterator itItemEnd;
-    public:
-        zfoverride
-        virtual zfbool valid(void) {
-            return itItem != itItemEnd;
-        }
-        zfoverride
-        virtual void next(void) {
-            if(itItem != itItemEnd) {
-                ++itItem;
-            }
-        }
-        zfoverride
-        virtual Impl *copy(void) {
-            _Iter *ret = zfpoolNew(_Iter);
-            ret->itItem = itItem;
-            ret->itItemEnd = itItemEnd;
-            return ret;
-        }
-        zfoverride
-        virtual void destroy(void) {
-            zfpoolDelete(this);
-        }
-        zfoverride
-        virtual zfbool isEqual(ZF_IN Impl *d) {
-            _Iter *t = (_Iter *)d;
-            return itItem == t->itItem;
-        }
-    };
     zfoverride
     virtual zfiter itemIter(void) {
         _itemLoadCheck();
-        _Iter *impl = zfpoolNew(_Iter);
-        impl->itItem = _itemMap.begin();
-        impl->itItemEnd = _itemMap.end();
-        return zfiter(impl);
+        return _itemMap.iter();
     }
     zfoverride
     virtual zfbool itemIsDir(ZF_IN const zfiter &it) {
@@ -692,16 +659,15 @@ public:
     }
     zfoverride
     virtual zfstring itemPath(ZF_IN const zfiter &it) {
-        _Iter *impl = it.impl<_Iter *>();
-        return impl->itItem->first;
+        return _itemMap.iterKey(it);
     }
     zfoverride
     virtual void itemRemove(ZF_IN_OUT zfiter &it) {
-        _Iter *impl = it.impl<_Iter *>();
-        if(impl->itItem->second.itemType == ItemType_FileToAdd) {
-            ZFIORemove(impl->itItem->second.fileToAdd);
+        ItemInfo &itemInfo = _itemMap.iterValue(it);
+        if(itemInfo.itemType == ItemType_FileToAdd) {
+            ZFIORemove(itemInfo.fileToAdd);
         }
-        _itemMap.erase((impl->itItem)++);
+        _itemMap.iterRemove(it);
     }
 };
 

@@ -5,6 +5,9 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZFMETHOD_FUNC_USER_REGISTER_0(zfuint, ZFEnumInvalid) {
+    return ZFEnumInvalid();
+}
 const zfstring &_ZFP_ZFEnumNameInvalid(void) {
     static zfstring s = zftext("ZFEnumInvalid");
     return s;

@@ -92,7 +92,7 @@ private:
 private:
     lua_State *_L;
     zfstring _code;
-    void *_m;
+    ZFCoreSet<zfstring> _m;
 };
 
 /**

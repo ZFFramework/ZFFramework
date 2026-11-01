@@ -2,8 +2,6 @@
 #include "ZFLuaState.h"
 #include "protocol/ZFProtocolZFLua.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-
 // #define _ZFP_ZFLuaGC_DEBUG 1
 
 #if _ZFP_ZFLuaGC_DEBUG
@@ -32,24 +30,23 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGCImmediately
 }
 
 // ============================================================
-typedef zfimplhashmap<void *, zfautoT<ZFTaskId> > _ZFP_ZFLuaGCMap;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaGCHolder, ZFLevelZFFrameworkHigh) {
     ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(luaStateOnDetach));
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder) {
     ZFCoreMutexLocker();
-    for(_ZFP_ZFLuaGCMap::iterator it = m.begin(); it != m.end(); ++it) {
-        it->second->stop();
+    for(zfiter it = m.iter(); it; ++it) {
+        m.iterValue(it)->stop();
         _ZFP_ZFLuaGC_log("%s run on destroy", L);
-        ZFLuaGCImmediately(it->first);
+        ZFLuaGCImmediately(m.iterKey(it));
     }
     ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(luaStateOnDetach));
 }
-_ZFP_ZFLuaGCMap m;
+ZFCoreMap<void *, zfautoT<ZFTaskId> > m;
 static void luaStateOnDetach(ZF_IN const ZFArgs &zfargs) {
     ZFCoreMutexLocker();
-    _ZFP_ZFLuaGCMap &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;
-    m.erase(const_cast<void *>(zfargs.param0()->to<v_zfptr *>()->zfv));
+    ZFCoreMap<void *, zfautoT<ZFTaskId> > &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;
+    m.remove(const_cast<void *>(zfargs.param0()->to<v_zfptr *>()->zfv));
 }
 ZF_GLOBAL_INITIALIZER_END(ZFLuaGCHolder)
 
@@ -65,8 +62,8 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC
 
     ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
-    _ZFP_ZFLuaGCMap &m = d->m;
-    if(m.find(L) == m.end()) {
+    ZFCoreMap<void *, zfautoT<ZFTaskId> > &m = d->m;
+    if(!m.isContain(L)) {
         ZFThread *gcThread = ZFThread::currentThread();
         if(gcThread == zfnull) {
             _ZFP_ZFLuaGC_log("%s run with no task available", L);
@@ -84,9 +81,9 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC
             }
             ZFCoreMutexLocker();
             ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
-            d->m.erase(L);
+            d->m.remove(L);
         } ZFLISTENER_END()
-        m[L] = zfpostDelayed(1000, gcAction, gcThread);
+        m.access(L) = zfpostDelayed(1000, gcAction, gcThread);
     }
 }
 

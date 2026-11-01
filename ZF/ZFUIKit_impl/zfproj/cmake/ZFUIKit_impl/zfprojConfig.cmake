@@ -1,23 +1,23 @@
 
 function(zfprojConfigBefore_ZFUIKit_impl projName ZF_SRC_FILES)
     # https://open.oppomobile.com/new/developmentDoc/info?id=13223
-    set(FONT_URL "https://openfs.oppomobile.com/open/oop/202410/18/62d51f494591f1a9040d83b597745911.zip")
+    set(ZFSDLFONT_URL "https://openfs.oppomobile.com/open/oop/202410/18/62d51f494591f1a9040d83b597745911.zip")
 
     message("ZFSDL: font setup begin")
-    set(FONT_REPO_FILE "${ZF_ROOT_PATH}/ZF/ZFUIKit_impl/zf3rd/_repo/font.zip")
-    set(FONT_REPO_PATH "${ZF_ROOT_PATH}/ZF/ZFUIKit_impl/zf3rd/_repo/font")
-    if(NOT EXISTS ${FONT_REPO_FILE})
-        zfprojExec("${ZF_ROOT_PATH}/tools/common/file_download" "%${FONT_URL}" "${FONT_REPO_FILE}")
-        zfprojExec("${ZF_ROOT_PATH}/tools/common/unzip" "${FONT_REPO_FILE}" "${FONT_REPO_PATH}")
+    set(ZFSDLFONT_REPO_FILE "${ZF_ROOT_PATH}/ZF/ZFUIKit_impl/zf3rd/_repo/font.zip")
+    set(ZFSDLFONT_REPO_PATH "${ZF_ROOT_PATH}/ZF/ZFUIKit_impl/zf3rd/_repo/font")
+    if(NOT EXISTS ${ZFSDLFONT_REPO_FILE})
+        zfprojExec("${ZF_ROOT_PATH}/tools/common/file_download" "%${ZFSDLFONT_URL}" "${ZFSDLFONT_REPO_FILE}")
+        zfprojExec("${ZF_ROOT_PATH}/tools/common/unzip" "${ZFSDLFONT_REPO_FILE}" "${ZFSDLFONT_REPO_PATH}")
     endif()
     if(${projName} STREQUAL "ZFUIKit_impl")
         install(
-            DIRECTORY "${FONT_REPO_PATH}/"
+            DIRECTORY "${ZFSDLFONT_REPO_PATH}/"
             DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIKit_impl/zfres/ZFUIKit_impl/sys_SDL/font"
             )
     else()
         install(
-            DIRECTORY "${FONT_REPO_PATH}/"
+            DIRECTORY "${ZFSDLFONT_REPO_PATH}/"
             DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/zfres/ZFUIKit_impl/sys_SDL/font"
             )
     endif()

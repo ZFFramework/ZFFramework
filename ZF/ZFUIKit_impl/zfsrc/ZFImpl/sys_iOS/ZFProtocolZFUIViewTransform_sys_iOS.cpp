@@ -3,8 +3,6 @@
 
 #if ZF_ENV_sys_iOS
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_iOS, ZFUIViewTransform, v_ZFProtocolLevel::e_SystemNormal)
