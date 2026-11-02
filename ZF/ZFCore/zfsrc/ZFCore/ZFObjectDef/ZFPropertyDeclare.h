@@ -284,7 +284,7 @@ public:
         }
     }
     T_Type &Get(void) {
-        return (T_Type &)_ZFP_v.v;
+        return *(T_Type *)_ZFP_v.v;
     }
     void Reset(void) {
         zfdeletePlacement(&(this->Get()));
@@ -336,7 +336,7 @@ public:
         }
     }
     T_Type &Get(void) {
-        return (T_Type &)_ZFP_v.v;
+        return *(T_Type *)_ZFP_v.v;
     }
     void Reset(void) {
         zfdeletePlacement(&(this->Get()));
