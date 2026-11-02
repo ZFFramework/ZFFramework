@@ -198,12 +198,12 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  */
 #define ZFPROPERTY_ON_INIT_DECLARE(Type, Name) \
     public: \
-        ZFLIB_HIDDEN static zfbool _ZFP_propLExt_##Name(void) {return zftrue;} \
+        static zfbool _ZFP_propLExt_##Name(void) {return zftrue;} \
     _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DECLARE(Type, Name, OnInit, ZFM_EMPTY)
 /** @brief see #ZFPROPERTY_ON_INIT_DECLARE */
 #define ZFPROPERTY_ON_INIT_DECLARE_NO_AUTO_INIT(Type, Name) \
     public: \
-        ZFLIB_HIDDEN static zfbool _ZFP_propLExt_##Name(void) {return zffalse;} \
+        static zfbool _ZFP_propLExt_##Name(void) {return zffalse;} \
     _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DECLARE(Type, Name, OnInit, ZFM_EMPTY)
 /** @brief see #ZFPROPERTY_ON_INIT_DECLARE */
 #define ZFPROPERTY_ON_INIT_DEFINE(OwnerClass, Type, Name) \
@@ -500,7 +500,7 @@ public:
         }; \
         zfself::_ZFP_PropV_##Name Name##_PropV; \
     private: \
-        ZFLIB_HIDDEN static zfbool _ZFP_propCbIsInit_##Name( \
+        static zfbool _ZFP_propCbIsInit_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
@@ -577,7 +577,7 @@ public:
         }; \
         zfself::_ZFP_PropV_##Name Name##_PropV; \
     private: \
-        ZFLIB_HIDDEN static zfbool _ZFP_propCbIsInit_##Name( \
+        static zfbool _ZFP_propCbIsInit_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
@@ -603,14 +603,14 @@ public:
 // ============================================================
 #define _ZFP_ZFPROPERTY_DECLARE_CALLBACK(Type, Name) \
     private: \
-        ZFLIB_HIDDEN static zfbool _ZFP_propCbAccessed_##Name( \
+        static zfbool _ZFP_propCbAccessed_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &ownerObj \
                 ) { \
             zfself *t = zfcastNoExt(zfself *, ownerObj); \
             return t && t->Name##_PropV.VA(); \
         } \
-        ZFLIB_HIDDEN static void _ZFP_propCbReset_##Name( \
+        static void _ZFP_propCbReset_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &owner \
                 ) { \
@@ -619,13 +619,13 @@ public:
                 zfcast(zfself *, owner)->Name##_PropV.Dealloc(owner, zftrue); \
             } \
         } \
-        ZFLIB_HIDDEN static void _ZFP_propCbEnsureInit_##Name( \
+        static void _ZFP_propCbEnsureInit_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &owner \
                 ) { \
             zfcast(zfself *, owner)->Name##_PropV.Init(owner, zftrue); \
         } \
-        ZFLIB_HIDDEN static void _ZFP_propCbDel_##Name( \
+        static void _ZFP_propCbDel_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &owner \
                 ) { \

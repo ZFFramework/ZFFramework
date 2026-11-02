@@ -66,8 +66,8 @@ public:
         /** @brief see @ref accessMethodName */ \
         static void accessMethodName(ZF_IN AccessTypeName *newInstance); \
     private: \
-        ZFLIB_HIDDEN static ZFObject *&_ZFP_ClsSIC_##accessMethodName(void); /* ClassSingletonCleaner */ \
-        ZFLIB_HIDDEN static void _ZFP_ClsSID_##accessMethodName(ZF_IN void *instance); /* ClassSingletonOnDelete */ \
+        static ZFObject *&_ZFP_ClsSIC_##accessMethodName(void); /* ClassSingletonCleaner */ \
+        static void _ZFP_ClsSID_##accessMethodName(ZF_IN void *instance); /* ClassSingletonOnDelete */ \
     public:
 #define _ZFP_ZFCLASS_SINGLETON_DEFINE(OwnerClass, AccessTypeName, ObjectTypeName, sig, accessMethodName, \
                                       ZFLevel_, \

@@ -298,7 +298,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ) \
         }; \
     private: \
-        ZFLIB_HIDDEN static ReturnType _ZFP_mI_##MethodName( \
+        static ReturnType _ZFP_mI_##MethodName( \
                 ZF_IN const ZFMethod *invokerMethod, \
                 ZF_IN zfany const &invokerObject \
                 ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
@@ -457,7 +457,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
         /** @cond ZFPrivateDoc */ /* required to make Doxygen doc placed at right pos */ \
     private: \
-        ZFLIB_HIDDEN static ReturnType _ZFP_mI_##MethodName( \
+        static ReturnType _ZFP_mI_##MethodName( \
                 ZF_IN const ZFMethod *invokerMethod, \
                 ZF_IN zfany const &invokerObject \
                 ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
@@ -480,7 +480,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     ParamExpandOrEmpty7(ZFM_COMMA() param7) \
                 ); \
         } \
-        ZFLIB_HIDDEN static inline ZFMethodAccessType _ZFP_mS_P_##MethodName(void (*)( \
+        static inline ZFMethodAccessType _ZFP_mS_P_##MethodName(void (*)( \
                 ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
                 ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
@@ -492,7 +492,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 )) { \
             return _ZFP_ZFMethod_initClassMemberType_accessType(PublicOrProtectedOrPrivate); \
         } \
-        ZFLIB_HIDDEN static inline ZFMethodType _ZFP_mS_T_##MethodName(void (*)( \
+        static inline ZFMethodType _ZFP_mS_T_##MethodName(void (*)( \
                 ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
                 ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \

@@ -46,7 +46,7 @@ public:
         /** @brief typedef for self */ \
         typedef InterfaceName zfself; \
     private: \
-        ZFLIB_HIDDEN static void _ZFP_ObjI_regCk(ZF_IN ZFClass *cls) { \
+        static void _ZFP_ObjI_regCk(ZF_IN ZFClass *cls) { \
             if(!cls->_ZFP_ZFClass_interfaceHasRegisterCk()) { \
                 cls->_ZFP_ZFClass_interfaceHasRegisterCk(zftrue); \
                 if(zfself::_ZFP_ObjI_reg != zfsuper::_ZFP_ObjI_reg) { \
@@ -142,7 +142,7 @@ public:
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_PARAM(Interface) \
     , Interface::ClassData(), &zfself::_ZFP_ObjICCb_##Interface
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_CAST_CALLBACK(Interface) \
-    ZFLIB_HIDDEN static ZFInterface *_ZFP_ObjICCb_##Interface(ZF_IN ZFObject *obj) { \
+    static ZFInterface *_ZFP_ObjICCb_##Interface(ZF_IN ZFObject *obj) { \
         return _ZFP_ObjICW<zfself, Interface, (zftIsTypeOf<zfself, ZFObject>::Value ? 0 : 1)>::_ZFP_cast(obj); \
     }
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_INTERFACE_ON_INIT(Interface) \
