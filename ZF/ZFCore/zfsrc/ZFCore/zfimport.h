@@ -36,9 +36,9 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * \n
  * what the path and pathInfo means:
  * -  when path can be parsed as #ZFPathInfoFromString, it would used to detect target
- * -  when pathInfo is not specified, the path would be used as #ZFInputForRes
  * -  when pathInfo is specified, the path is the relative path to pathInfo,
  *   and would be used as #ZFInputForLocal
+ * -  when pathInfo is not specified, the path would be used as #ZFInputForRes or #ZFInputForFile
  *
  * \n
  * how the import works:
