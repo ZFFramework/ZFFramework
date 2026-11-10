@@ -34,11 +34,7 @@ public:
         }
         this->implRegisterFlag = zftrue;
 
-        ZFGlobalObserver().observerAdd(
-                ZFUIView::E_ViewOnEvent(),
-                this->viewOnEventListener,
-                ZFLevelZFFrameworkEssential
-            );
+        ZFGlobalObserver().observerAdd(ZFUIView::E_ViewOnKeyEvent(), this->viewOnEventListener, ZFLevelZFFrameworkEssential);
     }
     void implUnregister(void) {
         if(!this->implRegisterFlag) {
@@ -46,9 +42,7 @@ public:
         }
         this->implRegisterFlag = zffalse;
 
-        ZFGlobalObserver().observerRemove(
-            ZFUIView::E_ViewOnEvent(),
-            this->viewOnEventListener);
+        ZFGlobalObserver().observerRemove(ZFUIView::E_ViewOnKeyEvent(), this->viewOnEventListener);
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIKeyboardStateBuiltinImpl_DataHolder)
 

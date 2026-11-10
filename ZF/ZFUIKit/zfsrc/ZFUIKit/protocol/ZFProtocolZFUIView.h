@@ -216,6 +216,7 @@ public:
      * here is a list of UI events you may want to take care:
      * -  #ZFUIMouseEvent
      * -  #ZFUIKeyEvent
+     * -  #ZFUIWheelEvent
      */
     zffinal void notifyUIEvent(
             ZF_IN ZFUIView *view

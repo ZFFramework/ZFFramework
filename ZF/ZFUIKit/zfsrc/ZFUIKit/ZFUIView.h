@@ -161,6 +161,24 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
+     * param0 is the #ZFUIMouseEvent
+     */
+    ZFEVENT(ViewOnMouseEvent)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * param0 is the #ZFUIKeyEvent
+     */
+    ZFEVENT(ViewOnKeyEvent)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * param0 is the #ZFUIWheelEvent
+     */
+    ZFEVENT(ViewOnWheelEvent)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
      * called when #layoutRequest called
      */
     ZFEVENT(ViewLayoutOnLayoutRequest)
