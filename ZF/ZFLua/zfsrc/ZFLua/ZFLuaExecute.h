@@ -144,7 +144,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   -  "input:input(buf [, size, result])"\n
  *     read from input callback
  * -  array
- *   -  "ZFCoreArrayCreate([a, b, c, ...])"\n
+ *   -  "ZFCoreArrayCreate(ElementType, [a, b, c, ...])"\n
  *     create a array, params support these types:
  *     -  zfauto
  *     -  native lua number (stored as #v_zfdouble)

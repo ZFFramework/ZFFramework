@@ -581,8 +581,9 @@ static void _ZFP_ZFLuaLSPGen_spec(
         << "zftrue = true\n"
         << "zffalse = false\n"
 
+        << "---@param cls ZFClass\n"
         << "---@return ZFCoreArray\n"
-        << "function ZFCoreArrayCreate(...) end\n"
+        << "function ZFCoreArrayCreate(cls, ...) end\n"
 
         << "---@param ret zfstring\n"
         << "---@param fmt zfstring|string\n"

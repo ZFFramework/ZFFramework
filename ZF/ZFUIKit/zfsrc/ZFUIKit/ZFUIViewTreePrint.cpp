@@ -56,12 +56,11 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
     ZFOutput outputCallbackNoEndl = ZFOutputForFormat(outputCallback, zfobj<ZFOutputFormatBasic>()->c_escapeEndl(zftrue));
 
     ZFCoreArray<_ZFP_ZFUIViewTreePrintPrintData> printDatas;
-    _ZFP_ZFUIViewTreePrintPrintData rootPrintData;
+    _ZFP_ZFUIViewTreePrintPrintData &rootPrintData = printDatas.add();
     rootPrintData.view = view;
     rootPrintData.depth = 0;
     rootPrintData.siblingIndex = 0;
     rootPrintData.layer = v_ZFUIViewChildLayer::e_Normal;
-    printDatas.add(rootPrintData);
 
     outputCallback.execute("========================= view tree ========================\n");
     do {
@@ -73,36 +72,32 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         ZFCoreArray<zfautoT<ZFUIView> > normalViews = printData.view->childArray();
         ZFCoreArray<zfautoT<ZFUIView> > fgViews = printData.view->internalFgViewArray();
         for(zfindex i = fgViews.count() - 1; i != zfindexMax(); --i) {
-            _ZFP_ZFUIViewTreePrintPrintData printDataTmp;
+            _ZFP_ZFUIViewTreePrintPrintData &printDataTmp = printDatas.add();
             printDataTmp.view = fgViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
             printDataTmp.layer = v_ZFUIViewChildLayer::e_InternalFg;
-            printDatas.add(printDataTmp);
         }
         for(zfindex i = normalViews.count() - 1; i != zfindexMax(); --i) {
-            _ZFP_ZFUIViewTreePrintPrintData printDataTmp;
+            _ZFP_ZFUIViewTreePrintPrintData &printDataTmp = printDatas.add();
             printDataTmp.view = normalViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
             printDataTmp.layer = v_ZFUIViewChildLayer::e_Normal;
-            printDatas.add(printDataTmp);
         }
         for(zfindex i = bgViews.count() - 1; i != zfindexMax(); --i) {
-            _ZFP_ZFUIViewTreePrintPrintData printDataTmp;
+            _ZFP_ZFUIViewTreePrintPrintData &printDataTmp = printDatas.add();
             printDataTmp.view = bgViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
             printDataTmp.layer = v_ZFUIViewChildLayer::e_InternalBg;
-            printDatas.add(printDataTmp);
         }
         for(zfindex i = implViews.count() - 1; i != zfindexMax(); --i) {
-            _ZFP_ZFUIViewTreePrintPrintData printDataTmp;
+            _ZFP_ZFUIViewTreePrintPrintData &printDataTmp = printDatas.add();
             printDataTmp.view = implViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
             printDataTmp.layer = v_ZFUIViewChildLayer::e_InternalImpl;
-            printDatas.add(printDataTmp);
         }
 
         outputCallback.execute("|");

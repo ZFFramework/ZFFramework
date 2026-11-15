@@ -523,6 +523,14 @@ public:
 
 public:
     /**
+     * @brief add element and return reference
+     */
+    T_Element &add(void) {
+        _capacityRequire(this->count() + 1);
+        _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf + d->count, d->buf + d->count + 1);
+        return d->buf[(d->count)++];
+    }
+    /**
      * @brief add element
      */
     void add(ZF_IN T_Element const &e) {

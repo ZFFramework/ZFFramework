@@ -29,7 +29,7 @@ ZFImpl_ZFLua_implPathInfo_DEFINE(zfimport,
     )
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaExecute,
         "function (p, ...)"
-        "    return ZF.ZFLuaExecuteDetail(p, ZFCoreArrayCreate(...), zfnull, zfnull, zfl_L());"
+        "    return ZF.ZFLuaExecuteDetail(p, ZFCoreArrayCreate('ZFObject', ...), zfnull, zfnull, zfl_L());"
         "end"
     )
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaExecuteDetail,

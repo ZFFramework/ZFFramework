@@ -72,12 +72,11 @@ static void _ZFP_ZFUIViewFocusNextFind(
         , ZF_IN zffloat offsetY
         ) {
     if(view->focusable()) {
-        _ZFP_ZFUIViewFocusData focusData;
+        _ZFP_ZFUIViewFocusData &focusData = focusDatas.add();
         focusData.view = view;
         focusData.center = ZFUIRectGetCenter(view->viewFrame());
         focusData.center.x += offsetX;
         focusData.center.y += offsetY;
-        focusDatas.add(focusData);
     }
 
     for(zfindex i = 0; i < view->childCount(); ++i) {

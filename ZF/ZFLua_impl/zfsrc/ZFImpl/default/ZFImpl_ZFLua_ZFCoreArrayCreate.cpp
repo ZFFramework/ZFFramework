@@ -7,8 +7,32 @@ static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
 
     zfobj<v_ZFCoreArray> retArr;
     int count = (int)lua_gettop(L);
+    if(count < 1) {
+        return ZFImpl_ZFLua_luaError(L
+                , "[ZFCoreArrayCreate] missing element type"
+                );
+    }
 
-    for(int i = 0; i < count; ++i) {
+    zfauto cls;
+    if(ZFImpl_ZFLua_toObject(cls, L, 1)) {
+        if(cls && cls->classData()->classIsTypeOf(v_ZFClass::ClassData())) {
+            retArr->elementTypeInit(cls->to<v_ZFClass *>()->zfv->classNameFull());
+        }
+    }
+    else {
+        zfstring clsName;
+        if(ZFImpl_ZFLua_toStringT(clsName, L, 1)) {
+            retArr->elementTypeInit(clsName);
+        }
+    }
+    if(!retArr->elementTypeId()) {
+        return ZFImpl_ZFLua_luaError(L
+                , "[ZFCoreArrayCreate] unknown element type: %s"
+                , ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue)
+                );
+    }
+
+    for(int i = 1; i < count; ++i) {
         zfauto p;
         if(ZFImpl_ZFLua_toObject(p, L, i + 1)
                 || ZFImpl_ZFLua_toCallback(p, L, i + 1)
@@ -23,9 +47,10 @@ static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
             continue;
         }
 
-        return ZFImpl_ZFLua_luaError(L,
-            "[ZFCoreArrayCreate] unknown param type: %s",
-            ZFImpl_ZFLua_luaObjectInfo(L, i + 1, zftrue));
+        return ZFImpl_ZFLua_luaError(L
+                , "[ZFCoreArrayCreate] unknown param type: %s"
+                , ZFImpl_ZFLua_luaObjectInfo(L, i + 1, zftrue)
+                );
     }
 
     ZFImpl_ZFLua_luaPush(L, retArr);

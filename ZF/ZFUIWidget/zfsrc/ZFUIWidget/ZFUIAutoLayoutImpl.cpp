@@ -715,11 +715,10 @@ void _ZFP_ZFUIAutoLayoutPrivate::recursiveRuleAssert(
         , ZF_IN zfindex childIndex
         ) {
     {
-        _ZFP_ZFUIAutoLayoutRuleStackData ruleData;
+        _ZFP_ZFUIAutoLayoutRuleStackData &ruleData = ruleStack.add();
         ruleData.level = level;
         ruleData.ruleType = ruleType;
         ruleData.childIndex = childIndex;
-        ruleStack.add(ruleData);
     }
     if(!layouting) {
         return;
