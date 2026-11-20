@@ -299,7 +299,6 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIRootWindow
         , jint keyCodeRaw
         ) {
     zfobj<ZFUIKeyEvent> event;
-    event->eventResolved(zffalse);
     event->keyId = keyId;
     event->keyAction = (ZFUIKeyAction)keyAction;
     event->keyCode = (ZFUIKeyCode)keyCode;

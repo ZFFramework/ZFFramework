@@ -38,7 +38,6 @@ static inline _ZFP_ZFUIButtonMouseData _ZFP_ZFUIButtonMouseDataFromEvent(ZF_IN Z
 }
 #define _ZFP_ZFUIButtonMouseDataToEvent(event, mouseData) \
     zfobj<ZFUIMouseEvent> event; \
-    event->eventResolved(zffalse); \
     event->mouseId = mouseData.mouseId; \
     event->mouseAction = mouseData.mouseAction; \
     event->mousePoint = mouseData.mousePoint; \

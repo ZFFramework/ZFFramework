@@ -356,7 +356,6 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
         , jint mousePointY
         ) {
     zfobj<ZFUIMouseEvent> event;
-    event->eventResolved(zffalse);
     event->mouseId = mouseId;
     event->mouseAction = (ZFUIMouseAction)mouseAction;
     event->mousePoint = ZFUIPointCreate(mousePointX, mousePointY);
@@ -376,7 +375,6 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
         , jint keyCodeRaw
         ) {
     zfobj<ZFUIKeyEvent> event;
-    event->eventResolved(zffalse);
     event->keyId = keyId;
     event->keyAction = (ZFUIKeyAction)keyAction;
     event->keyCode = (ZFUIKeyCode)keyCode;

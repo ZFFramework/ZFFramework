@@ -79,7 +79,6 @@
         [self._ZFP_mouseRecords addObject:touch];
 
         zfobj<ZFUIMouseEvent> ev;
-        ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = v_ZFUIMouseAction::e_Down;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);
@@ -103,7 +102,6 @@
 
     for(UITouch *touch in self._ZFP_mouseRecords) {
         zfobj<ZFUIMouseEvent> ev;
-        ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = v_ZFUIMouseAction::e_Move;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);
@@ -123,7 +121,6 @@
         [self._ZFP_mouseRecords removeObject:touch];
 
         zfobj<ZFUIMouseEvent> ev;
-        ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = v_ZFUIMouseAction::e_Up;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);
@@ -143,7 +140,6 @@
         [self._ZFP_mouseRecords removeObject:touch];
 
         zfobj<ZFUIMouseEvent> ev;
-        ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = v_ZFUIMouseAction::e_Cancel;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);

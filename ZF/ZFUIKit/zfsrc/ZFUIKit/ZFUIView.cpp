@@ -2357,41 +2357,74 @@ void ZFUIView::viewEventOnEvent(ZF_IN ZFUIEvent *event) {
     const ZFClass *eventClass = event->classData();
     if(zffalse) {}
     else if(eventClass == ZFUIMouseEvent::ClassData()) {
-        ZFUIMouseEvent *mouseEvent = zfcast(ZFUIMouseEvent *, event);
-        this->viewEventOnMouseEvent(mouseEvent);
-        mouseEvent->eventResolved(zftrue);
+        ZFUIMouseEvent *eventTmp = zfcast(ZFUIMouseEvent *, event);
+        this->viewEventOnMouseEvent(eventTmp);
         if(ZFBitTest(d->stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnMouseEvent)
                 || ZFBitTest(_ZFP_ZFUIView_stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnMouseEvent)
                 ) {
             this->observerNotify(ZFUIView::E_ViewOnMouseEvent(), ZFArgs().param0(event));
         }
+        if(!eventTmp->eventResolved()) {
+            ZFUIView *view = this;
+            zfobj<ZFUIMouseEvent> mouseEvent;
+            mouseEvent->mouseId = eventTmp->mouseId;
+            mouseEvent->mouseAction = eventTmp->mouseAction;
+            mouseEvent->mouseButton = eventTmp->mouseButton;
+            mouseEvent->mousePoint = eventTmp->mousePoint;
+            while(view->parent()) {
+                mouseEvent->mousePoint.x += view->x();
+                mouseEvent->mousePoint.y += view->y();
+                view = view->parent();
+                view->viewEventOnMouseEvent(mouseEvent);
+                if(ZFBitTest(d->stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnMouseEvent)
+                        || ZFBitTest(_ZFP_ZFUIView_stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnMouseEvent)
+                        ) {
+                    view->observerNotify(ZFUIView::E_ViewOnMouseEvent(), ZFArgs().param0(event));
+                }
+                if(mouseEvent->eventResolved()) {
+                    break;
+                }
+            }
+        }
     }
     else if(eventClass == ZFUIKeyEvent::ClassData()) {
         ZFUIKeyEvent *eventTmp = zfcast(ZFUIKeyEvent *, event);
         this->viewEventOnKeyEvent(eventTmp);
-        ZFUIView *view = this->parent();
-        while(view != zfnull && !event->eventResolved()) {
-            view->viewEventOnKeyEvent(eventTmp);
-            view = view->parent();
-        }
         if(ZFBitTest(d->stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnKeyEvent)
                 || ZFBitTest(_ZFP_ZFUIView_stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnKeyEvent)
                 ) {
             this->observerNotify(ZFUIView::E_ViewOnKeyEvent(), ZFArgs().param0(event));
         }
+
+        ZFUIView *view = this->parent();
+        while(view != zfnull && !event->eventResolved()) {
+            view->viewEventOnKeyEvent(eventTmp);
+            if(ZFBitTest(view->d->stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnKeyEvent)
+                    || ZFBitTest(_ZFP_ZFUIView_stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnKeyEvent)
+                    ) {
+                view->observerNotify(ZFUIView::E_ViewOnKeyEvent(), ZFArgs().param0(event));
+            }
+            view = view->parent();
+        }
     }
     else if(eventClass == ZFUIWheelEvent::ClassData()) {
         ZFUIWheelEvent *eventTmp = zfcast(ZFUIWheelEvent *, event);
         this->viewEventOnWheelEvent(eventTmp);
-        ZFUIView *view = this->parent();
-        while(view != zfnull && !event->eventResolved()) {
-            view->viewEventOnWheelEvent(eventTmp);
-            view = view->parent();
-        }
         if(ZFBitTest(d->stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnWheelEvent)
                 || ZFBitTest(_ZFP_ZFUIView_stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnWheelEvent)
                 ) {
             this->observerNotify(ZFUIView::E_ViewOnWheelEvent(), ZFArgs().param0(event));
+        }
+
+        ZFUIView *view = this->parent();
+        while(view != zfnull && !event->eventResolved()) {
+            view->viewEventOnWheelEvent(eventTmp);
+            if(ZFBitTest(view->d->stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnWheelEvent)
+                    || ZFBitTest(_ZFP_ZFUIView_stateFlag_E, _ZFP_ZFUIViewPrivate::stateFlag_E_ViewOnWheelEvent)
+                    ) {
+                view->observerNotify(ZFUIView::E_ViewOnWheelEvent(), ZFArgs().param0(event));
+            }
+            view = view->parent();
         }
     }
 }
@@ -2404,7 +2437,6 @@ void ZFUIView::viewEventOnMouseEvent(ZF_IN ZFUIMouseEvent *mouseEvent) {
                 ) {
             this->focusRequest(zftrue);
         }
-        mouseEvent->eventResolved(zftrue);
     }
 }
 

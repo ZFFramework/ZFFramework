@@ -200,7 +200,6 @@ protected:
 private:
     void mouseEventResolve(QGraphicsSceneMouseEvent *event, ZFUIMouseAction mouseAction) {
         zfobj<ZFUIMouseEvent> ev;
-        ev->eventResolved(zffalse);
         ev->mouseId = (zfidentity)event->button();
         ev->mouseAction = mouseAction;
         ev->mousePoint = ZFImpl_sys_Qt_ZFUIPointFromQPointF(event->pos());
@@ -253,7 +252,6 @@ protected:
 private:
     void mouseHoverEventResolve(QGraphicsSceneHoverEvent *event, ZFUIMouseAction mouseAction) {
         zfobj<ZFUIMouseEvent> ev;
-        ev->eventResolved(zffalse);
         ev->mouseId = 0;
         ev->mouseAction = mouseAction;
         ev->mousePoint = ZFImpl_sys_Qt_ZFUIPointFromQPointF(event->pos());
@@ -287,7 +285,6 @@ private:
     void keyEventResolve(QKeyEvent *event, ZFUIKeyAction keyAction) {
         if(this->_ZFP_viewUIEnableTree && this->_ZFP_viewUIEnable) {
             zfobj<ZFUIKeyEvent> ev;
-            ev->eventResolved(zffalse);
             ev->keyId = (zfidentity)event->key();
             ev->keyAction = keyAction;
             ev->keyCode = ZFUIViewImpl_sys_Qt_ZFUIKeyCodeFromQKeyCode(event->key());
@@ -312,7 +309,6 @@ private:
         zffloat eventSteps = event->delta() / 8;
 
         zfobj<ZFUIWheelEvent> wheelEvent;
-        wheelEvent->eventResolved(zffalse);
         if(event->orientation() == Qt::Horizontal) {
             wheelEvent->wheelX = eventSteps;
             wheelEvent->wheelY = 0;
