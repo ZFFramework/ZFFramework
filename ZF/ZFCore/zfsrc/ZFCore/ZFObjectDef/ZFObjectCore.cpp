@@ -811,6 +811,29 @@ void ZFObject::objectPropertyValueOnReset(
 }
 
 // ============================================================
+void ZFObject::_ZFP_ZFObject_observerOnAdd(ZF_IN zfidentity eventId) {
+    this->observerOnAdd(eventId);
+    if(d && d->ZFImplementDynamicData) {
+        for(zfimplhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.begin();
+                it != d->ZFImplementDynamicData->holder.end();
+                ++it) {
+            if(it->second) {
+                it->second->observerOnAdd(eventId);
+            }
+        }
+    }
+}
+void ZFObject::_ZFP_ZFObject_observerOnRemove(ZF_IN zfidentity eventId) {
+    this->observerOnRemove(eventId);
+    if(d && d->ZFImplementDynamicData) {
+        for(zfimplhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.begin();
+                it != d->ZFImplementDynamicData->holder.end();
+                ++it) {
+            it->second->observerOnRemove(eventId);
+        }
+    }
+}
+
 ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void) {
     return d && d->ZFImplementDynamicData && d->ZFImplementDynamicData->owner ? d->ZFImplementDynamicData->owner : this;
 }
@@ -862,6 +885,7 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolderAccess(ZF_IN const ZFC
 
         zfauto holder = clsToImplement->_ZFP_ZFClass_newInstance(dObj);
         it->second = zfobjRetain(holder);
+        dObj->observerHolder->_ZFP_ZFObserver_ZFImplementDynamicAttach(holder);
         return holder;
     }
 }

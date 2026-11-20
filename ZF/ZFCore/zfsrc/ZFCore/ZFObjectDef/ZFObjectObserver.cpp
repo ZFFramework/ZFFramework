@@ -112,7 +112,7 @@ public:
         if(dataList.empty()) {
             dataList.push_back(t);
             if(this->observerOwner != zfnull) {
-                this->observerOwner->observerOnAdd(eventId);
+                this->observerOwner->_ZFP_ZFObject_observerOnAdd(eventId);
             }
         }
         else {
@@ -147,7 +147,7 @@ public:
                 this->observerMap.erase(it);
                 this->attachMapDetach(eventId);
                 if(observerOwner) {
-                    observerOwner->observerOnRemove(eventId);
+                    observerOwner->_ZFP_ZFObject_observerOnRemove(eventId);
                 }
             }
         }
@@ -221,7 +221,7 @@ void ZFObserver::observerRemove(
                     d->observerMap.erase(it);
                     d->attachMapDetach(eventId);
                     if(d->observerOwner) {
-                        d->observerOwner->observerOnRemove(eventId);
+                        d->observerOwner->_ZFP_ZFObject_observerOnRemove(eventId);
                     }
                 }
                 if((--(t->refCount)) == 0) {
@@ -244,7 +244,7 @@ void ZFObserver::observerRemoveAll(ZF_IN zfidentity eventId) {
 
     d->attachMapDetach(eventId);
     if(d->observerOwner) {
-        d->observerOwner->observerOnRemove(eventId);
+        d->observerOwner->_ZFP_ZFObject_observerOnRemove(eventId);
     }
 
     for(zfstlsize i = 0; i < toDelete.size(); ++i) {
@@ -269,7 +269,7 @@ void ZFObserver::observerRemoveAll(void) {
                 ++it
                 ) {
             d->attachMapDetach(it->first);
-            d->observerOwner->observerOnRemove(it->first);
+            d->observerOwner->_ZFP_ZFObject_observerOnRemove(it->first);
         }
     }
     else {
@@ -322,7 +322,6 @@ void ZFObserver::observerNotifyWithSender(
         .sender(customSender)
         ;
     if(d->observerOwner != zfnull) {
-        d->observerOwner->observerOnEvent(zfargs);
         ZFGlobalObserver().d->observerNotifyPrepare(toNotify, eventId, d->observerOwner);
     }
     ZFCoreMutexUnlock();
@@ -360,7 +359,6 @@ void ZFObserver::observerNotifyReverselyWithSender(
         .sender(customSender)
         ;
     if(d->observerOwner != zfnull) {
-        d->observerOwner->observerOnEvent(zfargs);
         ZFGlobalObserver().d->observerNotifyPrepare(toNotify, eventId, d->observerOwner);
     }
     ZFCoreMutexUnlock();
@@ -423,22 +421,6 @@ void ZFObserver::observerHasAddStateDetach(
     }
 }
 
-void ZFObserver::forwardOnAdd(ZF_IN ZFObject *owner, ZF_IN zfidentity eventId) {
-    if(owner) {
-        owner->observerOnAdd(eventId);
-    }
-}
-void ZFObserver::forwardOnRemove(ZF_IN ZFObject *owner, ZF_IN zfidentity eventId) {
-    if(owner) {
-        owner->observerOnRemove(eventId);
-    }
-}
-void ZFObserver::forwardOnEvent(ZF_IN ZFObject *owner, ZF_IN const ZFArgs &zfargs) {
-    if(owner) {
-        owner->observerOnEvent(zfargs);
-    }
-}
-
 void ZFObserver::objectInfoT(ZF_OUT zfstring &ret) const {
     ZFCoreMutexLocker();
     ret += "<ZFObserver";
@@ -477,9 +459,14 @@ void ZFObserver::_ZFP_ZFObserver_observerOwner(ZF_IN ZFObject *obj) {
      * if observerOwner is not null,
      * means it belongs to a ZFObject, which would:
      * * also send all events to ZFGlobalObserver
-     * * notify events to owner ZFObject, such as observerOnEvent
+     * * notify events to owner ZFObject
      */
     d->observerOwner = obj;
+}
+void ZFObserver::_ZFP_ZFObserver_ZFImplementDynamicAttach(ZF_IN ZFObject *holder) {
+    for(_ZFP_ZFObserverMapType::iterator it = d->observerMap.begin(); it != d->observerMap.end(); ++it) {
+        holder->_ZFP_ZFObject_observerOnAdd(it->first);
+    }
 }
 
 // ============================================================

@@ -649,13 +649,6 @@ protected:
      * @brief called when remove last observer
      */
     virtual void observerOnRemove(ZF_IN zfidentity eventId);
-    /**
-     * @brief notified when #observerNotify
-     *
-     * ensured called before any other registered observer
-     */
-    virtual inline void observerOnEvent(ZF_IN const ZFArgs &zfargs) {
-    }
 
 public:
     void _ZFP_ZFObjectLock(void);
@@ -829,6 +822,8 @@ protected:
 
     // ============================================================
 public:
+    zffinal void _ZFP_ZFObject_observerOnAdd(ZF_IN zfidentity eventId);
+    zffinal void _ZFP_ZFObject_observerOnRemove(ZF_IN zfidentity eventId);
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void);
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicHolderCheck(ZF_IN const ZFClass *clsToImplement);
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicHolderAccess(ZF_IN const ZFClass *clsToImplement);
@@ -838,8 +833,6 @@ private:
 private:
     friend zfclassFwd ZFClass;
     friend zfclassFwd _ZFP_ZFClassPrivate;
-    friend zfclassFwd ZFObserver;
-    friend zfclassFwd _ZFP_ZFObserverPrivate;
     template<typename T_ZFObject, int valid>
     friend zfclassFwd _ZFP_ObjACk;
     friend void _ZFP_zfobjRetainAction(ZF_IN ZFObject *obj);
