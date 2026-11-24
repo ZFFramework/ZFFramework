@@ -227,11 +227,10 @@ static zfbool _ZFP_ZFResExtPathCheck(
             continue;
         }
         ckTmp[t] = zftrue;
-        ZFCoreMutexUnlock();
-
         zfautoT<ZFIOImpl> impl = ZFIOImplForPathType(t.pathType());
         if(impl) {
             zfstring toCheck;
+            ZFCoreMutexUnlock();
             impl->ioToChild(toCheck, t.pathData(), resPath);
             if(impl->ioIsExist(toCheck)) {
                 ZFCoreMutexLocker();
@@ -239,8 +238,6 @@ static zfbool _ZFP_ZFResExtPathCheck(
                 return zftrue;
             }
         }
-
-        ZFCoreMutexLock();
     }
     ZFCoreMutexUnlock();
     return zffalse;
@@ -249,15 +246,20 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResExtPathCheck
         , ZFMP_OUT(ZFPathInfo &, resExtPath)
         , ZFMP_IN(const zfstring &, resPath)
         ) {
-    ZFCoreMutexLocker();
+    ZFCoreMutexLock();
     static _ZFP_ZFResExtCkMap ck;
     static zfuint ckCount = 0;
     ++ckCount;
+    ZFCoreMutexUnlock();
+
     zfbool result = _ZFP_ZFResExtPathCheck(resExtPath, resPath, ck);
+
+    ZFCoreMutexLock();
     --ckCount;
     if(ckCount == 0) {
         ck.clear();
     }
+    ZFCoreMutexUnlock();
     return result;
 }
 
