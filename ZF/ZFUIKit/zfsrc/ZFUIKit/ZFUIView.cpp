@@ -110,17 +110,16 @@ public:
     , layerNormal()
     , layerInternalFg()
     , viewLayer(v_ZFUIViewChildLayer::e_Normal)
-    , stateFlag(0)
+    , stateFlag(0
+            | _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested
+            | _ZFP_ZFUIViewPrivate::stateFlag_layoutRequestedRecursively
+            | _ZFP_ZFUIViewPrivate::stateFlag_viewTreeVisibleInternal
+            )
     , stateFlag_E(0)
     , UIScaleInherited(1)
     , UIScaleForImpl(1)
     , UIScaleFixed(1)
     {
-        ZFBitSet(this->stateFlag, 0
-                | _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested
-                | _ZFP_ZFUIViewPrivate::stateFlag_layoutRequestedRecursively
-                | _ZFP_ZFUIViewPrivate::stateFlag_viewTreeVisibleInternal
-                );
     }
 
 public:
